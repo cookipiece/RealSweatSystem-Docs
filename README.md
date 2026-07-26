@@ -21,6 +21,6 @@ npm start
 npm run build
 ```
 
-The source repository may be reviewed on GitHub, but GitHub Pages deployment is intentionally disabled until the documentation has been approved.
+The published documentation is available at https://cookipiece.github.io/RealSweatSystem-Docs/.
 
 Copyright © Cooki. Product data may not be redistributed, resold, or shared.
