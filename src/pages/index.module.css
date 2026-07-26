@@ -1,0 +1,81 @@
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding: 7rem 0 6rem;
+  background:
+    radial-gradient(circle at 78% 18%, rgba(73, 201, 220, 0.28), transparent 24rem),
+    radial-gradient(circle at 18% 80%, rgba(239, 139, 126, 0.18), transparent 26rem),
+    linear-gradient(135deg, #fbfaf6 0%, #f5f3ef 52%, #edf7f8 100%);
+  color: #18252b;
+}
+
+.glow {
+  position: absolute;
+  inset: 0;
+  opacity: 0.38;
+  background-image: radial-gradient(circle, rgba(31, 73, 82, 0.16) 1px, transparent 1px);
+  background-size: 28px 28px;
+  mask-image: linear-gradient(to bottom, black, transparent 78%);
+}
+
+.heroInner {
+  position: relative;
+  z-index: 1;
+  width: min(1180px, calc(100% - 3rem));
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(300px, 0.85fr);
+  align-items: center;
+  gap: 4rem;
+}
+
+.copyBlock {max-width: 720px;}
+.eyebrow {display: inline-block; margin-bottom: 1.25rem; color: #557079; font-size: 0.78rem; font-weight: 750; letter-spacing: 0.16em; text-transform: uppercase;}
+.brandLogo {display: block; width: min(560px, 100%); height: auto; margin-bottom: 1.75rem;}
+.heroTitle {margin: 0 0 1rem; font-size: clamp(2.1rem, 3.4vw, 3.65rem); line-height: 1.08; letter-spacing: -0.045em; text-wrap: balance;}
+.heroDescription {max-width: 670px; margin: 0; color: #40565f; font-size: 1.1rem; line-height: 1.8;}
+.buttons {display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 2rem;}
+.note {margin: 1.1rem 0 0; color: #708087; font-size: 0.9rem;}
+
+.visual {position: relative; min-height: 410px; isolation: isolate;}
+.orbit {position: absolute; inset: 12% 4% 8% 8%; border: 1px solid rgba(47, 112, 124, 0.23); border-radius: 48% 52% 50% 50%; transform: rotate(-12deg);}
+.dropLarge {position: absolute; top: 7%; left: 22%; width: 235px; aspect-ratio: 0.82; display: grid; place-items: center; border: 1px solid rgba(255,255,255,0.88); border-radius: 58% 42% 62% 38% / 65% 45% 55% 35%; transform: rotate(18deg); color: #f7ffff; font-size: 2.35rem; font-weight: 750; letter-spacing: -0.05em; background: linear-gradient(145deg, rgba(255,255,255,0.78), rgba(53,181,202,0.62) 54%, rgba(29,94,111,0.84)); box-shadow: inset 20px 18px 40px rgba(255,255,255,0.56), inset -24px -26px 45px rgba(18,78,93,0.28), 0 34px 70px rgba(39,111,125,0.26); backdrop-filter: blur(8px);}
+.dropLarge span {transform: rotate(-18deg); text-shadow: 0 2px 18px rgba(21,74,86,0.3);}
+.dropSmall {position: absolute; right: 9%; bottom: 18%; width: 88px; aspect-ratio: 0.82; border-radius: 60% 40% 60% 40% / 68% 43% 57% 32%; transform: rotate(28deg); background: linear-gradient(145deg, rgba(255,255,255,0.9), rgba(237,143,128,0.48)); box-shadow: inset 10px 9px 22px rgba(255,255,255,0.72), 0 22px 44px rgba(180,101,92,0.2);}
+.flowLine {position: absolute; left: 16%; bottom: 3%; width: 52%; height: 2px; transform: rotate(-10deg); background: linear-gradient(90deg, transparent, #44b8cb, transparent); box-shadow: 0 0 18px rgba(68,184,203,0.62);}
+.version {position: absolute; right: 0; top: 4%; padding: 0.55rem 0.8rem; border: 1px solid rgba(40,89,99,0.18); border-radius: 999px; background: rgba(255,255,255,0.62); color: #526c74; font-size: 0.78rem; font-weight: 700; backdrop-filter: blur(10px);}
+
+.cardsSection {padding: 4.5rem 0; background: var(--ifm-background-color);}
+.cards {display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;}
+.card {position: relative; min-height: 240px; padding: 2rem; border: 1px solid var(--ifm-color-emphasis-200); border-radius: 18px; background: var(--ifm-card-background-color); box-shadow: 0 16px 45px rgba(24,53,62,0.07); transition: transform 160ms ease, border-color 160ms ease;}
+.card:hover {transform: translateY(-4px); border-color: rgba(48,171,191,0.55);}
+.card h2 {font-size: 1.35rem; margin: 2.4rem 0 0.8rem;}
+.card p {color: var(--ifm-color-emphasis-700); line-height: 1.7;}
+.card a {font-weight: 700;}
+.cardIndex {position: absolute; top: 1.6rem; right: 1.8rem; color: #67b9c6; font-size: 0.78rem; letter-spacing: 0.1em;}
+.metaStrip {padding: 1.15rem 0; border-top: 1px solid var(--ifm-color-emphasis-200); border-bottom: 1px solid var(--ifm-color-emphasis-200); background: var(--ifm-color-emphasis-100);}
+.metaStrip > div {display: flex; justify-content: center; flex-wrap: wrap; gap: 0.6rem 2rem; color: var(--ifm-color-emphasis-700); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;}
+
+@media (max-width: 996px) {
+  .hero {padding: 4.5rem 0 3.5rem;}
+  .heroInner {grid-template-columns: 1fr; gap: 1rem;}
+  .visual {min-height: 300px; width: min(410px, 100%); margin: 0 auto;}
+  .dropLarge {width: 190px;}
+  .cards {grid-template-columns: 1fr;}
+  .card {min-height: 0;}
+}
+
+@media (max-width: 560px) {
+  .heroInner {width: min(100% - 2rem, 1180px);}
+  .heroDescription {font-size: 1rem;}
+  .buttons a {width: 100%; text-align: center;}
+  .visual {min-height: 255px;}
+  .dropLarge {width: 155px; left: 24%;}
+  .dropSmall {width: 65px;}
+}
+
+[data-theme='dark'] .hero {color: #f1f8f9; background: radial-gradient(circle at 78% 18%, rgba(43,151,173,0.27), transparent 24rem), radial-gradient(circle at 18% 80%, rgba(193,95,87,0.15), transparent 26rem), linear-gradient(135deg, #151b1e 0%, #182226 55%, #102b31 100%);}
+[data-theme='dark'] .brandLogo {filter: invert(1) brightness(1.15);}
+[data-theme='dark'] .heroDescription {color: #b7c9ce;}
+[data-theme='dark'] .note {color: #8da5ab;}
+[data-theme='dark'] .version {background: rgba(16,32,36,0.72); color: #b8dce3; border-color: rgba(129,213,227,0.18);}

@@ -1,0 +1,57 @@
+---
+id: tuning
+title: Tuning Guide
+description: Adjust sweat appearance, automatic response, and performance.
+---
+
+# Tuning Guide
+
+Start with the presets, test in the intended scene, and adjust only the settings that need a different result.
+
+## Main controls
+
+| Control | What it changes | Performance impact | Starting point |
+|---|---|---|---|
+| Auto Mode Sensitivity | Response to body movement | Low | **Balanced** |
+| Custom Accumulation Speed Curve | Build rate across the Sweat % range | Low | Leave at the supplied curve first |
+| Overall Sweat Amount | Visible amount and density | Medium to high | **Low amount (Low Load)** |
+| Droplet Size | Apparent size of droplets | Low to medium | Avoid extreme values |
+| Pattern Density | Number and fineness of droplets | Medium to high | Keep moderate for crowded worlds |
+| 3D Feature (Tessellation) | Physical surface displacement | High | Install only when needed |
+
+## Overall Sweat Amount
+
+The available choices are:
+
+- **Low amount (Lightweight)**
+- **Low amount (Low Load)** — default
+- **Standard amount (Medium Load)**
+
+The names describe both appearance and expected load. Test the selected amount in a mirror and at close range before upload.
+
+## Sensitivity and accumulation curve
+
+The sensitivity preset determines how strongly motion feeds Auto Mode. The accumulation curve then shapes how quickly sweat builds at different points in the current Sweat % range.
+
+The curve editor can be collapsed when you do not need it. Its graph reflects the current sensitivity so that the displayed tendency matches the active setup more closely.
+
+## Render order and shadows
+
+- **Automatic Render Order** is on by default.
+- The default **Sweat Render Queue** is **2455**.
+- **Follow Body Shadow Strength** is on by default, so sweat still responds to actual shadowing.
+
+Change render order only when another material on the avatar requires a deliberate ordering adjustment.
+
+## Tessellation
+
+Tessellation support is not installed by default. When you choose to include it:
+
+- **Tessellation Default On** remains off by default.
+- **3D Detail Precision** starts at **Simplified — General Play**.
+- The in-game menu adds **3D Effect (Photos Only, High Load)**.
+- Turning the 3D Effect off uses the No Tess display.
+
+:::warning[Combined load]
+High sweat amount, high pattern density, close-up framing, mirrors, and tessellation can compound GPU load. Change one major setting at a time while testing.
+:::

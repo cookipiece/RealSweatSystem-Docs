@@ -1,0 +1,72 @@
+---
+id: compatibility
+title: 호환성
+---
+
+# 호환성
+
+## 필수 환경
+
+| 항목 | 지원 조건 |
+|---|---|
+| Unity | 2022.3 |
+| VRChat SDK | Avatars SDK3 |
+| 설치 기반 | Modular Avatar 필수 |
+| 플랫폼 | PC / D3D11 |
+| 아바타 | Humanoid 권장 |
+| Body | 아바타 하위의 유효한 SkinnedMeshRenderer |
+
+Quest 단독 실행 환경에서는 지원되지 않으며, 해당 플랫폼에서는 표시되지 않도록 처리됩니다. VRCFury는 필수 의존성이 아닙니다.
+
+## Humanoid와 Non-humanoid
+
+- Humanoid 아바타는 Manual Mode와 Auto Mode를 사용할 수 있습니다.
+- Non-humanoid 아바타이거나 Modular Avatar Bone Proxy를 사용할 수 없는 구성은 Manual Mode만 지원합니다.
+
+## Body Mesh와 Submesh
+
+현재 설치 한 번당 Body Renderer 한 개를 지원합니다. Body에 재질 슬롯이 여러 개라면 **Sweat Target Element**에서 피부가 있는 정확한 Submesh를 선택해야 합니다.
+
+업로드 과정에서 Body Mesh를 합치거나 교체하는 도구를 사용한다면 다음 조건을 유지해야 합니다.
+
+- 땀 대상 Submesh와 재질의 대응 관계가 유지될 것
+- 최종 Mesh 데이터에 접근할 수 있을 것
+- 설치 후 땀 대상 Submesh가 제거되지 않을 것
+
+Unity에서는 정상인데 VRChat에서만 깨지는 경우, 업로드 단계에서 다른 도구가 Body Renderer 또는 Mesh를 교체하지 않는지 확인하세요.
+
+## Tangent
+
+Body Mesh에 Tangent가 없다면 Setup에서 **Safe Copy (Recommended)**를 사용하세요. Tangent 처리 결과가 다른 Mesh 변환 도구에 의해 다시 교체되지 않도록 확인해야 합니다.
+
+## Write Defaults와 Face Tracking
+
+v1.0.1은 Write Defaults ON/OFF 구성과 VRCFT Animator의 호환성을 개선했습니다.
+
+- Face Tracking을 사용한다면 v1.0.1 이상을 사용하세요.
+- Setup이 생성한 Merge Animator Priority 또는 Animator 항목을 수동으로 바꾸지 마세요.
+- 업데이트 후 **Setup — Install / Update**를 한 번 실행하세요.
+
+## Modular Avatar, VRCFury와 최적화 도구
+
+Modular Avatar는 필수입니다. VRCFury, Avatar Optimizer와 기타 비파괴 도구는 함께 사용할 수 있지만, 업로드 시 Body를 최종적으로 교체하는 기능이 있다면 위의 Mesh 조건을 지켜야 합니다.
+
+특정 도구에서만 문제가 발생하면 해당 도구가 Real Sweat 설치 후 Body Mesh 또는 재질 슬롯을 바꾸는지 먼저 확인하세요.
+
+## Poiyomi Lock
+
+수동으로 Lock된 Poiyomi 재질은 설치 또는 업데이트 전에 임시로 Unlock해야 할 수 있습니다. 설치가 끝난 뒤 다시 Lock하고 Play Mode와 업로드 결과를 확인하세요.
+
+## 의상과 입체기능
+
+입체 물방울이 의상을 뚫고 보이는 경우 **RealSweatSystem Clothing Fix**를 사용하세요. 의상의 두께와 Body 사이의 거리에 따라 별도 조절이 필요할 수 있습니다.
+
+## Render Queue와 그림자
+
+땀 재질의 기본 Render Queue는 **2455**입니다. 의상 재질이 2755처럼 다른 Render Queue를 사용해도, Body 쪽 땀 시스템의 동작 여부를 결정하지는 않습니다.
+
+**바디 그림자 따라가기**가 켜져 있으면 실제 그림자 안의 땀도 함께 어두워집니다.
+
+## Face Renderer
+
+기본 Setup은 Body Renderer를 대상으로 설계되었습니다. Face에 수동으로 추가하는 방식은 고급 사용자용 개조이며, 자동 업데이트와 모든 Face Tracking 조합의 호환성을 보장하지 않습니다.

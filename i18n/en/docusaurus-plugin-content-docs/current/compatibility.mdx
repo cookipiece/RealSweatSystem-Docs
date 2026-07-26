@@ -1,0 +1,67 @@
+---
+id: compatibility
+title: Compatibility
+description: Supported Unity, VRChat, avatar, material, and build-tool conditions.
+---
+
+# Compatibility
+
+## Required environment
+
+| Item | Requirement |
+|---|---|
+| Unity | **2022.3** |
+| VRChat | **Avatars SDK3** |
+| Avatar build framework | **Modular Avatar required** |
+| Platform | **PC / Direct3D 11** |
+| Quest standalone | Not supported; the product uses a hidden fallback |
+
+VRCFury is not required for Real Sweat System.
+
+## Avatar type
+
+- **Humanoid:** Manual Mode and Auto Mode are available.
+- **Non-humanoid or missing the required Modular Avatar bone reference:** Manual Mode is available; Auto Mode is not.
+
+## Body Mesh
+
+The selected Body must be a child `SkinnedMeshRenderer` with a valid mesh and submesh.
+
+- The current installer supports **one Body Renderer per installation**.
+- For a mesh with multiple material slots, select the correct **Sweat Target Element**.
+- If the source mesh has no valid tangents, use **Safe Copy (Recommended)**.
+- The final build must preserve the target submesh, material relationship, and readable mesh data needed by Real Sweat System.
+
+## Write Defaults and Face Tracking
+
+v1.0.1 improves compatibility with both Write Defaults ON and Write Defaults OFF avatars, including VRCFT animator configurations.
+
+- Use v1.0.1 or later for Face Tracking avatars.
+- Do not manually change the generated Merge Animator Priority.
+- Do not replace or clear the generated Animator field as a permanent workaround.
+- After updating from v1.0.0, run **Setup — Install / Update** once.
+
+## Avatar optimization and mesh replacement tools
+
+Tools that optimize or replace the Body during upload must preserve the sweat target submesh and material lineage. A setup can look correct in the Unity Editor and still fail in VRChat if another build tool replaces the final Body after Real Sweat System has prepared it.
+
+If this happens, configure the other tool to exclude the target Body, preserve the required submesh, or change its documented build order.
+
+## Materials
+
+If a manually locked Poiyomi material prevents Setup from reading or preparing the source correctly:
+
+1. Temporarily unlock the material.
+2. Run Setup again.
+3. Confirm the avatar in Play Mode.
+4. Relock only after the result is verified.
+
+## Clothing and tessellation
+
+If tessellated droplets protrude through clothing, use **RealSweatSystem Clothing Fix** for the affected clothing setup. Turning the 3D Effect off also returns the display to No Tess.
+
+## Render queue and shadows
+
+The default sweat Render Queue is **2455**. This is separate from an outfit material using another queue such as 2755.
+
+**Follow Body Shadow Strength** is on by default, allowing sweat to darken correctly under actual scene shadows.

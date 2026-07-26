@@ -1,0 +1,26 @@
+{
+  "logo.alt": {
+    "message": "Real Sweat System",
+    "description": "The alt text of navbar logo"
+  },
+  "item.label.ドキュメント": {
+    "message": "문서",
+    "description": "Navbar item with label ドキュメント"
+  },
+  "item.label.クイックスタート": {
+    "message": "빠른 시작",
+    "description": "Navbar item with label クイックスタート"
+  },
+  "item.label.トラブル解決": {
+    "message": "문제 해결",
+    "description": "Navbar item with label トラブル解決"
+  },
+  "item.label.BOOTH": {
+    "message": "BOOTH",
+    "description": "Navbar item with label BOOTH"
+  },
+  "item.label.GitHub": {
+    "message": "GitHub",
+    "description": "Navbar item with label GitHub"
+  }
+}

@@ -1,0 +1,88 @@
+---
+id: troubleshooting
+title: 문제 해결
+---
+
+# 문제 해결
+
+먼저 Console을 Clear한 뒤 문제를 다시 재현하고, **가장 먼저 발생한 오류**를 확인하세요. 뒤에 연속으로 표시된 오류만으로는 원인을 판단하기 어려울 수 있습니다.
+
+## v1.0.0에서 v1.0.1로 업데이트
+
+1. 아바타 Prefab 또는 Unity Project를 백업합니다.
+2. v1.0.1 UnityPackage를 가져옵니다.
+3. Base와 Effects를 함께 사용한다면 두 패키지의 버전을 맞춥니다.
+4. 아바타를 선택하고 **Setup — Install / Update**를 한 번 실행합니다.
+5. Play Mode에서 얼굴, 땀 토글과 Auto Mode를 확인합니다.
+
+## Play Mode에서 얼굴 표정이 깨짐
+
+**가능한 원인:** 이전 버전의 Animator 구성이 Write Defaults OFF 또는 Face Tracking Animator와 충돌할 수 있습니다.
+
+**해결:**
+
+1. v1.0.1 이상으로 업데이트합니다.
+2. Setup이 생성한 Merge Animator Priority와 Animator 항목을 수동 변경하지 않았는지 확인합니다.
+3. **Setup — Install / Update**를 다시 실행합니다.
+4. 얼굴 표정, 땀 토글, Auto Mode를 함께 확인합니다.
+
+## Body가 자동 감지되지 않음
+
+Setup의 Body Mesh 항목에 땀을 표시할 `SkinnedMeshRenderer`를 직접 지정하세요. Face Renderer나 의상 Renderer를 지정하지 마세요.
+
+현재 설치 한 번당 Body Renderer 한 개를 지원합니다.
+
+## 땀이 다른 재질 슬롯에 표시됨
+
+Body에 Submesh가 여러 개 있을 수 있습니다. **Sweat Target Element**에서 피부 재질이 들어 있는 정확한 슬롯을 선택한 뒤 Setup을 다시 실행하세요.
+
+## Tangent가 없다는 안내가 표시됨
+
+**Safe Copy (Recommended)**를 선택하고 설치하세요. 업로드 과정에서 다른 도구가 Body Mesh를 다시 교체하면 결과가 달라질 수 있으므로, VRChat에서도 함께 확인해야 합니다.
+
+## Unity에서는 정상인데 VRChat에서만 깨짐
+
+업로드 과정에서 최적화 또는 Mesh 변환 도구가 Body Renderer, Mesh, Submesh 또는 재질 슬롯을 교체했을 가능성이 있습니다.
+
+- 해당 도구에서 Body를 제외할 수 있는지 확인합니다.
+- 최종 Mesh가 땀 대상 Submesh와 재질 대응 관계를 유지하는지 확인합니다.
+- 최종 Mesh 데이터에 접근할 수 있고, 땀 Submesh가 제거되지 않았는지 확인합니다.
+
+## Rest 데이터 재생성이 실패함
+
+최종 Body Mesh 데이터에 접근할 수 있는지, 그리고 설치 시 선택한 Submesh가 남아 있는지 확인하세요. 업로드 도구가 Mesh를 교체한다면 변환 결과에서도 동일한 대응 관계가 유지되어야 합니다.
+
+## 입체 물방울이 의상을 뚫고 보임
+
+**RealSweatSystem Clothing Fix**를 사용하거나 입체기능을 끄세요. 일반 플레이에서는 No Tess 사용을 권장합니다.
+
+## Poiyomi Lock 재질에서 설치되지 않음
+
+Poiyomi 재질을 임시로 Unlock하고 Setup을 다시 실행한 뒤, 설치가 끝나면 다시 Lock하세요. Play Mode와 실제 업로드 결과를 모두 확인하는 것이 좋습니다.
+
+## Effects만 설치했는데 Body를 요구함
+
+정상 동작입니다. Effects Module은 낙하 물방울과 스팀의 방출 표면을 찾기 위해 Body Mesh가 필요합니다. Effects-only 구성은 Body 재질, Mesh, Rest 데이터 또는 테셀레이션을 수정하지 않습니다.
+
+## 입김을 끄면 Console 오류만 사라짐
+
+입김 Object의 Transform 상태와 Face Animator 문제는 서로 다른 원인일 수 있습니다. 입김을 끈 뒤 오류와 얼굴 문제가 각각 어떻게 변하는지 분리해 확인하고, v1.0.1 이상에서 Setup을 다시 실행하세요.
+
+## 첫 빌드만 실패하고 두 번째 빌드는 성공함
+
+가져오기 직후에는 Shader와 Asset Database 캐시가 동시에 준비될 수 있습니다. Unity의 가져오기가 끝난 뒤 Console의 첫 오류를 해결하고 다시 빌드하세요. 두 번째 빌드가 성공했더라도 첫 오류를 무조건 무시해도 된다는 뜻은 아닙니다.
+
+## Microsoft Defender가 다운로드를 차단함
+
+- BOOTH 구매 라이브러리에서 현재 버전을 다시 다운로드합니다.
+- Windows Security의 탐지 이름과 정확한 대상 파일을 확인합니다.
+- 상품 페이지에 안내된 최신 보안 확인 결과가 있다면 비교합니다.
+
+## 문의 시 함께 알려 줄 정보
+
+- Real Sweat System 버전과 설치한 모듈
+- Unity와 VRCSDK 버전
+- 사용 아바타 및 Face Tracking 패키지 이름
+- Setup 화면과 Avatar Descriptor 스크린샷
+- Console을 Clear한 뒤 발생한 **첫 오류 전문**
+- Unity Play Mode, Desktop VRChat, VR Face Tracking 중 어디에서 발생하는지

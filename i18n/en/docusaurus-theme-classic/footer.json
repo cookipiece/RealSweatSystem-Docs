@@ -1,0 +1,46 @@
+{
+  "link.title.ドキュメント": {
+    "message": "Documentation",
+    "description": "The title of the footer links column with title=ドキュメント in the footer"
+  },
+  "link.title.製品": {
+    "message": "Product",
+    "description": "The title of the footer links column with title=製品 in the footer"
+  },
+  "link.title.プロジェクト": {
+    "message": "Project",
+    "description": "The title of the footer links column with title=プロジェクト in the footer"
+  },
+  "link.item.label.クイックスタート": {
+    "message": "Quick Start",
+    "description": "The label of footer link with label=クイックスタート linking to /docs/quick-start"
+  },
+  "link.item.label.対応環境": {
+    "message": "Compatibility",
+    "description": "The label of footer link with label=対応環境 linking to /docs/compatibility"
+  },
+  "link.item.label.トラブル解決": {
+    "message": "Troubleshooting",
+    "description": "The label of footer link with label=トラブル解決 linking to /docs/troubleshooting"
+  },
+  "link.item.label.BOOTH": {
+    "message": "BOOTH",
+    "description": "The label of footer link with label=BOOTH linking to https://booth.pm/ja/items/8645678"
+  },
+  "link.item.label.更新履歴": {
+    "message": "Changelog",
+    "description": "The label of footer link with label=更新履歴 linking to /docs/update-changelog"
+  },
+  "link.item.label.利用規約・ライセンス": {
+    "message": "Terms & License",
+    "description": "The label of footer link with label=利用規約・ライセンス linking to /docs/license"
+  },
+  "link.item.label.GitHub": {
+    "message": "GitHub",
+    "description": "The label of footer link with label=GitHub linking to https://github.com/cookipiece/RealSweatSystem-Docs"
+  },
+  "copyright": {
+    "message": "Copyright © 2026 Cooki. Documentation for Real Sweat System.",
+    "description": "The footer copyright"
+  }
+}

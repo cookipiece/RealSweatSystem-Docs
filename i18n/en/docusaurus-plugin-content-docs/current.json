@@ -1,0 +1,14 @@
+{
+  "version.label": {
+    "message": "v1.0.1",
+    "description": "The label for version current"
+  },
+  "sidebar.docsSidebar.category.はじめに": {
+    "message": "Start Here",
+    "description": "The label for category 'はじめに' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.使い方": {
+    "message": "Usage",
+    "description": "The label for category '使い方' in sidebar 'docsSidebar'"
+  }
+}

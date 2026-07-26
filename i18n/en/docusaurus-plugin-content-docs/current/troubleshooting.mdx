@@ -1,0 +1,106 @@
+---
+id: troubleshooting
+title: Troubleshooting
+description: Diagnose common installation, animation, mesh, effect, and download issues.
+---
+
+# Troubleshooting
+
+Clear the Unity Console, reproduce the issue once, and begin with the **first error**. Later errors are often consequences of the first one.
+
+## Updating from v1.0.0
+
+1. Back up the avatar or project.
+2. Import the v1.0.1 package.
+3. If using Full Pack (Base + Effects), update Base and Effects to the same version.
+4. Run **Setup — Install / Update** once.
+5. Check the face, Sweat On, Sweat %, Auto Mode, and installed Effects in Play Mode.
+
+## The face breaks in Play Mode or VRChat
+
+This can occur when an older Real Sweat setup conflicts with a Write Defaults OFF Face Tracking animator.
+
+1. Update to v1.0.1 or later.
+2. Undo any diagnostic changes made to the generated Animator field or Merge Animator Priority.
+3. Run Setup again.
+4. Confirm that facial expressions, sweat toggles, and Auto Mode all work together.
+
+Do not use a manually changed animator order as a permanent workaround.
+
+## Sweat On or Auto Mode does not work
+
+- Confirm that **Sweat On** is enabled.
+- For manual control, disable Auto Mode and adjust Sweat %.
+- For Auto Mode, confirm that the avatar is Humanoid and has the required bone reference.
+- Do not manually edit the generated animator or its ordering.
+- Run **Setup — Install / Update** again after importing a newer version.
+
+## Body Mesh is not detected
+
+Assign the correct child `SkinnedMeshRenderer` manually. The Renderer must have a valid mesh and at least one valid submesh.
+
+The current installer accepts one Body Renderer per installation.
+
+## Sweat appears on the wrong material slot
+
+For a Body with multiple submeshes, choose the exact **Sweat Target Element** used by the skin material, then run Setup again.
+
+## Missing tangent warning
+
+Choose **Safe Copy (Recommended)**. This is the supported fallback for a source mesh without suitable tangent data.
+
+## It works in Unity but breaks only in VRChat
+
+An optimizer, retargeter, or other upload-time tool may be replacing the Body Renderer or mesh after Real Sweat System prepares it.
+
+- Check whether the tool modifies the selected Body.
+- Preserve the sweat target submesh and material relationship.
+- Keep the required final mesh data readable.
+- Exclude the Body from the conflicting operation when the tool supports exclusions.
+
+## Rest data cannot be regenerated
+
+Confirm that the final source mesh is readable and that the selected sweat submesh still exists. Reassign the correct Body Mesh and Sweat Target Element before running Setup again.
+
+The **Rest Vertex Data Baker** is a support or advanced-maintenance tool. It is not normally needed during everyday use.
+
+## Tessellated droplets pass through clothing
+
+Apply **RealSweatSystem Clothing Fix** to the affected clothing, or turn **3D Effect (Photos Only, High Load)** off to use No Tess.
+
+## Effects-only setup shows no particles
+
+The Effects Module does not modify the Body, but it still needs the Body Mesh as its emission surface. Confirm that the correct Body is assigned and that the particle controls are enabled under:
+
+**Sweat → Reduce Load → Particles**
+
+## Invalid localAABB mentions Exhale
+
+If the Console repeatedly reports an invalid local AABB and the message points to the breath object:
+
+1. Check the avatar hierarchy for invalid transforms or extreme scale values.
+2. Temporarily turn Breath Puffs off to confirm whether the repeated log stops.
+3. Use v1.0.1 or later.
+
+A breath-object bounds error and a facial animator conflict can be separate issues, so verify both independently.
+
+## A locked Poiyomi material cannot be prepared
+
+Temporarily unlock the affected material, run Setup, verify it in Play Mode, and then relock it. Do not distribute the generated or source material outside the license terms.
+
+## Microsoft Defender blocks the download
+
+Security software can occasionally flag a UnityPackage during download, including through reputation-based or machine-learning detection.
+
+- Download again from your BOOTH purchase library.
+- Confirm the exact detection name and affected filename in Windows Security.
+- Compare the product version with any security verification result published by the seller.
+
+## Information to include in a support report
+
+- Real Sweat System version and purchased package
+- Unity and VRCSDK versions
+- Avatar name and Face Tracking package, if used
+- Screenshot of the Setup window and Avatar Descriptor
+- Full text of the first Console error after clearing the Console
+- Whether it happens in Unity, desktop VRChat, VR, or VR Face Tracking

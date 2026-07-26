@@ -1,0 +1,62 @@
+---
+id: effects
+title: Effects Guide
+description: Configure Falling Drops, Floor Stains, Breath Puffs, and Steam.
+---
+
+# Effects Guide
+
+The Effects Module adds particle effects driven by the same Sweat % used by the rest of the system. Effects-only installation still needs a Body Mesh as its emission surface, but it does not modify the Body material or mesh.
+
+## In-game controls
+
+Open:
+
+**Sweat → Reduce Load → Particles**
+
+From there you can control:
+
+- All Particles
+- Falling Drops
+- Floor Stains
+- Breath Puffs
+- Steam
+
+## Falling Drops
+
+Sweat droplets fall naturally from locations across the body. Their visibility follows the current Sweat %.
+
+**Default:** On
+
+## Floor Stains
+
+Falling drops can leave wet marks when they reach a compatible floor. Results can vary with the world geometry and collision setup.
+
+**Default:** On
+
+## Breath Puffs
+
+Breath appears near the mouth and responds to supported facial input.
+
+- Viseme input is supported.
+- VRCFT input is supported.
+- For Face Tracking avatars, use Real Sweat System v1.0.1 or later.
+
+**Default:** On
+
+## Steam
+
+Steam rises from selected body regions. The default setup enables:
+
+- Cleavage / chest
+- Left and right shoulders
+- Armpits
+- Thighs
+
+The crotch and feet positions are off by default.
+
+**Default:** On
+
+:::tip[Reduce particle load]
+If you do not need a particular effect, disable it from the Particles submenu. Steam is usually the first optional effect to reduce when many avatars are visible.
+:::

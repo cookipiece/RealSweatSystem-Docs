@@ -1,0 +1,86 @@
+---
+id: troubleshooting
+title: トラブル解決
+---
+
+# トラブル解決
+
+まずConsoleをClearし、問題を再現して **最初に出たエラー** を確認してください。後続エラーだけでは原因を判断できない場合があります。
+
+## v1.0.0から更新したい
+
+1. アバターPrefabまたはUnityプロジェクトをバックアップします。
+2. v1.0.1のUnityPackageをインポートします。
+3. BaseとEffectsを使用している場合は両方を同じバージョンへ揃えます。
+4. **Setup — Install / Update** を1回実行します。
+5. Play Modeで顔、Sweat Toggle、Auto Mode、Effectsを確認します。
+
+## Play Modeで顔が崩れる
+
+古いバージョンとWrite Defaults OFFのFace Tracking Animatorが干渉している可能性があります。
+
+- v1.0.1以降へ更新し、Setup — Install / Updateを実行します。
+- Setupが生成したMerge Animator PriorityやAnimator欄を手動で変更しないでください。
+- 以前の診断で値を変更した場合は、Setupを再実行して生成状態へ戻します。
+
+## Toggle / Auto Modeが動作しない
+
+- Sweat Onが有効か確認します。
+- Auto Modeを使う場合はHumanoidアバターであることを確認します。
+- Setupが生成したAnimator、Menu、Parametersを手動変更していないか確認します。
+- Setup — Install / Updateを再実行して確認します。
+
+## Bodyを自動検出できない
+
+Body欄へ対象のSkinnedMeshRendererを手動で指定してください。Face Rendererではなく、汗を表示したい身体のRendererを選びます。
+
+## 複数のMaterial Slotがある
+
+**Sweat Target Element** で、肌Materialが割り当てられている正しいElementを選択します。別のElementを選ぶと、汗が表示されない、または意図しない部分に表示されることがあります。
+
+## MeshにTangentが無い
+
+SetupのTangent関連項目で **Safe Copy（Recommended）** を選択してください。
+
+## Unityでは正常、VRChat内だけ壊れる
+
+アップロード時にBody MeshまたはRendererを置換・統合するOptimizerや変換ツールを確認してください。最終Meshで次の条件が失われると正常に表示できません。
+
+- 汗を適用したSubmeshとMaterial Slotの対応
+- ビルド時に必要なMeshデータの読み取り
+- Setupで指定したBody Rendererの系統
+
+該当ツールでBodyを除外するか、最終出力でも上記条件を保つ設定を使用してください。
+
+## 立体の水滴が衣装を貫通する
+
+**RealSweatSystem Clothing Fix** を使用してください。立体機能を使用しない場合は、3D EffectをOFFにする方法もあります。
+
+## Poiyomi Lock Materialで問題が出る
+
+Materialを一時的にUnlockし、Setupとビルドを確認します。正常に完了した後、必要に応じて再度Lockしてください。
+
+## Effects ModuleだけなのにBody指定を求められる
+
+正常な動作です。Body Meshはパーティクルの放出元として使用されます。Effectsのみの導入ではBodyのMaterial、Mesh、Rest Vertex Data、テッセレーションを変更しません。
+
+## 最初のビルドだけ失敗する
+
+インポート直後はShaderやAsset Databaseの処理が完了していない場合があります。UnityのImportが終了するまで待ち、Consoleの最初のエラーを解決してから再ビルドしてください。2回目に成功しても、最初のエラーを無視して良いとは限りません。
+
+## Microsoft Defenderがダウンロードを遮断する
+
+機械学習型検出によってUnityPackageが誤検出される場合があります。
+
+- BOOTHの購入ライブラリから再ダウンロードします。
+- Windows Securityの検出名と対象ファイルを確認します。
+- 配布者が案内する検証結果とファイルバージョンを確認します。
+
+## 問い合わせ前に用意する情報
+
+- Real Sweatのバージョンと購入構成
+- Unity / VRCSDKのバージョン
+- 使用アバターとFace Trackingパッケージ名
+- Setup画面とAvatar Descriptorのスクリーンショット
+- ConsoleをClearした後の最初のエラー全文
+- Unity、Desktop VRChat、VR Face Trackingのどこで発生するか

@@ -1,0 +1,61 @@
+---
+id: compatibility
+title: 対応環境・互換性
+---
+
+# 対応環境・互換性
+
+## 必要環境
+
+- Unity 2022.3
+- VRChat Avatars SDK3
+- Modular Avatar
+- PC版VRChat（Direct3D 11）
+
+**Modular Avatarは必須です。VRCFuryは必須ではありません。** Quest単体版では汗表現を表示しません。
+
+## Avatar Rig
+
+HumanoidアバターではManual ModeとAuto Modeを使用できます。Non-Humanoidアバター、またはModular Avatar Bone Proxyを使用せず、Auto Modeに必要なBone情報を取得できない構成ではManual Modeを使用します。
+
+## Body Renderer
+
+- アバター配下のSkinnedMeshRendererを指定します。
+- Rendererには有効なMeshとSubmeshが必要です。
+- 1回のインストールで指定できるBody Rendererは1つです。
+- 複数のMaterial Slotがある場合は、正しいSweat Target Elementを選択します。
+- Tangentが無いMeshではSafe Copy（Recommended）を使用します。
+
+## Write Defaults / Face Tracking
+
+v1.0.1では、Write Defaults ON / OFFの両方、およびVRCFTを使用するFace Tracking構成との互換性を改善しました。
+
+- Face Tracking使用者はv1.0.1以降を使用してください。
+- Setupが生成したMerge Animator PriorityやAnimator欄を手動で変更しないでください。
+- v1.0.0から更新した後はSetup — Install / Updateを1回実行してください。
+
+## Modular Avatar / NDMFと他の改変ツール
+
+Real Sweatは非破壊ビルド環境で使用できます。ただし、アップロード時に別のツールがBody MeshやRendererを置換・統合する場合は、最終的なMeshが次の条件を保つ必要があります。
+
+- 汗を適用したSubmeshとMaterial Slotの対応が維持されている
+- 必要なMeshデータをビルド時に読み取れる
+- Real Sweatが参照するBody Rendererの系統が維持されている
+
+Unity Editorでは正常でVRChat内だけ表示が崩れる場合は、アップロード時にBodyを変更するOptimizer、Mesh変換、Material統合ツールの設定を確認してください。
+
+## Poiyomi Lock
+
+PoiyomiのMaterialを手動でLockしている構成で問題が出る場合は、一時的にUnlockしてSetupとビルドを確認し、必要に応じて再度Lockしてください。
+
+## Face Renderer
+
+標準SetupはBody Rendererを対象に設計されています。Faceへ手動で追加する方法は高度な改変であり、自動更新や全てのFace Tracking構成との互換性は保証されません。
+
+## 衣装との干渉
+
+立体機能の水滴が衣装を貫通して見える場合は **RealSweatSystem Clothing Fix** を使用してください。
+
+## Render Queueと影
+
+汗MaterialのRender Queue初期値は **2455** です。Automatic Render OrderとFollow Body Shadow Strengthは初期状態でONです。衣装側が2755など別のRender Queueを使用していても、身体側の汗Materialとは個別に扱われます。

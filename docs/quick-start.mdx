@@ -1,0 +1,63 @@
+---
+id: quick-start
+title: 5分クイックスタート
+description: Real Sweat System をアバターへ導入する最短手順。
+---
+
+# 5分クイックスタート
+
+このページでは、アバターへ導入して最初の動作確認を行います。
+
+## 1. 導入前の確認
+
+- Unity 2022.3、VRChat Avatars SDK3、Modular Avatarが導入済みであることを確認します。
+- アバターPrefabまたはUnityプロジェクトをバックアップします。
+- Consoleに既存のコンパイルエラーが無いことを確認します。
+- v1.0.0から更新する場合は、先に[Update Guide](./update-changelog.mdx)を確認します。
+
+## 2. UnityPackageをインポート
+
+購入した構成に合うUnityPackageをインポートします。**Full Pack (Base + Effects)** の場合はBaseとEffectsの両方を使用します。
+
+:::tip
+BaseとEffectsは同じ製品バージョンを使用してください。
+:::
+
+## 3. Setupを開く
+
+アバターのルートを選択し、Real Sweat SystemのSetup画面を開きます。対象の **Body Renderer** を指定します。
+
+- Bodyは、アバター配下にある有効なMeshとSubmeshを持つSkinnedMeshRendererを指定します。
+- Face RendererをBody欄へ指定しないでください。
+- 1回のインストールで指定できるBody Rendererは1つです。
+- 複数のMaterial Slotがある場合は、汗を表示する正しい **Sweat Target Element** を選択します。
+- Tangentが無いMeshでは **Safe Copy（Recommended）** を選択します。
+
+Effects Moduleだけを使用する場合も、パーティクルの放出元としてBody Meshの指定が必要です。Effectsのみの導入ではBodyのMaterialやMeshを変更しません。
+
+## 4. 立体機能を選択
+
+**立体機能（テッセレーション）を搭載する**か選びます。
+
+- 初期状態では立体機能を搭載しません。
+- 搭載しない場合はNo Tess構成のみを使用します。
+- 搭載すると、インゲームメニューからTess / No Tessを切り替えられます。
+- 搭載した場合も、**テッセレーションの初期値をONにする**設定は初期状態でOFFです。
+
+通常プレイ向けの **3D Detail Precision** 初期値は **Simplified — General Play** です。
+
+## 5. Setupを実行
+
+設定内容を確認して **Setup — Install / Update** を実行します。完了後、Consoleに新しいエラーが無いことを確認します。
+
+## 6. Play Modeで確認
+
+1. Gesture ManagerなどでPlay Modeへ入ります。
+2. アバターメニューからReal SweatをONにします。
+3. Auto ModeをOFFにした状態でSweat %を変更し、Manual操作を確認します。
+4. Auto Mode、搭載した立体機能、EffectsのON/OFFを確認します。
+5. 顔の表情と既存ギミックが正常であることも確認します。
+
+:::info[正常な結果]
+Sweat 0%では表現がほぼ無く、値を上げると汗が滑らかに増えます。
+:::

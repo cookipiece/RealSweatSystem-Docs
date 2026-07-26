@@ -1,0 +1,49 @@
+---
+id: tuning
+title: 設定・調整ガイド
+---
+
+# 設定・調整ガイド
+
+まずプリセットで全体を決め、必要な項目だけ調整する方法を推奨します。
+
+## 初期設定
+
+| 項目 | v1.0.1の初期値 |
+|---|---|
+| Auto Mode Sensitivity | Balanced |
+| Overall Sweat Amount | Low amount (Low Load) / 少量（低負荷） |
+| Automatic Render Order | ON |
+| Sweat Render Queue | 2455 |
+| Follow Body Shadow Strength | ON |
+| 3D Feature (Tessellation) | 未搭載 |
+| 3D Detail Precision | Simplified — General Play |
+| Tessellation Default On | OFF |
+
+## 汗量プリセット
+
+選択できる汗量は次の3種類です。
+
+- **Low amount (Lightweight) / 少量（軽量化）**
+- **Low amount (Low Load) / 少量（低負荷）** — 初期値
+- **Standard amount (Medium Load) / 標準（中負荷）**
+
+
+## 主な調整項目
+
+| 項目 | 変化 | 負荷への影響 |
+|---|---|---|
+| 感度プリセット | Auto Modeの反応 | 小 |
+| ユーザー指定累積速度曲線 | 汗量範囲ごとの増加傾向 | 小 |
+| 全体の汗量 | 表示される汗の密度・量 | 中～大 |
+| 水滴サイズ | 1粒の見た目の大きさ | 小～中 |
+| パターン密度 | 水滴の数と細かさ | 中～大 |
+| 立体機能（テッセレーション） | 水滴の立体表現 | 大 |
+
+## 感度と累積速度曲線
+
+感度プリセットは身体運動への反応を決めます。累積速度曲線は、現在のSweat %に応じた増加傾向を決めます。グラフには現在の感度を反映した傾向が表示されます。曲線編集は必要な時だけ展開できます。
+
+:::warning
+汗量とパターン密度を同時に上げると、特に近距離・ミラー・テッセレーションONでGPU負荷が増えます。
+:::

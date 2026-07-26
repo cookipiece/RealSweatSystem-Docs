@@ -1,0 +1,29 @@
+---
+id: package-guide
+title: パッケージガイド
+description: Base、Effects、Full Packの違い。
+---
+
+# パッケージガイド
+
+| 構成 | 含まれる主な機能 | 向いているユーザー |
+|---|---|---|
+| **Sweat Base Module** | 肌表面の汗、Rest Vertex Data、Tess / No Tess、Render Order、Remote Low Load | 肌の汗表現だけが必要 |
+| **Sweat Effects Module** | Falling Drops、Floor Stains、Breath Puffs、Steam | 周辺エフェクトだけが必要 |
+| **Full Pack (Base + Effects)** | Sweat Base + Sweat Effects | 全ての表現を連動させたい |
+
+各Moduleには動作に必要な共通Coreが含まれます。Coreは単独で操作する製品ではありません。インストールされていないModuleの項目は、Setupおよびアバターメニューに表示されません。
+
+## Full Pack (Base + Effects)
+
+Full PackはBaseとEffectsを収録した完全構成です。同じSweat %を基準に表面の汗とEffectsが自然に連動します。BaseとEffectsは必ず同じ製品バージョンを使用してください。
+
+## Effects Moduleのみを使用する場合
+
+Effects Moduleも、パーティクルの放出元としてBody Meshの指定が必要です。ただし、Effects Moduleだけを導入した場合は、BodyのMaterial、Mesh、Rest Vertex Data、テッセレーションを変更しません。
+
+## Game & App License
+
+購入者本人が使用するVRChatアバター、収益化された動画・配信・画像制作は通常ライセンスの範囲です。完成したゲーム・アプリへ組み込み、第三者へ配布する場合は別途 **Game & App Integration & Distribution License** が必要です。
+
+詳細は[Terms & License](./license.mdx)を確認してください。

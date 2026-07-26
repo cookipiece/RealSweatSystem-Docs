@@ -1,0 +1,65 @@
+---
+id: modes
+title: Manual Mode & Auto Mode
+description: How Sweat On, Sweat %, Manual Mode, and Auto Mode work together.
+---
+
+# Manual Mode & Auto Mode
+
+## In-game menu
+
+The full menu is assembled from the modules and options installed during Setup.
+
+```text
+Sweat
+├─ Sweat On
+├─ Sweat %
+├─ Auto Mode
+└─ Reduce Load
+   ├─ Remote Low Load
+   ├─ Only Visible to Me
+   ├─ Particles
+   │  ├─ All Particles
+   │  ├─ Falling Drops
+   │  ├─ Floor Stains
+   │  ├─ Breath Puffs
+   │  └─ Steam
+   └─ 3D Effect (Photos Only, High Load)
+```
+
+- **Remote Low Load** appears when Sweat Base Module is installed.
+- **Particles** appears when Sweat Effects Module is installed.
+- **3D Effect (Photos Only, High Load)** appears only when tessellation support is installed.
+
+Items for modules or options that are not installed are omitted automatically.
+
+## Manual Mode
+
+Turn **Auto Mode** off and set **Sweat %** directly from 0–100%. Manual Mode is useful for photos, before-and-after comparisons, and scenes that need a fixed sweat level.
+
+## Auto Mode
+
+Auto Mode detects body movement. More movement builds Sweat % faster, and Sweat % gradually falls after movement stops.
+
+- **Auto Mode Sensitivity** controls how strongly movement is interpreted.
+- The **Custom Accumulation Speed Curve** changes the build rate across the Sweat % range.
+- Both settings contribute to Auto Mode.
+
+The default sensitivity preset is **Balanced**.
+
+Auto Mode requires a Humanoid avatar with the expected Modular Avatar bone setup. Non-humanoid avatars and avatars without the required bone reference can use Manual Mode.
+
+## Sweat On versus Sweat 0%
+
+- **Sweat On + Sweat 0%:** the system remains ready, and Auto Mode can begin building sweat from zero.
+- **Sweat On off:** the sweat presentation is disabled.
+
+Use Sweat On at 0% when you want the avatar to begin dry and get wetter naturally after movement starts.
+
+## Quick behavior check
+
+1. Enable **Sweat On**.
+2. Keep Auto Mode off and inspect 0%, 25%, 50%, 75%, and 100%.
+3. Enable Auto Mode and move the avatar.
+4. Stop moving and confirm that the value falls gradually.
+5. Confirm there are no abrupt visual jumps while crossing the range.

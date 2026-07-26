@@ -1,0 +1,43 @@
+---
+id: intro
+title: Real Sweat System ドキュメント
+slug: /
+description: Real Sweat System の公式導入・設定・トラブルシューティングガイド。
+---
+
+# Real Sweat System ドキュメント
+
+**Real Sweat System** は、PC版VRChatアバターにリアルタイムの汗表現を追加するシステムです。Sweat %を手動で操作するほか、体の動きに応じて汗が増え、動きを止めるとゆっくり乾くAuto Modeを利用できます。
+
+:::info[対象バージョン]
+このドキュメントは **v1.0.1** を基準にしています。
+:::
+
+## 表現できるもの
+
+- 肌表面に浮かび、重力に沿って流れる汗
+- 全身から落下する汗の粒と、床に残る濡れ跡
+- 体から立ち上る湯気
+- Viseme・VRCFTに反応する吐息
+
+肌表面の汗は **Sweat Base Module**、落下する汗・床の濡れ跡・湯気・吐息は **Sweat Effects Module** に含まれます。**Full Pack (Base + Effects)** は両方のModuleを収録した完全構成です。
+
+## 動作環境
+
+- Unity 2022.3
+- VRChat Avatars SDK3
+- Modular Avatar
+- PC版VRChat（Direct3D 11）
+
+HumanoidアバターではManual ModeとAuto Modeを使用できます。Non-Humanoidアバター、またはModular Avatar Bone Proxyを使用せず、Auto Modeに必要なBone情報を取得できない構成ではManual Modeを使用します。
+
+## 最初に読むページ
+
+1. [パッケージの違い](./package-guide.mdx)を確認します。
+2. [Quick Start](./quick-start.mdx)で導入します。
+3. [Tuning Guide](./usage/tuning.mdx)で見た目と負荷を調整します。
+4. 問題がある場合は[トラブルシューティング](./troubleshooting.mdx)を確認します。
+
+:::warning[対応プラットフォーム]
+本製品は **PC版VRChat向け**です。Quest単体版では汗表現を表示しません。
+:::

@@ -1,0 +1,36 @@
+---
+id: update-changelog
+title: 更新・変更履歴
+---
+
+# 更新・変更履歴
+
+## 更新前の安全手順
+
+1. アバターPrefabまたはUnityプロジェクトをバックアップします。
+2. 現在のReal Sweatバージョンを確認します。
+3. BaseとEffectsを使用している場合は同じバージョンへ揃えます。
+4. 新しいUnityPackageをインポートします。
+5. **Setup — Install / Update** を1回実行します。
+6. ConsoleとPlay Modeで顔、Sweat Toggle、Auto Mode、Effectsを確認します。
+
+## v1.0.1 — 2026-07-27
+
+### Fixed
+
+- Write Defaults ON / OFFおよびFace Tracking構成との互換性を改善
+- 顔の表情、Sweat Toggle、Auto Modeを同時に使用した際の競合を修正
+- Setup更新時の互換性と安全性を改善
+
+### Documentation / UI
+
+- Rest Vertex Data Bakerの案内を日本語・英語・韓国語に対応
+- 通常のSetupではユーザーが直接操作する必要のない項目であることを明記
+
+:::note[v1.0.0から更新する場合]
+v1.0.1をインポートした後、Setup — Install / Updateを1回実行してください。Setupが生成したMerge Animator PriorityやAnimator欄は手動で変更しないでください。
+:::
+
+:::info[既存ユーザーへの影響]
+v1.0.0で正常に動作していた一般的なアバターの見た目、操作方法、初期設定は変更していません。
+:::
