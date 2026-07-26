@@ -1,0 +1,71 @@
+---
+id: tools
+title: 補助ツール
+sidebar_label: 補助ツール
+description: RealSweatSystem Clothing Fix と Rest Vertex Data Baker の使用方法。
+---
+
+# 補助ツール
+
+通常の導入はSetupだけで完了します。このページのツールは、特定の衣装や高度な改変で追加作業が必要な場合に使用してください。
+
+## RealSweatSystem Clothing Fix
+
+立体機能（テッセレーション）を使用した時に、水滴が衣装を貫通して見える場合のRender Queue調整ツールです。**Real Sweat SystemのSetup完了後**に使用します。
+
+:::info No Tessの場合
+No Tessだけを使用するアバターでは、通常このツールは必要ありません。
+:::
+
+### 基本手順
+
+1. 対象アバターを選択します。
+2. 調整したい衣装Rendererをドラッグするか、一覧へ追加します。
+3. Queue Previewで変更対象と変更後の値を確認します。
+4. 原則として **Apply with Material Copies (Recommended)** を使用します。
+5. Play Modeとアップロード前のBuildで、表示順と衣装の見た目を確認します。
+
+**Apply with Material Copies (Recommended)** は調整用Material Copyを作成して適用するため、元のMaterial Assetを保護しやすい方法です。
+
+:::warning Direct Mode
+Direct Modeは元のMaterial Assetを直接変更します。同じMaterialを使う他の衣装、Prefab、Sceneにも変更が反映されるため、影響範囲を理解している場合だけ使用してください。
+:::
+
+### 変更対象
+
+- 汗MaterialのQueue以下にある衣装Materialだけが調整対象です。
+- 汗Materialより後に描画されるMaterialは変更されません。
+- Transparent、Cutout、Decal、Outline、複数Layerを使用するMaterialは、Render Queue変更によって表示順や見た目が変わる場合があります。
+
+適用前にQueue Previewを確認し、適用後は透明部分、輪郭、Decal、Layer同士の順序を必ず確認してください。
+
+### 元に戻す
+
+ツールが追跡している変更は **Restore Tracked Clothing Changes** で復元できます。元Materialを直接編集した場合に備え、作業前にPrefabまたはUnityプロジェクトのBackupも作成してください。
+
+## Rest Vertex Data Baker（Advanced）
+
+Rest Vertex Data Bakerは、高度なMesh構成や復旧作業に使用する補助ツールです。Rest Position、Rest Normal、Rest TangentのデータはSetupが自動作成するため、**通常のユーザーが手動で実行する必要はありません。**
+
+### 使用する場面
+
+- Setup後に最終Body Meshを別のMeshへ置き換えた
+- 対応するCustom MaterialへRest Dataを割り当てたい
+- Rest Dataの復旧または診断が必要
+
+### 基本手順
+
+1. 対象Rendererと互換性のあるMaterialを選択します。
+2. **Analyze Mesh** を実行し、対象と警告を確認します。
+3. 問題が無ければ **Bake And Assign** を実行します。
+4. Play ModeとBuildで表示を確認します。
+
+Meshを交換または更新した場合は、交換後の最終Meshに対して再度Bakeしてください。
+
+:::info 変更されないもの
+Bakerは元のFBX、RendererのsharedMesh、UV、BlendShape、他のMaterialを変更しません。
+:::
+
+:::warning
+互換性のないRendererやMaterialを選択したまま実行しないでください。通常のSetupで問題なく動作している場合は、Bakerを追加実行しないでください。
+:::

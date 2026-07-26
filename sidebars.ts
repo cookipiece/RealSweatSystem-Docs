@@ -7,7 +7,7 @@ const sidebars: SidebarsConfig = {
       type: 'category',
       label: 'はじめに',
       collapsed: false,
-      items: ['quick-start', 'package-guide'],
+      items: ['quick-start', 'package-guide', 'tools'],
     },
     {
       type: 'category',

@@ -1,0 +1,51 @@
+---
+id: tools
+title: Auxiliary Tools
+description: When and how to use Clothing Fix and Rest Vertex Data Baker.
+---
+
+# Auxiliary Tools
+
+These tools are intended for specific compatibility or maintenance cases. A normal Real Sweat System installation does not require either tool.
+
+## RealSweatSystem Clothing Fix
+
+Use **RealSweatSystem Clothing Fix** only after Setup when tessellated droplets visibly pass through clothing. No Tess users normally do not need it.
+
+### Recommended flow
+
+1. Finish the main Real Sweat System Setup first.
+2. Select the avatar in Clothing Fix.
+3. Drag or add the affected clothing Renderers.
+4. Review the Render Queue preview before applying changes.
+5. Choose **Apply with Material Copies (Recommended)**.
+6. Check the avatar in Play Mode and in the intended world or lighting setup.
+
+The recommended mode creates material copies for the selected clothing. **Direct mode** edits the original material assets, so the change appears everywhere those materials are used.
+
+Use **Restore Tracked Clothing Changes** to restore changes that Clothing Fix is tracking.
+
+:::warning Render-order side effects
+Only materials whose Render Queue is at or below the Sweat Render Queue are changed. Render ordering for transparent, cutout, decal, outline, or layered materials can affect appearance, so review the preview and test the result before upload.
+:::
+
+## Rest Vertex Data Baker (Advanced)
+
+Setup automatically creates the Rest Position, Rest Normal, and Rest Tangent data required by Real Sweat System. Normal installations do not use **Rest Vertex Data Baker** directly.
+
+Use this advanced tool only when you need to:
+
+- replace the final Body mesh after Setup;
+- prepare compatible custom materials;
+- recover or diagnose missing Rest data.
+
+### Basic flow
+
+1. Select the target Renderer and a compatible material.
+2. Run **Analyze Mesh** and review the result.
+3. Run **Bake And Assign**.
+4. Verify the result before upload.
+
+Bake again whenever the target mesh is replaced or updated.
+
+The baker does not modify the source FBX, the Renderer’s shared mesh, UVs, blend shapes, or unrelated materials.
