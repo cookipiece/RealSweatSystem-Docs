@@ -36,6 +36,11 @@
 .heroDescription {max-width: 670px; margin: 0; color: #40565f; font-size: 1.1rem; line-height: 1.8;}
 .buttons {display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 2rem;}
 .note {margin: 1.1rem 0 0; color: #708087; font-size: 0.9rem;}
+.purchase {display: flex; align-items: center; flex-wrap: wrap; gap: 0.65rem 0.9rem; margin-top: 1.35rem;}
+.purchaseLabel {color: #557079; font-size: 0.78rem; font-weight: 750; letter-spacing: 0.08em; text-transform: uppercase;}
+.purchaseLinks {display: flex; flex-wrap: wrap; gap: 0.55rem;}
+.purchaseLinks a {display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.48rem 0.8rem; border: 1px solid rgba(47,112,124,0.24); border-radius: 999px; background: rgba(255,255,255,0.58); color: #315f69; font-size: 0.84rem; font-weight: 750; text-decoration: none; backdrop-filter: blur(8px); transition: border-color 160ms ease, background-color 160ms ease, transform 160ms ease;}
+.purchaseLinks a:hover {border-color: rgba(48,171,191,0.7); background: rgba(255,255,255,0.86); color: #1f6876; text-decoration: none; transform: translateY(-1px);}
 
 .visual {position: relative; min-height: 410px; isolation: isolate;}
 .orbit {position: absolute; inset: 12% 4% 8% 8%; border: 1px solid rgba(47, 112, 124, 0.23); border-radius: 48% 52% 50% 50%; transform: rotate(-12deg);}
@@ -69,6 +74,7 @@
   .heroInner {width: min(100% - 2rem, 1180px);}
   .heroDescription {font-size: 1rem;}
   .buttons a {width: 100%; text-align: center;}
+  .purchase {align-items: flex-start; flex-direction: column;}
   .visual {min-height: 255px;}
   .dropLarge {width: 155px; left: 24%;}
   .dropSmall {width: 65px;}
@@ -78,4 +84,7 @@
 [data-theme='dark'] .brandLogo {filter: invert(1) brightness(1.15);}
 [data-theme='dark'] .heroDescription {color: #b7c9ce;}
 [data-theme='dark'] .note {color: #8da5ab;}
+[data-theme='dark'] .purchaseLabel {color: #9eb7bd;}
+[data-theme='dark'] .purchaseLinks a {border-color: rgba(129,213,227,0.22); background: rgba(16,32,36,0.56); color: #b8dce3;}
+[data-theme='dark'] .purchaseLinks a:hover {border-color: rgba(129,213,227,0.52); background: rgba(16,32,36,0.82); color: #d9f7fb;}
 [data-theme='dark'] .version {background: rgba(16,32,36,0.72); color: #b8dce3; border-color: rgba(129,213,227,0.18);}
