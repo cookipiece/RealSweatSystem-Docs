@@ -18,14 +18,15 @@ title: 호환성
 
 Quest 단독 실행 환경에서는 지원되지 않으며, 해당 플랫폼에서는 표시되지 않도록 처리됩니다. VRCFury는 필수 의존성이 아닙니다.
 
-## Humanoid와 Non-humanoid
+## Humanoid와 Non-Humanoid
 
-- Humanoid 아바타는 Manual Mode와 Auto Mode를 사용할 수 있습니다.
-- Non-humanoid 아바타이거나 Modular Avatar Bone Proxy를 사용할 수 없는 구성은 Manual Mode만 지원합니다.
+- Humanoid 아바타에서 MA Bone Proxy 기반 Motion Pendulum을 만들 수 있으면 Manual Mode와 Auto Mode를 사용할 수 있습니다.
+- Non-Humanoid 아바타이거나 MA Bone Proxy 기반 Motion Pendulum을 만들 수 없으면 Manual Mode와 **낙하 물방울**, **바닥 물자국**은 사용할 수 있습니다. 이 경우 **자동 모드**, **입김**, **몸 김** 메뉴는 생성되지 않습니다.
+- Motion Pendulum은 만들었지만 필수 Head·Chest Anchor를 찾지 못하면 **자동 모드**는 사용할 수 있으며, **입김**과 **몸 김** 메뉴만 생성되지 않습니다.
 
 ## Body Mesh와 Submesh
 
-현재 설치 한 번당 Body Renderer 한 개를 지원합니다. Body에 재질 슬롯이 여러 개라면 **Sweat Target Element**에서 피부가 있는 정확한 Submesh를 선택해야 합니다.
+현재 설치 한 번당 Body Renderer 한 개를 지원합니다. Body에 재질 슬롯이 여러 개라면 **땀 적용 Element**에서 피부가 있는 정확한 Submesh를 선택해야 합니다.
 
 업로드 과정에서 Body Mesh를 합치거나 교체하는 도구를 사용한다면 다음 조건을 유지해야 합니다.
 
@@ -37,7 +38,7 @@ Unity에서는 정상인데 VRChat에서만 깨지는 경우, 업로드 단계�
 
 ## Tangent
 
-Body Mesh에 Tangent가 없다면 Setup에서 **Safe Copy (Recommended)**를 사용하세요. Tangent 처리 결과가 다른 Mesh 변환 도구에 의해 다시 교체되지 않도록 확인해야 합니다.
+Body Mesh에 Tangent가 없다면 Setup에서 **안전한 사본 생성 (권장)**을 사용하세요. Tangent 처리 결과가 다른 Mesh 변환 도구에 의해 다시 교체되지 않도록 확인해야 합니다.
 
 ## Write Defaults와 Face Tracking
 
@@ -45,7 +46,7 @@ v1.0.1은 Write Defaults ON/OFF 구성과 VRCFT Animator의 호환성을 개선�
 
 - Face Tracking을 사용한다면 v1.0.1 이상을 사용하세요.
 - Setup이 생성한 Merge Animator Priority 또는 Animator 항목을 수동으로 바꾸지 마세요.
-- 업데이트 후 **Setup — Install / Update**를 한 번 실행하세요.
+- 업데이트 후 **Setup — 자동 설치 / 업데이트**를 한 번 실행하세요.
 
 ## Modular Avatar, VRCFury와 최적화 도구
 
@@ -63,10 +64,18 @@ Modular Avatar는 필수입니다. VRCFury, Avatar Optimizer와 기타 비파괴
 
 ## Render Queue와 그림자
 
-땀 재질의 기본 Render Queue는 **2455**입니다. 의상 재질이 2755처럼 다른 Render Queue를 사용해도, Body 쪽 땀 시스템의 동작 여부를 결정하지는 않습니다.
+<strong>렌더 순서 자동 설정 (권장)</strong>이 켜져 있으면 땀 재질의 Render Queue는 정확히 **2455**로 고정됩니다. 땀이 Body 재질보다 나중에 그려지도록 선택한 Body 재질의 Render Queue를 **2454 이하**로 유지하세요.
 
-**바디 그림자 따라가기**가 켜져 있으면 실제 그림자 안의 땀도 함께 어두워집니다.
+Body 재질을 2454 이하로 설정할 수 없다면 <strong>렌더 순서 자동 설정 (권장)</strong>을 끄고, **수동 땀 렌더 큐**를 Body 재질보다 큰 값으로 설정하세요.
+
+:::warning[Render Queue 2500 초과]
+수동 땀 렌더 큐를 2500보다 크게 설정하면 Unity의 Transparent 정렬 범위에 들어갑니다. Body보다 나중에 그리는 순서는 유지되더라도 월드 오브젝트나 다른 투명 재질과의 앞뒤 정렬은 카메라와 월드에 따라 달라질 수 있습니다. 특별한 이유가 없다면 자동값 2455를 사용하세요.
+:::
+
+**바디 Shadow Strength 따라가기**가 켜져 있으면 실제 그림자 안의 땀도 함께 어두워집니다. Body 재질의 `_ShadowStrength`는 Setup 또는 **FX에 적용**을 실행할 때 복사됩니다.
 
 ## Face Renderer
 
 기본 Setup은 Body Renderer를 대상으로 설계되었습니다. Face에 수동으로 추가하는 방식은 고급 사용자용 개조이며, 자동 업데이트와 모든 Face Tracking 조합의 호환성을 보장하지 않습니다.
+
+문의가 많아 비권장·공식 지원 대상 외의 [수동 참고 절차](./tools.mdx#unsupported-face-body)를 보조 도구 페이지 하단에 안내하고 있습니다.

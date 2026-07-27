@@ -8,6 +8,70 @@ description: Diagnose common installation, animation, mesh, effect, and download
 
 Clear the Unity Console, reproduce the issue once, and begin with the **first error**. Later errors are often consequences of the first one.
 
+## Quick symptom index
+
+- [No sweat is visible](#no-sweat-is-visible)
+- [The Sweat menu is missing or incomplete](#the-sweat-menu-is-missing-or-incomplete)
+- [Tuning changes are not applied](#tuning-changes-are-not-applied)
+- [Import or shader compilation takes a long time](#import-or-shader-compilation-takes-a-long-time)
+- [The face breaks in Play Mode or VRChat](#the-face-breaks-in-play-mode-or-vrchat)
+- [Sweat On or Auto Mode does not work](#sweat-on-or-auto-mode-does-not-work)
+- [It works in Unity but breaks only in VRChat](#it-works-in-unity-but-breaks-only-in-vrchat)
+- [Invalid localAABB mentions Exhale](#invalid-localaabb-mentions-exhale)
+- [Uninstall, reinstall, or change modules](#uninstall-reinstall-or-change-modules)
+- [Microsoft Defender warns about or blocks the download](#microsoft-defender-warns-about-or-blocks-the-download)
+
+## No sweat is visible
+
+First determine what was installed:
+
+- **Effects Module only** does not display skin sweat. It displays Falling Drops, Floor Stains, Breath Puffs, and Steam.
+- **Base Module** or **Full Pack** is required for sweat on the Body surface.
+
+For Base or Full Pack:
+
+1. In Play Mode, turn **Sweat On** on.
+2. Turn the default **Auto Mode** off temporarily and set **Sweat %** to 50% or higher.
+3. Confirm that Setup uses the intended **Body Mesh** and skin-side **Sweat Target Element**.
+4. With **Automatic render order (Recommended)** on, confirm that the selected Body material uses Render Queue **2454 or lower** and Sweat uses **2455**.
+5. Exit Play Mode, open **CookiTools > RealSweatSystem Setup／Uninstall**, and run **Setup — Install / Update** again.
+6. If another upload-time tool replaces or combines the Body, continue with [It works in Unity but breaks only in VRChat](#it-works-in-unity-but-breaks-only-in-vrchat).
+
+## The Sweat menu is missing or incomplete
+
+Menu entries depend on the imported modules and Setup options:
+
+- **Remote Low Load** requires Base.
+- **Particles** and its individual Effect controls require Effects.
+- **3D Effect (Photos Only, High Load)** appears only when **Install 3D Feature (Tessellation) (High Load)** was enabled during Setup.
+
+If an expected entry is absent:
+
+1. Exit Play Mode and clear all compile errors.
+2. Confirm that **Modular Avatar** is installed and enabled in the project.
+3. Confirm that the required Base and/or Effects module is imported, with matching versions for Full Pack.
+4. Open **CookiTools > RealSweatSystem Setup／Uninstall** and run **Setup — Install / Update**.
+5. Start a fresh Gesture Manager or Play Mode preview so it rebuilds the current menu state.
+
+## Tuning changes are not applied
+
+Select the generated **RealSweat** object under the avatar root and use its **RealSweatSystem Tuning** component.
+
+- Material quality and supported surface-appearance controls update the Tess and No Tess materials immediately.
+- Automatic response, the custom curve, animated wetness, Falling Drops, fling particles, Breath Puffs, and Steam require **Apply to FX**.
+- **Follow Body Shadow Strength** reads the selected Body material when **Setup — Install / Update** or **Apply to FX** runs; it is not a live runtime link.
+- If the Inspector reports outdated routing, run **Setup — Install / Update** once, then press **Apply to FX** again.
+- An unsupported manual Face material is not tracked by Tuning and does not automatically receive later Body-side material changes.
+
+## Import or shader compilation takes a long time
+
+The first package import can take longer while Unity imports assets, compiles shaders, and updates the Asset Database. This compile time is not the same as the shader's in-game runtime load.
+
+- Wait until Unity's import and shader-compilation indicators finish before opening Setup or entering Play Mode.
+- Do not repeatedly click Setup while Unity is still processing assets.
+- Resolve the **first Console compile error** before judging the import as complete.
+- Later imports can be faster because Unity reuses cached results. Cache behavior differs by PC and project.
+
 ## Updating from v1.0.0
 
 1. Back up the avatar or project.
@@ -47,7 +111,7 @@ For a Body with multiple submeshes, choose the exact **Sweat Target Element** us
 
 ## Missing tangent warning
 
-Choose **Safe Copy (Recommended)**. This is the supported fallback for a source mesh without suitable tangent data.
+Choose **Create Safe Copy (Recommended)**. This is the supported fallback for a source mesh without suitable tangent data.
 
 ## It works in Unity but breaks only in VRChat
 
@@ -74,6 +138,10 @@ The Effects Module does not modify the Body, but it still needs the Body Mesh as
 
 **Sweat → Reduce Load → Particles**
 
+## The first build fails but a second build succeeds
+
+Immediately after import, shader compilation and Asset Database processing may still be in progress. Wait for Unity to finish importing, resolve the **first Console error**, and then build again. A successful second build does not mean that every error from the first build can be ignored.
+
 ## Invalid localAABB mentions Exhale
 
 If the Console repeatedly reports an invalid local AABB and the message points to the breath object:
@@ -88,6 +156,34 @@ A breath-object bounds error and a facial animator conflict can be separate issu
 
 Temporarily unlock the affected material, run Setup, verify it in Play Mode, and then relock it. Do not distribute the generated or source material outside the license terms.
 
+## Uninstall, reinstall, or change modules
+
+Back up the avatar or project first.
+
+### Remove the installed avatar setup
+
+1. Open **CookiTools > RealSweatSystem Setup／Uninstall**.
+2. Select the **Uninstall** tab and assign the avatar.
+3. **Also delete generated assets (bake/material/anim/menu) on Uninstall** is off by default. Leave it off to preserve those generated assets. Enable it only for a full cleanup after confirming that no other Real Sweat installation uses the same generated folder.
+4. Press **Uninstall — Remove** and wait for Unity to finish.
+5. Check that the generated **RealSweat** object is gone, then test the avatar before upload.
+
+When the generated-assets option is off, the Bake, Material, Animation, and Menu assets are preserved. Because the installation uses Modular Avatar, its generated menu, parameters, and FX integration are not included in the next build after the RealSweat object is removed.
+
+### Reinstall or update
+
+1. Import the intended current package or packages.
+2. Keep Base and Effects on the same version when both are installed.
+3. Open the **Install** tab in **CookiTools > RealSweatSystem Setup／Uninstall**.
+4. Confirm **Avatar**, **Body Mesh**, and **Sweat Target Element**.
+5. Run **Setup — Install / Update**, then test Manual Mode, Auto Mode, the face, and installed Effects.
+
+To expand Base or Effects into Full Pack, import the missing same-version module and run Setup again. To return from Full Pack to one module, uninstall the avatar setup first, remove the module package files you no longer want from the Unity project, and then reinstall with the remaining module.
+
+:::warning[Manual additions are not removed]
+Uninstall does not remove materials, Renderer slots, Rest assets, or Animation changes that you created manually outside the supported Setup. This includes the unsupported Face + Body procedure. Restore those changes from your backup or follow its [rollback steps](./tools.mdx#unsupported-face-body).
+:::
+
 ## Microsoft Defender warns about or blocks the download
 
 The Microsoft Defender alert reported on some systems for the v1.0.0 release package was classified by Microsoft as a false positive, and Microsoft issued a detection update.
@@ -97,7 +193,6 @@ Defender security-intelligence and cloud-protection updates can reach individual
 - Update Microsoft Defender security intelligence in Windows Security.
 - Download the current version again from your BOOTH purchase library.
 - If the warning continues, confirm the exact detection name, filename, and Real Sweat System version.
-- Compare the file version with the latest security verification results published on the product page.
 
 ## Information to include in a support report
 

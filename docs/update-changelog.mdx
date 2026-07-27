@@ -8,11 +8,30 @@ title: 更新・変更履歴
 ## 更新前の安全手順
 
 1. アバターPrefabまたはUnityプロジェクトをバックアップします。
-2. 現在のReal Sweatバージョンを確認します。
+2. 現在のReal Sweat Systemバージョンを確認します。
 3. BaseとEffectsを使用している場合は同じバージョンへ揃えます。
-4. 新しいUnityPackageをインポートします。
-5. **Setup — Install / Update** を1回実行します。
-6. ConsoleとPlay Modeで顔、Sweat Toggle、Auto Mode、Effectsを確認します。
+4. 新しいUnityPackageをImportします。
+5. Unity上部メニューの **CookiTools > RealSweatSystem Setup／Uninstall** を開き、**Setup — 自動インストール / 更新** を1回実行します。
+6. ConsoleとPlay Modeで顔、汗オン、汗 %、自動モード、導入したEffectsを確認します。
+
+通常のバージョン更新では、先にUninstallする必要はありません。
+
+## Uninstallと再導入
+
+構成を最初から作り直す場合だけ、次の手順を使用します。
+
+1. Play Modeを終了し、アバターPrefabまたはUnityプロジェクトをバックアップします。
+2. **CookiTools > RealSweatSystem Setup／Uninstall** を開きます。
+3. Uninstall欄で対象アバターを指定します。
+4. 生成済みのBake、Material、Animation、Menuも削除したい場合だけ **Uninstall 時に生成アセット(ベイク/マテリアル/アニメ/メニュー)も削除** をONにします。OFFの場合は再利用できるように生成アセットを保持します。
+5. **Uninstall — 削除** を実行します。
+6. BaseとEffectsを使用する場合は同じ製品バージョンをImportし、通常どおりSetupを実行します。
+
+Uninstallは、Setupが追加したRealSweatオブジェクトと追跡中の汗Material Slotを削除します。Modular AvatarのMenu、Parameters、FXは次のBuildで元へ戻ります。
+
+:::warning[手動改変は自動削除されません]
+Face用に手動追加したMaterial Slot、Face専用Material / Rest Asset、Animation Curveなど、Setupの追跡外で追加したデータはUninstallで自動削除されません。非公式なFace + Body手順を使用した場合は、[補助ツールの手動ロールバック](./tools.mdx#unsupported-face-body)も確認してください。
+:::
 
 ## v1.0.1 — 2026-07-27
 
@@ -28,7 +47,7 @@ title: 更新・変更履歴
 - 通常のSetupではユーザーが直接操作する必要のない項目であることを明記
 
 :::note[v1.0.0から更新する場合]
-v1.0.1をインポートした後、Setup — Install / Updateを1回実行してください。Setupが生成したMerge Animator PriorityやAnimator欄は手動で変更しないでください。
+v1.0.1をImportした後、**Setup — 自動インストール / 更新** を1回実行してください。Setupが生成したMerge Animator PriorityやAnimator欄は手動で変更しないでください。
 :::
 
 :::info[既存ユーザーへの影響]

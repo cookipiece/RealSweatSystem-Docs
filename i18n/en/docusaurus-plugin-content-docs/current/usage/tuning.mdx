@@ -8,6 +8,24 @@ description: Adjust sweat appearance, automatic response, and performance.
 
 Start with the presets, test in the intended scene, and adjust only the settings that need a different result.
 
+## Open the Tuning component
+
+After Setup, expand the avatar in the Hierarchy and select the generated **RealSweat** object directly under the avatar root. Its Inspector contains the **RealSweatSystem Tuning** component.
+
+If the object is missing, open **CookiTools > RealSweatSystem Setup／Uninstall** and run **Setup — Install / Update** before tuning.
+
+[![RealSweatSystem Tuning Inspector in English](/img/guide/tuning-english.png)](/img/guide/tuning-english.png)
+
+*<small>English Tuning Inspector example. The values shown come from a test scene and may differ from the installation defaults.</small>*
+
+## Applying changes
+
+- Material quality and surface appearance changes are applied immediately to the Tess and No Tess materials.
+- Press **Apply to FX** after changing the automatic-response curve or other FX values.
+- Press **Apply to FX** to retune generated animated wetness, falling drops, fling-particle scale, Breath Puffs, and Steam.
+
+If Setup reports that the installed routing is outdated, run **Setup — Install / Update** once, then press **Apply to FX** again.
+
 ## Main controls
 
 | Control | What it changes | Performance impact | Starting point |
@@ -35,11 +53,27 @@ The sensitivity preset determines how strongly motion feeds Auto Mode. The accum
 
 The curve editor can be collapsed when you do not need it. Its graph reflects the current sensitivity so that the displayed tendency matches the active setup more closely.
 
+## Body Normal Map and Flow Guide Map
+
+These two textures do different jobs:
+
+| Texture | Purpose | Does it steer droplets? |
+|---|---|---|
+| **Body Normal Map** | Changes wet highlights and how moisture settles around body folds | **No** |
+| **Flow Guide Map (Optional)** | Adds an artist-authored UV0 tangent direction to flowing droplets and trails | **Yes** |
+
+Do not use the Body Normal Map to fix an unwanted flow direction. For custom flow, expand **Flow & Trails > Flow Guide Map (Optional)** in the sweat material.
+
+The Flow Guide stores direction in the RG channels. Neutral direction is `(0.5, 0.5)` gray. Import it with **sRGB (Color Texture) Off** and **Generate Mip Maps On**; padding UV-island borders with neutral gray helps prevent seams. A strength around `0.35–0.65` is a reasonable starting range. At strength `0`, the map is not sampled.
+
 ## Render order and shadows
 
 - **Automatic Render Order** is on by default.
-- The default **Sweat Render Queue** is **2455**.
-- **Follow Body Shadow Strength** is on by default, so sweat still responds to actual shadowing.
+- Automatic Render Order fixes the **Sweat Render Queue** at **2455** and requires the selected Body material to use **2454 or lower**.
+- If that Body queue is not possible, disable Automatic Render Order and set the Sweat Render Queue above the Body material.
+- **Follow Body Shadow Strength** is on by default. It copies `_ShadowStrength` from the material in the selected **Sweat Target Element** into RealSweatSystem's **Cast Shadow Strength**.
+- The shadow value is refreshed when **Setup — Install / Update** or **Apply to FX** runs. It is not a live runtime link, so press **Apply to FX** after changing the Body material's shadow strength.
+- If the source shader does not expose `_ShadowStrength`, the current RealSweatSystem value is kept.
 
 Change render order only when another material on the avatar requires a deliberate ordering adjustment.
 
@@ -55,3 +89,9 @@ Tessellation support is not installed by default. When you choose to include it:
 :::warning[Combined load]
 High sweat amount, high pattern density, close-up framing, mirrors, and tessellation can compound GPU load. Change one major setting at a time while testing.
 :::
+
+## What to read next
+
+- Compare low-load options in [Performance Guide](../performance.mdx).
+- Check render-order and material requirements in [Compatibility](../compatibility.mdx).
+- If an Inspector value appears to do nothing, see [Troubleshooting](../troubleshooting.mdx#tuning-changes-are-not-applied).

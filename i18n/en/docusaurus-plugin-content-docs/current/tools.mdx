@@ -8,9 +8,13 @@ description: When and how to use Clothing Fix and Rest Vertex Data Baker.
 
 These tools are intended for specific compatibility or maintenance cases. A normal Real Sweat System installation does not require either tool.
 
+Both menu items are available when **Sweat Base Module** is installed.
+
 ## RealSweatSystem Clothing Fix
 
 Use **RealSweatSystem Clothing Fix** only after Setup when tessellated droplets visibly pass through clothing. No Tess users normally do not need it.
+
+Open it from the Unity top menu at **CookiTools > RealSweatSystem Clothing Fix**.
 
 ### Recommended flow
 
@@ -25,7 +29,7 @@ The recommended mode creates material copies for the selected clothing. **Direct
 
 Use **Restore Tracked Clothing Changes** to restore changes that Clothing Fix is tracking.
 
-:::warning Render-order side effects
+:::warning[Render-order side effects]
 Only materials whose Render Queue is at or below the Sweat Render Queue are changed. Render ordering for transparent, cutout, decal, outline, or layered materials can affect appearance, so review the preview and test the result before upload.
 :::
 
@@ -42,10 +46,74 @@ Use this advanced tool only when you need to:
 ### Basic flow
 
 1. Select the target Renderer and a compatible material.
-2. Run **Analyze Mesh** and review the result.
-3. Run **Bake And Assign**.
-4. Verify the result before upload.
+2. Run **1. Analyze Mesh** and review the result.
+3. Run **2. Bake And Assign**.
+4. Run **3. Validate Assigned Data** and confirm that the assigned data matches the target.
+5. Verify the result before upload.
 
 Bake again whenever the target mesh is replaced or updated.
 
+The target must be a SkinnedMeshRenderer with a valid shared mesh. If Unity cannot read the mesh, temporarily enable **Read/Write Enabled** in the FBX Import Settings; it can be disabled again after baking.
+
+**Overwrite previous bake** replaces generated Rest assets with the same names. Back up the previous data first if you need to keep it.
+
 The baker does not modify the source FBX, the Renderer’s shared mesh, UVs, blend shapes, or unrelated materials.
+
+:::warning
+Do not force the baker to run with an incompatible Renderer or material. If the normal Setup works correctly, do not run an additional manual bake.
+:::
+
+<details id={'unsupported-face-body'}>
+<summary><strong>Not recommended / unsupported: manual Face + Body setup</strong></summary>
+
+:::danger[Reference only — not officially supported]
+This procedure is documented because it is frequently requested, but it is not an official feature and is not recommended. Environment-specific installation help, troubleshooting, maintenance after updates, and operation guarantees are outside official support. Back up the avatar or Unity project before making any changes.
+:::
+
+The current official implementation tracks one Body-side SkinnedMeshRenderer as the sweat display target. When Face and Body use separate Renderers, the normal Setup cannot install sweat on both at once.
+
+Adding only a sweat material to the Face can leave it permanently wet because the generated animations target only the Body path. Face and Body also require different Rest Vertex Data for their respective meshes, so they must not share one sweat material.
+
+**Required experience before continuing**
+
+This procedure assumes that you can safely edit a Renderer **Materials** array, inspect Unity Animation Clips in the Animation window, add material curves, and identify a Transform path relative to the avatar root. If those operations are unfamiliar, stop here and use the supported Body-only installation. Complete all normal Setup and Tuning work first, and keep a restorable avatar or project backup.
+
+**Manual procedure**
+
+1. Install Real Sweat System on the Body normally.
+2. Duplicate the generated No Tessellation sweat material and save the Face-only copy outside the Real Sweat System generated folder. Do not share the same sweat material between Body and Face.
+3. Select the Face Renderer. In its **Materials** array, increase **Size** by `1`, then assign the Face-only material to the newly created **last Element**. Do not replace any existing Face material.
+4. Open **CookiTools > Rest Vertex Data Baker**. Set Target Renderer to the Face and Target Material to the Face-only material, then run **1. Analyze Mesh**, **2. Bake And Assign**, and **3. Validate Assigned Data** in order.
+5. Open these Animation Clips in the Real Sweat System generated folder:
+
+   - `RealSweat_Off.anim`
+   - `RealSweat_LocalOnlyHidden.anim`
+   - `RealSweat_Mid.anim`
+   - `RealSweat_On.anim`
+
+6. In every Clip, copy the following Body Renderer material curves to the Face Renderer without changing their values. Keep the Binding Type as `SkinnedMeshRenderer`. The binding path must be relative to the avatar root: for example, if the avatar root contains `Body/Face`, use `Body/Face`, not the Scene path or the avatar root name.
+
+   - `material._DropletAmount`
+   - `material._SweatBuildUp`
+   - `material._RuntimeWarmup`
+
+7. Test Off, 0%, 50%, and 100% in both Manual Mode and Auto Mode.
+
+**Rollback**
+
+1. Exit Play Mode and restore the backup if any step is uncertain.
+2. Run **Setup — Install / Update** to regenerate the standard Clips without the manual Face curves.
+3. Reduce the Face Renderer **Materials > Size** by `1` to remove only the extra last Element. Do not remove an original Face material.
+4. Delete the Face-only material and its manually baked Rest assets only after confirming that no Renderer or material still references them.
+5. Test the supported Body-only installation again before upload.
+
+**Known limitations**
+
+- The Face remains No Tessellation. **3D Effect (Photos Only, High Load)** and **Remote Low Load** do not apply to the Face. However, if Face curves were also added to `RealSweat_LocalOnlyHidden`, **Only Visible to Me** reduces the Face sweat amount to zero for remote viewers.
+- With multiple Face submeshes, an added material may not render on the intended skin submesh.
+- Running Setup or Apply to FX rebuilds the generated Clips and removes the manually added Face curves. Add the Face curves only after all normal settings are complete, and repeat the curve work after either command is run again.
+- Tuning tracks only the Body-side materials. Later changes to material-driven settings such as overall sweat amount, quality, or droplet size may not synchronize to the Face-only material.
+- Changing the Face Renderer hierarchy path, replacing the mesh, running a mesh optimizer, or merging meshes can invalidate the animation bindings or Rest data.
+- Not every combination of face tracking, Animator setup, and avatar modification tools has been tested.
+
+</details>

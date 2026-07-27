@@ -1,29 +1,68 @@
 ---
 id: package-guide
 title: パッケージガイド
-description: Base、Effects、Full Packの違い。
+description: Base Module、Effects Module、Full Packの機能差と導入時に表示される項目。
 ---
 
 # パッケージガイド
 
-| 構成 | 含まれる主な機能 | 向いているユーザー |
-|---|---|---|
-| **Sweat Base Module** | 肌表面の汗、Rest Vertex Data、Tess / No Tess、Render Order、Remote Low Load | 肌の汗表現だけが必要 |
-| **Sweat Effects Module** | Falling Drops、Floor Stains、Breath Puffs、Steam | 周辺エフェクトだけが必要 |
-| **Full Pack (Base + Effects)** | Sweat Base + Sweat Effects | 全ての表現を連動させたい |
+購入した構成によって、Setupとアバターメニューに表示される機能が変わります。導入していないModuleの項目は表示されません。
 
-各Moduleには動作に必要な共通Coreが含まれます。Coreは単独で操作する製品ではありません。インストールされていないModuleの項目は、Setupおよびアバターメニューに表示されません。
+## 機能チェック表
+
+| 機能・動作 | Base Module | Effects Module | Full Pack |
+|---|:---:|:---:|:---:|
+| 共通CoreとSetup | ✓ | ✓ | ✓ |
+| 汗オン・汗 %（Manual） | ✓ | ✓ | ✓ |
+| 自動モード（対応リグ） | ✓ | ✓ | ✓ |
+| 肌表面の汗と流れる水滴 | ✓ | — | ✓ |
+| Rest Vertex Data | ✓ | — | ✓ |
+| Tess / No Tessと立体機能 | ✓ | — | ✓ |
+| 相手側を低負荷 | ✓ | — | ✓ |
+| 自分にだけ表示 | ✓ | ✓ | ✓ |
+| 落下する滴 | — | ✓ | ✓ |
+| 床の濡れ跡 | — | ✓ | ✓ |
+| 息 | — | ✓ | ✓ |
+| 湯気 | — | ✓ | ✓ |
+| Body Meshの指定 | 必要 | 放出元として必要 | 必要 |
+| Body Material / Mesh / Rest Dataの変更 | あり | なし | あり |
+
+各Moduleには動作に必要な共通 **Core** が含まれます。Coreは別に購入または操作する製品ではありません。
+
+## Sweat Base Module
+
+選択した1つのBody Rendererへ肌表面の汗を追加します。Manual ModeとAuto Modeは同じSweat %を共有します。
+
+立体機能を搭載しない場合はNo Tess Materialを1つだけ導入します。搭載するとTessとNo Tessを同梱し、インゲームの **立体効果（撮影用・高負荷）** で同じBody Slotを切り替えます。
+
+Baseを導入すると **相手側を低負荷** が表示されます。
+
+## Sweat Effects Module
+
+選択したBody Meshを、落下する滴と湯気などの放出元として使用します。そのためEffectsだけを導入する場合もBody Meshの指定が必要です。
+
+Effects-only SetupはBody Material、Body Mesh、Rest Vertex Data、テッセレーション構成を変更しません。肌表面の汗も追加しません。
+
+Effectsを導入すると **負荷を軽減 > パーティクル** と、選択した個別Effectが表示されます。
 
 ## Full Pack (Base + Effects)
 
-Full PackはBaseとEffectsを収録した完全構成です。同じSweat %を基準に表面の汗とEffectsが自然に連動します。BaseとEffectsは必ず同じ製品バージョンを使用してください。
+Full PackはBaseとEffectsを組み合わせた完全構成です。肌表面の汗、落下する滴、床の濡れ跡、息、湯気が同じSweat %へ連動します。
 
-## Effects Moduleのみを使用する場合
+Full PackではBase PackageとEffects Packageの両方をImportし、必ず同じ製品バージョンを使用してください。
 
-Effects Moduleも、パーティクルの放出元としてBody Meshの指定が必要です。ただし、Effects Moduleだけを導入した場合は、BodyのMaterial、Mesh、Rest Vertex Data、テッセレーションを変更しません。
+## Setup構成によるメニュー差
+
+- 全構成: **自分にだけ表示**
+- Base導入時: **相手側を低負荷**
+- Effects導入時: **パーティクル** と選択したEffects
+- 立体機能を搭載した場合のみ: **立体効果（撮影用・高負荷）**
+- 立体機能を搭載しない場合: No Tess Materialのみ。立体効果Menuは表示されません。
+
+実際のメニュー構造は[手動モードと自動モード](./usage/modes.mdx)で確認できます。
 
 ## Game & App License
 
-購入者本人が使用するVRChatアバター、収益化された動画・配信・画像制作は通常ライセンスの範囲です。完成したゲーム・アプリへ組み込み、第三者へ配布する場合は別途 **Game & App Integration & Distribution License** が必要です。
+購入者本人が使用するVRChatアバター、収益化された動画・配信・画像制作は通常Licenseの範囲です。完成したゲーム・アプリへ組み込み、第三者へ配布する場合は別途 **Game & App Integration & Distribution License** が必要です。
 
 詳細は[Terms & License](./license.mdx)を確認してください。

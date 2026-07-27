@@ -20,8 +20,9 @@ VRCFury is not required for Real Sweat System.
 
 ## Avatar type
 
-- **Humanoid:** Manual Mode and Auto Mode are available.
-- **Non-humanoid or missing the required Modular Avatar bone reference:** Manual Mode is available; Auto Mode is not.
+- **Humanoid with a Modular Avatar motion pendulum:** Manual Mode and Auto Mode are available.
+- **Non-humanoid or unable to create the Modular Avatar motion pendulum:** Manual Mode, Falling Drops, and Floor Stains are available. Auto Mode, Breath Puffs, and Steam are not created.
+- **Motion pendulum created, but required Head/Chest anchors unavailable:** Auto Mode remains available. Breath Puffs and Steam are not created.
 
 ## Body Mesh
 
@@ -29,7 +30,7 @@ The selected Body must be a child `SkinnedMeshRenderer` with a valid mesh and su
 
 - The current installer supports **one Body Renderer per installation**.
 - For a mesh with multiple material slots, select the correct **Sweat Target Element**.
-- If the source mesh has no valid tangents, use **Safe Copy (Recommended)**.
+- If the source mesh has no valid tangents, use **Create Safe Copy (Recommended)**.
 - The final build must preserve the target submesh, material relationship, and readable mesh data needed by Real Sweat System.
 
 ## Write Defaults and Face Tracking
@@ -60,8 +61,20 @@ If a manually locked Poiyomi material prevents Setup from reading or preparing t
 
 If tessellated droplets protrude through clothing, use **RealSweatSystem Clothing Fix** for the affected clothing setup. Turning the 3D Effect off also returns the display to No Tess.
 
+## Face Renderer
+
+The standard Setup officially tracks one Body-side SkinnedMeshRenderer. Manually adding sweat to a separate Face Renderer is an advanced modification and is not guaranteed to survive automatic updates or work with every face-tracking setup.
+
+Because this is a frequent question, an [unsupported manual reference procedure](./tools.mdx#unsupported-face-body) is available at the bottom of the Auxiliary Tools page. It is not recommended or officially supported.
+
 ## Render queue and shadows
 
-The default sweat Render Queue is **2455**. This is separate from an outfit material using another queue such as 2755.
+With **Automatic Render Order** enabled, the sweat Render Queue is fixed at **2455** and the selected Body material must use **2454 or lower**. If the Body material cannot use 2454 or lower, disable Automatic Render Order and set the Sweat Render Queue to a value greater than the Body material.
+
+This requirement applies to the selected Body material. It is separate from an outfit material using another queue such as 2755.
+
+:::warning[Queues above 2500]
+A manual Sweat Render Queue above **2500** enters Unity's transparent sorting range. Sweat can still render after the Body, but ordering against transparent world geometry, hair, clothing, decals, and other avatar materials can change with the camera angle. Use a queue above 2500 only when the avatar's material setup requires it, then test from several angles in the intended world.
+:::
 
 **Follow Body Shadow Strength** is on by default, allowing sweat to darken correctly under actual scene shadows.

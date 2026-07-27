@@ -1,14 +1,22 @@
 {
-  "version.label": {
-    "message": "v1.0.1",
-    "description": "The label for version current"
-  },
-  "sidebar.docsSidebar.category.はじめに": {
-    "message": "Start Here",
-    "description": "The label for category 'はじめに' in sidebar 'docsSidebar'"
-  },
-  "sidebar.docsSidebar.category.使い方": {
-    "message": "Usage",
-    "description": "The label for category '使い方' in sidebar 'docsSidebar'"
-  }
+    "version.label":  {
+                          "message":  "v1.0.1",
+                          "description":  "The label for version current"
+                      },
+    "sidebar.docsSidebar.category.はじめに":  {
+                                              "message":  "Start Here",
+                                              "description":  "The label for category \u0027はじめに\u0027 in sidebar \u0027docsSidebar\u0027"
+                                          },
+    "sidebar.docsSidebar.category.使い方":  {
+                                             "message":  "Usage",
+                                             "description":  "The label for category \u0027使い方\u0027 in sidebar \u0027docsSidebar\u0027"
+                                         },
+    "sidebar.docsSidebar.category.問題解決":  {
+                                              "message":  "Troubleshooting",
+                                              "description":  "The label for category \u0027問題解決\u0027 in sidebar \u0027docsSidebar\u0027"
+                                          },
+    "sidebar.docsSidebar.category.上級・参考":  {
+                                               "message":  "Advanced \u0026 Reference",
+                                               "description":  "The label for category \u0027上級・参考\u0027 in sidebar \u0027docsSidebar\u0027"
+                                           }
 }

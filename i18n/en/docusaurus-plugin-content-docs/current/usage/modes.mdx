@@ -37,9 +37,13 @@ Items for modules or options that are not installed are omitted automatically.
 
 Turn **Auto Mode** off and set **Sweat %** directly from 0–100%. Manual Mode is useful for photos, before-and-after comparisons, and scenes that need a fixed sweat level.
 
+Manual and Auto Mode do not keep separate values. Turning Auto Mode off preserves the current **Sweat %** as the manual value. Turning it on again continues from that value instead of resetting the gauge.
+
 ## Auto Mode
 
-Auto Mode detects body movement. More movement builds Sweat % faster, and Sweat % gradually falls after movement stops.
+**Auto Mode is on by default** after installation. It detects physical body movement: more movement builds Sweat % faster, and Sweat % gradually falls after movement stops.
+
+Tracked motion such as dancing, squats, exercise-ball movement, and torso sway can drive the sensor. **WASD locomotion and jumping are intentionally excluded**, including a short settling delay after locomotion, so simply moving through a world does not make the avatar sweat.
 
 - **Auto Mode Sensitivity** controls how strongly movement is interpreted.
 - The **Custom Accumulation Speed Curve** changes the build rate across the Sweat % range.
@@ -59,7 +63,13 @@ Use Sweat On at 0% when you want the avatar to begin dry and get wetter naturall
 ## Quick behavior check
 
 1. Enable **Sweat On**.
-2. Keep Auto Mode off and inspect 0%, 25%, 50%, 75%, and 100%.
+2. Turn the default Auto Mode off temporarily and inspect 0%, 25%, 50%, 75%, and 100%.
 3. Enable Auto Mode and move the avatar.
 4. Stop moving and confirm that the value falls gradually.
 5. Confirm there are no abrupt visual jumps while crossing the range.
+
+## Related guides
+
+- Change movement response in [Tuning Guide](./tuning.mdx).
+- Check Breath Puffs and Steam thresholds in [Effects Guide](./effects.mdx).
+- If the gauge or toggle does not respond, see [Troubleshooting](../troubleshooting.mdx#sweat-on-or-auto-mode-does-not-work).

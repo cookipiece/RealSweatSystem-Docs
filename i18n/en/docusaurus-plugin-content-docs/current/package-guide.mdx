@@ -14,6 +14,25 @@ description: Differences between the Base Module, Effects Module, and Full Pack.
 
 Each module includes the common **Core** files it needs. Core is not a separate user-facing product.
 
+## Feature checklist
+
+| Feature or behavior | Base Module | Effects Module | Full Pack |
+|---|:---:|:---:|:---:|
+| Shared **Sweat On**, **Sweat %**, and **Auto Mode** controls | Yes | Yes | Yes |
+| Skin sweat and gravity-driven surface droplets | Yes | — | Yes |
+| **Overall Sweat Amount** and surface-material tuning | Yes | — | Yes |
+| Optional Tess/No Tess material switching | Yes | — | Yes |
+| **Remote Low Load** | Yes | — | Yes |
+| **Only Visible to Me** | Yes | Yes | Yes |
+| Falling Drops | — | Yes | Yes |
+| Floor Stains | — | Yes | Yes |
+| Breath Puffs | — | Yes | Yes |
+| Steam | — | Yes | Yes |
+| Uses the Body Mesh as an emission/reference surface | Yes | Yes | Yes |
+| Creates or updates Body-side sweat material, display-mesh mapping, and Rest data | Yes | **No** | Yes, through Base |
+
+Auto Mode requires a compatible Humanoid motion setup. Breath Puffs and Steam additionally require the relevant Head/Chest anchors. See [Compatibility](./compatibility.mdx#avatar-type) for the exact fallback behavior.
+
 ## Sweat Base Module
 
 The Base Module adds sweat to one selected Body Renderer. Manual Mode and Auto Mode share the same Sweat % value. If tessellation support is installed, the in-game menu can switch between Tess and No Tess display.
@@ -30,9 +49,18 @@ Full Pack is the complete configuration. Install both modules at the same versio
 
 The avatar menu is built from the installed modules:
 
+- **Only Visible to Me** appears in every package configuration.
 - **Remote Low Load** appears when Base is installed.
 - **Particles** appears when Effects is installed.
 - **3D Effect (Photos Only, High Load)** appears only when tessellation support is installed.
+
+## Installing, updating, or changing packages
+
+- For a new installation, follow [5-Minute Quick Start](./quick-start.mdx).
+- Keep Base and Effects on the same version when both are present.
+- To expand Base or Effects into Full Pack, import the missing module at the same version, then run **Setup — Install / Update** once.
+- To update an installed avatar, import the newer module package or packages and run **Setup — Install / Update** once.
+- To remove the system or change back to a single-module installation, follow [Uninstall, reinstall, or change modules](./troubleshooting.mdx#uninstall-reinstall-or-change-modules).
 
 ## Game and app distribution
 

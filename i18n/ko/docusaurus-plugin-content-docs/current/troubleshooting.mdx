@@ -7,13 +7,76 @@ title: 문제 해결
 
 먼저 Console을 Clear한 뒤 문제를 다시 재현하고, **가장 먼저 발생한 오류**를 확인하세요. 뒤에 연속으로 표시된 오류만으로는 원인을 판단하기 어려울 수 있습니다.
 
+## 증상 빠른 찾기
+
+| 증상 | 바로 확인할 항목 |
+|---|---|
+| 땀이 전혀 보이지 않음 | [표시 상태와 대상 확인](#땀이-전혀-보이지-않음) |
+| 설치 후 메뉴가 없거나 일부만 보임 | [모듈·리그 조건 확인](#설치-후-메뉴가-없거나-일부만-보임) |
+| Tuning 값을 바꿨지만 달라지지 않음 | [즉시 반영과 FX 적용 구분](#tuning-값을-바꿨지만-반영되지-않음) |
+| Shader Compile 또는 Hold on이 오래 표시됨 | [Import·컴파일 대기](#shader-compile-또는-hold-on이-오래-표시됨) |
+| Play Mode에서 얼굴이 깨짐 | [Write Defaults·Face Tracking 확인](#play-mode에서-얼굴-표정이-깨짐) |
+| Unity에서는 정상인데 VRChat에서만 깨짐 | [업로드 단계의 Mesh 교체 확인](#unity에서는-정상인데-vrchat에서만-깨짐) |
+| `Invalid localAABB`가 반복됨 | [`Exhale` 상태와 얼굴 문제 분리](#invalid-localaabb-오류가-exhale을-가리킴) |
+| 완전히 제거한 뒤 다시 설치하고 싶음 | [제거·재설치 절차](#제거재설치) |
+
+<a id="sweat-not-visible" />
+
+## 땀이 전혀 보이지 않음
+
+먼저 Auto Mode의 변화까지 한 번에 확인하지 말고, 수동 상태에서 표시 자체가 정상인지 확인합니다.
+
+1. 아바타 메뉴에서 **땀 켜기**를 ON으로 바꿉니다.
+2. **자동 모드**를 OFF로 바꾸고 <strong>땀 %</strong>를 50% 또는 100%로 올립니다.
+3. Setup의 **바디 메쉬**와 **땀 적용 Element**가 실제 피부 Submesh를 가리키는지 확인합니다.
+4. 렌더 순서 자동 설정을 사용한다면 선택한 Body 재질의 Render Queue가 2454 이하인지 확인합니다.
+5. **Setup — 자동 설치 / 업데이트**를 다시 실행한 뒤 Console의 첫 오류를 확인합니다.
+
+<a id="menu-missing" />
+
+## 설치 후 메뉴가 없거나 일부만 보임
+
+설치한 모듈과 Setup에서 선택한 옵션에 따라 메뉴 항목이 자동으로 달라집니다.
+
+1. Base만 설치했다면 파티클 하위 메뉴가 없는 것이 정상이고, Effects를 설치하지 않았다면 낙하 물방울·바닥 물자국·입김·몸 김이 생성되지 않습니다.
+2. 입체기능을 탑재하지 않았다면 <strong>입체효과 (사진전용, 고부하)</strong> 메뉴가 없는 것이 정상입니다.
+3. Non-Humanoid이거나 Motion Pendulum을 만들 수 없는 구성에서는 자동 모드·입김·몸 김이 생성되지 않을 수 있습니다. 자세한 조건은 [호환성](./compatibility.mdx)을 확인하세요.
+4. 패키지를 새로 가져왔다면 아바타를 선택하고 **Setup — 자동 설치 / 업데이트**를 다시 실행합니다.
+
+<a id="tuning-not-applied" />
+
+## Tuning 값을 바꿨지만 반영되지 않음
+
+Hierarchy의 **아바타 루트 > RealSweat** 오브젝트를 선택하고 **RealSweatSystem Tuning** 컴포넌트를 확인하세요.
+
+- 전체 땀양, 물방울 크기와 패턴 밀도의 표면 외형은 호환 재질에 즉시 반영됩니다.
+- 감도, 누적 곡선, 낙하 물방울·바닥 물자국·입김·몸 김과 성능 제한은 **FX에 적용**을 눌러야 생성된 Animator와 파티클에 반영됩니다.
+- Play Mode에서 바꾼 Inspector 값은 Play Mode를 종료하면 되돌아갑니다. Edit Mode에서 값을 조절한 뒤 **FX에 적용**을 누르세요.
+
+재질의 바디 Shadow Strength를 바꿨다면 **FX에 적용**을 다시 눌러 RealSweat 재질로 복사하세요. 자세한 구분은 [튜닝 가이드](./usage/tuning.mdx#변경-사항이-반영되는-시점)를 확인하세요.
+
+<a id="shader-compile-wait" />
+
+## Shader Compile 또는 Hold on이 오래 표시됨
+
+처음 UnityPackage를 가져오면 Shader Compile과 Asset Database Import가 함께 진행되어 몇 분 이상 걸릴 수 있습니다. 경량화된 런타임 셰이더라도 Editor의 Variant 컴파일 시간과는 별개입니다.
+
+1. Unity 우측 하단의 Import·Compile 진행 표시가 끝날 때까지 기다립니다.
+2. **Hold on** 창이 Unity 코드 실행을 기다리는 동안에는 Setup이나 Material Inspector를 반복해서 누르지 않습니다.
+3. 작업이 끝난 뒤 Console을 Clear하고 Setup을 한 번 실행합니다.
+4. 컴파일 오류가 남는다면 가장 먼저 발생한 오류부터 해결합니다.
+
+같은 화면에서 조작할 때마다 Hold on이 반복된다면 단순한 최초 컴파일이 아닐 수 있습니다. Console의 첫 오류와 어떤 Inspector에서 발생했는지 함께 확인하세요.
+
 ## v1.0.0에서 v1.0.1로 업데이트
 
 1. 아바타 Prefab 또는 Unity Project를 백업합니다.
 2. v1.0.1 UnityPackage를 가져옵니다.
 3. Base와 Effects를 함께 사용한다면 두 패키지의 버전을 맞춥니다.
-4. 아바타를 선택하고 **Setup — Install / Update**를 한 번 실행합니다.
+4. 아바타를 선택하고 **Setup — 자동 설치 / 업데이트**를 한 번 실행합니다.
 5. Play Mode에서 얼굴, 땀 토글과 Auto Mode를 확인합니다.
+
+<a id="face-broken" />
 
 ## Play Mode에서 얼굴 표정이 깨짐
 
@@ -23,8 +86,16 @@ title: 문제 해결
 
 1. v1.0.1 이상으로 업데이트합니다.
 2. Setup이 생성한 Merge Animator Priority와 Animator 항목을 수동 변경하지 않았는지 확인합니다.
-3. **Setup — Install / Update**를 다시 실행합니다.
+3. **Setup — 자동 설치 / 업데이트**를 다시 실행합니다.
 4. 얼굴 표정, 땀 토글, Auto Mode를 함께 확인합니다.
+
+## 땀 켜기 또는 자동 모드가 작동하지 않음
+
+1. 아바타 메뉴에서 **땀 켜기**가 활성화되어 있는지 확인합니다.
+2. 수동으로 확인할 때는 **자동 모드**를 끄고 <strong>땀 %</strong>를 조절합니다.
+3. 자동 모드를 사용하려면 Humanoid 아바타에서 MA Bone Proxy 기반 Motion Pendulum을 만들 수 있어야 합니다. Motion Pendulum은 만들었지만 Head·Chest Anchor를 찾지 못한 경우에는 자동 모드는 유지되고 입김·몸 김 메뉴만 생성되지 않습니다.
+4. Setup이 생성한 Animator, Menu, Parameters 또는 Animator 순서를 수동으로 바꾸지 않았는지 확인합니다.
+5. 새 버전을 가져온 뒤 **Setup — 자동 설치 / 업데이트**를 다시 실행합니다.
 
 ## Body가 자동 감지되지 않음
 
@@ -34,11 +105,13 @@ Setup의 Body Mesh 항목에 땀을 표시할 `SkinnedMeshRenderer`를 직접 �
 
 ## 땀이 다른 재질 슬롯에 표시됨
 
-Body에 Submesh가 여러 개 있을 수 있습니다. **Sweat Target Element**에서 피부 재질이 들어 있는 정확한 슬롯을 선택한 뒤 Setup을 다시 실행하세요.
+Body에 Submesh가 여러 개 있을 수 있습니다. **땀 적용 Element**에서 피부 재질이 들어 있는 정확한 슬롯을 선택한 뒤 Setup을 다시 실행하세요.
 
 ## Tangent가 없다는 안내가 표시됨
 
-**Safe Copy (Recommended)**를 선택하고 설치하세요. 업로드 과정에서 다른 도구가 Body Mesh를 다시 교체하면 결과가 달라질 수 있으므로, VRChat에서도 함께 확인해야 합니다.
+**안전한 사본 생성 (권장)**을 선택하고 설치하세요. 업로드 과정에서 다른 도구가 Body Mesh를 다시 교체하면 결과가 달라질 수 있으므로, VRChat에서도 함께 확인해야 합니다.
+
+<a id="unity-vrchat-only" />
 
 ## Unity에서는 정상인데 VRChat에서만 깨짐
 
@@ -62,11 +135,17 @@ Poiyomi 재질을 임시로 Unlock하고 Setup을 다시 실행한 뒤, 설치�
 
 ## Effects만 설치했는데 Body를 요구함
 
-정상 동작입니다. Effects Module은 낙하 물방울과 스팀의 방출 표면을 찾기 위해 Body Mesh가 필요합니다. Effects-only 구성은 Body 재질, Mesh, Rest 데이터 또는 테셀레이션을 수정하지 않습니다.
+정상 동작입니다. Effects Module은 낙하 물방울과 몸 김의 방출 표면을 찾기 위해 Body Mesh가 필요합니다. Effects-only 구성은 Body 재질, Mesh, Rest 데이터 또는 테셀레이션을 수정하지 않습니다.
 
-## 입김을 끄면 Console 오류만 사라짐
+<a id="invalid-aabb-exhale" />
 
-입김 Object의 Transform 상태와 Face Animator 문제는 서로 다른 원인일 수 있습니다. 입김을 끈 뒤 오류와 얼굴 문제가 각각 어떻게 변하는지 분리해 확인하고, v1.0.1 이상에서 Setup을 다시 실행하세요.
+## `Invalid localAABB` 오류가 `Exhale`을 가리킴
+
+Console에 다음 오류가 반복되고 상세 정보가 `Exhale` 오브젝트를 가리킬 수 있습니다.
+
+`Invalid localAABB. Object transform is corrupt.`
+
+입김을 끄면 이 오류만 사라지지만 얼굴 표정 문제는 남을 수 있습니다. `Exhale` Transform 상태와 Face Animator 문제는 서로 다른 원인일 수 있으므로 각각 분리해 확인하고, v1.0.1 이상에서 **Setup — 자동 설치 / 업데이트**를 다시 실행하세요.
 
 ## 첫 빌드만 실패하고 두 번째 빌드는 성공함
 
@@ -81,7 +160,21 @@ Poiyomi 재질을 임시로 Unlock하고 Setup을 다시 실행한 뒤, 설치�
 - Windows Security에서 Microsoft Defender 보안 인텔리전스를 최신 상태로 갱신합니다.
 - BOOTH 구매 라이브러리에서 현재 버전을 다시 다운로드합니다.
 - 경고가 계속되면 정확한 탐지 이름, 파일 이름과 Real Sweat System 버전을 확인합니다.
-- 상품 페이지에 안내된 최신 보안 확인 결과와 파일 버전을 비교합니다.
+
+<a id="uninstall-reinstall" />
+
+## 제거·재설치
+
+1. 아바타 Prefab 또는 Unity Project를 백업합니다.
+2. Hierarchy에서 아바타 루트를 선택하고 **CookiTools > RealSweatSystem Setup／Uninstall**을 엽니다.
+3. Uninstall 화면에서 생성 에셋까지 지울지 선택합니다. 옵션을 켜지 않으면 생성된 Bake·Material·Animation·Menu 에셋은 보존됩니다.
+4. **Uninstall — 제거**를 눌러 아바타에서 RealSweatSystem을 제거합니다.
+
+깨끗하게 다시 설치하려면 Base와 Effects를 같은 버전으로 가져온 뒤, 아바타를 선택하고 **Setup — 자동 설치 / 업데이트**를 실행하세요.
+
+:::warning[수동 개조는 자동 제거되지 않습니다]
+Face에 직접 추가한 재질, Rest 데이터와 Animation Curve처럼 Setup 밖에서 만든 수동 변경은 Uninstall이 추적하지 않습니다. 별도로 되돌리거나 백업한 아바타로 복원해야 합니다.
+:::
 
 ## 문의 시 함께 알려 줄 정보
 

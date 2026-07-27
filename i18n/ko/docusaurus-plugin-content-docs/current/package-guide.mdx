@@ -8,11 +8,30 @@ description: Base Module, Effects Module, Full Pack의 차이입니다.
 
 | 구성 | 포함되는 주요 기능 | 추천 대상 |
 |---|---|---|
-| **Sweat Base Module** | 피부 표면의 땀, Rest 데이터, Tess / No Tess, 렌더 순서, Remote Low Load | 피부의 땀 표현이 필요한 경우 |
-| **Sweat Effects Module** | 낙하 물방울, 바닥 자국, 입김, 몸의 스팀 | 주변 파티클 효과가 필요한 경우 |
+| **Sweat Base Module** | 피부 표면의 땀, Rest 데이터, Tess / No Tess, 렌더 순서, 상대 저부하 (Remote Low Load) | 피부의 땀 표현이 필요한 경우 |
+| **Sweat Effects Module** | 낙하 물방울, 바닥 물자국, 입김, 몸 김 | 주변 파티클 효과가 필요한 경우 |
 | **Full Pack (Base + Effects)** | Base + Effects | 모든 표현을 Sweat %에 맞춰 함께 사용하려는 경우 |
 
 각 모듈에는 실행에 필요한 공용 **Core**가 포함됩니다. Core는 별도로 구매하거나 직접 설정하는 제품이 아닙니다.
+
+## 기능 체크표
+
+| 기능 | Base | Effects | Full Pack |
+|---|:---:|:---:|:---:|
+| 수동 땀 %와 자동 모드 | ✓ | ✓ | ✓ |
+| 피부 표면에 맺히고 흐르는 땀 | ✓ | — | ✓ |
+| Rest Position / Normal / Tangent 데이터 | ✓ | — | ✓ |
+| Tess / No Tess와 입체기능 | ✓ | — | ✓ |
+| 상대 저부하 | ✓ | — | ✓ |
+| 나에게만 보이기 | ✓ | ✓ | ✓ |
+| 낙하 물방울 | — | ✓ | ✓ |
+| 바닥 물자국 | — | ✓ | ✓ |
+| 입김 | — | ✓ | ✓ |
+| 몸 김 | — | ✓ | ✓ |
+| 설치 시 Body Mesh 지정 | ✓ | ✓ | ✓ |
+| Body 재질·Mesh·Rest 구성 변경 | ✓ | — | ✓ |
+
+`—`는 해당 모듈에 기능이 포함되지 않는다는 뜻입니다. 설치하지 않은 항목은 Tuning과 아바타 메뉴에서도 자동으로 숨겨집니다.
 
 ## Sweat Base Module
 
@@ -24,13 +43,14 @@ Effects만 설치해도 파티클 방출 위치를 계산하기 위해 **Body Me
 
 ## Full Pack (Base + Effects)
 
-Full Pack은 Base와 Effects를 모두 포함한 완전 구성입니다. 두 모듈이 같은 Sweat %를 공유하여 피부의 땀, 낙하 물방울, 바닥 자국, 입김과 스팀이 자연스럽게 연동됩니다. 두 패키지는 같은 버전을 사용하세요.
+Full Pack은 Base와 Effects를 모두 포함한 완전 구성입니다. 두 모듈이 같은 Sweat %를 공유하여 피부의 땀, 낙하 물방울, 바닥 물자국, 입김과 몸 김이 자연스럽게 연동됩니다. 두 패키지는 같은 버전을 사용하세요.
 
 ## 설치 구성에 따른 메뉴
 
-- Base 설치 시 **Remote Low Load**가 표시됩니다.
-- Effects 설치 시 **Particles** 하위 메뉴가 표시됩니다.
-- 입체기능을 탑재한 경우에만 **3D Effect (Photos Only, High Load)**가 표시됩니다.
+- Base 설치 시 **상대 저부하**가 표시됩니다.
+- **나에게만 보이기**는 Base, Effects, Full Pack 모두에서 표시됩니다.
+- Effects 설치 시 **파티클** 하위 메뉴가 표시됩니다.
+- 입체기능을 탑재한 경우에만 <strong>입체효과 (사진전용, 고부하)</strong>가 표시됩니다.
 - 설치하지 않은 모듈의 항목은 Tuning과 아바타 메뉴에 나타나지 않습니다.
 
 ## 게임·앱 라이선스

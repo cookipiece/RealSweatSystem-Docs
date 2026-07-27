@@ -30,6 +30,27 @@ body {letter-spacing: -0.012em;}
 .theme-doc-markdown h2 {margin-top: 2.8rem; padding-top: 0.35rem; border-top: 1px solid var(--ifm-color-emphasis-200); letter-spacing: -0.025em;}
 .theme-doc-markdown p, .theme-doc-markdown li {line-height: 1.82;}
 .theme-doc-markdown table {display: table; width: 100%;}
+.theme-doc-markdown a > img {
+  display: block;
+  max-height: 760px;
+  margin: 1.25rem auto 0.6rem;
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 14px;
+  box-shadow: 0 16px 38px rgba(25, 53, 61, 0.12);
+  cursor: zoom-in;
+}
+html[lang='ko'] .theme-doc-markdown table,
+html[lang='ko'] .theme-doc-markdown th,
+html[lang='ko'] .theme-doc-markdown td {
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+.theme-doc-markdown em > small {
+  display: block;
+  margin-bottom: 1.5rem;
+  color: var(--ifm-color-emphasis-700);
+  text-align: center;
+}
 .alert {border: 0; border-left: 4px solid var(--ifm-alert-border-color); box-shadow: 0 8px 24px rgba(28,56,64,0.05);}
 .table-of-contents__link {font-size: 0.83rem;}
 .pagination-nav__link {border-radius: 14px;}

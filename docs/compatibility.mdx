@@ -16,7 +16,11 @@ title: 対応環境・互換性
 
 ## Avatar Rig
 
-HumanoidアバターではManual ModeとAuto Modeを使用できます。Non-Humanoidアバター、またはModular Avatar Bone Proxyを使用せず、Auto Modeに必要なBone情報を取得できない構成ではManual Modeを使用します。
+HumanoidアバターでModular Avatar Bone ProxyによるMotion Pendulumを作成できる場合は、Manual ModeとAuto Modeを使用できます。
+
+Non-Humanoidアバター、またはModular Avatar Bone ProxyによるMotion Pendulumを作成できない構成ではManual Modeを使用します。この場合もFalling DropsとFloor Stainsは使用できますが、Auto Mode、Breath Puffs、Steamのメニュー項目は生成されません。
+
+Motion Pendulumを作成できても、必須のHead・Chest Anchorを解決できない場合はAuto Modeを使用できますが、Breath PuffsとSteamのメニュー項目は生成されません。
 
 ## Body Renderer
 
@@ -52,10 +56,24 @@ PoiyomiのMaterialを手動でLockしている構成で問題が出る場合は�
 
 標準SetupはBody Rendererを対象に設計されています。Faceへ手動で追加する方法は高度な改変であり、自動更新や全てのFace Tracking構成との互換性は保証されません。
 
+お問い合わせが多いため、非推奨・公式サポート対象外の[手動参考手順](./tools.mdx#unsupported-face-body)を補助ツールページ下部に掲載しています。
+
 ## 衣装との干渉
 
 立体機能の水滴が衣装を貫通して見える場合は **RealSweatSystem Clothing Fix** を使用してください。
 
 ## Render Queueと影
 
-汗MaterialのRender Queue初期値は **2455** です。Automatic Render OrderとFollow Body Shadow Strengthは初期状態でONです。衣装側が2755など別のRender Queueを使用していても、身体側の汗Materialとは個別に扱われます。
+汗MaterialのRender Queue初期値は **2455** です。**描画順を自動設定（推奨）** と **ボディの Shadow Strength に合わせる** は初期状態でONです。衣装側が2755など別のRender Queueを使用していても、身体側の汗Materialとは個別に扱われます。
+
+:::warning[自動描画順の条件]
+**描画順を自動設定（推奨）** をONにすると、汗MaterialのRender QueueはBodyの値に追従するのではなく、常に **2455** に固定されます。汗をBodyより後に描画するため、選択したBody MaterialのRender Queueは **2454以下** にしてください。
+
+Body Materialを2454以下にできない場合は **描画順を自動設定（推奨）** をOFFにし、**汗のレンダーキュー（手動）** をBody Materialより大きい値に設定してください。
+:::
+
+:::warning[Render Queueを2500より大きくする場合]
+Unityでは **2501以上** がTransparent Queueとして扱われ、距離やCamera Angleによる透明Sortの影響を受けます。汗や衣装の前後関係が角度によって変わる、輪郭が急に消える、他のTransparent Materialと順序が競合する場合があります。
+
+Bodyの構成上どうしても手動Queueを2501以上にする場合は、Unity Play Modeだけでなく、VRChatの通常Camera・Mirror・近距離で確認してください。衣装との貫通だけを解決したい場合は、汗Queueを大きく上げる前に[RealSweatSystem Clothing Fix](./tools.mdx#realsweatsystem-clothing-fix)を使用してください。
+:::

@@ -7,33 +7,63 @@ title: 設定・調整ガイド
 
 まずプリセットで全体を決め、必要な項目だけ調整する方法を推奨します。
 
+## Tuningを開く
+
+Setup完了後、Hierarchyで **アバター > RealSweat** オブジェクトを選択します。Inspectorに表示される **RealSweatSystem Tuning** コンポーネントから調整できます。
+
+RealSweatが見つからない場合はSetupが完了していません。[5分クイックスタート](../quick-start.mdx)に戻り、**Setup — 自動インストール / 更新** を実行してください。
+
+[![RealSweatSystem Tuningの日本語Inspector](/img/guide/tuning-japanese.png)](/img/guide/tuning-japanese.png)
+
+*<small>日本語表示のTuning Inspector例。画像内の設定値はテストSceneの例で、初期値と異なる場合があります。</small>*
+
 ## 初期設定
 
 | 項目 | v1.0.1の初期値 |
 |---|---|
-| Auto Mode Sensitivity | Balanced |
-| Overall Sweat Amount | Low amount (Low Load) / 少量（低負荷） |
-| Automatic Render Order | ON |
-| Sweat Render Queue | 2455 |
-| Follow Body Shadow Strength | ON |
-| 3D Feature (Tessellation) | 未搭載 |
-| 3D Detail Precision | Simplified — General Play |
-| Tessellation Default On | OFF |
+| 自動モード感度 | バランス |
+| 全体の汗量 | 少なめ (低負荷) |
+| 描画順を自動設定（推奨） | ON |
+| 汗のレンダーキュー（手動） | 2455 |
+| ボディの Shadow Strength に合わせる | ON |
+| 立体機能（テッセレーション） | 未搭載 |
+| 立体表現の精密度 | 簡素 — 通常プレイ向け |
+| 3D機能(テッセレーション)を初期状態でオン | OFF |
 
 ## 汗量プリセット
 
 選択できる汗量は次の3種類です。
 
-- **Low amount (Lightweight) / 少量（軽量化）**
-- **Low amount (Low Load) / 少量（低負荷）** — 初期値
-- **Standard amount (Medium Load) / 標準（中負荷）**
+- **少なめ (軽量化)**
+- **少なめ (低負荷)** — 初期値
+- **普通 (中負荷)**
 
+高い汗量は水滴密度と見た目を増やしますが、近距離やミラーでのGPU負荷も増えます。
+
+## 変更の反映タイミング
+
+RealSweatSystem Tuningでは、変更内容によって反映のタイミングが異なります。
+
+- **即時に反映:** 全体の汗量を変更すると、汗MaterialのQualityはすぐに切り替わります。Material表面の一部設定もTess / No Tessへ即時反映されます。
+- **FX に適用が必要:** 感度、ユーザー指定累積速度曲線、生成済みのアニメーションWetness、落下する滴、湯気、その他のEffects値は、変更後に **FX に適用** を押すと反映されます。
+
+全体の汗量を変更した場合も、生成済みのWetness、滴、湯気を同じプリセットへ合わせるには **FX に適用** を押してください。
+
+## ボディのShadow Strengthを合わせるタイミング
+
+**ボディの Shadow Strength に合わせる** は、選択した **汗の対象 Element** のMaterialから `_ShadowStrength` を読み取り、Real Sweat SystemのCast Shadow Strengthへコピーします。lilToonとPoiyomiに対応しています。
+
+- コピーは **Setup** または **FX に適用** を押した時に行われます。
+- Body Materialを後から調整しても、リアルタイムでは追従しません。変更後に **FX に適用** を押してください。
+- 対象Shaderに `_ShadowStrength` が無い場合は、Real Sweat System側の現在値を維持します。
+
+この設定は実際のワールドの投影影を無効にする機能ではありません。汗は既存の影の影響を受けます。
 
 ## 主な調整項目
 
 | 項目 | 変化 | 負荷への影響 |
 |---|---|---|
-| 感度プリセット | Auto Modeの反応 | 小 |
+| 自動モード感度 | Auto Modeの反応 | 小 |
 | ユーザー指定累積速度曲線 | 汗量範囲ごとの増加傾向 | 小 |
 | 全体の汗量 | 表示される汗の密度・量 | 中～大 |
 | 水滴サイズ | 1粒の見た目の大きさ | 小～中 |
@@ -42,8 +72,23 @@ title: 設定・調整ガイド
 
 ## 感度と累積速度曲線
 
-感度プリセットは身体運動への反応を決めます。累積速度曲線は、現在のSweat %に応じた増加傾向を決めます。グラフには現在の感度を反映した傾向が表示されます。曲線編集は必要な時だけ展開できます。
+自動モード感度は身体運動への反応を決めます。累積速度曲線は、現在のSweat %に応じた増加傾向を決めます。グラフには現在の感度を反映した傾向が表示されます。曲線編集は必要な時だけ展開できます。
+
+Manual ModeとAuto Modeが同じSweat %を共有する仕組みは[手動モードと自動モード](./modes.mdx)で確認できます。
+
+## Flow Guide MapとBody Normal Mapの違い
+
+この2つは目的が異なります。
+
+| Map | 変更するもの | 変更しないもの |
+|---|---|---|
+| **Flow Guide Map (UV0 RG)** | 重力に沿う水滴とTrailの流れ方向をUV0上で誘導 | 重力が無効な面に新しい流れを作ることはない |
+| **Body Normal Map** | 濡れたHighlight、Sheen、衣服や皮膚の凹凸に沿う溜まり方 | 水滴やTrailの流れる方向 |
+
+流れ方向を変更したい場合はFlow Guide Mapを使用してください。RGがTangent Spaceの方向、`(0.5, 0.5)` の灰色が影響なしの中立値です。データTextureとして **sRGB (Color Texture)をOFF**、**Generate Mip MapsをON** にし、強度は0.35～0.65から試す方法を推奨します。強度0ではTextureをSampleしません。
+
+Body Normal Mapは、既存BodyのNormalを利用して濡れたHighlightとFold Poolingを細かくするための項目です。流れを変えたい目的では使用しないでください。
 
 :::warning
-汗量とパターン密度を同時に上げると、特に近距離・ミラー・テッセレーションONでGPU負荷が増えます。
+汗量とパターン密度を同時に上げると、特に近距離・ミラー・テッセレーションONでGPU負荷が増えます。調整後は[パフォーマンス](../performance.mdx)の順序で確認してください。
 :::
