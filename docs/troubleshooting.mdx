@@ -18,6 +18,7 @@ description: 表示、メニュー、Tuning、Animator、Mesh、Effect、Downloa
 - [Unityでは正常、VRChat内だけ壊れる](#unityでは正常vrchat内だけ壊れる)
 - [`Invalid localAABB. Object transform is corrupt.` がExhaleを示す](#invalid-localaabb-object-transform-is-corrupt-がexhaleを示す)
 - [Microsoft Defenderが警告する](#microsoft-defenderがダウンロードを警告遮断する)
+- [よくある使い方のヒント](#よくある使い方のヒント)
 
 ## 汗がまったく見えない
 
@@ -191,6 +192,47 @@ v1.0.0の配布ファイルについて一部の環境で報告されたMicrosof
 - Windows SecurityでSecurity Intelligenceを最新の状態へ更新します。
 - BOOTHの購入ライブラリから最新版を再ダウンロードします。
 - 警告が続く場合は、Windows Securityの検出名、正確なファイル名、Real Sweat Systemのバージョンを確認します。
+
+## よくある使い方のヒント
+
+### Unityの編集画面だけで肌の汗を一時的に隠す
+
+Scene Viewで汗を一時的に隠したい場合は、システムをUninstallせずに生成済みMaterialの値だけを変更できます。
+
+1. Play Modeを終了します。
+2. Body RendererのMaterialsから、Bodyに使用されている生成済みRealSweat Materialを開きます。元の肌Materialは編集しないでください。
+3. Material Inspectorの **Basic > 汗の量**（`Sweat Amount` / `_DropletAmount`）で現在値を記録し、`0` にします。
+4. 通常のテストまたはアップロード前に、記録した値へ戻します。新規Setup直後の値は通常 `1` ですが、調整済みMaterialでは異なる場合があるため、`1` に決め打ちせず記録した値を優先してください。
+
+これは**Edit Modeの一時的なPreview調整**です。Tuningの **全体の汗量** プリセットや、アバターメニューの **汗オン + 汗 % = 0%** とは別の設定です。Play ModeとVRChatでは生成済みAnimationがランタイム値を制御します。
+
+:::warning[汗Materialのスロットは削除しないでください]
+Bodyの生成済みRealSweat Material Slotを削除または別Materialへ置換すると、Setupの追跡とBuild検証が崩れる場合があります。立体機能を搭載した構成ではTess / No Tessの2つの生成Materialを確認し、どちらへ切り替えても隠したい場合は両方へ同じ一時値を設定してください。復元時も両方を記録した元の値へ戻します。
+:::
+
+### 自分の一人称視点にも吐息を表示する（任意・上級）
+
+吐息は頭側のEffectであるため、装着者自身の一人称Cameraから標準状態で見えないのは正常です。他のユーザーからは通常どおり表示されます。
+
+1. Setup後、Hierarchyで **アバター > RealSweat > RealSweatFxHead > Breath > Exhale** を選択します。
+2. `Exhale`へ **Add Component > Modular Avatar > MA Visible Head Accessory** を追加します。値の設定は必要ありません。
+3. Gesture Managerだけでなく、Build後のVRChatとVR一人称視点で確認します。
+
+Build前にModular Avatarから「`Exhale`がHeadの下にない」という警告が表示される場合があります。`RealSweatFxHead`はBuild時にHeadへ移動するBone Proxyなので、上記の正しいHierarchyにある場合に限り、この警告は無視できます。
+
+Avatar Scaleによっては吐息Particleが顔やCameraへ重なり、視界を遮る場合があります。見づらい場合は `Exhale` の位置を大きく動かさず、追加した **MA Visible Head Accessory** を削除して標準状態へ戻してください。Uninstall後にRealSweat Objectを再作成するとこの手動Componentも無くなるため、必要ならSetup完了後に再度追加します。
+
+### 選択したBody部位のプロシージャル水滴を制限する
+
+生成済みTess / No Tess Materialの **Basic > スポーンマスク** で、Shader内のプロシージャル水滴を生成する範囲をBodyのUV0上で制限できます。
+
+1. BodyのUV0レイアウトに合うグレースケールTextureを作成します。Shaderが読み取るのは **R（赤）Channel** だけなので、Alpha Channelだけに描いたMaskは使用できません。
+2. プロシージャル水滴を生成する部位を **白**、除外する部位を **黒** にします。
+3. Textureを **スポーンマスク（白＝スポーン）** へ割り当てます。
+4. **マスク強度** を初期値 `0` より大きくします。`0` は無効、`1` はMaskを完全に適用します。
+5. 境界を調整する場合は **マスクしきい値** と **マスク境界のソフトさ** を変更します。**マスク反転** は白と黒の結果を反転します。
+
+立体機能を搭載した構成では、生成済みTess / No Tessの両方へ同じTextureとMask設定を適用してください。このMaskが制限するのは、Shader内のプロシージャル水滴の生成（Spawn）と、Tess版における水滴の変位です。広範囲の濡れ肌表現（Wet Skin / Sheen）全体を完全に切り抜くHard Maskではありません。また、別のParticle Emitterとして動作する **落下する滴・床の濡れ跡・息・湯気** の生成や表示も停止しません。
 
 ## 問い合わせ前に用意する情報
 

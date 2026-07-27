@@ -20,6 +20,7 @@ Clear the Unity Console, reproduce the issue once, and begin with the **first er
 - [Invalid localAABB mentions Exhale](#invalid-localaabb-mentions-exhale)
 - [Uninstall, reinstall, or change modules](#uninstall-reinstall-or-change-modules)
 - [Microsoft Defender warns about or blocks the download](#microsoft-defender-warns-about-or-blocks-the-download)
+- [Common usage tips](#common-usage-tips)
 
 ## No sweat is visible
 
@@ -193,6 +194,41 @@ Defender security-intelligence and cloud-protection updates can reach individual
 - Update Microsoft Defender security intelligence in Windows Security.
 - Download the current version again from your BOOTH purchase library.
 - If the warning continues, confirm the exact detection name, filename, and Real Sweat System version.
+
+## Common usage tips
+
+### Temporarily hide skin sweat in the Unity editor
+
+To clear the sweat preview in the Scene view without uninstalling the system:
+
+1. Exit Play Mode.
+2. Open the generated Real Sweat material used by the Body. Do not edit the original skin material.
+3. In the material Inspector, open **Basic** and set **Sweat Amount** to `0`.
+4. Record the previous value and restore it before normal testing or upload. A new installation normally starts at `1`, but a customized material may use another value.
+
+Use this only as an editor-preview adjustment. It is different from using **Sweat On + Sweat 0%** in the VRChat menu, and Play Mode animations control the runtime value. Do not remove the generated material slot. If Tessellation support is installed, apply the same temporary value to both generated Tess and No Tess materials so either 3D Effect state remains hidden.
+
+### Show Breath Puffs in your own first-person view
+
+Breath Puffs being hidden from the wearer's first-person camera is the normal default. If you intentionally want to see them yourself:
+
+1. After Setup, select **Avatar > RealSweat > RealSweatFxHead > Breath > Exhale**.
+2. Add **Modular Avatar > MA Visible Head Accessory** to `Exhale`.
+3. Build and verify the result in VR, not only in Gesture Manager.
+
+This is an optional advanced customization. Before build, Modular Avatar may warn that `Exhale` is not under the Head; RealSweatFxHead is a Bone Proxy that moves there during build, so this warning can be ignored for this hierarchy. The particles can overlap the face or camera at some avatar scales. Remove the component if the first-person result is distracting. Add it again if you uninstall and recreate the RealSweat object.
+
+### Restrict procedural droplets on selected body areas
+
+The generated Tess and No Tess materials include **Basic > Spawn Mask**:
+
+1. Create a grayscale texture that matches the Body UV0 layout. The shader reads its red channel, so do not use an alpha-only mask.
+2. Paint areas where procedural droplets may appear **white** and areas to exclude **black**.
+3. Assign it to **Spawn Mask (White = Spawn)**.
+4. Raise **Mask Strength** above `0`; use `1` for the full mask effect.
+5. Adjust **Mask Threshold** and **Mask Edge Softness** if the border needs refinement. **Invert Mask** reverses the result.
+
+Apply the same texture and mask settings to both generated Tess and No Tess materials when Tessellation support is installed. The mask restricts procedural droplet spawning and tessellated droplet displacement. It is not a hard mask for every broad wet-skin sheen, and it does not remap the separate Falling Drops, Floor Stains, Breath Puffs, or Steam particle emitters.
 
 ## Information to include in a support report
 
