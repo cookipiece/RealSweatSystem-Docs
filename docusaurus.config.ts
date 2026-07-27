@@ -78,6 +78,7 @@ const config: Config = {
         {to: '/docs/troubleshooting', label: 'Troubleshooting', position: 'left'},
         {type: 'localeDropdown', position: 'right'},
         {href: 'https://booth.pm/ja/items/8645678', label: 'BOOTH', position: 'right'},
+        {href: 'https://cookipiece.gumroad.com/l/real-sweat-system-vrchat', label: 'Gumroad', position: 'right'},
         {href: 'https://github.com/cookipiece/RealSweatSystem-Docs', label: 'GitHub', position: 'right'},
       ],
     },
