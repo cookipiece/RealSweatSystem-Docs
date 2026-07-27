@@ -1,0 +1,22 @@
+{
+  "version.label": {
+    "message": "v1.0.2",
+    "description": "The label for version current"
+  },
+  "sidebar.docsSidebar.category.Start Here": {
+    "message": "はじめに",
+    "description": "The label for category 'Start Here' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.Usage": {
+    "message": "使い方",
+    "description": "The label for category 'Usage' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.Troubleshooting": {
+    "message": "問題解決",
+    "description": "The label for category 'Troubleshooting' in sidebar 'docsSidebar'"
+  },
+  "sidebar.docsSidebar.category.Advanced & Reference": {
+    "message": "上級・参考",
+    "description": "The label for category 'Advanced & Reference' in sidebar 'docsSidebar'"
+  }
+}

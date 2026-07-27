@@ -1,26 +1,26 @@
 {
   "link.title.Documentation": {
-    "message": "문서",
+    "message": "ドキュメント",
     "description": "The title of the footer links column with title=Documentation in the footer"
   },
   "link.title.Product": {
-    "message": "제품",
+    "message": "製品",
     "description": "The title of the footer links column with title=Product in the footer"
   },
   "link.title.Project": {
-    "message": "프로젝트",
+    "message": "プロジェクト",
     "description": "The title of the footer links column with title=Project in the footer"
   },
   "link.item.label.Quick Start": {
-    "message": "빠른 시작",
+    "message": "クイックスタート",
     "description": "The label of footer link with label=Quick Start linking to /docs/quick-start"
   },
   "link.item.label.Compatibility": {
-    "message": "호환성",
+    "message": "対応環境",
     "description": "The label of footer link with label=Compatibility linking to /docs/compatibility"
   },
   "link.item.label.Troubleshooting": {
-    "message": "문제 해결",
+    "message": "トラブル解決",
     "description": "The label of footer link with label=Troubleshooting linking to /docs/troubleshooting"
   },
   "link.item.label.BOOTH": {
@@ -28,11 +28,11 @@
     "description": "The label of footer link with label=BOOTH linking to https://booth.pm/ja/items/8645678"
   },
   "link.item.label.Changelog": {
-    "message": "변경 내역",
+    "message": "更新履歴",
     "description": "The label of footer link with label=Changelog linking to /docs/update-changelog"
   },
   "link.item.label.Terms & License": {
-    "message": "이용 조건 및 라이선스",
+    "message": "利用規約・ライセンス",
     "description": "The label of footer link with label=Terms & License linking to /docs/license"
   },
   "link.item.label.GitHub": {

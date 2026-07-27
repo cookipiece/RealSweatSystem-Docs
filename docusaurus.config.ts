@@ -17,11 +17,11 @@ const config: Config = {
     hooks: {onBrokenMarkdownLinks: 'warn'},
   },
   i18n: {
-    defaultLocale: 'ja',
-    locales: ['ja', 'en', 'ko'],
+    defaultLocale: 'en',
+    locales: ['en', 'ja', 'ko'],
     localeConfigs: {
-      ja: {label: '日本語', htmlLang: 'ja-JP'},
       en: {label: 'English', htmlLang: 'en-US'},
+      ja: {label: '日本語', htmlLang: 'ja-JP'},
       ko: {label: '한국어', htmlLang: 'ko-KR'},
     },
   },
@@ -73,9 +73,9 @@ const config: Config = {
         srcDark: 'img/realsweat-logo-white.png',
       },
       items: [
-        {type: 'docSidebar', sidebarId: 'docsSidebar', position: 'left', label: 'ドキュメント'},
-        {to: '/docs/quick-start', label: 'クイックスタート', position: 'left'},
-        {to: '/docs/troubleshooting', label: 'トラブル解決', position: 'left'},
+        {type: 'docSidebar', sidebarId: 'docsSidebar', position: 'left', label: 'Docs'},
+        {to: '/docs/quick-start', label: 'Quick Start', position: 'left'},
+        {to: '/docs/troubleshooting', label: 'Troubleshooting', position: 'left'},
         {type: 'localeDropdown', position: 'right'},
         {href: 'https://booth.pm/ja/items/8645678', label: 'BOOTH', position: 'right'},
         {href: 'https://github.com/cookipiece/RealSweatSystem-Docs', label: 'GitHub', position: 'right'},
@@ -85,23 +85,23 @@ const config: Config = {
       style: 'dark',
       links: [
         {
-          title: 'ドキュメント',
+          title: 'Documentation',
           items: [
-            {label: 'クイックスタート', to: '/docs/quick-start'},
-            {label: '対応環境', to: '/docs/compatibility'},
-            {label: 'トラブル解決', to: '/docs/troubleshooting'},
+            {label: 'Quick Start', to: '/docs/quick-start'},
+            {label: 'Compatibility', to: '/docs/compatibility'},
+            {label: 'Troubleshooting', to: '/docs/troubleshooting'},
           ],
         },
         {
-          title: '製品',
+          title: 'Product',
           items: [
             {label: 'BOOTH', href: 'https://booth.pm/ja/items/8645678'},
-            {label: '更新履歴', to: '/docs/update-changelog'},
-            {label: '利用規約・ライセンス', to: '/docs/license'},
+            {label: 'Changelog', to: '/docs/update-changelog'},
+            {label: 'Terms & License', to: '/docs/license'},
           ],
         },
         {
-          title: 'プロジェクト',
+          title: 'Project',
           items: [
             {label: 'GitHub', href: 'https://github.com/cookipiece/RealSweatSystem-Docs'},
           ],

@@ -1,38 +1,55 @@
 ---
 id: performance
-title: パフォーマンスガイド
+title: Performance Guide
+description: Reduce Real Sweat System load while keeping the intended look.
 ---
 
-# パフォーマンスガイド
+# Performance Guide
 
-負荷は主に、画面に映る汗の面積、水滴密度、立体機能、ミラーによる再描画、Effectsの表示量で変化します。
+Real Sweat System load changes with the amount of sweat visible on screen, droplet density, tessellation, mirrors, particle effects, and how many avatars are being rendered.
 
-## 優先して調整する順序
+## Recommended adjustment order
 
-1. 搭載している場合は **立体効果（撮影用・高負荷）** をOFFにします。
-2. Overall Sweat Amountとパターン密度を下げます。
-3. 使用しないFalling Drops、Floor Stains、Breath Puffs、SteamをOFFにします。
-4. Base Moduleを使用している場合は **相手側を低負荷（Remote Low Load）** をONにします。
-5. 必要に応じて **Only Visible to Me / 自分にだけ表示** を使用します。
+1. Turn **3D Effect (Photos Only, High Load)** off, if it was installed.
+2. Use **Low amount (Lightweight)** or **Low amount (Low Load)**.
+3. Lower Pattern Density if the avatar is still expensive at close range.
+4. Disable optional particle effects, starting with Steam.
+5. Enable **Remote Low Load** for other viewers.
+6. Use **Only Visible to Me** when remote visibility is not needed.
 
-## Tess / No Tess
+Make one change at a time and compare the same camera distance and mirror state.
 
-立体機能を搭載した構成では、インゲームメニューから立体表現を切り替えられます。通常プレイや多人数環境ではOFF、撮影時など立体感を優先する場面ではONを目安にしてください。
+## Tess and No Tess
 
-立体機能を搭載していない構成ではNo Tessのみが導入され、**立体効果（撮影用・高負荷）** のメニュー項目は表示されません。
+Tessellation support is optional and is not installed by default. If you include it, the avatar menu can switch the 3D Effect on or off.
 
-## Mirror
+When the 3D Effect is off, the system uses the No Tess material instead of continuing to process tessellation invisibly. Leave the 3D Effect off for general play and enable it only when its close-up shape is useful.
 
-ミラーではアバターが別のカメラでも描画されるため、負荷が増えます。特にアバターが画面を大きく占有する近距離では差が大きくなります。ミラー使用時も別途確認してください。
+## Mirrors
 
-## 相手側を低負荷
+A mirror draws the avatar through another camera, so visible shader and particle work can increase sharply. Check performance with the same avatar:
 
-**相手側を低負荷** はBase Module導入時に表示されます。自分の表示を維持しながら、他ユーザー側の表示負荷を抑えたい場合に使用します。
+- With the mirror off
+- With the mirror on
+- At normal conversation distance
+- In a close-up where the Body fills much of the view
 
-## Effects
+If the drop is significant, first disable the 3D Effect, then reduce Overall Sweat Amount or Pattern Density.
 
-Effects Module導入時は、**Reduce Load / 負荷を軽減 > Particles / パーティクル** から全Effects、または各Effectを個別にOFFにできます。
+## Remote Low Load
 
-:::info[FPSについて]
-FPSはCPU、GPU、VRChatの同期方式、ミラー、ワールド、他アバターによって変化します。特定GPUでのFPS値を保証するものではありません。
+**Remote Low Load** keeps your chosen local presentation while reducing the work shown to other users. It does not require a separate performance material to be uploaded by the user.
+
+This option is available when the Base Module is installed.
+
+## Particle controls
+
+When the Effects Module is installed, open:
+
+**Sweat → Reduce Load → Particles**
+
+Disable only the effects you do not need, or use **All Particles** as a single master control.
+
+:::info[About FPS]
+FPS depends on the CPU, GPU, VR headset mode, world, mirrors, and every visible avatar. A specific FPS increase cannot be guaranteed from one setting change.
 :::

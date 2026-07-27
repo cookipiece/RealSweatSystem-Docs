@@ -1,48 +1,78 @@
 ---
 id: effects
-title: エフェクトガイド
+title: Effects Guide
+description: Configure Falling Drops, Floor Stains, Breath Puffs, and Steam.
 ---
 
-# エフェクトガイド
+# Effects Guide
 
-Effects Moduleの機能は、アバターメニューの **汗 > 負荷を軽減 > パーティクル** からまとめて、または個別にON/OFFできます。見出しは実際のインゲームメニュー名と同じです。
+The Effects Module adds particle effects driven by the same Sweat % used by the rest of the system. Effects-only installation still needs a Body Mesh as its emission surface, but it does not modify the Body material or mesh.
 
-## 初期状態
+For a non-humanoid avatar, or when the Modular Avatar motion pendulum cannot be created, Manual Mode, Falling Drops, and Floor Stains remain available. Auto Mode, Breath Puffs, and Steam are not created.
 
-**落下する滴**、**床の濡れ跡**、**息**、**湯気**は初期状態でONです。湯気の放出位置は胸元・両肩・脇・太ももがON、股間・足がOFFです。
+If the motion pendulum is created but the required Head/Chest anchors are unavailable, Auto Mode remains available. Breath Puffs and Steam are not created.
 
-:::info[リグ・Bone参照に制限がある場合]
-Non-Humanoidアバター、またはModular Avatar Bone ProxyによるMotion Pendulumを作成できない構成でも、Manual Mode、落下する滴、床の濡れ跡は使用できます。この場合、自動モード、息、湯気のメニュー項目は生成されません。
+## In-game controls
 
-Motion Pendulumを作成できても、必須のHead・Chest Anchorを解決できない場合は自動モードを使用できますが、息と湯気のメニュー項目は生成されません。
+Open:
+
+**Sweat → Reduce Load → Particles**
+
+From there you can control:
+
+- All Particles
+- Falling Drops
+- Floor Stains
+- Breath Puffs
+- Steam
+
+## Falling Drops
+
+Sweat droplets fall naturally from locations across the body. Their visibility follows the current Sweat %.
+
+**Default:** On
+
+## Floor Stains
+
+Falling drops can leave wet marks when they reach a compatible floor. Results can vary with the world geometry and collision setup.
+
+**Default:** On
+
+## Breath Puffs
+
+Breath appears near the mouth when both conditions are met:
+
+- **Sweat % is above the default 25% start threshold**; and
+- the mouth is open according to the selected or automatically detected facial input.
+
+- Viseme input is supported.
+- VRCFT input is supported.
+- For Face Tracking avatars, use Real Sweat System v1.0.1 or later.
+
+With **Mouth Open Gate: Auto**, the system detects `v2/JawOpen` and prefixed names such as `FT/v2/JawOpen`. It gives active VRCFT JawOpen priority after detecting a real open/close change. If JawOpen does not change for 8 seconds, it falls back to Viseme so Breath Puffs continue to work after Face Tracking stops or the avatar returns to desktop input. Active JawOpen takes priority again when it starts changing.
+
+Breath is attached to the Head and is intentionally hidden from the wearer's own first-person camera. Seeing it in Gesture Manager, mirrors, or from another viewer while not seeing it directly in first person is normal.
+
+**Default:** On
+
+## Steam
+
+Steam begins fading in at about **30% Sweat** by default and grows with the shared Sweat % value. It rises from selected body regions. The default setup enables:
+
+- Cleavage / chest
+- Left and right shoulders
+- Armpits
+- Thighs
+
+The crotch and feet positions are off by default.
+
+**Default:** On
+
+:::tip[Reduce particle load]
+If you do not need a particular effect, disable it from the Particles submenu. Steam is usually the first optional effect to reduce when many avatars are visible.
 :::
 
-## 落下する滴
+## Related guides
 
-身体の各部から汗の粒が自然に落下します。表面の汗と同じSweat %に連動し、Sweat %が高いほど放出量が増えます。
-
-## 床の濡れ跡
-
-落下した汗の粒が床へ到達すると濡れ跡を残します。ワールドの床構造、Layer、Colliderの状態によって、衝突しない場合や見え方が異なる場合があります。
-
-## 息
-
-口元から吐息を表示します。初期設定では **Sweatが約25%を超えると**、口を開いている間に表示されます。開始値はTuningで変更できます。
-
-- SetupはAvatar DescriptorとModular Avatarから `v2/JawOpen`、`FT/v2/JawOpen` などのVRCFT Floatを検出します。
-- 自動判定ではJawOpenの実際の開閉変化を検出している間はVRCFTを優先します。
-- JawOpenに開閉変化が8秒間無い場合はVisemeへフォールバックします。VRCFTが再び動くとVRCFTを再使用します。
-- VRCFT Floatが見つからない場合もVisemeによる口の開閉で動作します。
-- Face Tracking環境ではv1.0.1以降を使用してください。
-
-:::note[自分の1人称で見えない場合]
-息はHeadへ追従し、他のユーザーから見えるように配置されます。自分のVRChat 1人称画面に息が表示されないのは正常です。Desktopのカメラ、ミラー、または他ユーザー視点で確認してください。
-:::
-
-## 湯気
-
-身体から立ち上る湯気を表現します。初期設定では **Sweat 30%付近** から薄く現れ、100%へ近づくほど濃くなります。不要な放出位置はSetupまたはTuningでOFFにできます。
-
-:::tip[パフォーマンス]
-使用しないEffectsはメニューで個別にOFFにできます。すべてをまとめて切り替える場合は **全パーティクル** を使用します。詳しい負荷の順序は[パフォーマンス](../performance.mdx)を確認してください。
-:::
+- Change thresholds, steam locations, and particle limits in [Tuning Guide](./tuning.mdx).
+- If an Effect is missing or the Console mentions Exhale, use [Troubleshooting](../troubleshooting.mdx).

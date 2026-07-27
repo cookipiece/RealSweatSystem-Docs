@@ -1,68 +1,69 @@
 ---
 id: package-guide
-title: パッケージガイド
-description: Base Module、Effects Module、Full Packの機能差と導入時に表示される項目。
+title: Package Guide
+description: Differences between the Base Module, Effects Module, and Full Pack.
 ---
 
-# パッケージガイド
+# Package Guide
 
-購入した構成によって、Setupとアバターメニューに表示される機能が変わります。導入していないModuleの項目は表示されません。
+| Package | Main features | Best for |
+|---|---|---|
+| **Sweat Base Module** | Skin sweat, flowing droplets, Rest data, Tess/No Tess support, render-order controls, Remote Low Load | Users who need skin sweat |
+| **Sweat Effects Module** | Falling Drops, Floor Stains, Breath Puffs, Steam | Users who need surrounding particle effects |
+| **Full Pack (Base + Effects)** | Base Module + Effects Module | The complete linked sweat presentation |
 
-## 機能チェック表
+Each module includes the common **Core** files it needs. Core is not a separate user-facing product.
 
-| 機能・動作 | Base Module | Effects Module | Full Pack |
+## Feature checklist
+
+| Feature or behavior | Base Module | Effects Module | Full Pack |
 |---|:---:|:---:|:---:|
-| 共通CoreとSetup | ✓ | ✓ | ✓ |
-| 汗オン・汗 %（Manual） | ✓ | ✓ | ✓ |
-| 自動モード（対応リグ） | ✓ | ✓ | ✓ |
-| 肌表面の汗と流れる水滴 | ✓ | — | ✓ |
-| Rest Vertex Data | ✓ | — | ✓ |
-| Tess / No Tessと立体機能 | ✓ | — | ✓ |
-| 相手側を低負荷 | ✓ | — | ✓ |
-| 自分にだけ表示 | ✓ | ✓ | ✓ |
-| 落下する滴 | — | ✓ | ✓ |
-| 床の濡れ跡 | — | ✓ | ✓ |
-| 息 | — | ✓ | ✓ |
-| 湯気 | — | ✓ | ✓ |
-| Body Meshの指定 | 必要 | 放出元として必要 | 必要 |
-| Body Material / Mesh / Rest Dataの変更 | あり | なし | あり |
+| Shared **Sweat On**, **Sweat %**, and **Auto Mode** controls | Yes | Yes | Yes |
+| Skin sweat and gravity-driven surface droplets | Yes | — | Yes |
+| **Overall Sweat Amount** and surface-material tuning | Yes | — | Yes |
+| Optional Tess/No Tess material switching | Yes | — | Yes |
+| **Remote Low Load** | Yes | — | Yes |
+| **Only Visible to Me** | Yes | Yes | Yes |
+| Falling Drops | — | Yes | Yes |
+| Floor Stains | — | Yes | Yes |
+| Breath Puffs | — | Yes | Yes |
+| Steam | — | Yes | Yes |
+| Uses the Body Mesh as an emission/reference surface | Yes | Yes | Yes |
+| Creates or updates Body-side sweat material, display-mesh mapping, and Rest data | Yes | **No** | Yes, through Base |
 
-各Moduleには動作に必要な共通 **Core** が含まれます。Coreは別に購入または操作する製品ではありません。
+Auto Mode requires a compatible Humanoid motion setup. Breath Puffs and Steam additionally require the relevant Head/Chest anchors. See [Compatibility](./compatibility.mdx#avatar-type) for the exact fallback behavior.
 
 ## Sweat Base Module
 
-選択した1つのBody Rendererへ肌表面の汗を追加します。Manual ModeとAuto Modeは同じSweat %を共有します。
-
-立体機能を搭載しない場合はNo Tess Materialを1つだけ導入します。搭載するとTessとNo Tessを同梱し、インゲームの **立体効果（撮影用・高負荷）** で同じBody Slotを切り替えます。
-
-Baseを導入すると **相手側を低負荷** が表示されます。
+The Base Module adds sweat to one selected Body Renderer. Manual Mode and Auto Mode share the same Sweat % value. If tessellation support is installed, the in-game menu can switch between Tess and No Tess display.
 
 ## Sweat Effects Module
 
-選択したBody Meshを、落下する滴と湯気などの放出元として使用します。そのためEffectsだけを導入する場合もBody Meshの指定が必要です。
+The Effects Module uses the selected Body Mesh as its emission surface. It does **not** modify the Body material, Body mesh, Rest data, or tessellation setup.
 
-Effects-only SetupはBody Material、Body Mesh、Rest Vertex Data、テッセレーション構成を変更しません。肌表面の汗も追加しません。
-
-Effectsを導入すると **負荷を軽減 > パーティクル** と、選択した個別Effectが表示されます。
+The Effects menu appears only when this module is installed.
 
 ## Full Pack (Base + Effects)
 
-Full PackはBaseとEffectsを組み合わせた完全構成です。肌表面の汗、落下する滴、床の濡れ跡、息、湯気が同じSweat %へ連動します。
+Full Pack is the complete configuration. Install both modules at the same version so skin sweat and Effects respond to the same Sweat % value.
 
-Full PackではBase PackageとEffects Packageの両方をImportし、必ず同じ製品バージョンを使用してください。
+The avatar menu is built from the installed modules:
 
-## Setup構成によるメニュー差
+- **Only Visible to Me** appears in every package configuration.
+- **Remote Low Load** appears when Base is installed.
+- **Particles** appears when Effects is installed.
+- **3D Effect (Photos Only, High Load)** appears only when tessellation support is installed.
 
-- 全構成: **自分にだけ表示**
-- Base導入時: **相手側を低負荷**
-- Effects導入時: **パーティクル** と選択したEffects
-- 立体機能を搭載した場合のみ: **立体効果（撮影用・高負荷）**
-- 立体機能を搭載しない場合: No Tess Materialのみ。立体効果Menuは表示されません。
+## Installing, updating, or changing packages
 
-実際のメニュー構造は[手動モードと自動モード](./usage/modes.mdx)で確認できます。
+- For a new installation, follow [5-Minute Quick Start](./quick-start.mdx).
+- Keep Base and Effects on the same version when both are present.
+- To expand Base or Effects into Full Pack, import the missing module at the same version, then run **Setup — Install / Update** once.
+- To update an installed avatar, import the newer module package or packages and run **Setup — Install / Update** once.
+- To remove the system or change back to a single-module installation, follow [Uninstall, reinstall, or change modules](./troubleshooting.mdx#uninstall-reinstall-or-change-modules).
 
-## Game & App License
+## Game and app distribution
 
-購入者本人が使用するVRChatアバター、収益化された動画・配信・画像制作は通常Licenseの範囲です。完成したゲーム・アプリへ組み込み、第三者へ配布する場合は別途 **Game & App Integration & Distribution License** が必要です。
+Using the product on your own VRChat avatar, or in monetized videos, streams, and images, is covered by the standard license. Distributing a completed game or application that contains this product requires the separate **Game & App Integration & Distribution License**.
 
-詳細は[Terms & License](./license.mdx)を確認してください。
+See [Terms & License](./license.mdx) for a readable summary.

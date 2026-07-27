@@ -1,0 +1,297 @@
+---
+id: troubleshooting
+title: トラブル解決
+description: 表示、メニュー、Tuning、Animator、Mesh、Effect、Downloadの問題を症状別に確認します。
+---
+
+# トラブル解決
+
+まずConsoleをClearし、問題を1回だけ再現して **最初に出たエラー** を確認してください。後続エラーは最初の問題から連続して発生している場合があります。
+
+## 症状からすぐ探す
+
+- [汗がまったく見えない](#汗がまったく見えない)
+- [アバターメニューが無い・一部だけ無い](#アバターメニューが無い一部だけ無い)
+- [Tuningの変更が反映されない](#tuningの変更が反映されない)
+- [Import・Shader Compileが長い](#importshader-compileが長い)
+- [Play Modeで顔が崩れる](#play-modeで顔が崩れる)
+- [MMDダンス中に表情・リップシンクが動作しない](#mmdダンス中に表情リップシンクが動作しない)
+- [Unityでは正常、VRChat内だけ壊れる](#unityでは正常vrchat内だけ壊れる)
+- [既存のPhysBoneが導入後に動かない](#既存のphysboneが導入後に動かない)
+- [`Invalid localAABB. Object transform is corrupt.` がExhaleを示す](#invalid-localaabb-object-transform-is-corrupt-がexhaleを示す)
+- [Microsoft Defenderが警告する](#microsoft-defenderがダウンロードを警告遮断する)
+- [よくある使い方のヒント](#よくある使い方のヒント)
+
+## 汗がまったく見えない
+
+1. 肌表面の汗を表示するには **Sweat Base Module** が必要です。Effects ModuleだけではBody表面の汗は追加されません。
+2. アバターメニューで **汗 > 汗オン** をONにします。
+3. Manual確認では **自動モード** をOFFにして、**汗 %** を50%以上へ動かします。
+4. Setupの **ボディメッシュ** がFaceや衣装ではなく、肌のBody Rendererを指していることを確認します。
+5. 複数Material SlotがあるBodyでは、肌Materialに対応する **汗の対象 Element** を選び直して **Setup — 自動インストール / 更新** を実行します。
+6. **描画順を自動設定（推奨）** がONなら、Body MaterialのRender Queueを2454以下にします。
+
+Auto ModeはWASD移動やジャンプだけでは増えません。身体のローカルモーションへ反応するため、まずManual値で表示自体を確認してください。
+
+## アバターメニューが無い・一部だけ無い
+
+メニューは導入したModule、リグ、選択した機能から自動生成されます。
+
+- Base導入時: 汗表面、相手側を低負荷
+- Effects導入時: パーティクル、落下する滴、床の濡れ跡、息、湯気
+- 立体機能搭載時のみ: 立体効果（撮影用・高負荷）
+
+Full PackではBaseとEffectsを同じバージョンへ揃え、Setupを再実行してください。Non-HumanoidなどMotion Pendulumを作成できない構成では、自動モード、息、湯気は生成されません。Head・Chest Anchorだけを解決できない場合は、自動モードは生成されますが息と湯気は省略されます。
+
+Setupが生成したMenu、Parameters、Animatorを手動で移動・削除している場合は、**Setup — 自動インストール / 更新** で生成状態へ戻してください。
+
+## Tuningの変更が反映されない
+
+Hierarchyの **アバター > RealSweat** を選び、**RealSweatSystem Tuning** コンポーネントを操作していることを確認します。
+
+- 全体の汗量によるMaterial Qualityは即時に変わります。
+- 感度、累積速度曲線、生成Animation、落下する滴、湯気などは **FX に適用** を押した後に反映されます。
+- Body MaterialのShadow Strengthを変更した場合も、**FX に適用** を押すと再取得します。
+- Play Mode中の一時的な変更は、Play Mode終了時に元へ戻ります。
+
+詳しい反映タイミングは[設定・調整ガイド](./usage/tuning.mdx)を確認してください。
+
+## Import・Shader Compileが長い
+
+初回Importや更新直後は、Shader Compile、Script Compile、Asset Databaseの処理が同時に行われるため時間がかかる場合があります。これはインゲームの実行負荷と同じ意味ではありません。
+
+- Unity右下のImport表示やHold onが消えるまで待ちます。
+- 処理中にSetupやMaterialを繰り返し操作しないでください。
+- Consoleにコンパイルエラーがある場合は、最初のエラーを先に解決します。
+- BaseとEffectsを使う場合は、同じ製品バージョンか確認します。
+- 完了後も操作のたびに長時間の再コンパイルを繰り返す場合は、重複Package、破損したScript、別Shaderツールの自動Lock / Unlock処理を確認します。
+
+## v1.0.0またはv1.0.1からv1.0.2へ更新したい
+
+1. アバターPrefabまたはUnityプロジェクトをバックアップします。
+2. v1.0.2のUnityPackageをImportします。
+3. BaseとEffectsを使用している場合は両方を同じバージョンへ揃えます。
+4. Unity上部メニューの **CookiTools > RealSweatSystem Setup／Uninstall** を開きます。
+5. **Setup — 自動インストール / 更新** を1回実行します。
+6. Play Modeで顔、汗オン、汗 %、自動モード、導入したEffectsを確認します。
+
+## Play Modeで顔が崩れる
+
+古いバージョンとWrite Defaults OFFのFace Tracking Animatorが干渉している可能性があります。
+
+1. v1.0.2へ更新します。
+2. 以前の診断で変更したAnimator欄やMerge Animator Priorityを元へ戻します。
+3. **Setup — 自動インストール / 更新** を再実行します。
+4. 顔の表情、汗オン、自動モードを同時に確認します。
+
+生成Animatorの順序を手動変更した状態を恒久的な回避策として使用しないでください。
+
+## MMDダンス中に表情・リップシンクが動作しない
+
+1. v1.0.2へ更新し、**Setup — 自動インストール / 更新** を1回実行します。
+2. Setupの **Write Defaults互換モード** を **自動検出（推奨）** にします。
+3. Modular Avatarを更新し、対象構成で必要な場合はMMD World Supportを有効にします。
+4. Play Modeだけでなく、実際に使用するMMDワールドで表情・リップシンク・汗オン・Auto Modeを確認します。
+
+外部FX StateがすべてWD ONなら、v1.0.2はRealSweatの生成StateもWD ONに揃えます。WD OFF、ON/OFF混在、または判定不能の場合は互換構成を維持しますが、ワールドのFXレイヤー制御方式によってはMMD中の動作を保証できません。
+
+RealSweatだけをWD ON互換へ強制すると、外部のWD OFF Stateと再びON/OFF混在になる可能性があります。対象アバターやMMD環境が全WD ONを必要とすると分かっている場合を除き、手動モードを恒久的な回避策として使用しないでください。
+
+## 汗オン・自動モードが動作しない
+
+- **汗オン** が有効か確認します。
+- Manual確認では自動モードをOFFにして **汗 %** を調整します。
+- Auto Modeを使用する場合は、Humanoidアバターと必要なBone参照を確認します。
+- ManualとAutoは同じSweat %を共有するため、切り替え時に値はリセットされません。
+- Setupが生成したAnimator、Menu、ParametersやAnimator順序を手動変更していないか確認します。
+- 新しいバージョンをImportした後はSetupを再実行します。
+
+## Bodyを自動検出できない
+
+**ボディメッシュ (空欄 = 自動)** へ対象の `SkinnedMeshRenderer` を手動で指定してください。Face Rendererではなく、汗を表示したい身体のRendererを選びます。現在は1回の導入につきBody Rendererを1つ追跡します。
+
+## 汗が別のMaterial Slotに表示される
+
+**汗の対象 Element** で、肌Materialが割り当てられている正しいElementを選択します。別のElementを選ぶと、汗が表示されない、または意図しない部分へ表示される場合があります。
+
+## MeshにTangentが無い
+
+確認画面で **セーフコピーを作成（推奨）** を選択してください。元のModel Import Settingsを変更せず、Real Sweat専用のMesh Copyを作成します。
+
+## Unityでは正常、VRChat内だけ壊れる
+
+Upload時にBody MeshまたはRendererを置換・統合するOptimizerや変換ツールを確認してください。最終Meshで次の条件が失われると正常に表示できません。
+
+- 汗を適用したSubmeshとMaterial Slotの対応
+- Build時に必要なMesh Dataの読み取り
+- Setupで指定したBody Rendererの系統
+
+除外機能がある場合は、Real Sweat Systemで使用しているBody Rendererをその除外リストへ追加してください。
+
+Bodyを除外できないツールとの互換性は保証できません。アバターをバックアップし、そのツールを無効にした状態と比較してください。
+
+設定を変更した後は、Edit Modeで最終的に使用するBodyを指定して **Setup — 自動インストール / 更新** を再実行し、Play Modeと実際のVRChatアップロードの両方で確認してください。Real Sweat Systemは、後続のビルドツールが行う任意のMesh置換を自動修復できません。
+
+## 既存のPhysBoneが導入後に動かない
+
+Real Sweat SystemはAuto Mode用のPhysBoneと専用パラメーターを `RealSweat` 配下に追加します。胸など、アバターに既存のPhysBoneを変更・削除する仕様ではありません。
+
+1. ConsoleをClearしてPlay Modeに入り、最初のErrorまたはWarningを確認します。
+2. Real Sweat System導入後のBuildでBone、PhysBone、Animator、Parameterを結合・最適化する別のツールがないか確認します。
+3. 動かないPhysBoneとReal SweatのMotion Pendulumが、同じRoot Transform、Parameter、処理対象として統合されていないか確認します。
+4. そのツールにBody Rendererの除外機能がある場合は、Real Sweat Systemで使用しているBody Rendererを除外対象に追加します。Bodyを除外できない場合、そのツールとの互換性は保証できません。
+
+Uninstall後も既存のPhysBoneが動かない場合は、Real Sweat Systemが生成した範囲外の変更が残っている可能性があります。バックアップのアバターと比較し、ビルド時に動作するツールを1つずつ切り分けてください。
+
+## 立体の水滴が衣装を貫通する
+
+**RealSweatSystem Clothing Fix** を使用してください。立体機能を使用しない場合は、**立体効果（撮影用・高負荷）** をOFFにする方法もあります。詳しい手順と注意点は[補助ツール](./tools.mdx)を確認してください。
+
+## Effects ModuleだけなのにBody指定を求められる
+
+正常な動作です。Body Meshはパーティクルの放出元として使用されます。Effectsのみの導入ではBodyのMaterial、Mesh、Rest Vertex Data、テッセレーションを変更しません。
+
+## 最初のBuildだけ失敗する
+
+Import直後はShaderやAsset Databaseの処理が完了していない場合があります。UnityのImportが終了するまで待ち、Consoleの最初のエラーを解決してから再Buildしてください。2回目に成功しても、最初のエラーを無視して良いとは限りません。
+
+## `Invalid localAABB. Object transform is corrupt.` がExhaleを示す
+
+Consoleで次の文字列が繰り返し表示され、対象が息の `Exhale` Objectを示す場合:
+
+```text
+Invalid localAABB. Object transform is corrupt.
+```
+
+1. Avatar Hierarchy内にNaN、Infinity、極端なScaleなど不正なTransformがないか確認します。
+2. 一時的に **息** をOFFにし、同じConsole Logが止まるか確認します。
+3. v1.0.1以降を使用し、Setupを再実行します。
+
+ExhaleのBounds ErrorとFace Animatorの競合は別の原因で同時に発生する場合があります。息をOFFにしてConsole Logだけが止まり、顔の問題が残る場合は、上の[Play Modeで顔が崩れる](#play-modeで顔が崩れる)も別に確認してください。
+
+## Rest Dataの再生成に失敗する
+
+ConsoleをClearしてBuildを再実行し、最初に表示されたRealSweatSystemのエラーを確認します。
+
+- 最終Body Meshを読み取れない場合は、Mesh変換・Optimizerが生成する最終MeshのRead/Writeを有効にします。
+- Mesh変換・Optimizerが汗表示用Submeshを削除した場合は、そのSubmeshを保持する設定へ変更するか、変換後の構成に対してSetupを再実行します。Rest Dataを再生成しても、削除されたSubmesh自体は復元できません。
+- Body MeshまたはMaterial Slotを変更した場合は、正しいBody Rendererと汗の対象Elementを指定し直してSetupを実行します。
+- Setup後のRest検証に失敗した場合は、最初のConsole Errorを解決してからSetupを再実行します。
+
+高度なCustom Materialの復旧が必要な場合だけ、[補助ツール](./tools.mdx)のRest Vertex Data Bakerを使用してください。
+
+## 削除・再導入・Module構成を変更する
+
+作業前にアバターまたはUnityプロジェクトをバックアップしてください。
+
+### アバターから導入内容を削除する
+
+1. **CookiTools > RealSweatSystem Setup／Uninstall** を開きます。
+2. **削除** タブを選び、Scene内のアバターを指定します。
+3. **Uninstall 時に生成アセット(ベイク/マテリアル/アニメ/メニュー)も削除** は初期状態でOFFです。再利用する場合はOFFのままにします。完全に削除し、他のReal Sweat導入が同じ生成フォルダーを使用していないことを確認できる場合だけONにします。
+4. **Uninstall — 削除** を押し、Unityの処理が終わるまで待ちます。
+5. Hierarchyから **RealSweat** オブジェクトが無くなったことを確認し、アップロード前にアバターをテストします。
+
+生成アセット削除オプションがOFFの場合、Bake、Material、Animation、Menuのアセットは保持されます。Modular AvatarによるMenu、Parameters、FX統合は、RealSweatオブジェクトを削除した後のBuildには入りません。
+
+### 再導入・更新する
+
+1. 使用する最新版のModuleをImportします。BaseとEffectsを併用する場合は同じバージョンへ揃えます。
+2. Setupの **インストール** タブで、アバター、ボディメッシュ、汗の対象Elementを確認します。
+3. **Setup — 自動インストール / 更新** を実行します。
+4. Play ModeでManual Mode、Auto Mode、顔、導入したEffectsを確認します。
+
+BaseまたはEffectsからFull Packへ変更する場合は、足りない同バージョンのModuleをImportしてSetupを再実行します。Full Packから片方のModuleだけへ戻す場合は、先にアバターから削除し、不要なModuleの製品ファイルをProjectから取り除いてから、残すModuleで再導入します。
+
+:::warning[手動追加は自動削除されません]
+Setupの正式手順外で追加したMaterial Slot、Rest Asset、Animation CurveなどはUninstallの対象外です。Face + Bodyの非公式手順を行った場合は、[補助ツールの元に戻す手順](./tools.mdx#unsupported-face-body)またはBackupから復元してください。
+:::
+
+## Microsoft Defenderがダウンロードを警告・遮断する
+
+v1.0.0の配布ファイルについて一部の環境で報告されたMicrosoft Defenderの警告は、Microsoftの解析により誤検出と確認され、Microsoft側で該当する検出定義が更新されました。
+
+ただし、DefenderのSecurity IntelligenceやCloud Protectionの更新時期はPCごとに異なるため、一部の環境では以前の警告が一時的に残る場合があります。
+
+- Windows SecurityでSecurity Intelligenceを最新の状態へ更新します。
+- BOOTHの購入ライブラリから最新版を再ダウンロードします。
+- 警告が続く場合は、Windows Securityの検出名、正確なファイル名、Real Sweat Systemのバージョンを確認します。
+
+## よくある使い方のヒント
+
+### Unityの編集画面だけで肌の汗を一時的に隠す
+
+Scene Viewで汗を一時的に隠したい場合は、システムをUninstallせずに生成済みMaterialの値だけを変更できます。
+
+1. Play Modeを終了します。
+2. Body RendererのMaterialsから、Bodyに使用されている生成済みRealSweat Materialを開きます。元の肌Materialは編集しないでください。
+3. Material Inspectorの **Basic > 汗の量**（`Sweat Amount` / `_DropletAmount`）で現在値を記録し、`0` にします。
+4. 通常のテストまたはアップロード前に、記録した値へ戻します。新規Setup直後の値は通常 `1` ですが、調整済みMaterialでは異なる場合があるため、`1` に決め打ちせず記録した値を優先してください。
+
+これは**Edit Modeの一時的なPreview調整**です。Tuningの **全体の汗量** プリセットや、アバターメニューの **汗オン + 汗 % = 0%** とは別の設定です。Play ModeとVRChatでは生成済みAnimationがランタイム値を制御します。
+
+:::warning[汗Materialのスロットは削除しないでください]
+Bodyの生成済みRealSweat Material Slotを削除または別Materialへ置換すると、Setupの追跡とBuild検証が崩れる場合があります。立体機能を搭載した構成ではTess / No Tessの2つの生成Materialを確認し、どちらへ切り替えても隠したい場合は両方へ同じ一時値を設定してください。復元時も両方を記録した元の値へ戻します。
+:::
+
+### 自分の一人称視点にも吐息を表示する（任意・上級）
+
+吐息は頭側のEffectであるため、装着者自身の一人称Cameraから標準状態で見えないのは正常です。他のユーザーからは通常どおり表示されます。
+
+1. Setup後、Hierarchyで **アバター > RealSweat > RealSweatFxHead > Breath > Exhale** を選択します。
+2. `Exhale`へ **Add Component > Modular Avatar > MA Visible Head Accessory** を追加します。値の設定は必要ありません。
+3. Gesture Managerだけでなく、Build後のVRChatとVR一人称視点で確認します。
+
+Build前にModular Avatarから「`Exhale`がHeadの下にない」という警告が表示される場合があります。`RealSweatFxHead`はBuild時にHeadへ移動するBone Proxyなので、上記の正しいHierarchyにある場合に限り、この警告は無視できます。
+
+Avatar Scaleによっては吐息Particleが顔やCameraへ重なり、視界を遮る場合があります。見づらい場合は `Exhale` の位置を大きく動かさず、追加した **MA Visible Head Accessory** を削除して標準状態へ戻してください。Uninstall後にRealSweat Objectを再作成するとこの手動Componentも無くなるため、必要ならSetup完了後に再度追加します。
+
+### 選択したBody部位のプロシージャル水滴を制限する
+
+生成済みTess / No Tess Materialの **Basic > スポーンマスク** で、Shader内のプロシージャル水滴を生成する範囲をBodyのUV0上で制限できます。
+
+1. BodyのUV0レイアウトに合うグレースケールTextureを作成します。Shaderが読み取るのは **R（赤）Channel** だけなので、Alpha Channelだけに描いたMaskは使用できません。
+2. プロシージャル水滴を生成する部位を **白**、除外する部位を **黒** にします。
+3. Textureを **スポーンマスク（白＝スポーン）** へ割り当てます。
+4. **マスク強度** を初期値 `0` より大きくします。`0` は無効、`1` はMaskを完全に適用します。
+5. 境界を調整する場合は **マスクしきい値** と **マスク境界のソフトさ** を変更します。**マスク反転** は白と黒の結果を反転します。
+
+立体機能を搭載した構成では、生成済みTess / No Tessの両方へ同じTextureとMask設定を適用してください。このMaskが制限するのは、Shader内のプロシージャル水滴の生成（Spawn）と、Tess版における水滴の変位です。広範囲の濡れ肌表現（Wet Skin / Sheen）全体を完全に切り抜くHard Maskではありません。また、別のParticle Emitterとして動作する **落下する滴・床の濡れ跡・息・湯気** の生成や表示も停止しません。
+
+## 問い合わせ前に用意する情報
+
+- Real Sweat Systemのバージョンと購入構成
+- Unity / VRCSDKのバージョン
+- 使用アバターとFace Tracking Package名
+- Setup画面とAvatar DescriptorのScreenshot
+- ConsoleをClearした後の最初のError全文
+- Unity Play Mode、Desktop VRChat、VR、VR Face Trackingのどこで発生するか
+- Modular Avatarのバージョン
+- Animator、Mesh、PhysBoneを変更する他の導入・最適化ツール
+- Unity Edit Modeでは正常か
+- 正常に動作する環境と、問題を再現する正確な手順
+- 顔またはAnimatorの問題では、Play Mode中の最終FX Animatorの `Layers` 一覧
+
+以下のテンプレートをコピーして使用できます。
+
+```text
+Real Sweat Systemバージョン:
+購入構成: Base / Effects / Full Pack
+Unity:
+VRCSDK:
+Modular Avatar:
+アバター:
+Face Tracking Package（使用時）:
+他の導入・最適化ツール:
+
+正常に動作する環境:
+問題が発生する環境:
+再現手順:
+ConsoleをClearした後の最初のError:
+
+添付:
+- Setup画面
+- Avatar Descriptor
+- RealSweat Hierarchy
+- 関係する場合、Play Mode中の最終FX Animator Layers
+```

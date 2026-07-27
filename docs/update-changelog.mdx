@@ -1,73 +1,57 @@
 ---
 id: update-changelog
-title: 更新・変更履歴
+title: Update & Changelog
+description: Safe update steps and release notes for Real Sweat System.
 ---
 
-# 更新・変更履歴
+# Update & Changelog
 
-## 更新前の安全手順
+## Safe update procedure
 
-1. アバターPrefabまたはUnityプロジェクトをバックアップします。
-2. 現在のReal Sweat Systemバージョンを確認します。
-3. BaseとEffectsを使用している場合は同じバージョンへ揃えます。
-4. 新しいUnityPackageをImportします。
-5. Unity上部メニューの **CookiTools > RealSweatSystem Setup／Uninstall** を開き、**Setup — 自動インストール / 更新** を1回実行します。
-6. ConsoleとPlay Modeで顔、汗オン、汗 %、自動モード、導入したEffectsを確認します。
+1. Back up the avatar Prefab or Unity project.
+2. Check the currently installed Real Sweat System version.
+3. If using both Base and Effects, update both to the same version.
+4. Import the new UnityPackage.
+5. Open **CookiTools > RealSweatSystem Setup／Uninstall**, select the **Install** tab, and run **Setup — Install / Update** once.
+6. Check the Console and test the avatar in Play Mode before upload.
 
-通常のバージョン更新では、先にUninstallする必要はありません。
-
-## Uninstallと再導入
-
-構成を最初から作り直す場合だけ、次の手順を使用します。
-
-1. Play Modeを終了し、アバターPrefabまたはUnityプロジェクトをバックアップします。
-2. **CookiTools > RealSweatSystem Setup／Uninstall** を開きます。
-3. Uninstall欄で対象アバターを指定します。
-4. 生成済みのBake、Material、Animation、Menuも削除したい場合だけ **Uninstall 時に生成アセット(ベイク/マテリアル/アニメ/メニュー)も削除** をONにします。OFFの場合は再利用できるように生成アセットを保持します。
-5. **Uninstall — 削除** を実行します。
-6. BaseとEffectsを使用する場合は同じ製品バージョンをImportし、通常どおりSetupを実行します。
-
-Uninstallは、Setupが追加したRealSweatオブジェクトと追跡中の汗Material Slotを削除します。Modular AvatarのMenu、Parameters、FXは次のBuildで元へ戻ります。
-
-:::warning[手動改変は自動削除されません]
-Face用に手動追加したMaterial Slot、Face専用Material / Rest Asset、Animation Curveなど、Setupの追跡外で追加したデータはUninstallで自動削除されません。非公式なFace + Body手順を使用した場合は、[補助ツールの手動ロールバック](./tools.mdx#unsupported-face-body)も確認してください。
-:::
+For removal, clean reinstallation, or changing between Base, Effects, and Full Pack, follow [Uninstall, reinstall, or change modules](./troubleshooting.mdx#uninstall-reinstall-or-change-modules).
 
 ## v1.0.2 — 2026-07-27
 
 ### Compatibility
 
-- v1.0.1で、全FXがWD ONのアバターにRealSweatのOutputレイヤーだけがWD OFFで追加され、ON/OFF混在となることで、一部のMMDダンス中に表情・リップシンクが動作しない問題を修正
-- アバターFXのWrite Defaults構成を判定する **Auto Detect（推奨）** を追加
-- RealSweat以外のFX StateがすべてWD ONの場合、生成するRealSweatレイヤーもすべてWD ONへ統一
-- WD OFF、ON/OFF混在、または判定不能の場合はv1.0.1のDriver ON / Output OFF互換構成を維持
-- NDMFで最終統合されたFXをビルド時に再確認し、検出結果に合わせてRealSweatのWD構成を調整
+- Fixed an issue where v1.0.1 could add only the RealSweat Output layers as WD OFF to an otherwise all-WD-ON FX setup, creating a mixed controller that prevented expressions or lip sync from working during some MMD dances
+- Added **Auto Detect (Recommended)** for the avatar FX Write Defaults structure
+- When every non-RealSweat FX state uses WD ON, all generated RealSweat layers also use WD ON
+- WD OFF, mixed, or unknown setups retain the v1.0.1 Driver ON / Output OFF compatible split
+- Rechecks the final NDMF-merged FX controller during build and adjusts the RealSweat WD structure to the detected result
 
-:::note[v1.0.1から更新する場合]
-v1.0.2をImportした後、**Setup — 自動インストール / 更新** を1回実行してください。汗の見た目とユーザー設定に意図的な変更はありません。
+:::note[Updating from v1.0.1]
+Import v1.0.2 and run **Setup — Install / Update** once. There are no intended changes to the sweat appearance or user settings.
 :::
 
-:::caution[MMDワールド]
-WD OFFまたはON/OFF混在のFX構成では、ワールド側のFXレイヤー制御方式によってMMD再生中の表情やReal Sweat Systemが正しく動作しない場合があります。詳しくは[対応環境・互換性](./compatibility.mdx#mmdワールドとの互換性)を確認してください。
+:::caution[MMD worlds]
+With a WD OFF or mixed FX setup, expressions or Real Sweat System may not work correctly during MMD playback in some worlds, depending on how the world controls FX layers. See [Compatibility](./compatibility.mdx#mmd-world-compatibility).
 :::
 
 ## v1.0.1 — 2026-07-27
 
 ### Fixed
 
-- Write Defaults ON / OFFおよびFace Tracking構成との互換性を改善
-- 顔の表情、Sweat Toggle、Auto Modeを同時に使用した際の競合を修正
-- Setup更新時の互換性と安全性を改善
+- Improved compatibility with Write Defaults OFF avatars
+- Improved compatibility with VRCFT and other Face Tracking animator setups
+- Added safeguards so facial animation, sweat controls, and Auto Mode can operate together
 
-### Documentation / UI
+### Documentation and UI
 
-- Rest Vertex Data Bakerの案内を日本語・英語・韓国語に対応
-- 通常のSetupではユーザーが直接操作する必要のない項目であることを明記
+- Added Japanese, English, and Korean labels for **Rest Vertex Data Baker**
+- Clarified that Rest Vertex Data Baker is not normally used in everyday setup
 
-:::note[v1.0.0から更新する場合]
-v1.0.1をImportした後、**Setup — 自動インストール / 更新** を1回実行してください。Setupが生成したMerge Animator PriorityやAnimator欄は手動で変更しないでください。
+:::note[Existing v1.0.0 users]
+This update does not intentionally change the appearance or normal controls of avatars that were already working correctly. Import v1.0.1 and run Setup once to update the generated installation.
 :::
 
-:::info[既存ユーザーへの影響]
-v1.0.0で正常に動作していた一般的なアバターの見た目、操作方法、初期設定は変更していません。
-:::
+## Documentation policy
+
+The current v1.x documentation is updated in place. Separate archived instructions are kept only when a future release requires substantially different installation steps.

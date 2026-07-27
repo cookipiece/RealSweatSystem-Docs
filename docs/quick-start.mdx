@@ -1,113 +1,127 @@
 ---
 id: quick-start
-title: 5分クイックスタート
-description: Real Sweat System をアバターへ安全に導入し、最初の動作を確認する手順。
+title: 5-Minute Quick Start
+description: The shortest safe path to installing and testing Real Sweat System.
 ---
 
-# 5分クイックスタート
+# 5-Minute Quick Start
 
-このページでは、アバターをバックアップしてReal Sweat Systemを導入し、Play Modeで最初の動作を確認します。
+This guide follows the shortest safe path from an imported package to a working Play Mode test.
 
-:::note[「5分」に含まれない時間]
-UnityPackageのImport、初回のShader Compile、UnityのAsset Database処理にかかる時間は環境によって異なるため、5分には含みません。Unityの処理が完了してから次の操作へ進んでください。
+:::note[About “5 minutes”]
+The five-minute estimate starts **after** Unity has finished importing the package and compiling shaders. The first import can take longer depending on the project and PC.
 :::
 
-## 1. 導入環境を確認
+## 1. Check the project
 
-- Unity 2022.3のVRChat Avatar Projectを開きます。
-- VRChat Avatars SDK3とModular Avatarが導入済みであることを確認します。
-- アバターPrefabまたはUnityプロジェクトをバックアップします。
-- Consoleに既存のコンパイルエラーが無いことを確認します。
-- v1.0.0またはv1.0.1から更新する場合は、v1.0.2をImportして **Setup — 自動インストール / 更新** を1回実行します。詳しくは[更新・変更履歴](./update-changelog.mdx)を確認してください。
+- Open the Unity project that contains your VRChat avatar.
+- Back up the avatar Prefab or project.
+- Confirm that the Console has no existing compile errors.
+- Confirm that **Modular Avatar** is installed.
+- If you are updating from v1.0.0 or v1.0.1, import v1.0.2 and run **Setup — Install / Update** once.
 
-:::note
-VRCFuryは必須ではありません。Real Sweat Systemの導入にはModular Avatarが必要です。
-:::
+## 2. Import the package
 
-## 2. UnityPackageをImport
+Import the UnityPackage for the product you purchased:
 
-購入した構成に合うUnityPackageをImportします。
+- **Base Module** for skin sweat
+- **Effects Module** for falling drops, floor stains, breath, and steam
+- Both packages for **Full Pack (Base + Effects)**, the complete configuration
 
-- **Base Module:** 肌表面の汗
-- **Effects Module:** 落下する滴、床の濡れ跡、息、湯気
-- **Full Pack (Base + Effects):** BaseとEffectsの両方
+When using both modules, keep Base and Effects on the same version.
 
-BaseとEffectsを一緒に使用する場合は、必ず同じ製品バージョンを使用してください。詳しい違いは[パッケージガイド](./package-guide.mdx)で確認できます。
+## 3. Open Setup
 
-## 3. Setupを開いて対象を指定
+From the Unity top menu, open:
 
-1. Unity上部メニューから **CookiTools > RealSweatSystem Setup／Uninstall** を開きます。
-2. Sceneに配置したアバターのルートを **アバター** 欄へ指定します。
-3. 汗を表示する身体の `SkinnedMeshRenderer` を **ボディメッシュ (空欄 = 自動)** へ指定します。空欄のまま自動検出することもできます。
+**CookiTools > RealSweatSystem Setup／Uninstall**
 
-[![Unity上部メニューのCookiToolsからRealSweatSystem Setup／Uninstallを開く位置](/img/guide/setup-menu-path.png)](/img/guide/setup-menu-path.png)
+[![Location of RealSweatSystem Setup and Uninstall in the Unity CookiTools menu](/img/guide/setup-menu-path.png)](/img/guide/setup-menu-path.png)
 
-*<small>CookiToolsメニュー内のSetup起動位置。画像をクリックすると拡大できます。</small>*
+*<small>Open Setup from the CookiTools menu. Click an image in this guide to enlarge it.</small>*
 
-- Face Rendererや衣装RendererをBodyとして指定しないでください。
-- 現在のSetupは、1回の導入につきBody Rendererを1つ追跡します。
-- Bodyに複数のMaterial Slotがある場合は、肌Materialに対応する正しい **汗の対象 Element** を選択します。通常はElement 0ですが、アバターによって異なります。
-- Effects Moduleだけを使用する場合も、パーティクルの放出元としてBody Meshの指定が必要です。Effectsのみの導入ではBodyのMaterial、Mesh、Rest Data、テッセレーションを変更しません。
-- Tangent不足の確認画面が表示された場合は **セーフコピーを作成（推奨）** を選択します。
+Keep the **Install** tab selected, then assign:
 
-自動検出が正しいBodyを選ばない場合は、Hierarchyから手動で指定してください。
+1. **Avatar** — the avatar root with the `VRCAvatarDescriptor`.
+2. **Body Mesh** — the skin-side `SkinnedMeshRenderer`.
+3. **Sweat Target Element** — the material Element/submesh that represents the skin.
 
-[![RealSweatSystem Setupの日本語Install画面](/img/guide/setup-japanese.png)](/img/guide/setup-japanese.png)
+- Select a child `SkinnedMeshRenderer` with a valid mesh.
+- The current installer supports **one Body Renderer per installation**.
+- Do not assign the Face Renderer to the Body field.
+- If the Body has several Elements, confirm the material name shown beside each **Sweat Target Element** entry instead of assuming Element 0 is correct.
+- Effects-only installation still needs the Body Mesh as the particle emission surface, but it does not modify the Body mesh or material.
 
-*<small>日本語表示のSetup画面。最初はアバター、ボディメッシュ、汗の対象Elementを重点的に確認します。</small>*
+Use **Detect** if needed. If auto-detection selects the wrong Renderer, drag the correct Body object into **Body Mesh** manually.
 
-## 4. 基本設定を確認
+[![RealSweatSystem Setup Install tab in English](/img/guide/setup-english.png)](/img/guide/setup-english.png)
 
-初回導入時の標準設定は次のとおりです。
+*<small>English Setup screen. For a first installation, focus on Avatar, Body Mesh, and Sweat Target Element.</small>*
 
-| Setupの項目 | 初期値 |
+## 4. Review the initial settings
+
+For a new installation, the full Setup defaults are:
+
+| Setup label | Default |
 |---|---|
-| 全体の汗量 | **少なめ (低負荷)** |
-| 自動モード感度 | **バランス** |
-| 描画順を自動設定（推奨） | **ON** |
-| 汗レンダーキュー | **2455** |
-| ボディの Shadow Strength に合わせる | **ON** |
-| 立体機能（テッセレーション）（高負荷）をインストール | **OFF（未搭載）** |
-| 立体表現の精密度 | **簡素 — 通常プレイ向け** |
-| 3D機能(テッセレーション)を初期状態でオン | **OFF** |
-| 自動モード | **ON** |
+| **Automatic render order (Recommended)** | **On** |
+| Sweat Render Queue | **2455** |
+| **Follow Body Shadow Strength** | **On** |
+| **Overall Sweat Amount** | **Low amount (Low Load)** |
+| **Auto Mode Sensitivity** | **Balanced — recommended motion-proportional response** |
+| **Install 3D Feature (Tessellation) (High Load)** | **Off** |
+| **3D Detail Precision** | **Simplified — General Play**; used only when 3D support is installed |
+| **Tessellation Default On** | **Off**; used only when 3D support is installed |
+| **Falling Drops** | **On** when Effects is installed |
+| **Enable Floor Stains** | **On** when Effects is installed |
+| **Breath Puffs** | **On** when Effects is installed |
+| **Steam** | **On** when Effects is installed |
+| **Steam Locations** | **Chest Hollow, Shoulders, Armpits, and Thighs On**; **Crotch and Feet Off** |
 
-立体機能を搭載しない場合は、軽いNo Tess Materialを1つだけ導入します。搭載した場合はTess / No Tessをインゲームで切り替えられますが、読み込み時の初期状態はNo Tessです。
+With automatic render order, the selected Body material must use Render Queue **2454 or lower**. Leave these defaults unchanged for the first test unless your avatar requires a documented exception.
 
-**描画順を自動設定（推奨）** がONの場合、汗MaterialのRender Queueは2455に固定されます。選択したBody MaterialのRender Queueは **2454以下** にしてください。2454以下にできない場合は、[対応環境・互換性](./compatibility.mdx#render-queueと影)の手動設定を確認してください。
-
-## 5. Setupを実行
-
-アバター、Body Mesh、汗の対象Elementをもう一度確認し、**Setup — 自動インストール / 更新** を押します。
-
-完了案内が表示されるまでUnityの操作を待ち、終了後にConsoleへ新しいエラーが出ていないことを確認します。Hierarchyのアバター配下に **RealSweat** オブジェクトが作成されていれば、詳細設定はそのInspectorから変更できます。
-
-## 6. Play Modeで確認
-
-Gesture ManagerなどでPlay Modeへ入ります。
-
-1. アバターメニューから **汗 > 汗オン** を有効にします。
-2. 自動モードは初期状態でONです。Manual操作を確認する間だけ **自動モード** をOFFにします。
-3. **汗 %** を0%、25%、50%、75%、100%の順に動かします。
-4. **自動モード** をONに戻し、身体の動きと停止に応じて汗の量が変化することを確認します。
-5. 導入した場合は **負荷を軽減** からパーティクルと立体効果を確認します。
-6. 顔の表情と既存のアバター機能も正常に動作することを確認します。
-
-[![Gesture Managerで表示したReal Sweat Systemのメインメニュー](/img/guide/gesture-menu-korean.png)](/img/guide/gesture-menu-korean.png)
-
-*<small>Real Sweat Systemのメインメニュー例。画像は韓国語表示ですが、項目の配置とアイコンは同じです。</small>*
-
-[![Gesture Managerで表示した汗 % のラジアルスライダー](/img/guide/gesture-sweat-percent-korean.png)](/img/guide/gesture-sweat-percent-korean.png)
-
-*<small>汗 %を手動確認するラジアルスライダー。Setupで選択した言語に応じて表示名が変わります。</small>*
-
-:::info[正常な結果]
-汗オンのまま0%にすると表現はほぼ見えませんが、システムは待機状態です。値を上げると汗が段階的に飛ばず、滑らかに増えます。汗オン自体をOFFにする動作とは異なります。
+:::tip[Recommended first installation]
+Leave **Install 3D Feature (Tessellation) (High Load)** off. No Tess is the normal low-load configuration and is enough to verify the system.
 :::
 
-## 次に読むページ
+## 5. Install or update
 
-- Manual / Auto Modeの違いとメニュー構成: [手動モードと自動モード](./usage/modes.mdx)
-- 汗量、感度、見た目の調整: [設定・調整ガイド](./usage/tuning.mdx)
-- 落下する滴、床の濡れ跡、息、湯気: [エフェクトガイド](./usage/effects.mdx)
-- 表示されない、メニューが無い、反映されない場合: [トラブル解決](./troubleshooting.mdx)
+Review the selected avatar, **Body Mesh**, and **Sweat Target Element**, then press **Setup — Install / Update**. Wait for Unity to finish before interacting with the project.
+
+If the tool reports missing tangents, choose **Create Safe Copy (Recommended)**. This creates a RealSweat-only mesh copy and leaves the source model import settings unchanged.
+
+Setup is complete when the tool reports a successful installation and Unity has finished importing the generated assets. Check the Console for new errors before entering Play Mode.
+
+## 6. Test in Play Mode
+
+Use Gesture Manager or another preview method:
+
+1. Open the avatar menu and turn **Sweat On** on.
+2. **Auto Mode is on by default. Turn it off temporarily** for the manual test.
+3. Move **Sweat %** through 0%, 25%, 50%, 75%, and 100%.
+4. Turn **Auto Mode** back on and compare tracked body movement with standing still.
+5. Open **Reduce Load** and check the controls installed by your package.
+6. Confirm that facial expressions and existing avatar controls still work.
+
+[![Real Sweat System main menu shown in Gesture Manager](/img/guide/gesture-menu-korean.png)](/img/guide/gesture-menu-korean.png)
+
+*<small>Main Real Sweat System menu. The screenshot is in Korean; labels follow the language selected in Setup, while the layout and icons remain the same.</small>*
+
+[![Sweat percentage radial slider shown in Gesture Manager](/img/guide/gesture-sweat-percent-korean.png)](/img/guide/gesture-sweat-percent-korean.png)
+
+*<small>Use this radial control to test Sweat % manually from 0% to 100%.</small>*
+
+:::info[Expected behavior]
+- **Sweat On + Sweat 0%** keeps the system ready. This is different from turning **Sweat On** off.
+- Manual Mode and Auto Mode use the same **Sweat %** value. Switching modes preserves the current value.
+- Auto Mode intentionally ignores WASD locomotion and jumping. Use tracked body movement such as dancing or torso motion when testing it.
+- Breath Puffs normally start above about 25% Sweat while the mouth is open. They are intentionally hidden from the wearer's first-person camera.
+- Steam normally begins fading in at about 30% Sweat.
+:::
+
+## What to read next
+
+- Learn how Manual and Auto Mode share one value in [Manual Mode & Auto Mode](./usage/modes.mdx).
+- Adjust appearance and automatic response in [Tuning Guide](./usage/tuning.mdx).
+- Review particle thresholds and facial input in [Effects Guide](./usage/effects.mdx).
+- If the result differs from this test, use the symptom links in [Troubleshooting](./troubleshooting.mdx).

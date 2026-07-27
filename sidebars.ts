@@ -5,13 +5,13 @@ const sidebars: SidebarsConfig = {
     'intro',
     {
       type: 'category',
-      label: 'はじめに',
+      label: 'Start Here',
       collapsed: false,
       items: ['package-guide', 'quick-start'],
     },
     {
       type: 'category',
-      label: '使い方',
+      label: 'Usage',
       collapsed: false,
       items: [
         'usage/modes',
@@ -22,13 +22,13 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
-      label: '問題解決',
+      label: 'Troubleshooting',
       collapsed: false,
       items: ['troubleshooting', 'compatibility'],
     },
     {
       type: 'category',
-      label: '上級・参考',
+      label: 'Advanced & Reference',
       collapsed: true,
       items: ['technical-specifications', 'tools'],
     },

@@ -1,82 +1,75 @@
 ---
 id: modes
-title: 手動モードと自動モード
+title: Manual Mode & Auto Mode
+description: How Sweat On, Sweat %, Manual Mode, and Auto Mode work together.
 ---
 
-# 手動モードと自動モード
+# Manual Mode & Auto Mode
 
-## インゲームメニュー
+## In-game menu
 
-Setupで導入したModuleとオプションに応じて、次のメニューが構成されます。
+The full menu is assembled from the modules and options installed during Setup.
 
 ```text
-汗
-├─ 汗オン
-├─ 汗 %
-├─ 自動モード
-└─ 負荷を軽減
-   ├─ 相手側を低負荷
-   ├─ 自分にだけ表示
-   ├─ パーティクル
-   │  ├─ 全パーティクル
-   │  ├─ 落下する滴
-   │  ├─ 床の濡れ跡
-   │  ├─ 息
-   │  └─ 湯気
-   └─ 立体効果（撮影用・高負荷）
+Sweat
+├─ Sweat On
+├─ Sweat %
+├─ Auto Mode
+└─ Reduce Load
+   ├─ Remote Low Load
+   ├─ Only Visible to Me
+   ├─ Particles
+   │  ├─ All Particles
+   │  ├─ Falling Drops
+   │  ├─ Floor Stains
+   │  ├─ Breath Puffs
+   │  └─ Steam
+   └─ 3D Effect (Photos Only, High Load)
 ```
 
-- **相手側を低負荷** はSweat Base Module導入時に表示されます。
-- **パーティクル** はSweat Effects Module導入時に表示されます。
-- **立体効果（撮影用・高負荷）** は立体機能（テッセレーション）を搭載した場合だけ表示されます。
+- **Remote Low Load** appears when Sweat Base Module is installed.
+- **Particles** appears when Sweat Effects Module is installed.
+- **3D Effect (Photos Only, High Load)** appears only when tessellation support is installed.
 
-導入していないModuleやオプションの項目は自動的に省略されます。
+Items for modules or options that are not installed are omitted automatically.
 
 ## Manual Mode
 
-アバターメニューで **自動モード** をOFFにし、Radial Menuの **汗 %** を0～100%で直接操作します。撮影、比較、固定した汗量での演出に向いています。
+Turn **Auto Mode** off and set **Sweat %** directly from 0–100%. Manual Mode is useful for photos, before-and-after comparisons, and scenes that need a fixed sweat level.
 
-自動モードは初期状態でONです。Manual操作を行うときだけOFFにしてください。
+Manual and Auto Mode do not keep separate values. Turning Auto Mode off preserves the current **Sweat %** as the manual value. Turning it on again continues from that value instead of resetting the gauge.
 
 ## Auto Mode
 
-Humanoidアバターでは、身体のローカルモーションに応じて汗の量が増え、動きを止めるとゆっくり減少します。
+**Auto Mode is on by default** after installation. It detects physical body movement: more movement builds Sweat % faster, and Sweat % gradually falls after movement stops.
 
-- 感度プリセットは動きに対する反応を調整します。
-- ユーザー指定の累積速度曲線は、汗の量の範囲ごとの増加傾向を調整します。
-- 感度と累積速度曲線は、どちらも自動モードへ反映されます。
-- 初期の感度プリセットは **バランス** です。
+Tracked motion such as dancing, squats, exercise-ball movement, and torso sway can drive the sensor. **WASD locomotion and jumping are intentionally excluded**, including a short settling delay after locomotion, so simply moving through a world does not make the avatar sweat.
 
-:::info[WASD移動とジャンプ]
-通常のWASD移動とジャンプは、意図的に運動量の計算から除外しています。ワールド内を移動しただけで汗が増えないようにし、頭・胸・腰などの実際のローカルモーションへ反応させる設計です。Desktopで身体の動きが少ない場合はManual Modeを使用してください。
-:::
+- **Auto Mode Sensitivity** controls how strongly movement is interpreted.
+- The **Custom Accumulation Speed Curve** changes the build rate across the Sweat % range.
+- Both settings contribute to Auto Mode.
 
-Non-Humanoidアバター、またはModular Avatar Bone Proxyを使用せず、必要なBone情報を取得できない構成ではManual Modeを使用してください。
+The default sensitivity preset is **Balanced**.
 
-## ManualとAutoは同じSweat %を共有
+Auto Mode requires a Humanoid avatar with the expected Modular Avatar bone setup. Non-humanoid avatars and avatars without the required bone reference can use Manual Mode.
 
-Manual ModeとAuto Modeは、同じ `Cooki/SweatAmount` を使用します。別々の汗量を保持する仕組みではありません。
+## Sweat On versus Sweat 0%
 
-- 自動モードをOFFにすると、最後のAuto値がそのままManual値として残ります。
-- Manualで値を変更して自動モードをONに戻すと、現在のManual値から続けて増減します。
-- モードを切り替えても汗の量が0%へリセットされることはありません。
+- **Sweat On + Sweat 0%:** the system remains ready, and Auto Mode can begin building sweat from zero.
+- **Sweat On off:** the sweat presentation is disabled.
 
-このため、Auto Modeで増えた状態を固定して撮影したい場合は、そのまま自動モードをOFFにできます。
+Use Sweat On at 0% when you want the avatar to begin dry and get wetter naturally after movement starts.
 
-## 汗オンと0%の違い
+## Quick behavior check
 
-- **汗オン + 汗 % 0%:** システムを待機状態に保ち、自動モードで0%から汗を増やせます。
-- **汗オン OFF:** 汗の表示を無効にします。
+1. Enable **Sweat On**.
+2. Turn the default Auto Mode off temporarily and inspect 0%, 25%, 50%, 75%, and 100%.
+3. Enable Auto Mode and move the avatar.
+4. Stop moving and confirm that the value falls gradually.
+5. Confirm there are no abrupt visual jumps while crossing the range.
 
-動き始める前は乾いた状態にし、その後自然に汗を増やしたい場合は、汗オンのまま0%から開始します。
+## Related guides
 
-## 動作確認
-
-1. **汗オン** を有効にします。
-2. **自動モード** をOFFにし、**汗 %** を0%、25%、50%、75%、100%で確認します。
-3. **自動モード** をONにしてアバターの身体を動かします。
-4. 動きを止め、値がゆっくり減少することを確認します。
-5. 自動モードをOFF、ONの順に切り替え、汗の量が維持されることを確認します。
-6. 汗量が範囲の途中で不自然に飛ばないことを確認します。
-
-感度や増加速度を変える場合は[設定・調整ガイド](./tuning.mdx)を確認してください。
+- Change movement response in [Tuning Guide](./tuning.mdx).
+- Check Breath Puffs and Steam thresholds in [Effects Guide](./effects.mdx).
+- If the gauge or toggle does not respond, see [Troubleshooting](../troubleshooting.mdx#sweat-on-or-auto-mode-does-not-work).

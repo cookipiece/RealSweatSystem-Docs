@@ -1,195 +1,195 @@
 ---
 id: tuning
-title: Setup・Tuning オプション一覧
-description: RealSweatSystem 1.0.2 の通常セットアップ項目と調整項目のリファレンスです。
+title: Setup & Tuning Option Reference
+description: Reference for every normal Setup and Tuning control in RealSweatSystem 1.0.2.
 ---
 
-# Setup・Tuning オプション一覧
+# Setup & Tuning Option Reference
 
-このページでは、RealSweatSystem 1.0.2 で通常ユーザーが操作する項目をまとめています。**Base** と記載された項目は Sweat Base Module、**Effects** は Sweat Effects Module がインストールされている場合に表示されます。
+This page documents the normal user-facing controls in RealSweatSystem 1.0.2. Controls marked **Base** appear when the Sweat Base Module is installed; controls marked **Effects** require the Sweat Effects Module.
 
-## Tuning コンポーネントを開く
+## Open the Tuning component
 
-Setup 後、Hierarchy でアバターを展開し、アバタールート直下に生成された **RealSweat** オブジェクトを選択します。Inspector の **RealSweatSystem Tuning** から調整できます。
+After Setup, expand the avatar in the Hierarchy and select the generated **RealSweat** object directly under the avatar root. Its Inspector contains **RealSweatSystem Tuning**.
 
-オブジェクトがない場合は **CookiTools > RealSweatSystem Setup／Uninstall** を開き、**Setup — 自動インストール / 更新** を実行してください。
+If the object is missing, open **CookiTools > RealSweatSystem Setup／Uninstall** and run **Setup — Install / Update**.
 
-[![RealSweatSystem Tuning 日本語 Inspector](/img/guide/tuning-japanese.png)](/img/guide/tuning-japanese.png)
+[![RealSweatSystem Tuning Inspector in English](/img/guide/tuning-english.png)](/img/guide/tuning-english.png)
 
-*<small>スクリーンショットの値はテストシーンの例であり、インストール初期値と異なる場合があります。</small>*
+*<small>The values in screenshots may come from a test scene and may differ from installation defaults.</small>*
 
-## 変更が反映されるタイミング
+## When changes take effect
 
-| 変更項目 | 反映タイミング |
+| Change | When it takes effect |
 |---|---|
-| **全体の汗量** | マテリアル品質は即時反映されます。濡れアニメーション・落下する滴・湯気も合わせるには **FXに適用** を押します。 |
-| **水滴サイズ / パターン密度** | Tess・No Tess の表面表示は即時反映されます。落下する滴と強い動きによる飛散サイズにも反映するには **FXに適用** を押します。 |
-| **立体表現の精密度** | インストール済み Tess マテリアルへ即時反映されます。 |
-| 自動反応・蓄積カーブ・保持時間・エフェクト・高度なFX設定 | **FXに適用** を押します。 |
-| Body マテリアルの Shadow Strength | **FXに適用** または Setup の再実行時にコピーされます。 |
-| 対象 Body・描画順・テッセレーション対応などの構成 | **Setup — 自動インストール / 更新** を再実行します。 |
+| **Overall Sweat Amount** | Material quality changes immediately. Press **Apply to FX** to also retune animated wetness, falling drops, and steam. |
+| **Droplet Size / Pattern Density** | The Tess and No Tess surface materials update immediately. Press **Apply to FX** to also refresh falling-drop and strong-movement-fling scale. |
+| **3D Detail Precision** | Updates the installed Tess material immediately. |
+| Automatic-response, accumulation-curve, retention, effect, and advanced FX values | Press **Apply to FX**. |
+| Body material Shadow Strength | Press **Apply to FX**, or run Setup again, to copy it. |
+| Setup structure, selected Body, render order, and installed tessellation support | Run **Setup — Install / Update**. |
 
-蓄積グラフは編集中の値をすぐに表示しますが、**FXに適用** を押すまでは生成済み FX を変更しません。
+The accumulation graphs preview pending values immediately, but they do not modify generated FX until **Apply to FX** is pressed.
 
-## Setup 画面のオプション
+## Setup window option reference
 
-| 項目 | モジュール | 初期値 | 内容 |
+| Control | Module | Default | Meaning |
 |---|---|---:|---|
-| **アバター** | 共通 | 未指定 | VRC Avatar Descriptor を持つ対象アバターです。 |
-| **ボディメッシュ** | 共通 | 自動検出 | 汗のシェルを表示する1つの SkinnedMeshRenderer です。 |
-| **汗の対象 Element** | Base | Element 0 | 再描画する Body のマテリアル / SubMesh 領域です。通常は Element 0 が肌です。 |
-| **描画順を自動設定（推奨）** | Base | ON | 汗の Render Queue を `2455` に設定します。対象 Body は `2454` 以下にしてください。 |
-| **汗のレンダーキュー（手動）** | Base | `2455` | 自動描画順をOFFにした場合に表示されます。Body より大きい値を指定します。 |
-| **ボディの Shadow Strength に合わせる** | Base | ON | Setup または **FXに適用** 実行時、対象 Body Element の `_ShadowStrength` を汗へコピーします。lilToon・Poiyomi 対応です。 |
-| **全体の汗量** | 共通 | 少なめ（低負荷） | 表面計算量と、濡れアニメーション・エフェクト量の基準を選びます。 |
-| **自動モード感度** | 共通 | バランス | 小さな身体の動きに Auto Mode がどれだけ反応するかを選びます。 |
-| **Write Defaults互換モード** | 共通 | 自動検出（推奨） | 外部FXがすべてWD ONの場合だけRealSweatもすべてWD ONにし、それ以外はDriver ON / Output OFF互換構成を使用します。 |
-| **立体機能（テッセレーション）（高負荷）をインストール** | Base | OFF | OFF は No Tess 1個のみ、ON は Tess と No Tess を同梱し、ゲーム内の立体機能切替を追加します。 |
-| **立体表現の精密度** | Base + Tess | 簡素 | インストールする Tess マテリアルの精密度です。 |
-| **3D機能（テッセレーション）を初期状態でオン** | Base + Tess | OFF | アバター読込直後のローカル立体表示を選びます。同時に表示される汗マテリアルは1つだけです。 |
-| **落下する滴** | Effects | ON | 身体から落下する汗粒子をインストールします。 |
-| **床の濡れ跡を有効化** | Effects | ON | 落下する滴が床に残す濡れ跡をインストールします。 |
-| **息** | Effects | ON | 口元の吐息エミッターをインストールします。 |
-| **湯気** | Effects | ON | 身体の湯気エミッターをインストールします。 |
-| **湯気の位置** | Effects | 胸元・両肩・脇・太ももON、股間・足OFF | Setup で生成する湯気エミッターの位置を選びます。 |
-| **Uninstall時に生成アセットも削除** | 共通 | OFF | アンインストール時に Bake・Material・Animation・Menu の生成物も削除します。残したい場合はOFFにします。 |
+| **Avatar** | All | None | Target object with a VRC Avatar Descriptor. |
+| **Body Mesh** | All | Auto-detect | The single SkinnedMeshRenderer that receives the sweat shell. |
+| **Sweat Target Element** | Base | Element 0 | Selects the Body material/submesh area to re-render. Element 0 is usually the main skin. |
+| **Automatic render order (Recommended)** | Base | On | Sets the sweat render queue to exactly `2455`. The selected Body material must be `2454` or lower. |
+| **Manual Sweat Render Queue** | Base | `2455` | Appears when automatic ordering is disabled. Set it above the selected Body material. |
+| **Follow Body Shadow Strength** | Base | On | Copies `_ShadowStrength` from the selected Body Element material to RealSweatSystem when Setup or **Apply to FX** runs. Supports lilToon and Poiyomi. |
+| **Overall Sweat Amount** | All | Low amount (Low Load) | Selects the surface calculation budget and matches animated wetness and effect intensity. |
+| **Auto Mode Sensitivity** | All | Balanced | Selects how strongly small body movement starts and builds automatic sweat. |
+| **Write Defaults Compatibility** | All | Auto Detect (Recommended) | Uses all-WD-ON RealSweat states only when every external FX state uses WD ON; otherwise uses the Driver ON / Output OFF compatible split. |
+| **Install 3D Feature (Tessellation) (High Load)** | Base | Off | Off uploads one No Tess material. On includes Tess and No Tess materials and adds the in-game 3D control. |
+| **3D Detail Precision** | Base + Tess | Simplified | Selects the tessellation precision of the installed 3D material. |
+| **Tessellation Default On** | Base + Tess | Off | Chooses the initial local 3D state after the avatar loads. Only one sweat material is active at a time. |
+| **Falling Drops** | Effects | On | Installs falling body-sweat particles. |
+| **Enable Floor Stains** | Effects | On | Installs wet floor marks made by Falling Drops. |
+| **Breath Puffs** | Effects | On | Installs the breath emitter. |
+| **Steam** | Effects | On | Installs body-steam emitters. |
+| **Steam Locations** | Effects | Chest, shoulders, armpits, thighs on; crotch and feet off | Chooses which body-steam emitters Setup creates. |
+| **Also delete generated assets on Uninstall** | All | Off | Removes generated bake, material, animation, and menu assets during Uninstall. Leave off when you want to keep them. |
 
-### Write Defaults互換モード
+### Write Defaults Compatibility
 
-- **自動検出（推奨）:** 外部FXがすべてWD ONの場合だけRealSweatもすべてWD ONにします。WD OFF、混在、または判定不能の場合はWD OFF互換構成を使用します。
-- **WD ON互換:** RealSweatのすべてのStateをWD ONに固定します。全WD ONのFXを必要とすることが明確なアバターまたはMMD環境でのみ使用してください。
-- **WD OFF互換:** WD OFFまたは混在アバター向けに、v1.0.1のDriver ON / Output OFF分離構成を維持します。
+- **Auto Detect (Recommended):** Uses WD ON for every RealSweat state only when every external FX state uses WD ON. WD OFF, mixed, or unknown setups use the WD OFF-compatible structure.
+- **WD ON Compatibility:** Forces every RealSweat state to WD ON. Use it only when an avatar or MMD environment is known to require an all-WD-ON FX controller.
+- **WD OFF Compatibility:** Keeps the v1.0.1 Driver ON / Output OFF split for WD OFF or mixed avatars.
 
-### 全体の汗量
+### Overall Sweat Amount
 
-- **少なめ（軽量化）:** 水滴計算量が最小です。部位や角度によってパターン接続部分に薄い線が見える場合があります。
-- **少なめ（低負荷）:** 初期値。低負荷を維持しながら、軽量化で出ることがある接続線を目立ちにくくします。
-- **普通（中負荷）:** 汗量が増え、表面計算量も大きくなります。
+- **Low amount (Lightweight):** smallest droplet calculation budget. A faint pattern-join line may appear on some body areas or viewing angles.
+- **Low amount (Low Load):** default; keeps the low-load target while hiding the common Lightweight join line.
+- **Standard amount (Medium Load):** more visible sweat and a larger calculation budget.
 
-アップロード前に、接写とミラーの両方で確認してください。汗量・パターン密度・画面占有率・テッセレーションは負荷が重なります。
+Test close-up views and mirrors before upload. Sweat amount, pattern density, screen coverage, and tessellation can compound GPU load.
 
-### テッセレーションの選択肢
+### Tessellation choices
 
-| 立体表現の精密度 | Tess係数 | 用途 | 相対負荷 |
+| 3D Detail Precision | Tess factor | Intended use | Relative load |
 |---|---:|---|---|
-| **簡素 — 通常プレイ向け** | `2.5` | 通常プレイ | Tess内で最小 |
-| **均衡 — 接写鑑賞向け** | `4` | 近距離鑑賞 | 高い |
-| **精密 — 写真撮影向け** | `7` | 静止画撮影 | 最も高い |
+| **Simplified — General Play** | `2.5` | Normal play | Lowest Tess option |
+| **Balanced — Close-up Viewing** | `4` | Close viewing | Higher |
+| **Precise — Photo Capture** | `7` | Still images | Highest |
 
-テッセレーション対応を入れても2つのマテリアルが同時描画されるわけではありません。メニューは Body の1スロットを Tess / No Tess のどちらかへ切り替えます。立体機能OFF時は本物の No Tess シェーダーとなり、Hull / Domain のテッセレーション処理は行われません。
+Installing tessellation does not make both materials render together. The menu switches one Body slot between Tess and No Tess. Disabling the in-game 3D feature uses the true No Tess shader, so hull/domain tessellation work is not performed.
 
-## Tuning オプション
+## Tuning option reference
 
-### 自動蓄積反応
+### Automatic Accumulation Response
 
-| 項目 | 初期値 | 内容 |
+| Control | Default | Meaning |
 |---|---:|---|
-| **感度プリセット** | バランス | **バランス**は動きの強さに比例し、**敏感**は小さな動きから早く最大反応へ到達します。変更時は反応開始点・飽和点・上昇 / 乾燥基準・平滑化がプリセット値に戻ります。 |
-| **汗の蓄積速度倍率** | `1.0` | プリセット全体の自動蓄積速度を倍率化します。範囲 `0.25–4.0`。 |
-| **水平感度（左右・前後）** | `1.0` | 左右・前後の反応です。範囲 `0.95–1.10`。 |
-| **上下感度** | `1.2` | 上下運動の反応です。範囲 `0.90–1.30`。小さな上下動やスクワットには `1.2` を推奨します。 |
-| **プレビュー方向** | 混合 | グラフ表示だけを切り替えます。ゲーム内では全方向が常に有効です。 |
-| **動作反応** | 折りたたみ | 現在の開始点・飽和点・平滑化・方向感度を表示するプレビューです。 |
-| **蓄積プロファイル** | 均一 | 現在の Sweat % に応じて蓄積速度を変えます。同期パラメータやランタイムレイヤーは増えません。 |
-| **詳細値** | 折りたたみ | 有効なカーブの `0/25/50/75/100%` 倍率を編集します。範囲 `0.1–2.0`。 |
-| **蓄積グラフ** | 折りたたみ | 一定運動を仮定したカーブと95%までの推定時間を表示します。実際の入力はアバターとアニメーションに依存します。 |
+| **Sensitivity Preset** | Balanced | **Balanced** follows movement strength. **Sensitive** reaches full response sooner and reacts more to small motion. Selecting a preset resets its response threshold, saturation point, rise/decay reference, and smoothing values. |
+| **Build Speed Multiplier** | `1.0` | Multiplies the preset's overall automatic build speed. Range `0.25–4.0`. |
+| **Horizontal Motion Sensitivity** | `1.0` | Left/right and forward/back response. Range `0.95–1.10`. |
+| **Vertical Motion Sensitivity** | `1.2` | Up/down response. Range `0.90–1.30`; `1.2` is recommended for small-travel bouncing and squats. |
+| **Preview Direction** | Mixed | Changes only the graph preview. All directions remain active in game. |
+| **Movement Response** | Folded | Shows the current threshold, saturation, smoothing, and directional response. It is a preview only. |
+| **Accumulation Profile** | Uniform | Shapes build speed across the current Sweat % without adding a synced parameter or runtime layer. |
+| **Detailed Values** | Folded | For an enabled curve, edits the five multipliers at `0/25/50/75/100%`. Range `0.1–2.0`. |
+| **Accumulation Graphs** | Folded | Shows the profile and an estimated timeline to 95% under steady movement. Actual PhysBone input depends on the avatar and animation. |
 
-蓄積プロファイル:
+Accumulation profiles:
 
-- **均一:** すべての Sweat % で同じ倍率です。新規インストールの初期値です。
-- **自然（推奨）:** 序盤を少し速くし、高い Sweat % ほど徐々に遅くします。
-- **序盤を速く:** 最初の蓄積を強くします。
-- **後半加速:** 序盤を遅くし、後半を速くします。
-- **カスタム:** 5点を直接編集します。
+- **Uniform:** the same multiplier at every Sweat %; new installations start here.
+- **Natural (Recommended):** slightly faster early build and gradually slower high-Sweat build.
+- **Fast Start:** strongly emphasizes the beginning.
+- **Late Acceleration:** starts slowly and becomes faster later.
+- **Custom:** enables direct editing of the five points.
 
-用意されたプロファイルは95%までの推定時間がほぼ同じになるよう調整されていますが、見た目の進み方と最後の5%は異なります。感度・蓄積速度倍率・方向感度・蓄積プロファイルはすべて Auto Mode に同時に影響します。
+The supplied profiles keep the estimated time to 95% nearly equal; the visible progression and final 5% can differ. Sensitivity, build-speed multiplier, directional sensitivity, and the accumulation profile all affect Auto Mode together.
 
-### 表面と共通項目
+### Surface and general controls
 
-| 項目 | モジュール | 初期値 | 内容 / 負荷 |
+| Control | Module | Default | Meaning / load |
 |---|---|---:|---|
-| **全体の汗量** | 共通 | 少なめ（低負荷） | Setup と同じ3段階です。マテリアルは即時、生成 FX は **FXに適用** 後に更新されます。GPU影響は中～大です。 |
-| **水滴サイズ** | Base | `1.35` | 身体表面の水滴サイズです。範囲 `0.5–2.0`。直接負荷は小さいですが、被覆が増えると表示が目立ちます。 |
-| **パターン密度** | Base | `24` | 大きいほど細かく密になります。範囲 `4–64`。大人数・接写環境では中程度を推奨します。 |
-| **3D機能を初期状態でオン** | Base + Tess | OFF | ロード直後のローカル立体表示です。描画回数は増えません。 |
-| **立体表現の精密度** | Base + Tess | 簡素 | Tess の精密度です。精密度が上がるほどGPU負荷が大きくなります。 |
-| **ボディの Shadow Strength に合わせる** | Base | ON | 常時リンクではなく値をコピーします。Body変更後は **FXに適用** を押します。 |
-| **汗の保持時間倍率** | 共通 | `1.0` | 乾燥時間の倍率です。大きいほど汗が長く残ります。範囲 `0.5–2.0`。 |
+| **Overall Sweat Amount** | All | Low amount (Low Load) | Same three presets as Setup. Material quality updates immediately; generated FX require **Apply to FX**. Medium to high GPU impact. |
+| **Droplet Size** | Base | `1.35` | Size of droplets attached to the body. Range `0.5–2.0`; low direct cost, but larger coverage can make the effect more visible. |
+| **Pattern Density** | Base | `24` | Higher values make cells smaller and denser. Range `4–64`; use moderate values for crowded or close-up scenes. |
+| **Tessellation Default On** | Base + Tess | Off | Initial local 3D state. This does not add a second draw. |
+| **3D Detail Precision** | Base + Tess | Simplified | Changes the active Tess material precision; GPU cost rises sharply with precision. |
+| **Follow Body Shadow Strength** | Base | On | Copies rather than continuously links the Body value. Press **Apply to FX** after changing the Body material. |
+| **Retention Time Multiplier** | All | `1.0` | Multiplies dry-off duration. Higher values keep sweat visible longer. Range `0.5–2.0`. |
 
-### エフェクトの有効 / 無効
+### Effect Toggles
 
-この項目は **Effects Module** がある場合のみ表示されます。
+This section appears only with the **Effects Module**.
 
-| 項目 | 初期値 | 内容 |
+| Control | Default | Meaning |
 |---|---:|---|
-| **落下する滴** | ON | 身体から落ちる汗を有効化します。 |
-| **ブルームのきらめき** | ON | 控えめなHDRハイライトを追加します。Bloom有効ワールドでのみBloomします。 |
-| **床の濡れ跡を有効化** | ON | 落下する滴による床の跡を有効化します。生成には落下する滴も必要です。 |
-| **息** | ON | 吐息を有効化します。 |
-| **湯気** | ON | 身体の湯気を有効化します。 |
-| **湯気の位置** | 胸元・両肩・脇・太ももON | インストール済みエミッターを有効化します。股間・足は初期OFFです。Setupで生成していない位置を追加するには、Setupを再実行してください。 |
+| **Falling Drops** | On | Enables falling body droplets. |
+| **Bloom Sparkle** | On | Adds a restrained HDR highlight to falling drops. Bloom appears only in worlds that enable bloom. |
+| **Enable Floor Stains** | On | Enables wet marks from falling drops. Falling Drops must be active to create them. |
+| **Breath Puffs** | On | Enables the breath emitter. |
+| **Steam** | On | Enables body steam. |
+| **Steam Locations** | Chest, shoulders, armpits, thighs on | Enables the installed emitters. Crotch and feet are off by default. If a location was not created by Setup, re-run Setup before expecting the toggle to add it. |
 
-## 高度なFX調整
+## Advanced FX Tuning
 
-高度な項目は生成 Animation / Particle を変更するため、**FXに適用** が必要です。**カテゴリ初期値に戻す** はそのカテゴリだけを戻します。
+Advanced controls modify generated animation or particle assets and require **Apply to FX**. Use **Restore Category Defaults** to reset only one group.
 
-### 自動反応
+### Automatic Response
 
-| 項目 | 初期値 | 内容 |
+| Control | Default | Meaning |
 |---|---:|---|
-| **反応開始点** | バランス `0.04`、敏感 `0.015` | 自動蓄積を開始する運動量です。 |
-| **飽和点** | バランス `0.35`、敏感 `0.18` | 上昇速度が最大反応へ到達する運動量です。 |
-| **平滑化** | バランス `0.12`、敏感 `0.16` | 大きいほど素早く、小さいほど重く反応します。 |
-| **汗の蓄積抵抗（%）** | `100%` | 高い Sweat % の蓄積を徐々に抑えます。強い動きは最大効率を維持し、`0%` で旧式反応に戻ります。 |
-| **移動再開待ち時間** | `1秒` | WASD / Jump停止後、振り子入力で再び蓄積できるまでの時間です。 |
-| **落下滴回復時間** | `3秒` | 停止後に落下滴の活性が落ち着く時間です。 |
-| **運動回復時間** | `9秒` | 身体熱に使う中間運動段階の回復時間です。吐息の表示そのものではありません。 |
-| **身体熱回復時間** | `30秒` | 湯気周期補正の回復時間です。 |
-| **振り子ボーン** | Hips | モーションセンサーの取付先です。Chest・Head・左右Handも選べますが、Head / Handは敏感設定で過反応しやすくなります。 |
+| **Response Threshold** | Balanced `0.04`; Sensitive `0.015` | Motion level where automatic build starts. |
+| **Saturation Point** | Balanced `0.35`; Sensitive `0.18` | Motion level where the rise rate reaches full response. |
+| **Smoothing** | Balanced `0.12`; Sensitive `0.16` | Higher values respond faster; lower values feel heavier. |
+| **Sweat Accumulation Resistance (%)** | `100%` | Gradually resists high-Sweat buildup while preserving full-strength motion. `0%` restores the legacy response. |
+| **Movement Resume Delay** | `1 s` | Delay after locomotion or jumping stops before pendulum motion can raise sweat again. |
+| **Drop Recovery Time** | `3 s` | How quickly falling-drop activity settles after movement stops. |
+| **Exertion Recovery Time** | `9 s` | Recovery of the intermediate exertion stage used by body heat, not breath-puff visibility. |
+| **Body Heat Recovery Time** | `30 s` | Recovery of the body-steam cadence modifier. |
+| **Pendulum Bone** | Hips | Motion sensor attachment. Chest, head, and hands are available; head/hands can overreact, especially with Sensitive. |
 
-### Effects Module の高度なカテゴリ
+### Effects Module advanced groups
 
-| カテゴリ | 操作項目 | カテゴリ初期値 |
+| Group | User-facing controls | Category defaults |
 |---|---|---|
-| **落下する滴** | 量・落下速度・寿命・サイズ・長さ倍率、強い動きによる飛散、飛散しきい値・確率・クールダウン・最小 / 最大数 | 倍率 `1.0`、飛散ON、しきい値 / 確率 `0.55`、クールダウン `3.5秒`、`2–5個` |
-| **床の濡れ跡** | 寿命・サイズ・不透明度、中心乾燥コントラスト、溜まり確率 | 倍率 `1.0`、コントラスト `0.75`、確率 `0.25` |
-| **湯気** | 開始Sweat %、密度・上昇速度・寿命・サイズ・広がり・不透明度 | 開始 `30%`、倍率 `1.0` |
-| **息** | 開始Sweat %、口のゲート・パラメータ・開口しきい値、量・速度・寿命・サイズ・広がり・不透明度・周期速度 | 開始 `25%`、Auto、`v2/JawOpen`、開口 `0.2`、倍率 `1.0` |
-| **パフォーマンス上限** | 落下滴・床跡・湯気・吐息の最大パーティクル数 | 落下滴 `64`、床跡 `80`、湯気 `24` / emitter、吐息 `48` |
+| **Falling Drops** | Rate, fall speed, lifetime, size, and length multipliers; Strong Movement Fling; fling threshold, chance, cooldown, and burst min/max | Multipliers `1.0`; fling on; threshold/chance `0.55`; cooldown `3.5 s`; burst `2–5` |
+| **Floor Stains** | Lifetime, size, opacity, center-drying contrast, pooling chance | Multipliers `1.0`; contrast `0.75`; pooling `0.25` |
+| **Steam** | Start threshold; density, rise speed, lifetime, size, spread, opacity | Threshold `30%`; multipliers `1.0` |
+| **Breath Puffs** | Start threshold; mouth gate; mouth parameter and threshold; amount, speed, lifetime, size, spread, opacity, cycle speed | Threshold `25%`; gate Auto; parameter `v2/JawOpen`; mouth threshold `0.2`; multipliers `1.0` |
+| **Performance Limits** | Drop, stain, steam, and breath maximum-particle limits | Drop `64`, stain `80`, steam `24` per emitter, breath `48` |
 
-**息の口ゲート**:
+**Breath Mouth Gate** options:
 
-- **常時:** 口の動きで制限しません。
-- **Viseme（リップシンク）:** VRChat の Viseme を使います。
-- **カスタムパラメータ（VRCFT）:** 指定Floatと開口しきい値を使います。
-- **自動（VRCFT優先、Viseme代替）:** 変化中の VRCFT `JawOpen` を優先し、開閉変化が8秒間ない場合は Viseme へ切り替えます。
+- **Always:** breath is not gated by mouth movement.
+- **Viseme (lipsync):** uses VRChat viseme lip sync.
+- **Custom Parameter (VRCFT):** uses the selected float parameter and mouth-open threshold.
+- **Auto (active VRCFT, Viseme fallback):** prefers a changing VRCFT `JawOpen` float, then falls back to Viseme after eight seconds without an open/close change.
 
-## 汗マテリアルのマップ
+## Sweat material maps
 
-以下は Tuning コンポーネントではなく、生成された RealSweat マテリアルの Inspector にある項目です。
+These are material controls, not fields on the Tuning component. Open the generated RealSweat material Inspector.
 
-| 項目 | 場所 | 用途 | 重要設定 |
+| Control | Location | Purpose | Important settings |
 |---|---|---|---|
-| **スポーンマスク（白 = 発生）** | **基本 > スポーンマスク** | 白は水滴を許可、黒は非表示、グレーは部分的に制限します。不要なUV領域から汗を消せます。 | UV0・Rチャンネルを使用します。 |
-| **フローガイドマップ（任意）** | **流れとトレイル > フローガイドマップ（任意）** | UV0タンジェント方向で流れる水滴と跡を誘導します。 | RGデータテクスチャ。中立は `(0.5, 0.5)` のグレーです。**sRGB OFF**、**Generate Mip Maps ON**。強度 `0` は世界重力のみで追加サンプルなし、開始目安は `0.35–0.65` です。 |
-| **ボディノーマルマップ（溜まり / 光沢のみ）** | **高度 > ボディノーマル — 濡れ表現のみ** | 濡れハイライトと皺への水溜まりを変えます。 | 水滴や跡の方向は変えません。方向には Flow Guide Map を使います。 |
+| **Spawn Mask (White = Spawn)** | **Basic > Spawn Mask** | White allows droplets, black prevents them, and gray gives partial coverage. Use it to keep sweat off unwanted UV areas. | Uses UV0 and the red channel. |
+| **Flow Guide Map (Optional)** | **Flow & Trails > Flow Guide Map (Optional)** | Steers flowing droplets and trails with an artist-authored UV0 tangent direction. | RG data texture; neutral is `(0.5, 0.5)` gray. Turn **sRGB Off** and **Generate Mip Maps On**. Strength `0` keeps world-gravity flow and avoids the guide-map sample; `0.35–0.65` is a useful starting range. |
+| **Body Normal Map (Fold / Sheen Only)** | **Advanced > Body Normal — Wet Look Only** | Changes wet highlights and fold pooling. | It does **not** steer droplets or trails. Use Flow Guide Map for direction. |
 
-## 相手側を低負荷・ミラー
+## Remote Low Load and mirrors
 
-**相手側を低負荷（Remote Low Load）** はアバターメニューの項目であり、Tuning Inspector の項目ではありません。テッセレーション対応の有無に関係なくインストールされます。
+**Remote Low Load** is an avatar-menu control, not a Tuning Inspector field. It is installed in both configurations:
 
-- Tess対応あり: 相手側は No Tess マテリアルと内蔵 Lite 経路を使用します。
-- Tess対応なし: 同じ No Tess マテリアルが内蔵 Lite 経路へ切り替わります。
-- 別の「Performance material」は使いません。所有者自身のローカル表示も低下しません。
+- With tessellation support, other viewers use the No Tess material and its built-in Lite path.
+- Without tessellation support, the same No Tess material switches to its built-in Lite path.
+- It does not use a separate “Performance material,” and it does not lower the owner's local view.
 
-ミラーカメラでは低負荷の光学経路が自動的に使われます。近距離の一部光学表現はミラー内で意図的に簡略化されます。Tuning にミラー品質の手動スイッチはありません。
+Mirror cameras automatically use a lower-cost optical path. Some close-range optical details are intentionally simplified in mirrors. There is no user-facing mirror-quality switch in Tuning.
 
-:::warning[負荷が重なりやすい組み合わせ]
-多い汗量、高いパターン密度、接写による大きな画面占有、ミラー、テッセレーションを同時に使うとGPU負荷が重なります。大きな項目は1つずつ変更し、アップロード後のアバターで確認してください。
+:::warning[Combined GPU load]
+High sweat amount, high pattern density, close-up screen coverage, mirrors, and tessellation can compound GPU load. Change one major setting at a time and test the uploaded avatar.
 :::
 
-## 次に読むページ
+## What to read next
 
-- 低負荷設定の比較: [パフォーマンスガイド](../performance.mdx)
-- 描画順とマテリアル条件: [互換性](../compatibility.mdx)
-- 値が反映されない場合: [トラブルシューティング](../troubleshooting.mdx#tuningの変更が反映されない)
+- Compare load-saving choices in [Performance Guide](../performance.mdx).
+- Check render-order and material requirements in [Compatibility](../compatibility.mdx).
+- If a value appears to do nothing, see [Troubleshooting](../troubleshooting.mdx#tuning-changes-are-not-applied).

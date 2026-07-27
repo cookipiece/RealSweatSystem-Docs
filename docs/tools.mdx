@@ -1,149 +1,121 @@
 ---
 id: tools
-title: 補助ツール
-sidebar_label: 補助ツール
-description: RealSweatSystem Clothing Fix と Rest Vertex Data Baker の使用方法。
+title: Auxiliary Tools
+description: When and how to use Clothing Fix and Rest Vertex Data Baker.
 ---
 
-# 補助ツール
+# Auxiliary Tools
 
-通常の導入はSetupだけで完了します。このページのツールは、特定の衣装や高度な改変で追加作業が必要な場合に使用してください。
+These tools are intended for specific compatibility or maintenance cases. A normal Real Sweat System installation does not require either tool.
 
-どちらのメニューも **Sweat Base Module** を導入している場合に使用できます。
+Both menu items are available when **Sweat Base Module** is installed.
 
 ## RealSweatSystem Clothing Fix
 
-立体機能（テッセレーション）を使用した時に、水滴が衣装を貫通して見える場合のRender Queue調整ツールです。**Real Sweat SystemのSetup完了後**に使用します。
+Use **RealSweatSystem Clothing Fix** only after Setup when tessellated droplets visibly pass through clothing. No Tess users normally do not need it.
 
-Unity上部メニューの **CookiTools > RealSweatSystem Clothing Fix** から開きます。
+Open it from the Unity top menu at **CookiTools > RealSweatSystem Clothing Fix**.
 
-通常のSetupは元のBody Materialを変更せず、Poiyomi Lockも解除しません。Lock済みの衣装Materialは、Clothing Fixの処理中だけ自動でUnlockされ、処理完了後に自動で再Lockされます。
+Normal Setup does not modify the original Body material or unlock its Poiyomi Lock. Locked clothing materials are automatically unlocked only while Clothing Fix runs, then automatically relocked when processing finishes.
 
-:::info[No Tessの場合]
-No Tessだけを使用するアバターでは、通常このツールは必要ありません。
+### Recommended flow
+
+1. Finish the main Real Sweat System Setup first.
+2. Select the avatar in Clothing Fix.
+3. Drag or add the affected clothing Renderers.
+4. Review the Render Queue preview before applying changes.
+5. Choose **Apply with Material Copies (Recommended)**.
+6. Check the avatar in Play Mode and in the intended world or lighting setup.
+
+The recommended mode creates material copies for the selected clothing. **Direct mode** edits the original material assets, so the change appears everywhere those materials are used.
+
+Use **Restore Tracked Clothing Changes** to restore changes that Clothing Fix is tracking.
+
+:::warning[Render-order side effects]
+Only materials whose Render Queue is at or below the Sweat Render Queue are changed. Render ordering for transparent, cutout, decal, outline, or layered materials can affect appearance, so review the preview and test the result before upload.
 :::
 
-### 基本手順
+## Rest Vertex Data Baker (Advanced)
 
-1. 対象アバターを選択します。
-2. 調整したい衣装Rendererをドラッグするか、一覧へ追加します。
-3. Queue Previewで変更対象と変更後の値を確認します。
-4. 原則として **マテリアル複製で適用（推奨）** を使用します。
-5. Play Modeとアップロード前のBuildで、表示順と衣装の見た目を確認します。
+Setup automatically creates the Rest Position, Rest Normal, and Rest Tangent data required by Real Sweat System. Normal installations do not use **Rest Vertex Data Baker** directly.
 
-**マテリアル複製で適用（推奨）** は調整用Material Copyを作成して適用するため、元のMaterial Assetを保護しやすい方法です。
+Use this advanced tool only when you need to:
 
-:::warning[Direct Mode]
-Direct Modeは元のMaterial Assetを直接変更します。同じMaterialを使う他の衣装、Prefab、Sceneにも変更が反映されるため、影響範囲を理解している場合だけ使用してください。
-:::
+- replace the final Body mesh after Setup;
+- prepare compatible custom materials;
+- recover or diagnose missing Rest data.
 
-### 変更対象
+### Basic flow
 
-- 汗MaterialのQueue以下にある衣装Materialだけが調整対象です。
-- 汗Materialより後に描画されるMaterialは変更されません。
-- Transparent、Cutout、Decal、Outline、複数Layerを使用するMaterialは、Render Queue変更によって表示順や見た目が変わる場合があります。
+1. Select the target Renderer and a compatible material.
+2. Run **1. Analyze Mesh** and review the result.
+3. Run **2. Bake And Assign**.
+4. Run **3. Validate Assigned Data** and confirm that the assigned data matches the target.
+5. Verify the result before upload.
 
-適用前にQueue Previewを確認し、適用後は透明部分、輪郭、Decal、Layer同士の順序を必ず確認してください。
+Bake again whenever the target mesh is replaced or updated.
 
-### 元に戻す
+The target must be a SkinnedMeshRenderer with a valid shared mesh. If Unity cannot read the mesh, temporarily enable **Read/Write Enabled** in the FBX Import Settings; it can be disabled again after baking.
 
-ツールが追跡している変更は **追跡中の衣装変更を復元** で復元できます。元Materialを直接編集した場合に備え、作業前にPrefabまたはUnityプロジェクトのBackupも作成してください。
+**Overwrite previous bake** replaces generated Rest assets with the same names. Back up the previous data first if you need to keep it.
 
-## Rest Vertex Data Baker（上級）
-
-Rest Vertex Data Bakerは、高度なMesh構成や復旧作業に使用する補助ツールです。Rest Position、Rest Normal、Rest TangentのデータはSetupが自動作成するため、**通常のユーザーが手動で実行する必要はありません。**
-
-### 使用する場面
-
-- Setup後に最終Body Meshを別のMeshへ置き換えた
-- 対応するCustom MaterialへRest Dataを割り当てたい
-- Rest Dataの復旧または診断が必要
-
-### 基本手順
-
-1. 対象Rendererと互換性のあるMaterialを選択します。
-2. **1. メッシュを解析** を実行し、対象と警告を確認します。
-3. 問題が無ければ **2. ベイクして割り当て** を実行します。
-4. **3. 割り当てデータを検証** で結果を確認します。
-5. Play ModeとBuildで表示を確認します。
-
-Meshを交換または更新した場合は、交換後の最終Meshに対して再度Bakeしてください。
-
-対象は有効なsharedMeshを持つSkinnedMeshRendererです。Meshを読み取れない場合はFBX Import SettingsのRead/Write Enabledを一時的に有効にし、Bake完了後に戻せます。
-
-**以前のベイクを上書き** は同じ名前の生成済みRest Assetを置き換えます。以前のデータを残す必要がある場合は、先にBackupを作成してください。
-
-:::info[変更されないもの]
-Bakerは元のFBX、RendererのsharedMesh、UV、BlendShape、他のMaterialを変更しません。
-:::
+The baker does not modify the source FBX, the Renderer’s shared mesh, UVs, blend shapes, or unrelated materials.
 
 :::warning
-互換性のないRendererやMaterialを選択したまま実行しないでください。通常のSetupで問題なく動作している場合は、Bakerを追加実行しないでください。
+Do not force the baker to run with an incompatible Renderer or material. If the normal Setup works correctly, do not run an additional manual bake.
 :::
 
 <details id={'unsupported-face-body'}>
-<summary><strong>上級者向け：FaceとBodyへ同時に適用する手動参考手順</strong></summary>
+<summary><strong>Not recommended / unsupported: manual Face + Body setup</strong></summary>
 
-:::danger[非推奨・公式サポート対象外]
-お問い合わせが多いため参考手順を掲載していますが、公式機能ではなく推奨していません。環境差が大きいため、導入支援、個別環境の調査、Update後の維持、動作保証はサポート対象外です。必ずアバターまたはUnityプロジェクトをBackupしてから作業してください。
+:::danger[Reference only — not officially supported]
+This procedure is documented because it is frequently requested, but it is not an official feature and is not recommended. Environment-specific installation help, troubleshooting, maintenance after updates, and operation guarantees are outside official support. Back up the avatar or Unity project before making any changes.
 :::
 
-現行版が正式に追跡する汗の表示対象は、Body側の1つの `SkinnedMeshRenderer` です。FaceとBodyが別Rendererの場合、通常のSetupでは同時適用できません。
+The current official implementation tracks one Body-side SkinnedMeshRenderer as the sweat display target. When Face and Body use separate Renderers, the normal Setup cannot install sweat on both at once.
 
-Faceへ汗Materialだけを追加すると、生成AnimationはBodyのHierarchy Pathだけを制御するため、Face側の汗が流れ続ける場合があります。また、FaceとBodyにはMeshごとに異なるRest Vertex Dataが必要なので、同じ汗Materialを共有できません。
+Adding only a sweat material to the Face can leave it permanently wet because the generated animations target only the Body path. Face and Body also require different Rest Vertex Data for their respective meshes, so they must not share one sweat material.
 
-### この手順を使用できる条件
+**Required experience before continuing**
 
-次の操作を自分で戻せる上級者だけを対象とします。
+This procedure assumes that you can safely edit a Renderer **Materials** array, inspect Unity Animation Clips in the Animation window, add material curves, and identify a Transform path relative to the avatar root. If those operations are unfamiliar, stop here and use the supported Body-only installation. Complete all normal Setup and Tuning work first, and keep a restorable avatar or project backup.
 
-- UnityのRenderer `Materials` ArrayとSubMeshの対応を確認できる
-- Animation WindowでProperty、Binding Type、Hierarchy Pathを追加・削除できる
-- Face専用MaterialとRest Assetの参照関係を管理できる
-- SetupまたはOptimizer実行後に、手動変更が消えたか判定できる
+**Manual procedure**
 
-### 手動手順
-
-1. 通常どおりBodyへReal Sweat SystemをSetupし、先にBody、Menu、自動モードが正常に動くことを確認します。
-2. Bodyに生成されたNo Tessellation版の汗Materialを複製し、Face専用MaterialとしてReal Sweat Systemの生成Folder外へ保存します。BodyとFaceで同じ汗Materialを共有しないでください。
-3. Face RendererのInspectorで `Materials` の元の **Size** を記録し、**Sizeを1増やします**。新しく作られた最後の `Element` にFace専用Materialを割り当てます。既存のFace Materialを置き換えないでください。
-4. **CookiTools > Rest Vertex Data Baker** を開き、Target RendererにFace、Target MaterialにFace専用Materialを指定します。**1. メッシュを解析**、**2. ベイクして割り当て**、**3. 割り当てデータを検証** の順に実行します。
-5. Real Sweat Systemの生成Folderにある次のAnimation Clipを開きます。
+1. Install Real Sweat System on the Body normally.
+2. Duplicate the generated No Tessellation sweat material and save the Face-only copy outside the Real Sweat System generated folder. Do not share the same sweat material between Body and Face.
+3. Select the Face Renderer. In its **Materials** array, increase **Size** by `1`, then assign the Face-only material to the newly created **last Element**. Do not replace any existing Face material.
+4. Open **CookiTools > Rest Vertex Data Baker**. Set Target Renderer to the Face and Target Material to the Face-only material, then run **1. Analyze Mesh**, **2. Bake And Assign**, and **3. Validate Assigned Data** in order.
+5. Open these Animation Clips in the Real Sweat System generated folder:
 
    - `RealSweat_Off.anim`
    - `RealSweat_LocalOnlyHidden.anim`
    - `RealSweat_Mid.anim`
    - `RealSweat_On.anim`
 
-6. 各ClipにあるBody Renderer用の次のMaterial Curveを、値を変えずにFace Rendererへも追加します。
+6. In every Clip, copy the following Body Renderer material curves to the Face Renderer without changing their values. Keep the Binding Type as `SkinnedMeshRenderer`. The binding path must be relative to the avatar root: for example, if the avatar root contains `Body/Face`, use `Body/Face`, not the Scene path or the avatar root name.
 
    - `material._DropletAmount`
    - `material._SweatBuildUp`
    - `material._RuntimeWarmup`
 
-   Animation Curve Bindingは次の条件にします。
+7. Test Off, 0%, 50%, and 100% in both Manual Mode and Auto Mode.
 
-   - **Type:** `SkinnedMeshRenderer`
-   - **Path:** Avatar RootからFace Rendererまでの相対Hierarchy Path
-   - **Property:** 上記と同じ3つのMaterial Property
+**Rollback**
 
-   例としてHierarchyが `AvatarRoot/Armature/Body/Face` の場合、Binding Pathは `Armature/Body/Face` です。Avatar Root自身の名前は含めません。Body CurveのPathをそのまま複製せず、Face Rendererの実際の相対Pathへ変更してください。
-7. Manual ModeとAuto Modeの両方で、0%、50%、100%、汗オンOFF、自分にだけ表示を確認します。
+1. Exit Play Mode and restore the backup if any step is uncertain.
+2. Run **Setup — Install / Update** to regenerate the standard Clips without the manual Face curves.
+3. Reduce the Face Renderer **Materials > Size** by `1` to remove only the extra last Element. Do not remove an original Face material.
+4. Delete the Face-only material and its manually baked Rest assets only after confirming that no Renderer or material still references them.
+5. Test the supported Body-only installation again before upload.
 
-### 手動で元に戻す
+**Known limitations**
 
-1. Play Modeを終了します。
-2. Face Rendererの `Materials` を作業前のSizeへ戻し、最後に追加したFace専用Materialを外します。
-3. **Setup — 自動インストール / 更新** を実行して生成Clipを再作成するか、4つのClipからFace Pathへ追加した各3本のCurveを手動削除します。
-4. Face専用MaterialがFace RendererやAnimationから参照されていないことを確認し、そのMaterialとFace用Rest Assetが不要なら削除します。
-5. 元のMaterials Sizeや手動変更箇所が分からない場合は、作業前のBackupへ戻します。
-
-### 既知の制限
-
-- Face側はNo Tessellation固定です。**立体効果（撮影用・高負荷）** と **相手側を低負荷** はFaceへ適用されません。ただし、`RealSweat_LocalOnlyHidden`にもFace Curveを追加していれば、**自分にだけ表示** の時は相手側に表示されるFaceの汗量も0になります。
-- Faceが複数SubMeshの場合、追加した最後のMaterialが目的の肌SubMeshへ描画されない場合があります。
-- Setupまたは **FX に適用** を実行すると生成Clipが再作成され、手動追加したFace Curveは削除されます。通常設定をすべて完了した最後の段階でFace Curveを追加し、再実行した場合は同じ作業をやり直してください。
-- Tuningが追跡するMaterialはBody側だけです。全体の汗量、品質、水滴サイズなどを後から変更しても、Face専用Materialへ自動同期されない場合があります。
-- Face RendererのHierarchy Path変更、Mesh交換、Mesh Optimizer、Mesh結合後はAnimation BindingまたはRest Dataが無効になる場合があります。
-- Face Tracking、Animator、他の改変ツールとの全組み合わせは検証していません。
+- The Face remains No Tessellation. **3D Effect (Photos Only, High Load)** and **Remote Low Load** do not apply to the Face. However, if Face curves were also added to `RealSweat_LocalOnlyHidden`, **Only Visible to Me** reduces the Face sweat amount to zero for remote viewers.
+- With multiple Face submeshes, an added material may not render on the intended skin submesh.
+- Running Setup or Apply to FX rebuilds the generated Clips and removes the manually added Face curves. Add the Face curves only after all normal settings are complete, and repeat the curve work after either command is run again.
+- Tuning tracks only the Body-side materials. Later changes to material-driven settings such as overall sweat amount, quality, or droplet size may not synchronize to the Face-only material.
+- Changing the Face Renderer hierarchy path, replacing the mesh, running a mesh optimizer, or merging meshes can invalidate the animation bindings or Rest data.
+- Not every combination of face tracking, Animator setup, and avatar modification tools has been tested.
 
 </details>

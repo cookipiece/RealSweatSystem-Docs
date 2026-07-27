@@ -4,15 +4,15 @@
     "description": "The alt text of navbar logo"
   },
   "item.label.Docs": {
-    "message": "문서",
+    "message": "ドキュメント",
     "description": "Navbar item with label Docs"
   },
   "item.label.Quick Start": {
-    "message": "빠른 시작",
+    "message": "クイックスタート",
     "description": "Navbar item with label Quick Start"
   },
   "item.label.Troubleshooting": {
-    "message": "문제 해결",
+    "message": "トラブル解決",
     "description": "Navbar item with label Troubleshooting"
   },
   "item.label.BOOTH": {

@@ -3,20 +3,20 @@
                           "message":  "v1.0.2",
                           "description":  "The label for version current"
                       },
-    "sidebar.docsSidebar.category.はじめに":  {
+    "sidebar.docsSidebar.category.Start Here":  {
                                               "message":  "시작하기",
-                                              "description":  "The label for category \u0027はじめに\u0027 in sidebar \u0027docsSidebar\u0027"
+                                              "description":  "The label for category \u0027Start Here\u0027 in sidebar \u0027docsSidebar\u0027"
                                           },
-    "sidebar.docsSidebar.category.使い方":  {
+    "sidebar.docsSidebar.category.Usage":  {
                                              "message":  "사용법",
-                                             "description":  "The label for category \u0027使い方\u0027 in sidebar \u0027docsSidebar\u0027"
+                                             "description":  "The label for category \u0027Usage\u0027 in sidebar \u0027docsSidebar\u0027"
                                          },
-    "sidebar.docsSidebar.category.問題解決":  {
+    "sidebar.docsSidebar.category.Troubleshooting":  {
                                               "message":  "문제 해결",
-                                              "description":  "The label for category \u0027問題解決\u0027 in sidebar \u0027docsSidebar\u0027"
+                                              "description":  "The label for category \u0027Troubleshooting\u0027 in sidebar \u0027docsSidebar\u0027"
                                           },
-    "sidebar.docsSidebar.category.上級・参考":  {
+    "sidebar.docsSidebar.category.Advanced \u0026 Reference":  {
                                                "message":  "고급·참고",
-                                               "description":  "The label for category \u0027上級・参考\u0027 in sidebar \u0027docsSidebar\u0027"
+                                               "description":  "The label for category \u0027Advanced \u0026 Reference\u0027 in sidebar \u0027docsSidebar\u0027"
                                            }
 }

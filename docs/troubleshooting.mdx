@@ -1,297 +1,294 @@
 ---
 id: troubleshooting
-title: トラブル解決
-description: 表示、メニュー、Tuning、Animator、Mesh、Effect、Downloadの問題を症状別に確認します。
+title: Troubleshooting
+description: Diagnose common installation, animation, mesh, effect, and download issues.
 ---
 
-# トラブル解決
+# Troubleshooting
 
-まずConsoleをClearし、問題を1回だけ再現して **最初に出たエラー** を確認してください。後続エラーは最初の問題から連続して発生している場合があります。
+Clear the Unity Console, reproduce the issue once, and begin with the **first error**. Later errors are often consequences of the first one.
 
-## 症状からすぐ探す
+## Quick symptom index
 
-- [汗がまったく見えない](#汗がまったく見えない)
-- [アバターメニューが無い・一部だけ無い](#アバターメニューが無い一部だけ無い)
-- [Tuningの変更が反映されない](#tuningの変更が反映されない)
-- [Import・Shader Compileが長い](#importshader-compileが長い)
-- [Play Modeで顔が崩れる](#play-modeで顔が崩れる)
-- [MMDダンス中に表情・リップシンクが動作しない](#mmdダンス中に表情リップシンクが動作しない)
-- [Unityでは正常、VRChat内だけ壊れる](#unityでは正常vrchat内だけ壊れる)
-- [既存のPhysBoneが導入後に動かない](#既存のphysboneが導入後に動かない)
-- [`Invalid localAABB. Object transform is corrupt.` がExhaleを示す](#invalid-localaabb-object-transform-is-corrupt-がexhaleを示す)
-- [Microsoft Defenderが警告する](#microsoft-defenderがダウンロードを警告遮断する)
-- [よくある使い方のヒント](#よくある使い方のヒント)
+- [No sweat is visible](#no-sweat-is-visible)
+- [The Sweat menu is missing or incomplete](#the-sweat-menu-is-missing-or-incomplete)
+- [Tuning changes are not applied](#tuning-changes-are-not-applied)
+- [Import or shader compilation takes a long time](#import-or-shader-compilation-takes-a-long-time)
+- [The face breaks in Play Mode or VRChat](#the-face-breaks-in-play-mode-or-vrchat)
+- [Expressions or lip sync stop during an MMD dance](#expressions-or-lip-sync-stop-during-an-mmd-dance)
+- [Sweat On or Auto Mode does not work](#sweat-on-or-auto-mode-does-not-work)
+- [It works in Unity but breaks only in VRChat](#it-works-in-unity-but-breaks-only-in-vrchat)
+- [An existing PhysBone stops moving after installation](#an-existing-physbone-stops-moving-after-installation)
+- [Invalid localAABB mentions Exhale](#invalid-localaabb-mentions-exhale)
+- [Uninstall, reinstall, or change modules](#uninstall-reinstall-or-change-modules)
+- [Microsoft Defender warns about or blocks the download](#microsoft-defender-warns-about-or-blocks-the-download)
+- [Common usage tips](#common-usage-tips)
 
-## 汗がまったく見えない
+## No sweat is visible
 
-1. 肌表面の汗を表示するには **Sweat Base Module** が必要です。Effects ModuleだけではBody表面の汗は追加されません。
-2. アバターメニューで **汗 > 汗オン** をONにします。
-3. Manual確認では **自動モード** をOFFにして、**汗 %** を50%以上へ動かします。
-4. Setupの **ボディメッシュ** がFaceや衣装ではなく、肌のBody Rendererを指していることを確認します。
-5. 複数Material SlotがあるBodyでは、肌Materialに対応する **汗の対象 Element** を選び直して **Setup — 自動インストール / 更新** を実行します。
-6. **描画順を自動設定（推奨）** がONなら、Body MaterialのRender Queueを2454以下にします。
+First determine what was installed:
 
-Auto ModeはWASD移動やジャンプだけでは増えません。身体のローカルモーションへ反応するため、まずManual値で表示自体を確認してください。
+- **Effects Module only** does not display skin sweat. It displays Falling Drops, Floor Stains, Breath Puffs, and Steam.
+- **Base Module** or **Full Pack** is required for sweat on the Body surface.
 
-## アバターメニューが無い・一部だけ無い
+For Base or Full Pack:
 
-メニューは導入したModule、リグ、選択した機能から自動生成されます。
+1. In Play Mode, turn **Sweat On** on.
+2. Turn the default **Auto Mode** off temporarily and set **Sweat %** to 50% or higher.
+3. Confirm that Setup uses the intended **Body Mesh** and skin-side **Sweat Target Element**.
+4. With **Automatic render order (Recommended)** on, confirm that the selected Body material uses Render Queue **2454 or lower** and Sweat uses **2455**.
+5. Exit Play Mode, open **CookiTools > RealSweatSystem Setup／Uninstall**, and run **Setup — Install / Update** again.
+6. If another upload-time tool replaces or combines the Body, continue with [It works in Unity but breaks only in VRChat](#it-works-in-unity-but-breaks-only-in-vrchat).
 
-- Base導入時: 汗表面、相手側を低負荷
-- Effects導入時: パーティクル、落下する滴、床の濡れ跡、息、湯気
-- 立体機能搭載時のみ: 立体効果（撮影用・高負荷）
+## The Sweat menu is missing or incomplete
 
-Full PackではBaseとEffectsを同じバージョンへ揃え、Setupを再実行してください。Non-HumanoidなどMotion Pendulumを作成できない構成では、自動モード、息、湯気は生成されません。Head・Chest Anchorだけを解決できない場合は、自動モードは生成されますが息と湯気は省略されます。
+Menu entries depend on the imported modules and Setup options:
 
-Setupが生成したMenu、Parameters、Animatorを手動で移動・削除している場合は、**Setup — 自動インストール / 更新** で生成状態へ戻してください。
+- **Remote Low Load** requires Base.
+- **Particles** and its individual Effect controls require Effects.
+- **3D Effect (Photos Only, High Load)** appears only when **Install 3D Feature (Tessellation) (High Load)** was enabled during Setup.
 
-## Tuningの変更が反映されない
+If an expected entry is absent:
 
-Hierarchyの **アバター > RealSweat** を選び、**RealSweatSystem Tuning** コンポーネントを操作していることを確認します。
+1. Exit Play Mode and clear all compile errors.
+2. Confirm that **Modular Avatar** is installed and enabled in the project.
+3. Confirm that the required Base and/or Effects module is imported, with matching versions for Full Pack.
+4. Open **CookiTools > RealSweatSystem Setup／Uninstall** and run **Setup — Install / Update**.
+5. Start a fresh Gesture Manager or Play Mode preview so it rebuilds the current menu state.
 
-- 全体の汗量によるMaterial Qualityは即時に変わります。
-- 感度、累積速度曲線、生成Animation、落下する滴、湯気などは **FX に適用** を押した後に反映されます。
-- Body MaterialのShadow Strengthを変更した場合も、**FX に適用** を押すと再取得します。
-- Play Mode中の一時的な変更は、Play Mode終了時に元へ戻ります。
+## Tuning changes are not applied
 
-詳しい反映タイミングは[設定・調整ガイド](./usage/tuning.mdx)を確認してください。
+Select the generated **RealSweat** object under the avatar root and use its **RealSweatSystem Tuning** component.
 
-## Import・Shader Compileが長い
+- Material quality and supported surface-appearance controls update the Tess and No Tess materials immediately.
+- Automatic response, the custom curve, animated wetness, Falling Drops, fling particles, Breath Puffs, and Steam require **Apply to FX**.
+- **Follow Body Shadow Strength** reads the selected Body material when **Setup — Install / Update** or **Apply to FX** runs; it is not a live runtime link.
+- If the Inspector reports outdated routing, run **Setup — Install / Update** once, then press **Apply to FX** again.
+- An unsupported manual Face material is not tracked by Tuning and does not automatically receive later Body-side material changes.
 
-初回Importや更新直後は、Shader Compile、Script Compile、Asset Databaseの処理が同時に行われるため時間がかかる場合があります。これはインゲームの実行負荷と同じ意味ではありません。
+## Import or shader compilation takes a long time
 
-- Unity右下のImport表示やHold onが消えるまで待ちます。
-- 処理中にSetupやMaterialを繰り返し操作しないでください。
-- Consoleにコンパイルエラーがある場合は、最初のエラーを先に解決します。
-- BaseとEffectsを使う場合は、同じ製品バージョンか確認します。
-- 完了後も操作のたびに長時間の再コンパイルを繰り返す場合は、重複Package、破損したScript、別Shaderツールの自動Lock / Unlock処理を確認します。
+The first package import can take longer while Unity imports assets, compiles shaders, and updates the Asset Database. This compile time is not the same as the shader's in-game runtime load.
 
-## v1.0.0またはv1.0.1からv1.0.2へ更新したい
+- Wait until Unity's import and shader-compilation indicators finish before opening Setup or entering Play Mode.
+- Do not repeatedly click Setup while Unity is still processing assets.
+- Resolve the **first Console compile error** before judging the import as complete.
+- Later imports can be faster because Unity reuses cached results. Cache behavior differs by PC and project.
 
-1. アバターPrefabまたはUnityプロジェクトをバックアップします。
-2. v1.0.2のUnityPackageをImportします。
-3. BaseとEffectsを使用している場合は両方を同じバージョンへ揃えます。
-4. Unity上部メニューの **CookiTools > RealSweatSystem Setup／Uninstall** を開きます。
-5. **Setup — 自動インストール / 更新** を1回実行します。
-6. Play Modeで顔、汗オン、汗 %、自動モード、導入したEffectsを確認します。
+## Updating from v1.0.0 or v1.0.1 to v1.0.2
 
-## Play Modeで顔が崩れる
+1. Back up the avatar or project.
+2. Import the v1.0.2 package.
+3. If using Full Pack (Base + Effects), update Base and Effects to the same version.
+4. Run **Setup — Install / Update** once.
+5. Check the face, Sweat On, Sweat %, Auto Mode, and installed Effects in Play Mode.
 
-古いバージョンとWrite Defaults OFFのFace Tracking Animatorが干渉している可能性があります。
+## The face breaks in Play Mode or VRChat
 
-1. v1.0.2へ更新します。
-2. 以前の診断で変更したAnimator欄やMerge Animator Priorityを元へ戻します。
-3. **Setup — 自動インストール / 更新** を再実行します。
-4. 顔の表情、汗オン、自動モードを同時に確認します。
+This can occur when an older Real Sweat setup conflicts with a Write Defaults OFF Face Tracking animator.
 
-生成Animatorの順序を手動変更した状態を恒久的な回避策として使用しないでください。
+1. Update to v1.0.2.
+2. Undo any diagnostic changes made to the generated Animator field or Merge Animator Priority.
+3. Run Setup again.
+4. Confirm that facial expressions, sweat toggles, and Auto Mode all work together.
 
-## MMDダンス中に表情・リップシンクが動作しない
+Do not use a manually changed animator order as a permanent workaround.
 
-1. v1.0.2へ更新し、**Setup — 自動インストール / 更新** を1回実行します。
-2. Setupの **Write Defaults互換モード** を **自動検出（推奨）** にします。
-3. Modular Avatarを更新し、対象構成で必要な場合はMMD World Supportを有効にします。
-4. Play Modeだけでなく、実際に使用するMMDワールドで表情・リップシンク・汗オン・Auto Modeを確認します。
+## Expressions or lip sync stop during an MMD dance
 
-外部FX StateがすべてWD ONなら、v1.0.2はRealSweatの生成StateもWD ONに揃えます。WD OFF、ON/OFF混在、または判定不能の場合は互換構成を維持しますが、ワールドのFXレイヤー制御方式によってはMMD中の動作を保証できません。
+1. Update to v1.0.2 and run **Setup — Install / Update** once.
+2. Set **Write Defaults Compatibility** to **Auto Detect (Recommended)**.
+3. Update Modular Avatar and enable MMD World Support when it is needed by the target setup.
+4. Test expressions, lip sync, Sweat On, and Auto Mode in the actual MMD world you intend to use, not only in Play Mode.
 
-RealSweatだけをWD ON互換へ強制すると、外部のWD OFF Stateと再びON/OFF混在になる可能性があります。対象アバターやMMD環境が全WD ONを必要とすると分かっている場合を除き、手動モードを恒久的な回避策として使用しないでください。
+When every external FX state uses WD ON, v1.0.2 also uses WD ON for the generated RealSweat states. WD OFF, mixed, or unknown setups retain the compatible split, but MMD behavior cannot be guaranteed in every world because FX-layer control differs by world.
 
-## 汗オン・自動モードが動作しない
+Forcing only RealSweat to WD ON can recreate a mixed ON/OFF controller when external states use WD OFF. Do not use a forced mode as a permanent workaround unless you know the target avatar or MMD environment requires an all-WD-ON FX controller.
 
-- **汗オン** が有効か確認します。
-- Manual確認では自動モードをOFFにして **汗 %** を調整します。
-- Auto Modeを使用する場合は、Humanoidアバターと必要なBone参照を確認します。
-- ManualとAutoは同じSweat %を共有するため、切り替え時に値はリセットされません。
-- Setupが生成したAnimator、Menu、ParametersやAnimator順序を手動変更していないか確認します。
-- 新しいバージョンをImportした後はSetupを再実行します。
+## Sweat On or Auto Mode does not work
 
-## Bodyを自動検出できない
+- Confirm that **Sweat On** is enabled.
+- For manual control, disable Auto Mode and adjust Sweat %.
+- For Auto Mode, confirm that the avatar is Humanoid and has the required bone reference.
+- Do not manually edit the generated animator or its ordering.
+- Run **Setup — Install / Update** again after importing a newer version.
 
-**ボディメッシュ (空欄 = 自動)** へ対象の `SkinnedMeshRenderer` を手動で指定してください。Face Rendererではなく、汗を表示したい身体のRendererを選びます。現在は1回の導入につきBody Rendererを1つ追跡します。
+## Body Mesh is not detected
 
-## 汗が別のMaterial Slotに表示される
+Assign the correct child `SkinnedMeshRenderer` manually. The Renderer must have a valid mesh and at least one valid submesh.
 
-**汗の対象 Element** で、肌Materialが割り当てられている正しいElementを選択します。別のElementを選ぶと、汗が表示されない、または意図しない部分へ表示される場合があります。
+The current installer accepts one Body Renderer per installation.
 
-## MeshにTangentが無い
+## Sweat appears on the wrong material slot
 
-確認画面で **セーフコピーを作成（推奨）** を選択してください。元のModel Import Settingsを変更せず、Real Sweat専用のMesh Copyを作成します。
+For a Body with multiple submeshes, choose the exact **Sweat Target Element** used by the skin material, then run Setup again.
 
-## Unityでは正常、VRChat内だけ壊れる
+## Missing tangent warning
 
-Upload時にBody MeshまたはRendererを置換・統合するOptimizerや変換ツールを確認してください。最終Meshで次の条件が失われると正常に表示できません。
+Choose **Create Safe Copy (Recommended)**. This is the supported fallback for a source mesh without suitable tangent data.
 
-- 汗を適用したSubmeshとMaterial Slotの対応
-- Build時に必要なMesh Dataの読み取り
-- Setupで指定したBody Rendererの系統
+## It works in Unity but breaks only in VRChat
 
-除外機能がある場合は、Real Sweat Systemで使用しているBody Rendererをその除外リストへ追加してください。
+An optimizer, retargeter, or other upload-time tool may be replacing the Body Renderer or mesh after Real Sweat System prepares it.
 
-Bodyを除外できないツールとの互換性は保証できません。アバターをバックアップし、そのツールを無効にした状態と比較してください。
+- Check whether the tool modifies the selected Body.
+- Preserve the sweat target submesh and material relationship.
+- Keep the required final mesh data readable.
 
-設定を変更した後は、Edit Modeで最終的に使用するBodyを指定して **Setup — 自動インストール / 更新** を再実行し、Play Modeと実際のVRChatアップロードの両方で確認してください。Real Sweat Systemは、後続のビルドツールが行う任意のMesh置換を自動修復できません。
+If the tool provides an exclusion feature, add the Body Renderer used by Real Sweat System to that exclusion list.
 
-## 既存のPhysBoneが導入後に動かない
+Compatibility cannot be guaranteed with a tool that provides no way to exclude the Body. Back up the avatar and compare the result with that tool disabled.
 
-Real Sweat SystemはAuto Mode用のPhysBoneと専用パラメーターを `RealSweat` 配下に追加します。胸など、アバターに既存のPhysBoneを変更・削除する仕様ではありません。
+After changing the tool settings, select the final Body in Edit Mode and run **Setup — Install / Update** again. Verify both Play Mode and the actual VRChat upload. Real Sweat System cannot automatically repair an arbitrary mesh replacement performed later by another build-time tool.
 
-1. ConsoleをClearしてPlay Modeに入り、最初のErrorまたはWarningを確認します。
-2. Real Sweat System導入後のBuildでBone、PhysBone、Animator、Parameterを結合・最適化する別のツールがないか確認します。
-3. 動かないPhysBoneとReal SweatのMotion Pendulumが、同じRoot Transform、Parameter、処理対象として統合されていないか確認します。
-4. そのツールにBody Rendererの除外機能がある場合は、Real Sweat Systemで使用しているBody Rendererを除外対象に追加します。Bodyを除外できない場合、そのツールとの互換性は保証できません。
+## An existing PhysBone stops moving after installation
 
-Uninstall後も既存のPhysBoneが動かない場合は、Real Sweat Systemが生成した範囲外の変更が残っている可能性があります。バックアップのアバターと比較し、ビルド時に動作するツールを1つずつ切り分けてください。
+Real Sweat System adds its own Auto Mode PhysBone and parameters under `RealSweat`. It is not designed to modify or delete existing avatar PhysBones such as chest PhysBones.
 
-## 立体の水滴が衣装を貫通する
+1. Clear the Console, enter Play Mode, and inspect the first Error or Warning.
+2. Check for another build-time tool that merges or optimizes bones, PhysBones, Animator layers, or parameters.
+3. Confirm that the affected PhysBone and the Real Sweat Motion Pendulum were not merged through the same Root Transform, parameter, or processing target.
+4. If that tool can exclude a Body Renderer, add the Body Renderer used by Real Sweat System to its exclusion list. Compatibility with that tool cannot be guaranteed when the Body cannot be excluded.
 
-**RealSweatSystem Clothing Fix** を使用してください。立体機能を使用しない場合は、**立体効果（撮影用・高負荷）** をOFFにする方法もあります。詳しい手順と注意点は[補助ツール](./tools.mdx)を確認してください。
+If the existing PhysBone still does not move after uninstalling Real Sweat System, a change outside the generated Real Sweat content may remain. Compare against a backup avatar and isolate build-time tools one at a time.
 
-## Effects ModuleだけなのにBody指定を求められる
+## Rest data cannot be regenerated
 
-正常な動作です。Body Meshはパーティクルの放出元として使用されます。Effectsのみの導入ではBodyのMaterial、Mesh、Rest Vertex Data、テッセレーションを変更しません。
+Confirm that the final source mesh is readable and that the selected sweat submesh still exists. Reassign the correct Body Mesh and Sweat Target Element before running Setup again.
 
-## 最初のBuildだけ失敗する
+The **Rest Vertex Data Baker** is a support or advanced-maintenance tool. It is not normally needed during everyday use. See [Auxiliary Tools](./tools.mdx) before running it manually.
 
-Import直後はShaderやAsset Databaseの処理が完了していない場合があります。UnityのImportが終了するまで待ち、Consoleの最初のエラーを解決してから再Buildしてください。2回目に成功しても、最初のエラーを無視して良いとは限りません。
+## Tessellated droplets pass through clothing
 
-## `Invalid localAABB. Object transform is corrupt.` がExhaleを示す
+Apply **RealSweatSystem Clothing Fix** to the affected clothing, or turn **3D Effect (Photos Only, High Load)** off to use No Tess. See [Auxiliary Tools](./tools.mdx) for the complete workflow and cautions.
 
-Consoleで次の文字列が繰り返し表示され、対象が息の `Exhale` Objectを示す場合:
+## Effects-only setup shows no particles
 
-```text
-Invalid localAABB. Object transform is corrupt.
-```
+The Effects Module does not modify the Body, but it still needs the Body Mesh as its emission surface. Confirm that the correct Body is assigned and that the particle controls are enabled under:
 
-1. Avatar Hierarchy内にNaN、Infinity、極端なScaleなど不正なTransformがないか確認します。
-2. 一時的に **息** をOFFにし、同じConsole Logが止まるか確認します。
-3. v1.0.1以降を使用し、Setupを再実行します。
+**Sweat → Reduce Load → Particles**
 
-ExhaleのBounds ErrorとFace Animatorの競合は別の原因で同時に発生する場合があります。息をOFFにしてConsole Logだけが止まり、顔の問題が残る場合は、上の[Play Modeで顔が崩れる](#play-modeで顔が崩れる)も別に確認してください。
+## The first build fails but a second build succeeds
 
-## Rest Dataの再生成に失敗する
+Immediately after import, shader compilation and Asset Database processing may still be in progress. Wait for Unity to finish importing, resolve the **first Console error**, and then build again. A successful second build does not mean that every error from the first build can be ignored.
 
-ConsoleをClearしてBuildを再実行し、最初に表示されたRealSweatSystemのエラーを確認します。
+## Invalid localAABB mentions Exhale
 
-- 最終Body Meshを読み取れない場合は、Mesh変換・Optimizerが生成する最終MeshのRead/Writeを有効にします。
-- Mesh変換・Optimizerが汗表示用Submeshを削除した場合は、そのSubmeshを保持する設定へ変更するか、変換後の構成に対してSetupを再実行します。Rest Dataを再生成しても、削除されたSubmesh自体は復元できません。
-- Body MeshまたはMaterial Slotを変更した場合は、正しいBody Rendererと汗の対象Elementを指定し直してSetupを実行します。
-- Setup後のRest検証に失敗した場合は、最初のConsole Errorを解決してからSetupを再実行します。
+If the Console repeatedly reports an invalid local AABB and the message points to the breath object:
 
-高度なCustom Materialの復旧が必要な場合だけ、[補助ツール](./tools.mdx)のRest Vertex Data Bakerを使用してください。
+1. Check the avatar hierarchy for invalid transforms or extreme scale values.
+2. Temporarily turn Breath Puffs off to confirm whether the repeated log stops.
+3. Use v1.0.1 or later.
 
-## 削除・再導入・Module構成を変更する
+A breath-object bounds error and a facial animator conflict can be separate issues, so verify both independently.
 
-作業前にアバターまたはUnityプロジェクトをバックアップしてください。
+## Uninstall, reinstall, or change modules
 
-### アバターから導入内容を削除する
+Back up the avatar or project first.
 
-1. **CookiTools > RealSweatSystem Setup／Uninstall** を開きます。
-2. **削除** タブを選び、Scene内のアバターを指定します。
-3. **Uninstall 時に生成アセット(ベイク/マテリアル/アニメ/メニュー)も削除** は初期状態でOFFです。再利用する場合はOFFのままにします。完全に削除し、他のReal Sweat導入が同じ生成フォルダーを使用していないことを確認できる場合だけONにします。
-4. **Uninstall — 削除** を押し、Unityの処理が終わるまで待ちます。
-5. Hierarchyから **RealSweat** オブジェクトが無くなったことを確認し、アップロード前にアバターをテストします。
+### Remove the installed avatar setup
 
-生成アセット削除オプションがOFFの場合、Bake、Material、Animation、Menuのアセットは保持されます。Modular AvatarによるMenu、Parameters、FX統合は、RealSweatオブジェクトを削除した後のBuildには入りません。
+1. Open **CookiTools > RealSweatSystem Setup／Uninstall**.
+2. Select the **Uninstall** tab and assign the avatar.
+3. **Also delete generated assets (bake/material/anim/menu) on Uninstall** is off by default. Leave it off to preserve those generated assets. Enable it only for a full cleanup after confirming that no other Real Sweat installation uses the same generated folder.
+4. Press **Uninstall — Remove** and wait for Unity to finish.
+5. Check that the generated **RealSweat** object is gone, then test the avatar before upload.
 
-### 再導入・更新する
+When the generated-assets option is off, the Bake, Material, Animation, and Menu assets are preserved. Because the installation uses Modular Avatar, its generated menu, parameters, and FX integration are not included in the next build after the RealSweat object is removed.
 
-1. 使用する最新版のModuleをImportします。BaseとEffectsを併用する場合は同じバージョンへ揃えます。
-2. Setupの **インストール** タブで、アバター、ボディメッシュ、汗の対象Elementを確認します。
-3. **Setup — 自動インストール / 更新** を実行します。
-4. Play ModeでManual Mode、Auto Mode、顔、導入したEffectsを確認します。
+### Reinstall or update
 
-BaseまたはEffectsからFull Packへ変更する場合は、足りない同バージョンのModuleをImportしてSetupを再実行します。Full Packから片方のModuleだけへ戻す場合は、先にアバターから削除し、不要なModuleの製品ファイルをProjectから取り除いてから、残すModuleで再導入します。
+1. Import the intended current package or packages.
+2. Keep Base and Effects on the same version when both are installed.
+3. Open the **Install** tab in **CookiTools > RealSweatSystem Setup／Uninstall**.
+4. Confirm **Avatar**, **Body Mesh**, and **Sweat Target Element**.
+5. Run **Setup — Install / Update**, then test Manual Mode, Auto Mode, the face, and installed Effects.
 
-:::warning[手動追加は自動削除されません]
-Setupの正式手順外で追加したMaterial Slot、Rest Asset、Animation CurveなどはUninstallの対象外です。Face + Bodyの非公式手順を行った場合は、[補助ツールの元に戻す手順](./tools.mdx#unsupported-face-body)またはBackupから復元してください。
+To expand Base or Effects into Full Pack, import the missing same-version module and run Setup again. To return from Full Pack to one module, uninstall the avatar setup first, remove the module package files you no longer want from the Unity project, and then reinstall with the remaining module.
+
+:::warning[Manual additions are not removed]
+Uninstall does not remove materials, Renderer slots, Rest assets, or Animation changes that you created manually outside the supported Setup. This includes the unsupported Face + Body procedure. Restore those changes from your backup or follow its [rollback steps](./tools.mdx#unsupported-face-body).
 :::
 
-## Microsoft Defenderがダウンロードを警告・遮断する
+## Microsoft Defender warns about or blocks the download
 
-v1.0.0の配布ファイルについて一部の環境で報告されたMicrosoft Defenderの警告は、Microsoftの解析により誤検出と確認され、Microsoft側で該当する検出定義が更新されました。
+The Microsoft Defender alert reported on some systems for the v1.0.0 release package was classified by Microsoft as a false positive, and Microsoft issued a detection update.
 
-ただし、DefenderのSecurity IntelligenceやCloud Protectionの更新時期はPCごとに異なるため、一部の環境では以前の警告が一時的に残る場合があります。
+Defender security-intelligence and cloud-protection updates can reach individual PCs at different times, so some systems may temporarily continue to show the previous warning.
 
-- Windows SecurityでSecurity Intelligenceを最新の状態へ更新します。
-- BOOTHの購入ライブラリから最新版を再ダウンロードします。
-- 警告が続く場合は、Windows Securityの検出名、正確なファイル名、Real Sweat Systemのバージョンを確認します。
+- Update Microsoft Defender security intelligence in Windows Security.
+- Download the current version again from your BOOTH purchase library.
+- If the warning continues, confirm the exact detection name, filename, and Real Sweat System version.
 
-## よくある使い方のヒント
+## Common usage tips
 
-### Unityの編集画面だけで肌の汗を一時的に隠す
+### Temporarily hide skin sweat in the Unity editor
 
-Scene Viewで汗を一時的に隠したい場合は、システムをUninstallせずに生成済みMaterialの値だけを変更できます。
+To clear the sweat preview in the Scene view without uninstalling the system:
 
-1. Play Modeを終了します。
-2. Body RendererのMaterialsから、Bodyに使用されている生成済みRealSweat Materialを開きます。元の肌Materialは編集しないでください。
-3. Material Inspectorの **Basic > 汗の量**（`Sweat Amount` / `_DropletAmount`）で現在値を記録し、`0` にします。
-4. 通常のテストまたはアップロード前に、記録した値へ戻します。新規Setup直後の値は通常 `1` ですが、調整済みMaterialでは異なる場合があるため、`1` に決め打ちせず記録した値を優先してください。
+1. Exit Play Mode.
+2. Open the generated Real Sweat material used by the Body. Do not edit the original skin material.
+3. In the material Inspector, open **Basic > Sweat Amount** (`_DropletAmount`), record the current value, and set it to `0`.
+4. Record the previous value and restore it before normal testing or upload. A new installation normally starts at `1`, but a customized material may use another value.
 
-これは**Edit Modeの一時的なPreview調整**です。Tuningの **全体の汗量** プリセットや、アバターメニューの **汗オン + 汗 % = 0%** とは別の設定です。Play ModeとVRChatでは生成済みAnimationがランタイム値を制御します。
+Use this only as an editor-preview adjustment. It is different from using **Sweat On + Sweat 0%** in the VRChat menu, and Play Mode animations control the runtime value. Do not remove the generated material slot. If Tessellation support is installed, apply the same temporary value to both generated Tess and No Tess materials so either 3D Effect state remains hidden.
 
-:::warning[汗Materialのスロットは削除しないでください]
-Bodyの生成済みRealSweat Material Slotを削除または別Materialへ置換すると、Setupの追跡とBuild検証が崩れる場合があります。立体機能を搭載した構成ではTess / No Tessの2つの生成Materialを確認し、どちらへ切り替えても隠したい場合は両方へ同じ一時値を設定してください。復元時も両方を記録した元の値へ戻します。
-:::
+### Show Breath Puffs in your own first-person view
 
-### 自分の一人称視点にも吐息を表示する（任意・上級）
+Breath Puffs being hidden from the wearer's first-person camera is the normal default. If you intentionally want to see them yourself:
 
-吐息は頭側のEffectであるため、装着者自身の一人称Cameraから標準状態で見えないのは正常です。他のユーザーからは通常どおり表示されます。
+1. After Setup, select **Avatar > RealSweat > RealSweatFxHead > Breath > Exhale**.
+2. Add **Modular Avatar > MA Visible Head Accessory** to `Exhale`.
+3. Build and verify the result in VR, not only in Gesture Manager.
 
-1. Setup後、Hierarchyで **アバター > RealSweat > RealSweatFxHead > Breath > Exhale** を選択します。
-2. `Exhale`へ **Add Component > Modular Avatar > MA Visible Head Accessory** を追加します。値の設定は必要ありません。
-3. Gesture Managerだけでなく、Build後のVRChatとVR一人称視点で確認します。
+This is an optional advanced customization. Before build, Modular Avatar may warn that `Exhale` is not under the Head; RealSweatFxHead is a Bone Proxy that moves there during build, so this warning can be ignored for this hierarchy. The particles can overlap the face or camera at some avatar scales. Remove the component if the first-person result is distracting. Add it again if you uninstall and recreate the RealSweat object.
 
-Build前にModular Avatarから「`Exhale`がHeadの下にない」という警告が表示される場合があります。`RealSweatFxHead`はBuild時にHeadへ移動するBone Proxyなので、上記の正しいHierarchyにある場合に限り、この警告は無視できます。
+### Restrict procedural droplets on selected body areas
 
-Avatar Scaleによっては吐息Particleが顔やCameraへ重なり、視界を遮る場合があります。見づらい場合は `Exhale` の位置を大きく動かさず、追加した **MA Visible Head Accessory** を削除して標準状態へ戻してください。Uninstall後にRealSweat Objectを再作成するとこの手動Componentも無くなるため、必要ならSetup完了後に再度追加します。
+The generated Tess and No Tess materials include **Basic > Spawn Mask**:
 
-### 選択したBody部位のプロシージャル水滴を制限する
+1. Create a grayscale texture that matches the Body UV0 layout. The shader reads its red channel, so do not use an alpha-only mask.
+2. Paint areas where procedural droplets may appear **white** and areas to exclude **black**.
+3. Assign it to **Spawn Mask (White = Spawn)**.
+4. Raise **Mask Strength** above `0`; use `1` for the full mask effect.
+5. Adjust **Mask Threshold** and **Mask Edge Softness** if the border needs refinement. **Invert Mask** reverses the result.
 
-生成済みTess / No Tess Materialの **Basic > スポーンマスク** で、Shader内のプロシージャル水滴を生成する範囲をBodyのUV0上で制限できます。
+Apply the same texture and mask settings to both generated Tess and No Tess materials when Tessellation support is installed. The mask restricts procedural droplet spawning and tessellated droplet displacement. It is not a hard mask for every broad wet-skin sheen, and it does not remap the separate Falling Drops, Floor Stains, Breath Puffs, or Steam particle emitters.
 
-1. BodyのUV0レイアウトに合うグレースケールTextureを作成します。Shaderが読み取るのは **R（赤）Channel** だけなので、Alpha Channelだけに描いたMaskは使用できません。
-2. プロシージャル水滴を生成する部位を **白**、除外する部位を **黒** にします。
-3. Textureを **スポーンマスク（白＝スポーン）** へ割り当てます。
-4. **マスク強度** を初期値 `0` より大きくします。`0` は無効、`1` はMaskを完全に適用します。
-5. 境界を調整する場合は **マスクしきい値** と **マスク境界のソフトさ** を変更します。**マスク反転** は白と黒の結果を反転します。
+## Information to include in a support report
 
-立体機能を搭載した構成では、生成済みTess / No Tessの両方へ同じTextureとMask設定を適用してください。このMaskが制限するのは、Shader内のプロシージャル水滴の生成（Spawn）と、Tess版における水滴の変位です。広範囲の濡れ肌表現（Wet Skin / Sheen）全体を完全に切り抜くHard Maskではありません。また、別のParticle Emitterとして動作する **落下する滴・床の濡れ跡・息・湯気** の生成や表示も停止しません。
+- Real Sweat System version and purchased package
+- Unity and VRCSDK versions
+- Avatar name and Face Tracking package, if used
+- Screenshot of the Setup window and Avatar Descriptor
+- Full text of the first Console error after clearing the Console
+- Whether it happens in Unity, desktop VRChat, VR, or VR Face Tracking
+- Modular Avatar version
+- Other installation or optimization tools that modify the Animator, mesh, or PhysBones
+- Whether Unity Edit Mode remains normal
+- The working situation and exact reproduction steps in order
+- For face or Animator issues, the complete final FX Animator `Layers` list in Play Mode
 
-## 問い合わせ前に用意する情報
-
-- Real Sweat Systemのバージョンと購入構成
-- Unity / VRCSDKのバージョン
-- 使用アバターとFace Tracking Package名
-- Setup画面とAvatar DescriptorのScreenshot
-- ConsoleをClearした後の最初のError全文
-- Unity Play Mode、Desktop VRChat、VR、VR Face Trackingのどこで発生するか
-- Modular Avatarのバージョン
-- Animator、Mesh、PhysBoneを変更する他の導入・最適化ツール
-- Unity Edit Modeでは正常か
-- 正常に動作する環境と、問題を再現する正確な手順
-- 顔またはAnimatorの問題では、Play Mode中の最終FX Animatorの `Layers` 一覧
-
-以下のテンプレートをコピーして使用できます。
+You can copy this template:
 
 ```text
-Real Sweat Systemバージョン:
-購入構成: Base / Effects / Full Pack
+Real Sweat System version:
+Package: Base / Effects / Full Pack
 Unity:
 VRCSDK:
 Modular Avatar:
-アバター:
-Face Tracking Package（使用時）:
-他の導入・最適化ツール:
+Avatar:
+Face Tracking package (if used):
+Other installation or optimization tools:
 
-正常に動作する環境:
-問題が発生する環境:
-再現手順:
-ConsoleをClearした後の最初のError:
+Where it works:
+Where the issue occurs:
+Reproduction steps:
+First Console error after clearing:
 
-添付:
-- Setup画面
+Attachments:
+- Setup window
 - Avatar Descriptor
-- RealSweat Hierarchy
-- 関係する場合、Play Mode中の最終FX Animator Layers
+- RealSweat hierarchy
+- Final FX Animator Layers in Play Mode, when relevant
 ```
