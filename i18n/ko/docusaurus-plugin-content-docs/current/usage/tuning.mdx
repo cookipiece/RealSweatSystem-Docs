@@ -1,12 +1,12 @@
 ---
 id: tuning
 title: Setup · Tuning 옵션 전체 안내
-description: RealSweatSystem 1.0.1의 일반 Setup 및 Tuning 옵션 레퍼런스입니다.
+description: RealSweatSystem 1.0.2의 일반 Setup 및 Tuning 옵션 레퍼런스입니다.
 ---
 
 # Setup · Tuning 옵션 전체 안내
 
-이 페이지는 RealSweatSystem 1.0.1에서 사용자가 정상적으로 조절하는 옵션을 정리합니다. **Base** 표시는 Sweat Base Module, **Effects** 표시는 Sweat Effects Module이 설치된 경우에 나타나는 항목입니다.
+이 페이지는 RealSweatSystem 1.0.2에서 사용자가 정상적으로 조절하는 옵션을 정리합니다. **Base** 표시는 Sweat Base Module, **Effects** 표시는 Sweat Effects Module이 설치된 경우에 나타나는 항목입니다.
 
 ## Tuning 컴포넌트 열기
 
@@ -43,6 +43,7 @@ Setup을 완료한 뒤 Hierarchy에서 아바타를 펼치고, 아바타 루트 
 | **바디 Shadow Strength 따라가기** | Base | 켜짐 | Setup 또는 **FX에 적용** 실행 시 선택한 Body Element의 `_ShadowStrength`를 땀에 복사합니다. lilToon과 Poiyomi를 지원합니다. |
 | **전체 땀양** | 공통 | 적음(저부하) | 표면 계산 예산과 젖음 애니메이션·이펙트 양의 기준을 선택합니다. |
 | **자동모드 감도** | 공통 | 균형 | 작은 신체 움직임에 Auto Mode가 얼마나 민감하게 반응할지 선택합니다. |
+| **Write Defaults 호환 방식** | 공통 | 자동 감지 (권장) | 외부 FX가 모두 WD ON일 때만 RealSweat도 모두 WD ON으로 구성하고, 그 외에는 Driver ON / Output OFF 호환 구조를 사용합니다. |
 | **입체기능(테셀레이션)(고부하) 설치하기** | Base | 꺼짐 | 끄면 No Tess 하나만, 켜면 Tess와 No Tess를 함께 넣고 인게임 입체기능 전환을 추가합니다. |
 | **입체 표현 정밀도** | Base + Tess | 간소화 | 설치되는 Tess 머티리얼의 정밀도입니다. |
 | **입체기능(테셀레이션) 기본값 켜기** | Base + Tess | 꺼짐 | 아바타 로드 직후 로컬 입체 표시의 초기 상태입니다. 한 번에 땀 머티리얼 하나만 활성화됩니다. |
@@ -52,6 +53,12 @@ Setup을 완료한 뒤 Hierarchy에서 아바타를 펼치고, 아바타 루트 
 | **몸 김** | Effects | 켜짐 | 몸 김 emitter를 설치합니다. |
 | **몸 김 위치** | Effects | 가슴골·양어깨·겨드랑이·허벅지 켜짐, 고간·발 꺼짐 | Setup이 생성할 몸 김 위치를 선택합니다. |
 | **삭제 시 생성 에셋도 제거** | 공통 | 꺼짐 | Uninstall 때 bake·material·animation·menu 생성물도 지웁니다. 보존하려면 끄세요. |
+
+### Write Defaults 호환 방식
+
+- **자동 감지 (권장):** 외부 FX가 모두 WD ON일 때만 RealSweat의 모든 State도 WD ON으로 구성합니다. WD OFF, 혼합 또는 판정 불가 구성은 WD OFF 호환 구조를 사용합니다.
+- **WD ON 호환:** RealSweat의 모든 State를 WD ON으로 고정합니다. 전체 WD ON FX가 필요하다는 것을 알고 있는 아바타 또는 MMD 환경에서만 사용하세요.
+- **WD OFF 호환:** WD OFF 또는 혼합 아바타를 위해 v1.0.1의 Driver ON / Output OFF 분리 구조를 유지합니다.
 
 ### 전체 땀양
 

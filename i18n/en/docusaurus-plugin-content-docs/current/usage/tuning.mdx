@@ -1,12 +1,12 @@
 ---
 id: tuning
 title: Setup & Tuning Option Reference
-description: Reference for every normal Setup and Tuning control in RealSweatSystem 1.0.1.
+description: Reference for every normal Setup and Tuning control in RealSweatSystem 1.0.2.
 ---
 
 # Setup & Tuning Option Reference
 
-This page documents the normal user-facing controls in RealSweatSystem 1.0.1. Controls marked **Base** appear when the Sweat Base Module is installed; controls marked **Effects** require the Sweat Effects Module.
+This page documents the normal user-facing controls in RealSweatSystem 1.0.2. Controls marked **Base** appear when the Sweat Base Module is installed; controls marked **Effects** require the Sweat Effects Module.
 
 ## Open the Tuning component
 
@@ -43,6 +43,7 @@ The accumulation graphs preview pending values immediately, but they do not modi
 | **Follow Body Shadow Strength** | Base | On | Copies `_ShadowStrength` from the selected Body Element material to RealSweatSystem when Setup or **Apply to FX** runs. Supports lilToon and Poiyomi. |
 | **Overall Sweat Amount** | All | Low amount (Low Load) | Selects the surface calculation budget and matches animated wetness and effect intensity. |
 | **Auto Mode Sensitivity** | All | Balanced | Selects how strongly small body movement starts and builds automatic sweat. |
+| **Write Defaults Compatibility** | All | Auto Detect (Recommended) | Uses all-WD-ON RealSweat states only when every external FX state uses WD ON; otherwise uses the Driver ON / Output OFF compatible split. |
 | **Install 3D Feature (Tessellation) (High Load)** | Base | Off | Off uploads one No Tess material. On includes Tess and No Tess materials and adds the in-game 3D control. |
 | **3D Detail Precision** | Base + Tess | Simplified | Selects the tessellation precision of the installed 3D material. |
 | **Tessellation Default On** | Base + Tess | Off | Chooses the initial local 3D state after the avatar loads. Only one sweat material is active at a time. |
@@ -52,6 +53,12 @@ The accumulation graphs preview pending values immediately, but they do not modi
 | **Steam** | Effects | On | Installs body-steam emitters. |
 | **Steam Locations** | Effects | Chest, shoulders, armpits, thighs on; crotch and feet off | Chooses which body-steam emitters Setup creates. |
 | **Also delete generated assets on Uninstall** | All | Off | Removes generated bake, material, animation, and menu assets during Uninstall. Leave off when you want to keep them. |
+
+### Write Defaults Compatibility
+
+- **Auto Detect (Recommended):** Uses WD ON for every RealSweat state only when every external FX state uses WD ON. WD OFF, mixed, or unknown setups use the WD OFF-compatible structure.
+- **WD ON Compatibility:** Forces every RealSweat state to WD ON. Use it only when an avatar or MMD environment is known to require an all-WD-ON FX controller.
+- **WD OFF Compatibility:** Keeps the v1.0.1 Driver ON / Output OFF split for WD OFF or mixed avatars.
 
 ### Overall Sweat Amount
 

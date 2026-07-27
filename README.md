@@ -4,7 +4,7 @@ Documentation website source for **Real Sweat System**, a real-time sweat system
 
 - Product: https://booth.pm/ja/items/8645678
 - Languages: Japanese, English, Korean
-- Current product release: v1.0.1
+- Current product release: v1.0.2
 
 This repository contains documentation and website assets only. It does not contain the product package, shaders, scripts, or reusable product data.
 

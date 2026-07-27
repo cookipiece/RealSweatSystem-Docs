@@ -41,14 +41,26 @@ The selected Body must be a child `SkinnedMeshRenderer` with a valid mesh and su
 - If the source mesh has no valid tangents, use **Create Safe Copy (Recommended)**.
 - The final build must preserve the target submesh, material relationship, and readable mesh data needed by Real Sweat System.
 
-## Write Defaults and Face Tracking
+## Write Defaults, MMD, and Face Tracking
 
-v1.0.1 improves compatibility with both Write Defaults ON and Write Defaults OFF avatars, including VRCFT animator configurations.
+v1.0.2 automatically detects the avatar FX Write Defaults structure.
 
-- Use v1.0.1 or later for Face Tracking avatars.
+- **Auto Detect (Recommended)** uses WD ON for every generated RealSweat layer only when all non-RealSweat FX states use WD ON.
+- WD OFF, mixed, or unknown setups retain the v1.0.1 Driver ON / Output OFF compatible split.
+- The final NDMF-merged FX controller is checked again during build, and the RealSweat WD structure is adjusted to the detected result.
+- After updating from v1.0.1 or earlier, import v1.0.2 and run Setup once.
 - Do not manually change the generated Merge Animator Priority.
 - Do not replace or clear the generated Animator field as a permanent workaround.
-- After updating from v1.0.0, run **Setup — Install / Update** once.
+
+v1.0.2 changes only states owned by RealSweat. It does not convert Write Defaults settings in FX states created by the avatar or other tools.
+
+### MMD world compatibility
+
+If the avatar's FX Animator contains states with Write Defaults OFF, facial expressions, lip sync, or Real Sweat System may not work correctly during MMD playback in some worlds, depending on how the world controls FX layers. Compatibility is also not guaranteed for avatars that mix Write Defaults ON and OFF. This does not mean that every WD OFF avatar is unsupported in MMD worlds.
+
+Modular Avatar's MMD World Support adjusts layer placement for MMD worlds that disable FX Animator layers 2 and 3. It does not guarantee compatibility with every MMD world or every Write Defaults configuration.
+
+Test facial expressions, lip sync, Sweat On, and Auto Mode in the MMD world you intend to use.
 
 ## Avatar optimization and mesh replacement tools
 

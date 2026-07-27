@@ -15,6 +15,7 @@ description: 表示、メニュー、Tuning、Animator、Mesh、Effect、Downloa
 - [Tuningの変更が反映されない](#tuningの変更が反映されない)
 - [Import・Shader Compileが長い](#importshader-compileが長い)
 - [Play Modeで顔が崩れる](#play-modeで顔が崩れる)
+- [MMDダンス中に表情・リップシンクが動作しない](#mmdダンス中に表情リップシンクが動作しない)
 - [Unityでは正常、VRChat内だけ壊れる](#unityでは正常vrchat内だけ壊れる)
 - [既存のPhysBoneが導入後に動かない](#既存のphysboneが導入後に動かない)
 - [`Invalid localAABB. Object transform is corrupt.` がExhaleを示す](#invalid-localaabb-object-transform-is-corrupt-がexhaleを示す)
@@ -65,10 +66,10 @@ Hierarchyの **アバター > RealSweat** を選び、**RealSweatSystem Tuning**
 - BaseとEffectsを使う場合は、同じ製品バージョンか確認します。
 - 完了後も操作のたびに長時間の再コンパイルを繰り返す場合は、重複Package、破損したScript、別Shaderツールの自動Lock / Unlock処理を確認します。
 
-## v1.0.0から更新したい
+## v1.0.0またはv1.0.1からv1.0.2へ更新したい
 
 1. アバターPrefabまたはUnityプロジェクトをバックアップします。
-2. v1.0.1以降のUnityPackageをImportします。
+2. v1.0.2のUnityPackageをImportします。
 3. BaseとEffectsを使用している場合は両方を同じバージョンへ揃えます。
 4. Unity上部メニューの **CookiTools > RealSweatSystem Setup／Uninstall** を開きます。
 5. **Setup — 自動インストール / 更新** を1回実行します。
@@ -78,12 +79,23 @@ Hierarchyの **アバター > RealSweat** を選び、**RealSweatSystem Tuning**
 
 古いバージョンとWrite Defaults OFFのFace Tracking Animatorが干渉している可能性があります。
 
-1. v1.0.1以降へ更新します。
+1. v1.0.2へ更新します。
 2. 以前の診断で変更したAnimator欄やMerge Animator Priorityを元へ戻します。
 3. **Setup — 自動インストール / 更新** を再実行します。
 4. 顔の表情、汗オン、自動モードを同時に確認します。
 
 生成Animatorの順序を手動変更した状態を恒久的な回避策として使用しないでください。
+
+## MMDダンス中に表情・リップシンクが動作しない
+
+1. v1.0.2へ更新し、**Setup — 自動インストール / 更新** を1回実行します。
+2. Setupの **Write Defaults互換モード** を **自動検出（推奨）** にします。
+3. Modular Avatarを更新し、対象構成で必要な場合はMMD World Supportを有効にします。
+4. Play Modeだけでなく、実際に使用するMMDワールドで表情・リップシンク・汗オン・Auto Modeを確認します。
+
+外部FX StateがすべてWD ONなら、v1.0.2はRealSweatの生成StateもWD ONに揃えます。WD OFF、ON/OFF混在、または判定不能の場合は互換構成を維持しますが、ワールドのFXレイヤー制御方式によってはMMD中の動作を保証できません。
+
+RealSweatだけをWD ON互換へ強制すると、外部のWD OFF Stateと再びON/OFF混在になる可能性があります。対象アバターやMMD環境が全WD ONを必要とすると分かっている場合を除き、手動モードを恒久的な回避策として使用しないでください。
 
 ## 汗オン・自動モードが動作しない
 

@@ -1,12 +1,12 @@
 ---
 id: tuning
 title: Setup・Tuning オプション一覧
-description: RealSweatSystem 1.0.1 の通常セットアップ項目と調整項目のリファレンスです。
+description: RealSweatSystem 1.0.2 の通常セットアップ項目と調整項目のリファレンスです。
 ---
 
 # Setup・Tuning オプション一覧
 
-このページでは、RealSweatSystem 1.0.1 で通常ユーザーが操作する項目をまとめています。**Base** と記載された項目は Sweat Base Module、**Effects** は Sweat Effects Module がインストールされている場合に表示されます。
+このページでは、RealSweatSystem 1.0.2 で通常ユーザーが操作する項目をまとめています。**Base** と記載された項目は Sweat Base Module、**Effects** は Sweat Effects Module がインストールされている場合に表示されます。
 
 ## Tuning コンポーネントを開く
 
@@ -43,6 +43,7 @@ Setup 後、Hierarchy でアバターを展開し、アバタールート直下�
 | **ボディの Shadow Strength に合わせる** | Base | ON | Setup または **FXに適用** 実行時、対象 Body Element の `_ShadowStrength` を汗へコピーします。lilToon・Poiyomi 対応です。 |
 | **全体の汗量** | 共通 | 少なめ（低負荷） | 表面計算量と、濡れアニメーション・エフェクト量の基準を選びます。 |
 | **自動モード感度** | 共通 | バランス | 小さな身体の動きに Auto Mode がどれだけ反応するかを選びます。 |
+| **Write Defaults互換モード** | 共通 | 自動検出（推奨） | 外部FXがすべてWD ONの場合だけRealSweatもすべてWD ONにし、それ以外はDriver ON / Output OFF互換構成を使用します。 |
 | **立体機能（テッセレーション）（高負荷）をインストール** | Base | OFF | OFF は No Tess 1個のみ、ON は Tess と No Tess を同梱し、ゲーム内の立体機能切替を追加します。 |
 | **立体表現の精密度** | Base + Tess | 簡素 | インストールする Tess マテリアルの精密度です。 |
 | **3D機能（テッセレーション）を初期状態でオン** | Base + Tess | OFF | アバター読込直後のローカル立体表示を選びます。同時に表示される汗マテリアルは1つだけです。 |
@@ -52,6 +53,12 @@ Setup 後、Hierarchy でアバターを展開し、アバタールート直下�
 | **湯気** | Effects | ON | 身体の湯気エミッターをインストールします。 |
 | **湯気の位置** | Effects | 胸元・両肩・脇・太ももON、股間・足OFF | Setup で生成する湯気エミッターの位置を選びます。 |
 | **Uninstall時に生成アセットも削除** | 共通 | OFF | アンインストール時に Bake・Material・Animation・Menu の生成物も削除します。残したい場合はOFFにします。 |
+
+### Write Defaults互換モード
+
+- **自動検出（推奨）:** 外部FXがすべてWD ONの場合だけRealSweatもすべてWD ONにします。WD OFF、混在、または判定不能の場合はWD OFF互換構成を使用します。
+- **WD ON互換:** RealSweatのすべてのStateをWD ONに固定します。全WD ONのFXを必要とすることが明確なアバターまたはMMD環境でのみ使用してください。
+- **WD OFF互換:** WD OFFまたは混在アバター向けに、v1.0.1のDriver ON / Output OFF分離構成を維持します。
 
 ### 全体の汗量
 

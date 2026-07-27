@@ -33,6 +33,24 @@ Uninstallは、Setupが追加したRealSweatオブジェクトと追跡中の汗
 Face用に手動追加したMaterial Slot、Face専用Material / Rest Asset、Animation Curveなど、Setupの追跡外で追加したデータはUninstallで自動削除されません。非公式なFace + Body手順を使用した場合は、[補助ツールの手動ロールバック](./tools.mdx#unsupported-face-body)も確認してください。
 :::
 
+## v1.0.2 — 2026-07-27
+
+### Compatibility
+
+- v1.0.1で、全FXがWD ONのアバターにRealSweatのOutputレイヤーだけがWD OFFで追加され、ON/OFF混在となることで、一部のMMDダンス中に表情・リップシンクが動作しない問題を修正
+- アバターFXのWrite Defaults構成を判定する **Auto Detect（推奨）** を追加
+- RealSweat以外のFX StateがすべてWD ONの場合、生成するRealSweatレイヤーもすべてWD ONへ統一
+- WD OFF、ON/OFF混在、または判定不能の場合はv1.0.1のDriver ON / Output OFF互換構成を維持
+- NDMFで最終統合されたFXをビルド時に再確認し、検出結果に合わせてRealSweatのWD構成を調整
+
+:::note[v1.0.1から更新する場合]
+v1.0.2をImportした後、**Setup — 自動インストール / 更新** を1回実行してください。汗の見た目とユーザー設定に意図的な変更はありません。
+:::
+
+:::caution[MMDワールド]
+WD OFFまたはON/OFF混在のFX構成では、ワールド側のFXレイヤー制御方式によってMMD再生中の表情やReal Sweat Systemが正しく動作しない場合があります。詳しくは[対応環境・互換性](./compatibility.mdx#mmdワールドとの互換性)を確認してください。
+:::
+
 ## v1.0.1 — 2026-07-27
 
 ### Fixed

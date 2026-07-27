@@ -16,6 +16,7 @@ title: 문제 해결
 | Tuning 값을 바꿨지만 달라지지 않음 | [즉시 반영과 FX 적용 구분](#tuning-값을-바꿨지만-반영되지-않음) |
 | Shader Compile 또는 Hold on이 오래 표시됨 | [Import·컴파일 대기](#shader-compile-또는-hold-on이-오래-표시됨) |
 | Play Mode에서 얼굴이 깨짐 | [Write Defaults·Face Tracking 확인](#play-mode에서-얼굴-표정이-깨짐) |
+| MMD 댄스 중 표정·립싱크가 작동하지 않음 | [MMD와 Write Defaults 확인](#mmd-댄스-중-표정립싱크가-작동하지-않음) |
 | Unity에서는 정상인데 VRChat에서만 깨짐 | [업로드 단계의 Mesh 교체 확인](#unity에서는-정상인데-vrchat에서만-깨짐) |
 | 설치 후 기존 PhysBone이 움직이지 않음 | [PhysBone 및 빌드 도구 확인](#설치-후-기존-physbone이-움직이지-않음) |
 | `Invalid localAABB`가 반복됨 | [`Exhale` 상태와 얼굴 문제 분리](#invalid-localaabb-오류가-exhale을-가리킴) |
@@ -68,10 +69,10 @@ Hierarchy의 **아바타 루트 > RealSweat** 오브젝트를 선택하고 **Rea
 
 같은 화면에서 조작할 때마다 Hold on이 반복된다면 단순한 최초 컴파일이 아닐 수 있습니다. Console의 첫 오류와 어떤 Inspector에서 발생했는지 함께 확인하세요.
 
-## v1.0.0에서 v1.0.1로 업데이트
+## v1.0.0 또는 v1.0.1에서 v1.0.2로 업데이트
 
 1. 아바타 Prefab 또는 Unity Project를 백업합니다.
-2. v1.0.1 UnityPackage를 가져옵니다.
+2. v1.0.2 UnityPackage를 가져옵니다.
 3. Base와 Effects를 함께 사용한다면 두 패키지의 버전을 맞춥니다.
 4. 아바타를 선택하고 **Setup — 자동 설치 / 업데이트**를 한 번 실행합니다.
 5. Play Mode에서 얼굴, 땀 토글과 Auto Mode를 확인합니다.
@@ -84,10 +85,21 @@ Hierarchy의 **아바타 루트 > RealSweat** 오브젝트를 선택하고 **Rea
 
 **해결:**
 
-1. v1.0.1 이상으로 업데이트합니다.
+1. v1.0.2로 업데이트합니다.
 2. Setup이 생성한 Merge Animator Priority와 Animator 항목을 수동 변경하지 않았는지 확인합니다.
 3. **Setup — 자동 설치 / 업데이트**를 다시 실행합니다.
 4. 얼굴 표정, 땀 토글, Auto Mode를 함께 확인합니다.
+
+## MMD 댄스 중 표정·립싱크가 작동하지 않음
+
+1. v1.0.2로 업데이트하고 **Setup — 자동 설치 / 업데이트**를 한 번 실행합니다.
+2. **Write Defaults 호환 방식**을 **자동 감지 (권장)**로 설정합니다.
+3. Modular Avatar를 업데이트하고, 대상 구성에 필요하다면 MMD World Support를 활성화합니다.
+4. Play Mode뿐 아니라 실제로 사용할 MMD 월드에서 표정·립싱크·땀 켜기·Auto Mode를 확인합니다.
+
+외부 FX State가 모두 WD ON이면 v1.0.2는 생성되는 RealSweat State도 WD ON으로 맞춥니다. WD OFF, ON/OFF 혼합 또는 판정 불가 구성은 호환 구조를 유지하지만, 월드마다 FX 레이어 제어 방식이 다르므로 모든 MMD 월드에서의 동작을 보장할 수 없습니다.
+
+RealSweat만 WD ON 호환으로 강제하면 외부 WD OFF State와 다시 ON/OFF 혼합 구성이 될 수 있습니다. 대상 아바타 또는 MMD 환경이 전체 WD ON FX를 요구한다는 것을 알고 있는 경우가 아니라면 강제 모드를 영구적인 회피책으로 사용하지 마세요.
 
 ## 땀 켜기 또는 자동 모드가 작동하지 않음
 

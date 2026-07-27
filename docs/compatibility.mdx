@@ -38,13 +38,25 @@ Mesh、Material、Animator、アップロード時に動作する他の改変ツ
 - 複数のMaterial Slotがある場合は、正しいSweat Target Elementを選択します。
 - Tangentが無いMeshではSafe Copy（Recommended）を使用します。
 
-## Write Defaults / Face Tracking
+## Write Defaults / MMD / Face Tracking
 
-v1.0.1では、Write Defaults ON / OFFの両方、およびVRCFTを使用するFace Tracking構成との互換性を改善しました。
+v1.0.2では、アバターFXのWrite Defaults構成を自動判定します。
 
-- Face Tracking使用者はv1.0.1以降を使用してください。
+- **Auto Detect（推奨）** は、RealSweat以外のFX StateがすべてWD ONの場合だけ、生成するRealSweatレイヤーもすべてWD ONにします。
+- WD OFF、ON/OFF混在、または判定不能の場合は、v1.0.1のDriver ON / Output OFF互換構成を維持します。
+- ビルド時にNDMFで最終統合されたFXを再確認し、検出結果に合わせてRealSweatのWD構成を調整します。
+- v1.0.1以前から更新した場合は、v1.0.2をImportした後にSetupを1回実行してください。
 - Setupが生成したMerge Animator PriorityやAnimator欄を手動で変更しないでください。
-- v1.0.0から更新した後はSetup — Install / Updateを1回実行してください。
+
+v1.0.2が変更するのはRealSweatが所有するStateだけです。アバターや他のツールが追加したFX StateのWrite Defaults設定は変更しません。
+
+### MMDワールドとの互換性
+
+アバターのFX AnimatorにWrite Defaults OFFのStateが含まれている場合、ワールド側のFXレイヤー制御方式によっては、MMD再生中の表情・リップシンクまたはReal Sweat Systemが正しく動作しないことがあります。Write Defaults ON/OFFが混在するアバターについても互換性は保証されません。これは、すべてのWD OFFアバターでMMDが非対応という意味ではありません。
+
+Modular AvatarのMMD World Supportは、FX Animatorの第2・第3レイヤーを無効化する方式のMMDワールドに合わせてレイヤー配置を補正する機能です。すべてのMMDワールド、またはすべてのWrite Defaults構成との互換性を保証するものではありません。
+
+実際に使用するMMDワールドで、表情・リップシンク・汗オン・Auto Modeを確認してください。
 
 ## Modular Avatar / NDMFと他の改変ツール
 

@@ -85,7 +85,7 @@ export default function Home(): ReactNode {
               <div className={styles.dropLarge}><span>100%</span></div>
               <div className={styles.dropSmall} />
               <div className={styles.flowLine} />
-              <div className={styles.version}>Docs · v1.0.1</div>
+              <div className={styles.version}>Docs · v1.0.2</div>
             </div>
           </div>
         </section>
@@ -107,7 +107,7 @@ export default function Home(): ReactNode {
 
         <section className={styles.metaStrip}>
           <div className="container">
-            <span>PC VRChat</span><span>JA · EN · KO</span><span>Base · Effects · Full Pack</span><span>Current v1.0.1</span>
+            <span>PC VRChat</span><span>JA · EN · KO</span><span>Base · Effects · Full Pack</span><span>Current v1.0.2</span>
           </div>
         </section>
       </main>

@@ -48,13 +48,25 @@ Unity에서는 정상인데 VRChat에서만 깨지는 경우, 업로드 단계�
 
 Body Mesh에 Tangent가 없다면 Setup에서 **안전한 사본 생성 (권장)**을 사용하세요. Tangent 처리 결과가 다른 Mesh 변환 도구에 의해 다시 교체되지 않도록 확인해야 합니다.
 
-## Write Defaults와 Face Tracking
+## Write Defaults · MMD · Face Tracking
 
-v1.0.1은 Write Defaults ON/OFF 구성과 VRCFT Animator의 호환성을 개선했습니다.
+v1.0.2는 아바타 FX의 Write Defaults 구성을 자동으로 판정합니다.
 
-- Face Tracking을 사용한다면 v1.0.1 이상을 사용하세요.
+- **자동 감지 (권장)**는 RealSweat 외부 FX State가 모두 WD ON일 때만 생성되는 RealSweat 레이어도 모두 WD ON으로 구성합니다.
+- WD OFF, ON/OFF 혼합 또는 판정 불가 환경에서는 v1.0.1의 Driver ON / Output OFF 호환 구조를 유지합니다.
+- 빌드 시 NDMF로 최종 병합된 FX를 다시 검사하고, 감지 결과에 맞춰 RealSweat의 WD 구성을 조정합니다.
+- v1.0.1 이하에서 업데이트했다면 v1.0.2를 가져온 뒤 Setup을 한 번 실행하세요.
 - Setup이 생성한 Merge Animator Priority 또는 Animator 항목을 수동으로 바꾸지 마세요.
-- 업데이트 후 **Setup — 자동 설치 / 업데이트**를 한 번 실행하세요.
+
+v1.0.2는 RealSweat이 소유한 State만 변경합니다. 아바타 또는 다른 도구가 추가한 FX State의 Write Defaults 설정은 변환하지 않습니다.
+
+### MMD 월드 호환성
+
+아바타의 FX Animator에 Write Defaults OFF State가 포함되어 있으면, 월드의 FX 레이어 제어 방식에 따라 일부 MMD 재생 중 표정·립싱크 또는 Real Sweat System이 정상적으로 작동하지 않을 수 있습니다. Write Defaults ON/OFF가 혼재된 아바타 역시 호환성을 보장하지 않습니다. 이는 모든 WD OFF 아바타가 MMD에서 미지원이라는 뜻은 아닙니다.
+
+Modular Avatar의 MMD World Support는 FX Animator의 제2·제3 레이어를 비활성화하는 방식의 MMD 월드에 맞춰 레이어 배치를 보정하는 기능입니다. 모든 MMD 월드 또는 모든 Write Defaults 구성과의 호환성을 보장하는 기능은 아닙니다.
+
+실제로 사용할 MMD 월드에서 표정·립싱크·땀 켜기·Auto Mode를 확인하세요.
 
 ## Modular Avatar, VRCFury와 최적화 도구
 

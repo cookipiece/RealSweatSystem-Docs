@@ -15,6 +15,7 @@ Clear the Unity Console, reproduce the issue once, and begin with the **first er
 - [Tuning changes are not applied](#tuning-changes-are-not-applied)
 - [Import or shader compilation takes a long time](#import-or-shader-compilation-takes-a-long-time)
 - [The face breaks in Play Mode or VRChat](#the-face-breaks-in-play-mode-or-vrchat)
+- [Expressions or lip sync stop during an MMD dance](#expressions-or-lip-sync-stop-during-an-mmd-dance)
 - [Sweat On or Auto Mode does not work](#sweat-on-or-auto-mode-does-not-work)
 - [It works in Unity but breaks only in VRChat](#it-works-in-unity-but-breaks-only-in-vrchat)
 - [An existing PhysBone stops moving after installation](#an-existing-physbone-stops-moving-after-installation)
@@ -74,10 +75,10 @@ The first package import can take longer while Unity imports assets, compiles sh
 - Resolve the **first Console compile error** before judging the import as complete.
 - Later imports can be faster because Unity reuses cached results. Cache behavior differs by PC and project.
 
-## Updating from v1.0.0
+## Updating from v1.0.0 or v1.0.1 to v1.0.2
 
 1. Back up the avatar or project.
-2. Import the v1.0.1 package.
+2. Import the v1.0.2 package.
 3. If using Full Pack (Base + Effects), update Base and Effects to the same version.
 4. Run **Setup — Install / Update** once.
 5. Check the face, Sweat On, Sweat %, Auto Mode, and installed Effects in Play Mode.
@@ -86,12 +87,23 @@ The first package import can take longer while Unity imports assets, compiles sh
 
 This can occur when an older Real Sweat setup conflicts with a Write Defaults OFF Face Tracking animator.
 
-1. Update to v1.0.1 or later.
+1. Update to v1.0.2.
 2. Undo any diagnostic changes made to the generated Animator field or Merge Animator Priority.
 3. Run Setup again.
 4. Confirm that facial expressions, sweat toggles, and Auto Mode all work together.
 
 Do not use a manually changed animator order as a permanent workaround.
+
+## Expressions or lip sync stop during an MMD dance
+
+1. Update to v1.0.2 and run **Setup — Install / Update** once.
+2. Set **Write Defaults Compatibility** to **Auto Detect (Recommended)**.
+3. Update Modular Avatar and enable MMD World Support when it is needed by the target setup.
+4. Test expressions, lip sync, Sweat On, and Auto Mode in the actual MMD world you intend to use, not only in Play Mode.
+
+When every external FX state uses WD ON, v1.0.2 also uses WD ON for the generated RealSweat states. WD OFF, mixed, or unknown setups retain the compatible split, but MMD behavior cannot be guaranteed in every world because FX-layer control differs by world.
+
+Forcing only RealSweat to WD ON can recreate a mixed ON/OFF controller when external states use WD OFF. Do not use a forced mode as a permanent workaround unless you know the target avatar or MMD environment requires an all-WD-ON FX controller.
 
 ## Sweat On or Auto Mode does not work
 

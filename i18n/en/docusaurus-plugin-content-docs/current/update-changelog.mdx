@@ -17,6 +17,24 @@ description: Safe update steps and release notes for Real Sweat System.
 
 For removal, clean reinstallation, or changing between Base, Effects, and Full Pack, follow [Uninstall, reinstall, or change modules](./troubleshooting.mdx#uninstall-reinstall-or-change-modules).
 
+## v1.0.2 — 2026-07-27
+
+### Compatibility
+
+- Fixed an issue where v1.0.1 could add only the RealSweat Output layers as WD OFF to an otherwise all-WD-ON FX setup, creating a mixed controller that prevented expressions or lip sync from working during some MMD dances
+- Added **Auto Detect (Recommended)** for the avatar FX Write Defaults structure
+- When every non-RealSweat FX state uses WD ON, all generated RealSweat layers also use WD ON
+- WD OFF, mixed, or unknown setups retain the v1.0.1 Driver ON / Output OFF compatible split
+- Rechecks the final NDMF-merged FX controller during build and adjusts the RealSweat WD structure to the detected result
+
+:::note[Updating from v1.0.1]
+Import v1.0.2 and run **Setup — Install / Update** once. There are no intended changes to the sweat appearance or user settings.
+:::
+
+:::caution[MMD worlds]
+With a WD OFF or mixed FX setup, expressions or Real Sweat System may not work correctly during MMD playback in some worlds, depending on how the world controls FX layers. See [Compatibility](./compatibility.mdx#mmd-world-compatibility).
+:::
+
 ## v1.0.1 — 2026-07-27
 
 ### Fixed
