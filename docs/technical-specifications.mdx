@@ -1,0 +1,140 @@
+---
+id: technical-specifications
+title: 技術仕様・既知の制限
+description: Real Sweat System v1.0.1のModule別機能、同期コスト、Material、PhysBone、Restデータ、および既知の制限。
+---
+
+# 技術仕様・既知の制限
+
+このページは **Real Sweat System v1.0.1** の現在の仕様をまとめたものです。Setupで選択したModule、アバターのRig、選択したEffectによって、実際に生成されるメニュー・Parameter・Objectは変わります。
+
+## Module別の技術的な範囲
+
+| 項目 | Sweat Base Module | Sweat Effects Module | Full Pack |
+|---|:---:|:---:|:---:|
+| 肌表面の汗・流れる滴 | ✓ | — | ✓ |
+| Body用の汗MaterialとRestデータ | ✓ | — | ✓ |
+| Tess / No Tess・相手側を低負荷 | ✓ | — | ✓ |
+| 落下する滴・床の濡れ跡 | — | ✓ | ✓ |
+| 息・湯気 | — | ✓ | ✓ |
+| Manual Mode | ✓ | ✓ | ✓ |
+| 対応RigでのAuto Mode | ✓ | ✓ | ✓ |
+| Body Material・Body Mesh・Rest構成の変更 | あり | なし | Base側のみ |
+
+Effects-only構成でも、Particleの放出元としてBody Meshを指定します。ただしBody Material、Body Mesh、Rest Vertex Data、テッセレーション構成は変更しません。
+
+## 対応環境
+
+- Unity 2022.3
+- VRChat Avatars SDK3
+- Modular Avatar
+- PC版VRChat（Direct3D 11）
+
+本製品は **PC版VRChat向け**です。Quest単体版は対応していません。
+
+Humanoidが主な対応対象です。HumanoidでMotion Pendulumを構成できる場合はManual ModeとAuto Modeを利用できます。Non-Humanoid、または必要なBone情報を取得できない構成ではManual Modeへフォールバックします。Rigによる機能差は[対応環境・互換性](./compatibility.mdx#avatar-rig)を確認してください。
+
+## 現在の公式対応範囲
+
+- 1回のSetupで正式に追跡するBody `SkinnedMeshRenderer`は **1つ**です。
+- FaceとBodyが別Rendererの場合、Faceへの同時自動適用は現在の正式対応外です。
+- 複数のBody Rendererを切り替える構成は、各Rendererへの自動同時導入に現在対応していません。
+- 全ての第三者製Optimizer、Mesh統合、Material統合、アップロード時変換との組み合わせを保証するものではありません。
+
+Faceへの参考手順は[上級者向けツール](./tools.mdx#unsupported-face-body)にありますが、非推奨・公式サポート対象外です。
+
+## 同期Parameter
+
+次の表は、Auto Modeを利用でき、該当Moduleの任意Effectを全て導入した場合の **最大同期値**です。Setupは導入していないModule、無効なEffect、利用できない機能のParameterを省略するため、実際の値はこれより小さくなる場合があります。
+
+| 構成 | 同期Parameter数（最大） | 同期コスト（最大） |
+|---|---:|---:|
+| Base / No Tess | 5 | 19 bit |
+| Base / Tess Support | 6 | 20 bit |
+| Effects | 9 | 23 bit |
+| Full Pack / No Tess | 10 | 24 bit |
+| Full Pack / Tess Support | 11 | 25 bit |
+
+最大値には、Sweat %とAuto ModeのFloat、汗ON、表示範囲、Module別の切替が含まれます。Effectsの個別切替は、落下する滴・床の濡れ跡・息・湯気を全て導入した場合に最大4個の同期Boolを追加します。テッセレーション対応を搭載すると同期Boolを1個追加します。
+
+Animator内部の計算Parameterや、同期しないExertion・Breath Rateは上の同期Parameter数とbit数に含みません。
+
+## 汗Materialと描画数
+
+ここでのMaterial数は、BaseがBodyの汗表面用として管理するMaterialだけを指します。EffectsのParticle用Materialは含みません。
+
+| Baseの導入設定 | 汗表面Material | 同時に描画される汗Material |
+|---|---:|---:|
+| 立体機能を搭載しない | No Tess 1個 | 1個 |
+| 立体機能を搭載する | Tess + No Tessの2個 | 1個 |
+| Effects-only | Body用汗Materialを追加しない | 0個 |
+
+立体機能を搭載してもTessとNo Tessを同時描画するのではなく、同じBody Slotを切り替えます。
+
+## PhysBoneとCollider
+
+| 項目 | Setupが作成する数 |
+|---|---:|
+| Auto Mode用 `VRCPhysBone` | 対応Rigでは1個、Manual-only構成では0個 |
+| `VRCPhysBoneCollider` | 0個 |
+
+Auto Mode用PhysBoneは、`RealSweat`配下の専用Motion Pendulumに作成されます。Real Sweat Systemは、アバターに既に存在する胸・髪・衣装などのPhysBoneやColliderを意図的に変更しません。
+
+:::note[既存PhysBoneが動かなくなった場合]
+Real Sweat Systemの標準Setupが既存PhysBoneを編集する仕様ではありません。別のToolによるBuild時のBone・Component統合、Avatar側のConstraint、またはPlay Modeで生成された最終構成を確認してください。
+:::
+
+## Rest Vertex Data
+
+Base Moduleは選択した表示Meshに対応する、頂点単位の次の3つのRestデータTextureを作成します。
+
+- Rest Position
+- Rest Normal
+- Rest Tangent
+
+Rest Vertex Data Bakerは元のFBX、`sharedMesh`、UV、BlendShape、他のMaterialを直接変更せず、Meshを読み取って生成したTextureを対象の汗Materialへ割り当てます。RestデータはMeshの頂点構成に対応するため、異なるMesh間で同じ汗Materialを共有できません。
+
+Setup後にBody Meshの置換、頂点構成の変更、Submesh統合を行った場合は、Restデータと最終表示Meshの対応が無効になることがあります。
+
+## Render Queueと影
+
+- 自動描画順では、汗MaterialのRender Queueを **2455** に設定します。
+- 選択したBody Materialは **2454以下**にします。
+- 自動描画順を使用できない構成では手動Queueを使用できますが、2501以上ではTransparent Sortの影響を受けます。
+- **ボディのShadow Strengthに合わせる**を有効にすると、Setupまたは「FXに適用」時に対象Body Materialの`_ShadowStrength`を汗Materialへ反映します。
+
+詳細と例外は[対応環境・互換性](./compatibility.mdx#render-queueと影)を確認してください。
+
+## Tess・相手側を低負荷・Effectsの技術的な動作
+
+### Tessellation
+
+Base Moduleの任意機能です。No Tessより滑らかな輪郭と水滴の立体的な変位を追加しますが、GPU負荷が増加します。搭載しない場合はNo Tess Material 1個だけをアップロードします。
+
+### 相手側を低負荷
+
+Base Module導入時に利用できます。有効にすると、他のユーザーから見える汗をNo Tessの内蔵Lite経路へ切り替えます。
+
+- Tess Support搭載時: 他のユーザーにはNo Tess Material + Lite経路を使用
+- Tess Support非搭載時: 同じNo Tess MaterialのLite経路を使用
+- 自分側: 自分が選択したTess / No Tess状態を維持
+- 同時描画: 汗Materialは常に1個
+
+### Effects
+
+Effects ModuleはParticleを使用して落下する滴、床の濡れ跡、息、湯気を表現します。各EffectはSetupで導入したものだけがメニューとParameterへ追加され、インゲームで個別に無効化できます。
+
+床の濡れ跡はWorldのFloor ColliderとLayer構成の影響を受けます。息と湯気は必要なHead・Chest Anchorを解決できる構成で生成されます。
+
+## Build時にMeshを変更するTool
+
+Unity Editorでは正常で、VRChat内だけ汗の位置・形・表示が崩れる場合は、アップロード時に別のToolが次のいずれかを変更している可能性があります。
+
+- 対象Body RendererまたはMesh
+- 頂点・Submesh構成
+- Material Slotの順序
+- Restデータを参照する最終表示Mesh
+
+この場合、該当Toolに除外リストがある場合は、**Real Sweatが使用するBody Rendererを最適化・統合の対象から除外**してください。Body Rendererを除外する機能が無い場合、そのToolとの互換性は保証できません。
+
+Mesh変更を先に確定できるWorkflowでは、最終Meshへ変更した後にReal Sweat SystemのSetupを実行してください。Build時にのみ変更される構成では、最終結果との互換性を個別に確認する必要があります。

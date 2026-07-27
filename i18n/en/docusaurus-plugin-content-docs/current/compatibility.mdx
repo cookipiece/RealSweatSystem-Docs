@@ -24,11 +24,19 @@ VRCFury is not required for Real Sweat System.
 - **Non-humanoid or unable to create the Modular Avatar motion pendulum:** Manual Mode, Falling Drops, and Floor Stains are available. Auto Mode, Breath Puffs, and Steam are not created.
 - **Motion pendulum created, but required Head/Chest anchors unavailable:** Auto Mode remains available. Breath Puffs and Steam are not created.
 
+## Supported avatar scope
+
+Real Sweat System is a general-purpose system for Humanoid avatars, not an avatar-specific product. The standard installer does not require manual Animator editing, but basic VCC and Unity operation is still required, including opening the project, selecting the avatar root and Body Renderer, and checking the Console.
+
+Mesh, material, Animator, and build-time modification tool configurations differ between avatars. Compatibility with every avatar and every combination of modifications is therefore not guaranteed. Non-humanoid avatars have the feature limitations described above.
+
 ## Body Mesh
 
 The selected Body must be a child `SkinnedMeshRenderer` with a valid mesh and submesh.
 
 - The current installer supports **one Body Renderer per installation**.
+- Multiple Body Renderers and body-swap avatars are not automatically handled by the current standard Setup. Only the one selected Body Renderer is officially supported.
+- If Body and Face use separate Renderers, adding the Face is outside the official automatic Setup. See the [unsupported manual reference procedure](./tools.mdx#unsupported-face-body) if needed.
 - For a mesh with multiple material slots, select the correct **Sweat Target Element**.
 - If the source mesh has no valid tangents, use **Create Safe Copy (Recommended)**.
 - The final build must preserve the target submesh, material relationship, and readable mesh data needed by Real Sweat System.
@@ -47,6 +55,16 @@ v1.0.1 improves compatibility with both Write Defaults ON and Write Defaults OFF
 Tools that optimize or replace the Body during upload must preserve the sweat target submesh and material lineage. A setup can look correct in the Unity Editor and still fail in VRChat if another build tool replaces the final Body after Real Sweat System has prepared it.
 
 If this happens, configure the other tool to exclude the target Body, preserve the required submesh, or change its documented build order.
+
+If a tool modifies the Body only at build time and provides an exclusion list, add the Body Renderer used by Real Sweat System to that list. Compatibility cannot be guaranteed for tools that do not provide a Body exclusion feature.
+
+If you manually modify or replace the source Body Mesh in Unity, finish all mesh changes first and then run **Setup — Install / Update** again. Rerunning Setup alone cannot fix a tool that replaces the Mesh during every build.
+
+## PhysBone coexistence
+
+Real Sweat System creates its own Motion Pendulum PhysBone and dedicated parameters for Auto Mode. It does not intentionally modify, disable, or remove existing PhysBones such as an avatar's chest PhysBones.
+
+Combinations with other tools that modify bones, PhysBones, Animators, or build data vary by environment and must be verified in both Play Mode and an uploaded build. Existing PhysBones stopping after installation is not expected behavior.
 
 ## Materials
 

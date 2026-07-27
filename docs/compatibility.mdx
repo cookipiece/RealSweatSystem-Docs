@@ -22,11 +22,19 @@ Non-Humanoidアバター、またはModular Avatar Bone ProxyによるMotion Pen
 
 Motion Pendulumを作成できても、必須のHead・Chest Anchorを解決できない場合はAuto Modeを使用できますが、Breath PuffsとSteamのメニュー項目は生成されません。
 
+## 対応アバターの範囲
+
+Real Sweat Systemは特定のアバター専用ではなく、Humanoidアバター向けの汎用システムです。通常の導入ではAnimatorを手動編集する必要はありませんが、VCCでプロジェクトを開く、UnityでアバターRootとBody Rendererを選択する、Consoleを確認するといった基本操作は必要です。
+
+Mesh、Material、Animator、アップロード時に動作する他の改変ツールの構成はアバターごとに異なるため、すべてのアバターおよびすべての改変の組み合わせを保証するものではありません。Non-Humanoidでは、上記のとおり一部機能に制限があります。
+
 ## Body Renderer
 
 - アバター配下のSkinnedMeshRendererを指定します。
 - Rendererには有効なMeshとSubmeshが必要です。
 - 1回のインストールで指定できるBody Rendererは1つです。
+- 複数Body RendererやBodyを切り替えるアバターへの自動適用は、現在の標準Setupでは対応していません。選択した1つのBody Rendererのみが公式サポート対象です。
+- BodyとFaceが別Rendererの場合、Faceへの追加は公式の自動Setup対象外です。必要な場合は[非公式の手動参考手順](./tools.mdx#unsupported-face-body)を確認してください。
 - 複数のMaterial Slotがある場合は、正しいSweat Target Elementを選択します。
 - Tangentが無いMeshではSafe Copy（Recommended）を使用します。
 
@@ -47,6 +55,16 @@ Real Sweatは非破壊ビルド環境で使用できます。ただし、アッ�
 - Real Sweatが参照するBody Rendererの系統が維持されている
 
 Unity Editorでは正常でVRChat内だけ表示が崩れる場合は、アップロード時にBodyを変更するOptimizer、Mesh変換、Material統合ツールの設定を確認してください。
+
+ビルド時だけBodyを変更するツールが原因の場合は、そのツールに除外リストがあれば、Real Sweat Systemで使用しているBody Rendererを追加してください。Bodyを除外する機能が無いツールとの互換性は保証できません。
+
+Unity上で元のBody Meshを手動で変更・交換した場合は、Mesh変更をすべて完了してから **Setup — Install / Update** を再実行してください。ビルドのたびに別ツールがMeshを置換する構成は、Setupの再実行だけでは解決しません。
+
+## PhysBoneとの共存
+
+Real Sweat SystemはAuto Mode用に専用のMotion Pendulum PhysBoneとパラメーターを作成します。既存アバターの胸などに設定されているPhysBoneを意図的に変更、無効化、削除する処理は行いません。
+
+ただし、Bone、PhysBone、Animator、ビルドデータを変更する他のツールとの組み合わせは環境ごとに異なるため、個別の組み合わせはPlay Modeとアップロード後の両方で確認してください。導入後に既存PhysBoneだけが動かなくなる状態は通常動作ではありません。
 
 ## Poiyomi Lock
 

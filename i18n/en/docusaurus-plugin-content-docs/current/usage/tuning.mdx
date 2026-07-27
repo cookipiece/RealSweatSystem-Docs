@@ -1,97 +1,188 @@
 ---
 id: tuning
-title: Tuning Guide
-description: Adjust sweat appearance, automatic response, and performance.
+title: Setup & Tuning Option Reference
+description: Reference for every normal Setup and Tuning control in RealSweatSystem 1.0.1.
 ---
 
-# Tuning Guide
+# Setup & Tuning Option Reference
 
-Start with the presets, test in the intended scene, and adjust only the settings that need a different result.
+This page documents the normal user-facing controls in RealSweatSystem 1.0.1. Controls marked **Base** appear when the Sweat Base Module is installed; controls marked **Effects** require the Sweat Effects Module.
 
 ## Open the Tuning component
 
-After Setup, expand the avatar in the Hierarchy and select the generated **RealSweat** object directly under the avatar root. Its Inspector contains the **RealSweatSystem Tuning** component.
+After Setup, expand the avatar in the Hierarchy and select the generated **RealSweat** object directly under the avatar root. Its Inspector contains **RealSweatSystem Tuning**.
 
-If the object is missing, open **CookiTools > RealSweatSystem Setup／Uninstall** and run **Setup — Install / Update** before tuning.
+If the object is missing, open **CookiTools > RealSweatSystem Setup／Uninstall** and run **Setup — Install / Update**.
 
 [![RealSweatSystem Tuning Inspector in English](/img/guide/tuning-english.png)](/img/guide/tuning-english.png)
 
-*<small>English Tuning Inspector example. The values shown come from a test scene and may differ from the installation defaults.</small>*
+*<small>The values in screenshots may come from a test scene and may differ from installation defaults.</small>*
 
-## Applying changes
+## When changes take effect
 
-- Material quality and surface appearance changes are applied immediately to the Tess and No Tess materials.
-- Press **Apply to FX** after changing the automatic-response curve or other FX values.
-- Press **Apply to FX** to retune generated animated wetness, falling drops, fling-particle scale, Breath Puffs, and Steam.
+| Change | When it takes effect |
+|---|---|
+| **Overall Sweat Amount** | Material quality changes immediately. Press **Apply to FX** to also retune animated wetness, falling drops, and steam. |
+| **Droplet Size / Pattern Density** | The Tess and No Tess surface materials update immediately. Press **Apply to FX** to also refresh falling-drop and strong-movement-fling scale. |
+| **3D Detail Precision** | Updates the installed Tess material immediately. |
+| Automatic-response, accumulation-curve, retention, effect, and advanced FX values | Press **Apply to FX**. |
+| Body material Shadow Strength | Press **Apply to FX**, or run Setup again, to copy it. |
+| Setup structure, selected Body, render order, and installed tessellation support | Run **Setup — Install / Update**. |
 
-If Setup reports that the installed routing is outdated, run **Setup — Install / Update** once, then press **Apply to FX** again.
+The accumulation graphs preview pending values immediately, but they do not modify generated FX until **Apply to FX** is pressed.
 
-## Main controls
+## Setup window option reference
 
-| Control | What it changes | Performance impact | Starting point |
-|---|---|---|---|
-| Auto Mode Sensitivity | Response to body movement | Low | **Balanced** |
-| Custom Accumulation Speed Curve | Build rate across the Sweat % range | Low | Leave at the supplied curve first |
-| Overall Sweat Amount | Visible amount and density | Medium to high | **Low amount (Low Load)** |
-| Droplet Size | Apparent size of droplets | Low to medium | Avoid extreme values |
-| Pattern Density | Number and fineness of droplets | Medium to high | Keep moderate for crowded worlds |
-| 3D Feature (Tessellation) | Physical surface displacement | High | Install only when needed |
+| Control | Module | Default | Meaning |
+|---|---|---:|---|
+| **Avatar** | All | None | Target object with a VRC Avatar Descriptor. |
+| **Body Mesh** | All | Auto-detect | The single SkinnedMeshRenderer that receives the sweat shell. |
+| **Sweat Target Element** | Base | Element 0 | Selects the Body material/submesh area to re-render. Element 0 is usually the main skin. |
+| **Automatic render order (Recommended)** | Base | On | Sets the sweat render queue to exactly `2455`. The selected Body material must be `2454` or lower. |
+| **Manual Sweat Render Queue** | Base | `2455` | Appears when automatic ordering is disabled. Set it above the selected Body material. |
+| **Follow Body Shadow Strength** | Base | On | Copies `_ShadowStrength` from the selected Body Element material to RealSweatSystem when Setup or **Apply to FX** runs. Supports lilToon and Poiyomi. |
+| **Overall Sweat Amount** | All | Low amount (Low Load) | Selects the surface calculation budget and matches animated wetness and effect intensity. |
+| **Auto Mode Sensitivity** | All | Balanced | Selects how strongly small body movement starts and builds automatic sweat. |
+| **Install 3D Feature (Tessellation) (High Load)** | Base | Off | Off uploads one No Tess material. On includes Tess and No Tess materials and adds the in-game 3D control. |
+| **3D Detail Precision** | Base + Tess | Simplified | Selects the tessellation precision of the installed 3D material. |
+| **Tessellation Default On** | Base + Tess | Off | Chooses the initial local 3D state after the avatar loads. Only one sweat material is active at a time. |
+| **Falling Drops** | Effects | On | Installs falling body-sweat particles. |
+| **Enable Floor Stains** | Effects | On | Installs wet floor marks made by Falling Drops. |
+| **Breath Puffs** | Effects | On | Installs the breath emitter. |
+| **Steam** | Effects | On | Installs body-steam emitters. |
+| **Steam Locations** | Effects | Chest, shoulders, armpits, thighs on; crotch and feet off | Chooses which body-steam emitters Setup creates. |
+| **Also delete generated assets on Uninstall** | All | Off | Removes generated bake, material, animation, and menu assets during Uninstall. Leave off when you want to keep them. |
 
-## Overall Sweat Amount
+### Overall Sweat Amount
 
-The available choices are:
+- **Low amount (Lightweight):** smallest droplet calculation budget. A faint pattern-join line may appear on some body areas or viewing angles.
+- **Low amount (Low Load):** default; keeps the low-load target while hiding the common Lightweight join line.
+- **Standard amount (Medium Load):** more visible sweat and a larger calculation budget.
 
-- **Low amount (Lightweight)**
-- **Low amount (Low Load)** — default
-- **Standard amount (Medium Load)**
+Test close-up views and mirrors before upload. Sweat amount, pattern density, screen coverage, and tessellation can compound GPU load.
 
-The names describe both appearance and expected load. Test the selected amount in a mirror and at close range before upload.
+### Tessellation choices
 
-## Sensitivity and accumulation curve
+| 3D Detail Precision | Tess factor | Intended use | Relative load |
+|---|---:|---|---|
+| **Simplified — General Play** | `2.5` | Normal play | Lowest Tess option |
+| **Balanced — Close-up Viewing** | `4` | Close viewing | Higher |
+| **Precise — Photo Capture** | `7` | Still images | Highest |
 
-The sensitivity preset determines how strongly motion feeds Auto Mode. The accumulation curve then shapes how quickly sweat builds at different points in the current Sweat % range.
+Installing tessellation does not make both materials render together. The menu switches one Body slot between Tess and No Tess. Disabling the in-game 3D feature uses the true No Tess shader, so hull/domain tessellation work is not performed.
 
-The curve editor can be collapsed when you do not need it. Its graph reflects the current sensitivity so that the displayed tendency matches the active setup more closely.
+## Tuning option reference
 
-## Body Normal Map and Flow Guide Map
+### Automatic Accumulation Response
 
-These two textures do different jobs:
+| Control | Default | Meaning |
+|---|---:|---|
+| **Sensitivity Preset** | Balanced | **Balanced** follows movement strength. **Sensitive** reaches full response sooner and reacts more to small motion. Selecting a preset resets its response threshold, saturation point, rise/decay reference, and smoothing values. |
+| **Build Speed Multiplier** | `1.0` | Multiplies the preset's overall automatic build speed. Range `0.25–4.0`. |
+| **Horizontal Motion Sensitivity** | `1.0` | Left/right and forward/back response. Range `0.95–1.10`. |
+| **Vertical Motion Sensitivity** | `1.2` | Up/down response. Range `0.90–1.30`; `1.2` is recommended for small-travel bouncing and squats. |
+| **Preview Direction** | Mixed | Changes only the graph preview. All directions remain active in game. |
+| **Movement Response** | Folded | Shows the current threshold, saturation, smoothing, and directional response. It is a preview only. |
+| **Accumulation Profile** | Uniform | Shapes build speed across the current Sweat % without adding a synced parameter or runtime layer. |
+| **Detailed Values** | Folded | For an enabled curve, edits the five multipliers at `0/25/50/75/100%`. Range `0.1–2.0`. |
+| **Accumulation Graphs** | Folded | Shows the profile and an estimated timeline to 95% under steady movement. Actual PhysBone input depends on the avatar and animation. |
 
-| Texture | Purpose | Does it steer droplets? |
+Accumulation profiles:
+
+- **Uniform:** the same multiplier at every Sweat %; new installations start here.
+- **Natural (Recommended):** slightly faster early build and gradually slower high-Sweat build.
+- **Fast Start:** strongly emphasizes the beginning.
+- **Late Acceleration:** starts slowly and becomes faster later.
+- **Custom:** enables direct editing of the five points.
+
+The supplied profiles keep the estimated time to 95% nearly equal; the visible progression and final 5% can differ. Sensitivity, build-speed multiplier, directional sensitivity, and the accumulation profile all affect Auto Mode together.
+
+### Surface and general controls
+
+| Control | Module | Default | Meaning / load |
+|---|---|---:|---|
+| **Overall Sweat Amount** | All | Low amount (Low Load) | Same three presets as Setup. Material quality updates immediately; generated FX require **Apply to FX**. Medium to high GPU impact. |
+| **Droplet Size** | Base | `1.35` | Size of droplets attached to the body. Range `0.5–2.0`; low direct cost, but larger coverage can make the effect more visible. |
+| **Pattern Density** | Base | `24` | Higher values make cells smaller and denser. Range `4–64`; use moderate values for crowded or close-up scenes. |
+| **Tessellation Default On** | Base + Tess | Off | Initial local 3D state. This does not add a second draw. |
+| **3D Detail Precision** | Base + Tess | Simplified | Changes the active Tess material precision; GPU cost rises sharply with precision. |
+| **Follow Body Shadow Strength** | Base | On | Copies rather than continuously links the Body value. Press **Apply to FX** after changing the Body material. |
+| **Retention Time Multiplier** | All | `1.0` | Multiplies dry-off duration. Higher values keep sweat visible longer. Range `0.5–2.0`. |
+
+### Effect Toggles
+
+This section appears only with the **Effects Module**.
+
+| Control | Default | Meaning |
+|---|---:|---|
+| **Falling Drops** | On | Enables falling body droplets. |
+| **Bloom Sparkle** | On | Adds a restrained HDR highlight to falling drops. Bloom appears only in worlds that enable bloom. |
+| **Enable Floor Stains** | On | Enables wet marks from falling drops. Falling Drops must be active to create them. |
+| **Breath Puffs** | On | Enables the breath emitter. |
+| **Steam** | On | Enables body steam. |
+| **Steam Locations** | Chest, shoulders, armpits, thighs on | Enables the installed emitters. Crotch and feet are off by default. If a location was not created by Setup, re-run Setup before expecting the toggle to add it. |
+
+## Advanced FX Tuning
+
+Advanced controls modify generated animation or particle assets and require **Apply to FX**. Use **Restore Category Defaults** to reset only one group.
+
+### Automatic Response
+
+| Control | Default | Meaning |
+|---|---:|---|
+| **Response Threshold** | Balanced `0.04`; Sensitive `0.015` | Motion level where automatic build starts. |
+| **Saturation Point** | Balanced `0.35`; Sensitive `0.18` | Motion level where the rise rate reaches full response. |
+| **Smoothing** | Balanced `0.12`; Sensitive `0.16` | Higher values respond faster; lower values feel heavier. |
+| **Sweat Accumulation Resistance (%)** | `100%` | Gradually resists high-Sweat buildup while preserving full-strength motion. `0%` restores the legacy response. |
+| **Movement Resume Delay** | `1 s` | Delay after locomotion or jumping stops before pendulum motion can raise sweat again. |
+| **Drop Recovery Time** | `3 s` | How quickly falling-drop activity settles after movement stops. |
+| **Exertion Recovery Time** | `9 s` | Recovery of the intermediate exertion stage used by body heat, not breath-puff visibility. |
+| **Body Heat Recovery Time** | `30 s` | Recovery of the body-steam cadence modifier. |
+| **Pendulum Bone** | Hips | Motion sensor attachment. Chest, head, and hands are available; head/hands can overreact, especially with Sensitive. |
+
+### Effects Module advanced groups
+
+| Group | User-facing controls | Category defaults |
 |---|---|---|
-| **Body Normal Map** | Changes wet highlights and how moisture settles around body folds | **No** |
-| **Flow Guide Map (Optional)** | Adds an artist-authored UV0 tangent direction to flowing droplets and trails | **Yes** |
+| **Falling Drops** | Rate, fall speed, lifetime, size, and length multipliers; Strong Movement Fling; fling threshold, chance, cooldown, and burst min/max | Multipliers `1.0`; fling on; threshold/chance `0.55`; cooldown `3.5 s`; burst `2–5` |
+| **Floor Stains** | Lifetime, size, opacity, center-drying contrast, pooling chance | Multipliers `1.0`; contrast `0.75`; pooling `0.25` |
+| **Steam** | Start threshold; density, rise speed, lifetime, size, spread, opacity | Threshold `30%`; multipliers `1.0` |
+| **Breath Puffs** | Start threshold; mouth gate; mouth parameter and threshold; amount, speed, lifetime, size, spread, opacity, cycle speed | Threshold `25%`; gate Auto; parameter `v2/JawOpen`; mouth threshold `0.2`; multipliers `1.0` |
+| **Performance Limits** | Drop, stain, steam, and breath maximum-particle limits | Drop `64`, stain `80`, steam `24` per emitter, breath `48` |
 
-Do not use the Body Normal Map to fix an unwanted flow direction. For custom flow, expand **Flow & Trails > Flow Guide Map (Optional)** in the sweat material.
+**Breath Mouth Gate** options:
 
-The Flow Guide stores direction in the RG channels. Neutral direction is `(0.5, 0.5)` gray. Import it with **sRGB (Color Texture) Off** and **Generate Mip Maps On**; padding UV-island borders with neutral gray helps prevent seams. A strength around `0.35–0.65` is a reasonable starting range. At strength `0`, the map is not sampled.
+- **Always:** breath is not gated by mouth movement.
+- **Viseme (lipsync):** uses VRChat viseme lip sync.
+- **Custom Parameter (VRCFT):** uses the selected float parameter and mouth-open threshold.
+- **Auto (active VRCFT, Viseme fallback):** prefers a changing VRCFT `JawOpen` float, then falls back to Viseme after eight seconds without an open/close change.
 
-## Render order and shadows
+## Sweat material maps
 
-- **Automatic Render Order** is on by default.
-- Automatic Render Order fixes the **Sweat Render Queue** at **2455** and requires the selected Body material to use **2454 or lower**.
-- If that Body queue is not possible, disable Automatic Render Order and set the Sweat Render Queue above the Body material.
-- **Follow Body Shadow Strength** is on by default. It copies `_ShadowStrength` from the material in the selected **Sweat Target Element** into RealSweatSystem's **Cast Shadow Strength**.
-- The shadow value is refreshed when **Setup — Install / Update** or **Apply to FX** runs. It is not a live runtime link, so press **Apply to FX** after changing the Body material's shadow strength.
-- If the source shader does not expose `_ShadowStrength`, the current RealSweatSystem value is kept.
+These are material controls, not fields on the Tuning component. Open the generated RealSweat material Inspector.
 
-Change render order only when another material on the avatar requires a deliberate ordering adjustment.
+| Control | Location | Purpose | Important settings |
+|---|---|---|---|
+| **Spawn Mask (White = Spawn)** | **Basic > Spawn Mask** | White allows droplets, black prevents them, and gray gives partial coverage. Use it to keep sweat off unwanted UV areas. | Uses UV0 and the red channel. |
+| **Flow Guide Map (Optional)** | **Flow & Trails > Flow Guide Map (Optional)** | Steers flowing droplets and trails with an artist-authored UV0 tangent direction. | RG data texture; neutral is `(0.5, 0.5)` gray. Turn **sRGB Off** and **Generate Mip Maps On**. Strength `0` keeps world-gravity flow and avoids the guide-map sample; `0.35–0.65` is a useful starting range. |
+| **Body Normal Map (Fold / Sheen Only)** | **Advanced > Body Normal — Wet Look Only** | Changes wet highlights and fold pooling. | It does **not** steer droplets or trails. Use Flow Guide Map for direction. |
 
-## Tessellation
+## Remote Low Load and mirrors
 
-Tessellation support is not installed by default. When you choose to include it:
+**Remote Low Load** is an avatar-menu control, not a Tuning Inspector field. It is installed in both configurations:
 
-- **Tessellation Default On** remains off by default.
-- **3D Detail Precision** starts at **Simplified — General Play**.
-- The in-game menu adds **3D Effect (Photos Only, High Load)**.
-- Turning the 3D Effect off uses the No Tess display.
+- With tessellation support, other viewers use the No Tess material and its built-in Lite path.
+- Without tessellation support, the same No Tess material switches to its built-in Lite path.
+- It does not use a separate “Performance material,” and it does not lower the owner's local view.
 
-:::warning[Combined load]
-High sweat amount, high pattern density, close-up framing, mirrors, and tessellation can compound GPU load. Change one major setting at a time while testing.
+Mirror cameras automatically use a lower-cost optical path. Some close-range optical details are intentionally simplified in mirrors. There is no user-facing mirror-quality switch in Tuning.
+
+:::warning[Combined GPU load]
+High sweat amount, high pattern density, close-up screen coverage, mirrors, and tessellation can compound GPU load. Change one major setting at a time and test the uploaded avatar.
 :::
 
 ## What to read next
 
-- Compare low-load options in [Performance Guide](../performance.mdx).
+- Compare load-saving choices in [Performance Guide](../performance.mdx).
 - Check render-order and material requirements in [Compatibility](../compatibility.mdx).
-- If an Inspector value appears to do nothing, see [Troubleshooting](../troubleshooting.mdx#tuning-changes-are-not-applied).
+- If a value appears to do nothing, see [Troubleshooting](../troubleshooting.mdx#tuning-changes-are-not-applied).

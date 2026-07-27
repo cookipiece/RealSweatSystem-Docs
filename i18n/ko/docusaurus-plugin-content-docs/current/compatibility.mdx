@@ -24,9 +24,17 @@ Quest 단독 실행 환경에서는 지원되지 않으며, 해당 플랫폼에�
 - Non-Humanoid 아바타이거나 MA Bone Proxy 기반 Motion Pendulum을 만들 수 없으면 Manual Mode와 **낙하 물방울**, **바닥 물자국**은 사용할 수 있습니다. 이 경우 **자동 모드**, **입김**, **몸 김** 메뉴는 생성되지 않습니다.
 - Motion Pendulum은 만들었지만 필수 Head·Chest Anchor를 찾지 못하면 **자동 모드**는 사용할 수 있으며, **입김**과 **몸 김** 메뉴만 생성되지 않습니다.
 
+## 지원 아바타 범위
+
+Real Sweat System은 특정 아바타 전용이 아닌 Humanoid 아바타용 범용 시스템입니다. 일반 설치에서는 Animator를 직접 편집할 필요가 없지만, VCC에서 프로젝트 열기, Unity에서 아바타 Root와 Body Renderer 선택하기, Console 확인하기 등의 기본 조작은 필요합니다.
+
+Mesh, 재질, Animator 및 업로드 과정에서 동작하는 다른 개조 도구의 구성이 아바타마다 다르므로 모든 아바타와 모든 개조 조합의 호환성을 보장하지는 않습니다. Non-Humanoid에서는 위에 안내된 것처럼 일부 기능이 제한됩니다.
+
 ## Body Mesh와 Submesh
 
 현재 설치 한 번당 Body Renderer 한 개를 지원합니다. Body에 재질 슬롯이 여러 개라면 **땀 적용 Element**에서 피부가 있는 정확한 Submesh를 선택해야 합니다.
+
+여러 Body Renderer를 사용하거나 Body를 교체하는 아바타에는 현재 표준 Setup이 자동으로 적용되지 않습니다. 선택한 Body Renderer 한 개만 공식 지원 대상입니다. Body와 Face가 별도 Renderer라면 Face 추가도 공식 자동 Setup 대상이 아니며, 필요한 경우 [비공식 수동 참고 절차](./tools.mdx#unsupported-face-body)를 확인하세요.
 
 업로드 과정에서 Body Mesh를 합치거나 교체하는 도구를 사용한다면 다음 조건을 유지해야 합니다.
 
@@ -53,6 +61,16 @@ v1.0.1은 Write Defaults ON/OFF 구성과 VRCFT Animator의 호환성을 개선�
 Modular Avatar는 필수입니다. VRCFury, Avatar Optimizer와 기타 비파괴 도구는 함께 사용할 수 있지만, 업로드 시 Body를 최종적으로 교체하는 기능이 있다면 위의 Mesh 조건을 지켜야 합니다.
 
 특정 도구에서만 문제가 발생하면 해당 도구가 Real Sweat 설치 후 Body Mesh 또는 재질 슬롯을 바꾸는지 먼저 확인하세요.
+
+빌드할 때만 Body를 변경하는 도구가 원인이라면 해당 도구에 제외 목록이 있을 경우 Real Sweat System에서 사용하는 Body Renderer를 추가하세요. Body 제외 기능이 없는 도구와의 호환성은 보장할 수 없습니다.
+
+Unity에서 원본 Body Mesh를 직접 변경하거나 교체했다면 모든 Mesh 변경을 끝낸 다음 **Setup — 자동 설치 / 업데이트**를 다시 실행하세요. 빌드할 때마다 다른 도구가 Mesh를 교체하는 구성은 Setup을 다시 실행하는 것만으로 해결되지 않습니다.
+
+## PhysBone 공존
+
+Real Sweat System은 자동 모드를 위해 자체 Motion Pendulum PhysBone과 전용 파라미터를 생성합니다. 기존 아바타의 가슴 등에 설정된 PhysBone을 의도적으로 변경하거나 비활성화하거나 제거하지 않습니다.
+
+다만 Bone, PhysBone, Animator 또는 빌드 데이터를 변경하는 다른 도구와의 조합은 환경마다 다르므로 개별 조합은 Play Mode와 업로드 후 환경에서 각각 확인해야 합니다. 설치 후 기존 PhysBone만 움직이지 않는 상태는 정상 동작이 아닙니다.
 
 ## Poiyomi Lock
 

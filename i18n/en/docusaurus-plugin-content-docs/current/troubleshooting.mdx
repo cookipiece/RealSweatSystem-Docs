@@ -17,6 +17,7 @@ Clear the Unity Console, reproduce the issue once, and begin with the **first er
 - [The face breaks in Play Mode or VRChat](#the-face-breaks-in-play-mode-or-vrchat)
 - [Sweat On or Auto Mode does not work](#sweat-on-or-auto-mode-does-not-work)
 - [It works in Unity but breaks only in VRChat](#it-works-in-unity-but-breaks-only-in-vrchat)
+- [An existing PhysBone stops moving after installation](#an-existing-physbone-stops-moving-after-installation)
 - [Invalid localAABB mentions Exhale](#invalid-localaabb-mentions-exhale)
 - [Uninstall, reinstall, or change modules](#uninstall-reinstall-or-change-modules)
 - [Microsoft Defender warns about or blocks the download](#microsoft-defender-warns-about-or-blocks-the-download)
@@ -121,7 +122,23 @@ An optimizer, retargeter, or other upload-time tool may be replacing the Body Re
 - Check whether the tool modifies the selected Body.
 - Preserve the sweat target submesh and material relationship.
 - Keep the required final mesh data readable.
-- Exclude the Body from the conflicting operation when the tool supports exclusions.
+
+If the tool provides an exclusion feature, add the Body Renderer used by Real Sweat System to that exclusion list.
+
+Compatibility cannot be guaranteed with a tool that provides no way to exclude the Body. Back up the avatar and compare the result with that tool disabled.
+
+After changing the tool settings, select the final Body in Edit Mode and run **Setup — Install / Update** again. Verify both Play Mode and the actual VRChat upload. Real Sweat System cannot automatically repair an arbitrary mesh replacement performed later by another build-time tool.
+
+## An existing PhysBone stops moving after installation
+
+Real Sweat System adds its own Auto Mode PhysBone and parameters under `RealSweat`. It is not designed to modify or delete existing avatar PhysBones such as chest PhysBones.
+
+1. Clear the Console, enter Play Mode, and inspect the first Error or Warning.
+2. Check for another build-time tool that merges or optimizes bones, PhysBones, Animator layers, or parameters.
+3. Confirm that the affected PhysBone and the Real Sweat Motion Pendulum were not merged through the same Root Transform, parameter, or processing target.
+4. If that tool can exclude a Body Renderer, add the Body Renderer used by Real Sweat System to its exclusion list. Compatibility with that tool cannot be guaranteed when the Body cannot be excluded.
+
+If the existing PhysBone still does not move after uninstalling Real Sweat System, a change outside the generated Real Sweat content may remain. Compare against a backup avatar and isolate build-time tools one at a time.
 
 ## Rest data cannot be regenerated
 
@@ -203,7 +220,7 @@ To clear the sweat preview in the Scene view without uninstalling the system:
 
 1. Exit Play Mode.
 2. Open the generated Real Sweat material used by the Body. Do not edit the original skin material.
-3. In the material Inspector, open **Basic** and set **Sweat Amount** to `0`.
+3. In the material Inspector, open **Basic > Sweat Amount** (`_DropletAmount`), record the current value, and set it to `0`.
 4. Record the previous value and restore it before normal testing or upload. A new installation normally starts at `1`, but a customized material may use another value.
 
 Use this only as an editor-preview adjustment. It is different from using **Sweat On + Sweat 0%** in the VRChat menu, and Play Mode animations control the runtime value. Do not remove the generated material slot. If Tessellation support is installed, apply the same temporary value to both generated Tess and No Tess materials so either 3D Effect state remains hidden.
@@ -238,3 +255,32 @@ Apply the same texture and mask settings to both generated Tess and No Tess mate
 - Screenshot of the Setup window and Avatar Descriptor
 - Full text of the first Console error after clearing the Console
 - Whether it happens in Unity, desktop VRChat, VR, or VR Face Tracking
+- Modular Avatar version
+- Other installation or optimization tools that modify the Animator, mesh, or PhysBones
+- Whether Unity Edit Mode remains normal
+- The working situation and exact reproduction steps in order
+- For face or Animator issues, the complete final FX Animator `Layers` list in Play Mode
+
+You can copy this template:
+
+```text
+Real Sweat System version:
+Package: Base / Effects / Full Pack
+Unity:
+VRCSDK:
+Modular Avatar:
+Avatar:
+Face Tracking package (if used):
+Other installation or optimization tools:
+
+Where it works:
+Where the issue occurs:
+Reproduction steps:
+First Console error after clearing:
+
+Attachments:
+- Setup window
+- Avatar Descriptor
+- RealSweat hierarchy
+- Final FX Animator Layers in Play Mode, when relevant
+```

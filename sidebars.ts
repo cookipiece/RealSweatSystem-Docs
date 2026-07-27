@@ -30,7 +30,7 @@ const sidebars: SidebarsConfig = {
       type: 'category',
       label: '上級・参考',
       collapsed: true,
-      items: ['tools'],
+      items: ['technical-specifications', 'tools'],
     },
     'update-changelog',
     'license',

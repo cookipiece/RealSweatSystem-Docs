@@ -16,6 +16,7 @@ description: 表示、メニュー、Tuning、Animator、Mesh、Effect、Downloa
 - [Import・Shader Compileが長い](#importshader-compileが長い)
 - [Play Modeで顔が崩れる](#play-modeで顔が崩れる)
 - [Unityでは正常、VRChat内だけ壊れる](#unityでは正常vrchat内だけ壊れる)
+- [既存のPhysBoneが導入後に動かない](#既存のphysboneが導入後に動かない)
 - [`Invalid localAABB. Object transform is corrupt.` がExhaleを示す](#invalid-localaabb-object-transform-is-corrupt-がexhaleを示す)
 - [Microsoft Defenderが警告する](#microsoft-defenderがダウンロードを警告遮断する)
 - [よくある使い方のヒント](#よくある使い方のヒント)
@@ -113,7 +114,22 @@ Upload時にBody MeshまたはRendererを置換・統合するOptimizerや変換
 - Build時に必要なMesh Dataの読み取り
 - Setupで指定したBody Rendererの系統
 
-該当ツールでBodyを除外するか、最終出力でも上記条件を保つ設定を使用してください。
+除外機能がある場合は、Real Sweat Systemで使用しているBody Rendererをその除外リストへ追加してください。
+
+Bodyを除外できないツールとの互換性は保証できません。アバターをバックアップし、そのツールを無効にした状態と比較してください。
+
+設定を変更した後は、Edit Modeで最終的に使用するBodyを指定して **Setup — 自動インストール / 更新** を再実行し、Play Modeと実際のVRChatアップロードの両方で確認してください。Real Sweat Systemは、後続のビルドツールが行う任意のMesh置換を自動修復できません。
+
+## 既存のPhysBoneが導入後に動かない
+
+Real Sweat SystemはAuto Mode用のPhysBoneと専用パラメーターを `RealSweat` 配下に追加します。胸など、アバターに既存のPhysBoneを変更・削除する仕様ではありません。
+
+1. ConsoleをClearしてPlay Modeに入り、最初のErrorまたはWarningを確認します。
+2. Real Sweat System導入後のBuildでBone、PhysBone、Animator、Parameterを結合・最適化する別のツールがないか確認します。
+3. 動かないPhysBoneとReal SweatのMotion Pendulumが、同じRoot Transform、Parameter、処理対象として統合されていないか確認します。
+4. そのツールにBody Rendererの除外機能がある場合は、Real Sweat Systemで使用しているBody Rendererを除外対象に追加します。Bodyを除外できない場合、そのツールとの互換性は保証できません。
+
+Uninstall後も既存のPhysBoneが動かない場合は、Real Sweat Systemが生成した範囲外の変更が残っている可能性があります。バックアップのアバターと比較し、ビルド時に動作するツールを1つずつ切り分けてください。
 
 ## 立体の水滴が衣装を貫通する
 
@@ -242,3 +258,32 @@ Avatar Scaleによっては吐息Particleが顔やCameraへ重なり、視界を
 - Setup画面とAvatar DescriptorのScreenshot
 - ConsoleをClearした後の最初のError全文
 - Unity Play Mode、Desktop VRChat、VR、VR Face Trackingのどこで発生するか
+- Modular Avatarのバージョン
+- Animator、Mesh、PhysBoneを変更する他の導入・最適化ツール
+- Unity Edit Modeでは正常か
+- 正常に動作する環境と、問題を再現する正確な手順
+- 顔またはAnimatorの問題では、Play Mode中の最終FX Animatorの `Layers` 一覧
+
+以下のテンプレートをコピーして使用できます。
+
+```text
+Real Sweat Systemバージョン:
+購入構成: Base / Effects / Full Pack
+Unity:
+VRCSDK:
+Modular Avatar:
+アバター:
+Face Tracking Package（使用時）:
+他の導入・最適化ツール:
+
+正常に動作する環境:
+問題が発生する環境:
+再現手順:
+ConsoleをClearした後の最初のError:
+
+添付:
+- Setup画面
+- Avatar Descriptor
+- RealSweat Hierarchy
+- 関係する場合、Play Mode中の最終FX Animator Layers
+```

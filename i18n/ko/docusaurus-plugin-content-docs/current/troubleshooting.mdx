@@ -17,6 +17,7 @@ title: 문제 해결
 | Shader Compile 또는 Hold on이 오래 표시됨 | [Import·컴파일 대기](#shader-compile-또는-hold-on이-오래-표시됨) |
 | Play Mode에서 얼굴이 깨짐 | [Write Defaults·Face Tracking 확인](#play-mode에서-얼굴-표정이-깨짐) |
 | Unity에서는 정상인데 VRChat에서만 깨짐 | [업로드 단계의 Mesh 교체 확인](#unity에서는-정상인데-vrchat에서만-깨짐) |
+| 설치 후 기존 PhysBone이 움직이지 않음 | [PhysBone 및 빌드 도구 확인](#설치-후-기존-physbone이-움직이지-않음) |
 | `Invalid localAABB`가 반복됨 | [`Exhale` 상태와 얼굴 문제 분리](#invalid-localaabb-오류가-exhale을-가리킴) |
 | 편집 화면에서 땀만 숨기기·1인칭 입김·부위 마스크 | [자주 묻는 사용 팁](#자주-묻는-사용-팁) |
 | 완전히 제거한 뒤 다시 설치하고 싶음 | [제거·재설치 절차](#제거재설치) |
@@ -44,8 +45,6 @@ title: 문제 해결
 3. Non-Humanoid이거나 Motion Pendulum을 만들 수 없는 구성에서는 자동 모드·입김·몸 김이 생성되지 않을 수 있습니다. 자세한 조건은 [호환성](./compatibility.mdx)을 확인하세요.
 4. 패키지를 새로 가져왔다면 아바타를 선택하고 **Setup — 자동 설치 / 업데이트**를 다시 실행합니다.
 
-<a id="tuning-not-applied" />
-
 ## Tuning 값을 바꿨지만 반영되지 않음
 
 Hierarchy의 **아바타 루트 > RealSweat** 오브젝트를 선택하고 **RealSweatSystem Tuning** 컴포넌트를 확인하세요.
@@ -54,7 +53,7 @@ Hierarchy의 **아바타 루트 > RealSweat** 오브젝트를 선택하고 **Rea
 - 감도, 누적 곡선, 낙하 물방울·바닥 물자국·입김·몸 김과 성능 제한은 **FX에 적용**을 눌러야 생성된 Animator와 파티클에 반영됩니다.
 - Play Mode에서 바꾼 Inspector 값은 Play Mode를 종료하면 되돌아갑니다. Edit Mode에서 값을 조절한 뒤 **FX에 적용**을 누르세요.
 
-재질의 바디 Shadow Strength를 바꿨다면 **FX에 적용**을 다시 눌러 RealSweat 재질로 복사하세요. 자세한 구분은 [튜닝 가이드](./usage/tuning.mdx#변경-사항이-반영되는-시점)를 확인하세요.
+재질의 바디 Shadow Strength를 바꿨다면 **FX에 적용**을 다시 눌러 RealSweat 재질로 복사하세요. 자세한 구분은 [튜닝 가이드](./usage/tuning.mdx#변경값이-반영되는-시점)를 확인하세요.
 
 <a id="shader-compile-wait" />
 
@@ -118,9 +117,25 @@ Body에 Submesh가 여러 개 있을 수 있습니다. **땀 적용 Element**에
 
 업로드 과정에서 최적화 또는 Mesh 변환 도구가 Body Renderer, Mesh, Submesh 또는 재질 슬롯을 교체했을 가능성이 있습니다.
 
-- 해당 도구에서 Body를 제외할 수 있는지 확인합니다.
 - 최종 Mesh가 땀 대상 Submesh와 재질 대응 관계를 유지하는지 확인합니다.
 - 최종 Mesh 데이터에 접근할 수 있고, 땀 Submesh가 제거되지 않았는지 확인합니다.
+
+해당 도구에 제외 기능이 있다면 Real Sweat System에서 사용하는 Body Renderer를 제외 목록에 추가하세요.
+
+Body를 제외할 수 없는 도구와의 호환성은 보장할 수 없습니다. 아바타를 백업한 뒤 해당 도구를 끈 상태와 결과를 비교하세요.
+
+설정을 바꾼 다음 Edit Mode에서 최종 Body를 지정하여 **Setup — 자동 설치 / 업데이트**를 다시 실행하고, Play Mode와 실제 VRChat 업로드 결과를 모두 확인하세요. Real Sweat System은 이후 빌드 도구가 임의로 수행하는 Mesh 교체를 자동으로 복구할 수 없습니다.
+
+## 설치 후 기존 PhysBone이 움직이지 않음
+
+Real Sweat System은 자동 모드용 PhysBone과 전용 파라미터를 `RealSweat` 아래에 추가합니다. 가슴 등 아바타에 이미 설정된 PhysBone을 변경하거나 삭제하는 구조가 아닙니다.
+
+1. Console을 Clear한 뒤 Play Mode에 들어가 처음 발생한 Error 또는 Warning을 확인하세요.
+2. Real Sweat System 설치 이후 빌드 과정에서 Bone·PhysBone·Animator·Parameter를 병합하거나 최적화하는 다른 도구가 있는지 확인하세요.
+3. 움직이지 않는 PhysBone과 Real Sweat의 Motion Pendulum이 같은 Root Transform, Parameter 또는 처리 대상으로 합쳐지지 않았는지 확인하세요.
+4. 해당 도구에 Body Renderer 제외 기능이 있다면 Real Sweat System에서 사용하는 Body Renderer를 제외 목록에 추가하세요. Body를 제외할 수 없다면 해당 도구와의 호환성을 보장할 수 없습니다.
+
+Uninstall 후에도 기존 PhysBone이 움직이지 않는다면 Real Sweat System이 생성한 범위 밖의 변경이 남았을 가능성이 있습니다. 백업 아바타와 비교하고, 빌드 과정에서 동작하는 도구를 하나씩 분리하여 확인하세요.
 
 ## Rest 데이터 재생성이 실패함
 
@@ -170,7 +185,7 @@ Console에 다음 오류가 반복되고 상세 정보가 `Exhale` 오브젝트�
 
 1. Play Mode를 종료합니다.
 2. Body Renderer의 Materials에서 Setup이 마지막에 추가한 RealSweat 재질을 선택합니다. 생성 재질은 보통 `Assets/CookiTools/Generated/아바타이름` 폴더에도 있습니다.
-3. 재질 Inspector의 <strong>기본(Basic) &gt; 땀 양(Sweat Amount)</strong>에서 현재 값을 기록한 뒤 `0`으로 설정합니다. 셰이더 원문 속성명은 `Overall Sweat Amount`입니다.
+3. 재질 Inspector의 <strong>기본(Basic) &gt; 땀 양(Sweat Amount)</strong> (`_DropletAmount`)에서 현재 값을 기록한 뒤 `0`으로 설정합니다.
 4. 편집이 끝나면 기록해 둔 원래 값으로 되돌립니다. 복구는 기록값을 우선하며, 새 설치의 생성 재질은 보통 `1`입니다.
 
 이 방법은 **Edit Mode의 임시 미리보기 숨김**입니다. RealSweatSystem Tuning의 **전체 땀양** 프리셋이나 아바타 메뉴의 <strong>땀 % 0%</strong>와는 다른 값입니다. 런타임 파라미터·Auto Mode·파티클 상태를 바꾸지 않으며, Play Mode와 VRChat에서는 생성된 Animation이 값을 다시 제어할 수 있습니다.
@@ -233,3 +248,32 @@ Face에 직접 추가한 재질, Rest 데이터와 Animation Curve처럼 Setup �
 - Setup 화면과 Avatar Descriptor 스크린샷
 - Console을 Clear한 뒤 발생한 **첫 오류 전문**
 - Unity Play Mode, Desktop VRChat, VR Face Tracking 중 어디에서 발생하는지
+- Modular Avatar 버전
+- Animator·Mesh·PhysBone을 변경하는 다른 설치 또는 최적화 도구
+- Unity Edit Mode에서는 정상인지
+- 정상 동작하는 환경과 문제를 재현하는 정확한 순서
+- 얼굴 또는 Animator 문제라면 Play Mode 중 최종 FX Animator의 `Layers` 전체
+
+아래 양식을 복사하여 사용할 수 있습니다.
+
+```text
+Real Sweat System 버전:
+구매 구성: Base / Effects / Full Pack
+Unity:
+VRCSDK:
+Modular Avatar:
+아바타:
+Face Tracking 패키지(사용 시):
+다른 설치·최적화 도구:
+
+정상 동작하는 환경:
+문제가 발생하는 환경:
+재현 순서:
+Console을 Clear한 뒤 처음 발생한 오류:
+
+첨부:
+- Setup 화면
+- Avatar Descriptor
+- RealSweat Hierarchy
+- 해당하는 경우 Play Mode 중 최종 FX Animator Layers
+```
