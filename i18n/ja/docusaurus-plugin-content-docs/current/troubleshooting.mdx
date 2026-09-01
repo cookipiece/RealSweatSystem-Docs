@@ -194,6 +194,23 @@ ConsoleをClearしてBuildを再実行し、最初に表示されたRealSweatSys
 
 生成アセット削除オプションがOFFの場合、Bake、Material、Animation、Menuのアセットは保持されます。Modular AvatarによるMenu、Parameters、FX統合は、RealSweatオブジェクトを削除した後のBuildには入りません。
 
+<a id="manual-delete-recovery" />
+
+### `RealSweat` オブジェクトだけを直接削除した場合
+
+Setupは、汗表現用Submeshが追加された生成Body Meshを割り当て、RealSweat Material Slotを追加する場合があります。復元情報は生成された `RealSweat` オブジェクトに保存されるため、このオブジェクトだけを削除すると、Modular AvatarのMenu、Parameters、FXは次のBuildから外れても、Bodyには生成MeshとMaterial Slotが残ることがあります。
+
+**Hierarchy上の `RealSweat` GameObjectだけを削除し、Project内のアセットを削除していない場合に限り**、削除直後であれば **Ctrl+Z** でオブジェクトを戻せます。その後、**Setup／Uninstall > Uninstall** から削除してください。
+
+`Assets/CookiTools/Generated` フォルダーの削除は別の問題です。削除したProjectフォルダーがCtrl+Zで復元できることを前提にせず、直後の復旧手順に従い、**導入前の正確なBody Meshを先に割り当て直してください**。
+
+Undoを使用できない場合は、次の順序で復旧します。
+
+1. 現在のアバターを先にバックアップし、`Assets/CookiTools/Generated` や残っている生成アセットを削除しないでください。
+2. Bodyの **Skinned Mesh Renderer > Mesh** を、導入直前に使用していた正確なMeshへ戻します。導入前のBackupまたは元のアバターPrefabを使用し、可能であればMesh Propertyだけを **Revert** してください。
+3. Bodyの **Materials** 配列と追加対象Rendererも、同じBackupを基準に導入前の参照・順番・Slot数へ復元します。
+4. `RealSweat_BodyShellMesh` などの生成Meshが割り当てられた状態ではSetupを実行しないでください。導入直前の状態を確実に特定できない場合は作業を止め、Backupまたは未導入のアバターと比較して復旧してください。
+
 ### 再導入・更新する
 
 1. 使用する最新版のModuleをImportします。BaseとEffectsを併用する場合は同じバージョンへ揃えます。

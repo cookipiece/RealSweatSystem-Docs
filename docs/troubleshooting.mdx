@@ -196,6 +196,23 @@ Back up the avatar or project first.
 
 When the generated-assets option is off, the Bake, Material, Animation, and Menu assets are preserved. Because the installation uses Modular Avatar, its generated menu, parameters, and FX integration are not included in the next build after the RealSweat object is removed.
 
+<a id="manual-delete-recovery" />
+
+### If only the `RealSweat` object was deleted
+
+Setup can assign a generated Body mesh containing an additional sweat submesh and append a RealSweat material slot. The restoration data is stored on the generated `RealSweat` object, so deleting only that object can leave the generated Body mesh and material slot assigned even though the Modular Avatar menu, parameters, and FX disappear from the next build.
+
+If you deleted **only the `RealSweat` GameObject from the Hierarchy**, have not deleted any Project assets, and the deletion just happened, use **Ctrl+Z** to restore that object. Then use **Setup／Uninstall > Uninstall**.
+
+Deleting `Assets/CookiTools/Generated` is a different incident. Do **not** rely on Ctrl+Z to recover a deleted Project folder. Follow the recovery steps immediately below and reconnect the exact pre-installation Body Mesh first.
+
+If Undo is no longer available:
+
+1. Back up the current avatar and do **not** delete `Assets/CookiTools/Generated` or any remaining generated assets.
+2. Restore **Skinned Mesh Renderer > Mesh** on the Body to the exact mesh used immediately before installation, using the pre-installation backup or original avatar Prefab. When possible, revert only the Mesh property.
+3. Restore the Body **Materials** array—and any additional target Renderer—to the same pre-installation material references, order, and slot count.
+4. Do not run Setup while a mesh such as `RealSweat_BodyShellMesh` is still assigned. If the exact pre-installation state cannot be identified, stop and recover from a backup or compare against a clean copy of the avatar.
+
 ### Reinstall or update
 
 1. Import the intended current package or packages.
