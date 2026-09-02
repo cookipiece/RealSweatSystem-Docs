@@ -18,7 +18,7 @@ UnityPackageのImport、初回のShader Compile、UnityのAsset Database処理�
 - VRChat Avatars SDK3とModular Avatarが導入済みであることを確認します。
 - アバターPrefabまたはUnityプロジェクトをバックアップします。
 - Consoleに既存のコンパイルエラーが無いことを確認します。
-- v1.0.0またはv1.0.1から更新する場合は、v1.0.2をImportして **Setup — 自動インストール / 更新** を1回実行します。詳しくは[更新・変更履歴](./update-changelog.mdx)を確認してください。
+- v1.0.0～v1.0.2から更新する場合は、旧版を先にUninstallしたり、既存の `RealSweat` オブジェクトや `Assets/CookiTools/Generated` を削除したりしないでください。所有するBase／Effectsをすべて同じv1.1.0で上書きImportしてから、完全な **Setup — 自動インストール / 更新** を1回実行します。中間バージョンは不要です。詳しくは[更新・変更履歴](./update-changelog.mdx#v102からv110へ更新)を確認してください。
 
 :::note
 VRCFuryは必須ではありません。Real Sweat Systemの導入にはModular Avatarが必要です。
@@ -34,27 +34,27 @@ VRCFuryは必須ではありません。Real Sweat Systemの導入にはModular 
 
 BaseとEffectsを一緒に使用する場合は、必ず同じ製品バージョンを使用してください。詳しい違いは[パッケージガイド](./package-guide.mdx)で確認できます。
 
+:::caution[Moduleのバージョンを混在させない]
+v1.0.xとv1.1.xのBase／Effectsを混在させると、安全のためSetupとアバタービルドが停止します。Uninstallは不要です。所有するModuleを同じv1.1.0へ揃えてください。
+:::
+
 ## 3. Setupを開いて対象を指定
 
 1. Unity上部メニューから **CookiTools > RealSweatSystem Setup／Uninstall** を開きます。
 2. Sceneに配置したアバターのルートを **アバター** 欄へ指定します。
-3. 汗を表示する身体の `SkinnedMeshRenderer` を **ボディメッシュ (空欄 = 自動)** へ指定します。空欄のまま自動検出することもできます。
+3. Hierarchy上で、肌Materialを使用する `SkinnedMeshRenderer` が付いた身体オブジェクトを **ボディメッシュ (空欄 = 自動)** へ指定します。Projectウィンドウ内の `.fbx` やMeshアセットではありません。空欄のまま自動検出することもできます。
 
 [![Unity上部メニューのCookiToolsからRealSweatSystem Setup／Uninstallを開く位置](/img/guide/setup-menu-path.png)](/img/guide/setup-menu-path.png)
 
 *<small>CookiToolsメニュー内のSetup起動位置。画像をクリックすると拡大できます。</small>*
 
 - Face Rendererや衣装RendererをBodyとして指定しないでください。
-- 現在のSetupは、1回の導入につきBody Rendererを1つ追跡します。
-- Bodyに複数のMaterial Slotがある場合は、肌Materialに対応する正しい **汗の対象 Element** を選択します。通常はElement 0ですが、アバターによって異なります。
+- Bodyに複数のMaterial Slotがある場合は、番号を決め打ちせず、各Elementに表示されるMaterial名を確認して、肌Materialに対応する **汗の対象 Element** を1つ以上選択できます。
+- 必要な場合は、顔などの別 `SkinnedMeshRenderer` を **追加対象（実験的）**として登録できます。初回はメインBodyだけで動作を確認してから追加することを推奨します。
 - Effects Moduleだけを使用する場合も、パーティクルの放出元としてBody Meshの指定が必要です。Effectsのみの導入ではBodyのMaterial、Mesh、Rest Data、テッセレーションを変更しません。
 - Tangent不足の確認画面が表示された場合は **セーフコピーを作成（推奨）** を選択します。
 
-自動検出が正しいBodyを選ばない場合は、Hierarchyから手動で指定してください。
-
-[![RealSweatSystem Setupの日本語Install画面](/img/guide/setup-japanese.png)](/img/guide/setup-japanese.png)
-
-*<small>日本語表示のSetup画面。最初はアバター、ボディメッシュ、汗の対象Elementを重点的に確認します。</small>*
+自動検出が正しいBodyを選ばない場合は、Hierarchyから手動で指定してください。旧版とはSetup画面の構成が異なるため、ウィンドウ上部に表示される導入済みModuleとバージョンも確認します。
 
 ## 4. 基本設定を確認
 
@@ -63,14 +63,26 @@ BaseとEffectsを一緒に使用する場合は、必ず同じ製品バージョ
 | Setupの項目 | 初期値 |
 |---|---|
 | 全体の汗量 | **少なめ (低負荷)** |
+| 自動モード | **ON** |
 | 自動モード感度 | **バランス** |
 | 描画順を自動設定（推奨） | **ON** |
 | 汗レンダーキュー | **2455** |
 | ボディの Shadow Strength に合わせる | **ON** |
+| 濡れ肌光沢 | 新規導入は **ON**。更新時は導入済み状態を維持 |
 | 立体機能（テッセレーション）（高負荷）をインストール | **OFF（未搭載）** |
-| 立体表現の精密度 | **簡素 — 通常プレイ向け** |
-| 3D機能(テッセレーション)を初期状態でオン | **OFF** |
-| 自動モード | **ON** |
+| 立体表現の精密度 | **簡素 — 通常プレイ向け**。立体機能を導入した場合のみ使用 |
+| 3D機能(テッセレーション)を初期状態でオン | **OFF**。立体機能を導入した場合のみ使用 |
+| ミラーでもBodyの汗をフル品質で表示 | **OFF** |
+| 落下水滴 | Effects導入時は **ON** |
+| 床の濡れ跡 | Effects導入時は **ON** |
+| 吐息 | Effects導入時は **ON** |
+| 体の湯気 | Effects導入時は **ON** |
+| 3Dパーティクル品質（高負荷） | **OFF（軽量2D）** |
+| 水滴の衝突スプラッシュ | 3Dパーティクル選択時のみ **ON** |
+| 体の湯気のミラー表示 | 新規導入は **Low** |
+| 一人称視点で自分の息を表示 | **OFF** |
+| 体の湯気・吐息の濃さラジアルを導入 | **OFF（未搭載）** |
+| 体の湯気の位置 | **胸元・両肩・脇・太もも ON**、**股・足 OFF** |
 
 立体機能を搭載しない場合は、軽いNo Tess Materialを1つだけ導入します。搭載した場合はTess / No Tessをインゲームで切り替えられますが、読み込み時の初期状態はNo Tessです。
 
@@ -82,27 +94,27 @@ BaseとEffectsを一緒に使用する場合は、必ず同じ製品バージョ
 
 完了案内が表示されるまでUnityの操作を待ち、終了後にConsoleへ新しいエラーが出ていないことを確認します。Hierarchyのアバター配下に **RealSweat** オブジェクトが作成されていれば、詳細設定はそのInspectorから変更できます。
 
+Setupは、導入予定のParameter名をAvatar Expression Parametersと他のModular Avatar Parameters宣言（接頭辞・リマップを含む）に照合します。名前が衝突する場合は処理を止め、予測合計が256bitを超える場合は続行前に警告します。既存Parameterを削除して回避する前に、Consoleに表示された衝突元を確認してください。
+
+:::warning[直接削除しないでください]
+Real Sweat Systemを削除する場合は、`RealSweat` オブジェクトや `Assets/CookiTools/Generated` を直接削除せず、[正式なUninstall手順](./troubleshooting.mdx#削除再導入module構成を変更する)を使用してください。
+:::
+
 ## 6. Play Modeで確認
 
 Gesture ManagerなどでPlay Modeへ入ります。
 
-1. アバターメニューから **汗 > 汗オン** を有効にします。
+1. アバターメニューから **汗 > 汗の表示** を有効にします。
 2. 自動モードは初期状態でONです。Manual操作を確認する間だけ **自動モード** をOFFにします。
 3. **汗 %** を0%、25%、50%、75%、100%の順に動かします。
 4. **自動モード** をONに戻し、身体の動きと停止に応じて汗の量が変化することを確認します。
-5. 導入した場合は **負荷を軽減** からパーティクルと立体効果を確認します。
+5. **エフェクト**でParticleを確認し、**負荷を軽減**では表面の汗を非表示、相手側を低負荷、Light Volumes、自分にだけ表示、導入済みTessを確認します。Bodyの汗／体の湯気のミラー品質はSetupで決める構成項目なので、通常表示とミラーを直接比較してください。
 6. 顔の表情と既存のアバター機能も正常に動作することを確認します。
 
-[![Gesture Managerで表示したReal Sweat Systemのメインメニュー](/img/guide/gesture-menu-korean.png)](/img/guide/gesture-menu-korean.png)
-
-*<small>Real Sweat Systemのメインメニュー例。画像は韓国語表示ですが、項目の配置とアイコンは同じです。</small>*
-
-[![Gesture Managerで表示した汗 % のラジアルスライダー](/img/guide/gesture-sweat-percent-korean.png)](/img/guide/gesture-sweat-percent-korean.png)
-
-*<small>汗 %を手動確認するラジアルスライダー。Setupで選択した言語に応じて表示名が変わります。</small>*
+UnityのScene ViewとPlay Modeは予備確認です。最終的にはVRChat SDKの **Build & Test**、通常カメラ、ミラー、実際に使用するワールドで確認してください。特にパーティクル衝突、床の濡れ跡、ビルド時にMeshを変更するツールは、Editor表示だけでは最終結果を判断できません。
 
 :::info[正常な結果]
-汗オンのまま0%にすると表現はほぼ見えませんが、システムは待機状態です。値を上げると汗が段階的に飛ばず、滑らかに増えます。汗オン自体をOFFにする動作とは異なります。
+汗の表示をONにしたまま0%にすると表現はほぼ見えませんが、システムは待機状態です。値を上げると汗が段階的に飛ばず、滑らかに増えます。汗の表示自体をOFFにする動作とは異なります。
 :::
 
 ## 次に読むページ

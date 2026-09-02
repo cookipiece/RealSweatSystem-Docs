@@ -16,25 +16,36 @@ If the motion pendulum is created but the required Head/Chest anchors are unavai
 
 Open:
 
-**Sweat → Reduce Load → Particles**
+**Sweat → Effects**
 
 From there you can control:
 
-- All Particles
+- All Effects
 - Falling Drops
 - Floor Stains
 - Breath Puffs
 - Steam
+- Steam & Breath Intensity, only if the optional radial was installed
+
+## 2D and 3D particle quality
+
+The existing lightweight 2D particles are the default. Setup can instead install **3D Particle Quality (Breath + Falling Drops + Body Steam) (High Load)**, which changes those effects to mesh-particle rendering. The motion, gravity, collision behavior, Floor Stains, and in-game effect toggles remain available in either mode.
+
+Changing between 2D and 3D changes the generated structure, so return to Setup and run the full **Setup — Install / Update**. **Apply to FX** is not enough. While 3D quality is selected, **Water Drop Impact Splash** is on by default and can be disabled before Setup.
 
 ## Falling Drops
 
 Sweat droplets fall naturally from locations across the body. Their visibility follows the current Sweat %.
 
+With Base and experimental additional targets installed, an additional target can optionally emit its own Falling Drops. Separate surface-area and rate controls are available for those targets.
+
 **Default:** On
 
 ## Floor Stains
 
-Falling drops can leave wet marks when they reach a compatible floor. Results can vary with the world geometry and collision setup.
+Floor Stains are collision sub-effects emitted by Falling Drops. They are available only while Falling Drops is installed and enabled. Collision is limited to the world's **Default** and **Environment** layers; avatar/player layers are excluded. Some worlds may produce no stain when their floor collider or layer is incompatible.
+
+v1.1 uses a 3×3 stain variation, keeps marks close to the floor during a short impact spread, softens rapid darkening where marks overlap, and dries the rim before the center.
 
 **Default:** On
 
@@ -51,7 +62,7 @@ Breath appears near the mouth when both conditions are met:
 
 With **Mouth Open Gate: Auto**, the system detects `v2/JawOpen` and prefixed names such as `FT/v2/JawOpen`. It gives active VRCFT JawOpen priority after detecting a real open/close change. If JawOpen does not change for 8 seconds, it falls back to Viseme so Breath Puffs continue to work after Face Tracking stops or the avatar returns to desktop input. Active JawOpen takes priority again when it starts changing.
 
-Breath is attached to the Head and is intentionally hidden from the wearer's own first-person camera. Seeing it in Gesture Manager, mirrors, or from another viewer while not seeing it directly in first person is normal.
+Breath is hidden from the wearer's own first-person camera by default. In Setup Features, enable **Show My Breath in First Person** to add MA Visible Head Accessory to the generated Exhale object. This does not add a synchronized parameter or runtime Animator layer. It is off by default because the particles can overlap the camera at some avatar scales.
 
 **Default:** On
 
@@ -68,8 +79,24 @@ The crotch and feet positions are off by default.
 
 **Default:** On
 
+### Custom Steam Points
+
+Setup can add Custom Steam Points to avatar Transforms. Each point supports size, rate, spread, direction, and an optional mirrored pair. They require a valid Animator and MA Bone Proxy. Up to four custom emitter slots can be active; a mirrored pair uses two slots. More than ten combined built-in/custom emitters produces a mirror-load warning, and twelve total emitters is the hard limit. A combined rate weight above `4.0` is normalized proportionally.
+
+### Mirror mode and shared intensity
+
+**Body Steam in Mirrors** offers:
+
+- **Full:** the complete presentation.
+- **Low:** for 2D Steam, skips texture blur and weakens the mirror presentation without reducing particle count. In 3D mode, Low currently has the same appearance and cost as Full.
+- **Hidden:** lowest mirror cost.
+
+New installations default to Low. Updating an older installation preserves its existing appearance as Full.
+
+Setup can optionally install a saved, synchronized **Steam & Breath Intensity** radial. The Setup checkbox is off by default, and the radial starts at 50% when installed. The range is 0.1× opacity at 0%, the existing appearance at 1.0× at 50%, and 1.5× opacity at 100%; **0% does not turn the effects off**. It affects Body Steam, Custom Steam, and Breath together without changing count, speed, size, lifetime, or performance cost. An older generated two-point intensity curve requires the full Setup once; **Apply to FX** alone does not migrate its range.
+
 :::tip[Reduce particle load]
-If you do not need a particular effect, disable it from the Particles submenu. Steam is usually the first optional effect to reduce when many avatars are visible.
+If you do not need a particular effect, disable it from the Effects submenu. Steam is usually the first optional effect to reduce when many avatars are visible.
 :::
 
 ## Related guides

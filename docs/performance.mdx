@@ -10,20 +10,25 @@ Real Sweat System load changes with the amount of sweat visible on screen, dropl
 
 ## Recommended adjustment order
 
-1. Turn **3D Effect (Photos Only, High Load)** off, if it was installed.
-2. Use **Low amount (Lightweight)** or **Low amount (Low Load)**.
-3. Lower Pattern Density if the avatar is still expensive at close range.
-4. Disable optional particle effects, starting with Steam.
-5. Enable **Remote Low Load** for other viewers.
-6. Use **Only Visible to Me** when remote visibility is not needed.
+1. Keep **3D Particle Quality** off and use the default lightweight 2D particles.
+2. Turn **Droplet Depth (Tessellation / High Load)** off, if tessellation support was installed.
+3. Use **Low amount (Lightweight)** or **Low amount (Low Load)**.
+4. Lower Pattern Density if the avatar is still expensive at close range.
+5. Disable optional effects, starting with Steam.
+6. Set **Body Steam in Mirrors** to **Hidden** if mirror steam is not needed.
+7. Leave **Full-Quality Body Sweat in Mirrors** off.
+8. Enable **Remote Low Load** for other viewers.
+9. Use **Only Visible to Me** when remote visibility is not needed.
 
 Make one change at a time and compare the same camera distance and mirror state.
 
 ## Tess and No Tess
 
-Tessellation support is optional and is not installed by default. If you include it, the avatar menu can switch the 3D Effect on or off.
+Tessellation support is optional and is not installed by default. If you include it, the avatar menu can switch **Droplet Depth** on or off.
 
-When the 3D Effect is off, the system uses the No Tess material instead of continuing to process tessellation invisibly. Leave the 3D Effect off for general play and enable it only when its close-up shape is useful.
+When Droplet Depth is off, the system uses the No Tess material instead of continuing to process tessellation invisibly. Leave it off for general play and enable it only when its close-up shape is useful.
+
+This surface-tessellation option is separate from **3D Particle Quality**, which changes Breath, Falling Drops, and Body Steam to mesh particles.
 
 ## Mirrors
 
@@ -34,21 +39,29 @@ A mirror draws the avatar through another camera, so visible shader and particle
 - At normal conversation distance
 - In a close-up where the Body fills much of the view
 
-If the drop is significant, first disable the 3D Effect, then reduce Overall Sweat Amount or Pattern Density.
+If the drop is significant, first disable Droplet Depth and full-quality Body Sweat mirrors, set Body Steam mirrors to Hidden, then reduce Overall Sweat Amount or Pattern Density.
+
+**Full-Quality Body Sweat in Mirrors** restores surface droplet density, optics, Light Volumes, and Tess/No Tess quality in mirror cameras. It is off by default because it increases mirror GPU work.
+
+Body Steam offers Full, Low, and Hidden mirror modes. In 2D mode, Low skips blur and weakens mirror presentation without reducing the number of particles. In 3D mode, Low currently costs the same as Full; use Hidden for the lowest mirror cost.
 
 ## Remote Low Load
 
 **Remote Low Load** keeps your chosen local presentation while reducing the work shown to other users. It does not require a separate performance material to be uploaded by the user.
 
-This option is available when the Base Module is installed.
+This option is available when the Base Module is installed. With 3D particles, it also halves remote Falling Drop emission, disables remote strong-motion fling, and reduces remote Body/Custom Steam emission to 25%. Local quality is unchanged.
+
+## Multiple sweat targets
+
+Every selected Body Element or experimental additional Renderer uses its own sweat material and draw. Additional meshes can also add independent Rest data, shell assets, and optional Falling Drops. Add only the targets you need, especially on avatars with large meshes or many BlendShapes.
 
 ## Particle controls
 
 When the Effects Module is installed, open:
 
-**Sweat → Reduce Load → Particles**
+**Sweat → Effects**
 
-Disable only the effects you do not need, or use **All Particles** as a single master control.
+Disable only the effects you do not need, or use **All Effects** as a single master control.
 
 :::info[About FPS]
 FPS depends on the CPU, GPU, VR headset mode, world, mirrors, and every visible avatar. A specific FPS increase cannot be guaranteed from one setting change.

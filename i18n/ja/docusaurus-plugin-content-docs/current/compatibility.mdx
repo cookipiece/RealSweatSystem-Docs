@@ -32,23 +32,26 @@ Mesh、Material、Animator、アップロード時に動作する他の改変ツ
 
 - アバター配下のSkinnedMeshRendererを指定します。
 - Rendererには有効なMeshとSubmeshが必要です。
-- 1回のインストールで指定できるBody Rendererは1つです。
-- 複数Body RendererやBodyを切り替えるアバターへの自動適用は、現在の標準Setupでは対応していません。選択した1つのBody Rendererのみが公式サポート対象です。
-- BodyとFaceが別Rendererの場合、Faceへの追加は公式の自動Setup対象外です。必要な場合は[非公式の手動参考手順](./tools.mdx#unsupported-face-body)を確認してください。
-- 複数のMaterial Slotがある場合は、正しいSweat Target Elementを選択します。
+- メインBody Rendererでは、複数のMaterial Elementを同時に選択できます。
+- 実験的機能として、顔などの別 `SkinnedMeshRenderer` とElementを追加対象に登録できます。対象ごとに専用Material、Restデータ、描画負荷が追加されます。
+- 追加対象には読み取り可能なMesh、有効なSubmesh・Material・Tangent、固有のGameObject／Animation Path、および他の対象と共有しない固有の汗Material系統が必要です。
+- GameObjectのActive／InactiveでBodyを切り替える構成は、各Renderer／Elementを別対象として登録できます。`Renderer.enabled`だけを変更する切替は保証されないため、使用するすべてのRenderer／Elementを明示的に登録し、最終的なアバタービルドで確認してください。
+- Bodyを実行時に別Rendererへ切り替えるアバター、Face Tracking・Mesh統合・置換・Optimizerを含む全組み合わせは保証されません。目や唇周辺のTessは推奨しません。
 - Tangentが無いMeshではSafe Copy（Recommended）を使用します。
+
+導入後に生成されたRealSweat MaterialやRenderer Slotを直接削除、空欄化、移動、置換、統合しないでください。対象を変更する場合は `RealSweatSystem Tuning` の **追加対象を管理...** からSetupを開いてください。欠損や変更を検出すると、別Slotへ自動的に置き換えたり黙って省略したりせず、安全のためアバタービルドを停止します。
 
 ## Write Defaults / MMD / Face Tracking
 
-v1.0.2では、アバターFXのWrite Defaults構成を自動判定します。
+v1.1.0では、アバターFXのWrite Defaults構成を自動判定します。
 
 - **Auto Detect（推奨）** は、RealSweat以外のFX StateがすべてWD ONの場合だけ、生成するRealSweatレイヤーもすべてWD ONにします。
 - WD OFF、ON/OFF混在、または判定不能の場合は、v1.0.1のDriver ON / Output OFF互換構成を維持します。
 - ビルド時にNDMFで最終統合されたFXを再確認し、検出結果に合わせてRealSweatのWD構成を調整します。
-- v1.0.1以前から更新した場合は、v1.0.2をImportした後にSetupを1回実行してください。
+- v1.0.xから更新した場合は、所有するModuleをすべて同じv1.1.0へ揃え、完全なSetupを1回実行してください。
 - Setupが生成したMerge Animator PriorityやAnimator欄を手動で変更しないでください。
 
-v1.0.2が変更するのはRealSweatが所有するStateだけです。アバターや他のツールが追加したFX StateのWrite Defaults設定は変更しません。
+RealSweatが変更するのはRealSweatが所有するStateだけです。アバターや他のツールが追加したFX StateのWrite Defaults設定は変更しません。
 
 ### MMDワールドとの互換性
 
@@ -56,7 +59,7 @@ v1.0.2が変更するのはRealSweatが所有するStateだけです。アバタ
 
 Modular AvatarのMMD World Supportは、FX Animatorの第2・第3レイヤーを無効化する方式のMMDワールドに合わせてレイヤー配置を補正する機能です。すべてのMMDワールド、またはすべてのWrite Defaults構成との互換性を保証するものではありません。
 
-実際に使用するMMDワールドで、表情・リップシンク・汗オン・Auto Modeを確認してください。
+実際に使用するMMDワールドで、表情・リップシンク・汗の表示・Auto Modeを確認してください。
 
 ## Modular Avatar / NDMFと他の改変ツール
 
@@ -67,6 +70,8 @@ Real Sweatは非破壊ビルド環境で使用できます。ただし、アッ�
 - Real Sweatが参照するBody Rendererの系統が維持されている
 
 Unity Editorでは正常でVRChat内だけ表示が崩れる場合は、アップロード時にBodyを変更するOptimizer、Mesh変換、Material統合ツールの設定を確認してください。
+
+v1.1は最終Rest／Tangentの再検証、d4rkAvatarOptimizerによる対象変更の保護、Setup失敗時のロールバックを強化しています。ただし、Modular AvatarのMesh Cutter／Shape Changer Deleteなどで最終Meshの頂点順・Topology・Material Slotが変わる構成をすべて保証するものではありません。
 
 ビルド時だけBodyを変更するツールが原因の場合は、そのツールに除外リストがあれば、Real Sweat Systemで使用しているBody Rendererを追加してください。Bodyを除外する機能が無いツールとの互換性は保証できません。
 
@@ -80,17 +85,23 @@ Real Sweat SystemはAuto Mode用に専用のMotion Pendulum PhysBoneとパラメ
 
 ## Face Renderer
 
-標準SetupはBody Rendererを対象に設計されています。Faceへ手動で追加する方法は高度な改変であり、自動更新や全てのFace Tracking構成との互換性は保証されません。
+Faceはv1.1の **追加Skinned Mesh Renderer（実験的）**としてSetupへ登録できます。Faceごとに専用のRestデータと汗Materialを生成しますが、表情・VRCFT・Mesh統合・最適化との全組み合わせは保証されません。まずNo Tessで確認し、目や唇周辺へのTessは避けてください。
 
-お問い合わせが多いため、非推奨・公式サポート対象外の[手動参考手順](./tools.mdx#unsupported-face-body)を補助ツールページ下部に掲載しています。
+v1.0.xの手動Face適用を維持している場合は、[上級者向けの旧手動手順](./tools.mdx#unsupported-face-body)を確認できます。v1.1の自動管理へ移行する場合は、手動Curve／Materialをバックアップして重複適用を避けてください。
 
 ## 衣装との干渉
 
 立体機能の水滴が衣装を貫通して見える場合は **RealSweatSystem Clothing Fix** を使用してください。
 
+## ワールド照明の色
+
+表面の汗はワールド照明、Ambient、Light Volumes、Reflection Probeの影響を受けるため、強い青・赤などの環境では水滴や濡れた光沢も着色して見える場合があります。v1.1.0には、明るさだけを維持して照明色の影響を無彩色化するユーザー向けオプションはありません。白色照明だけでなく、実際に使用する色付きワールドとミラーでも外観を確認してください。
+
 ## Render Queueと影
 
 汗MaterialのRender Queue初期値は **2455** です。**描画順を自動設定（推奨）** と **ボディの Shadow Strength に合わせる** は初期状態でONです。衣装側が2755など別のRender Queueを使用していても、身体側の汗Materialとは個別に扱われます。
+
+メインBodyの汗は自動設定で2455を使用します。実験的な追加対象は、選択元Materialより後に描画するため `max(2455, 選択元MaterialのRender Queue + 1)` を使用します。
 
 :::warning[自動描画順の条件]
 **描画順を自動設定（推奨）** をONにすると、汗MaterialのRender QueueはBodyの値に追従するのではなく、常に **2455** に固定されます。汗をBodyより後に描画するため、選択したBody MaterialのRender Queueは **2454以下** にしてください。

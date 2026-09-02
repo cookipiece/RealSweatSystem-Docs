@@ -10,15 +10,16 @@ description: Real Sweat System の公式導入・設定・トラブルシュー�
 **Real Sweat System** は、PC版VRChatアバターにリアルタイムの汗表現を追加するシステムです。Sweat %を手動で操作するほか、体の動きに応じて汗が増え、動きを止めるとゆっくり乾くAuto Modeを利用できます。
 
 :::info[対象バージョン]
-このドキュメントは **v1.0.2** を基準にしています。
+このドキュメントは **v1.1.0** を基準にしています。v1.0.0～v1.0.2から更新する場合は、先に[更新手順](./update-changelog.mdx#v102からv110へ更新)を確認してください。
 :::
 
 ## 表現できるもの
 
 - 肌表面に浮かび、重力に沿って流れる汗
-- 全身から落下する汗の粒と、床に残る濡れ跡
-- 体から立ち上る湯気
-- Viseme・VRCFTに反応する吐息
+- 全身から落下する2D／3Dの汗粒と、床に残る3×3バリエーションの濡れ跡
+- 内蔵位置とCustom Steam Pointから立ち上る2D／3Dの湯気
+- Viseme・VRCFTに反応する2D／3Dの吐息
+- 複数のBody Material Elementと、追加Skinned Mesh Rendererへの表面汗（実験的）
 
 肌表面の汗は **Sweat Base Module**、落下する汗・床の濡れ跡・湯気・吐息は **Sweat Effects Module** に含まれます。**Full Pack (Base + Effects)** は両方のModuleを収録した完全構成です。
 
@@ -37,12 +38,17 @@ HumanoidアバターではManual ModeとAuto Modeを使用できます。Non-Hum
 - **インゲームで汗量・Auto Modeを操作する:** [手動モードと自動モード](./usage/modes.mdx)
 - **見た目・感度・負荷を調整する:** [設定・調整ガイド](./usage/tuning.mdx) → [パフォーマンス](./performance.mdx)
 - **落下する滴・濡れ跡・吐息・湯気を確認する:** [エフェクトガイド](./usage/effects.mdx)
+- **v1.0.xから安全に更新する:** [更新・変更履歴](./update-changelog.mdx)
 - **表示されない、メニューが無い、動作が違う:** [トラブル解決](./troubleshooting.mdx)
 - **Render Queue、Write Defaults、他ツールとの互換性を確認する:** [対応環境・互換性](./compatibility.mdx)
-- **Faceへの非公式適用やRest Vertex Data Bakerを調べる:** [上級者向けツール](./tools.mdx)
+- **実験的な追加対象、旧手動Face適用、Rest Vertex Data Bakerを調べる:** [互換性](./compatibility.mdx#body-renderer) → [上級者向けツール](./tools.mdx)
 
 初めての方は、上の1行目から順に進めれば導入と最初の確認まで完了します。Face対応やデータベイクは通常のBody導入には必要ありません。
 
 :::warning[対応プラットフォーム]
 本製品は **PC版VRChat向け**です。Quest単体版では汗表現を表示しません。
+:::
+
+:::warning[正式なUninstallを使用してください]
+Real Sweat Systemを削除する場合は、`RealSweat` オブジェクトや `Assets/CookiTools/Generated` を直接削除しないでください。**CookiTools > RealSweatSystem Setup／Uninstall > Uninstall** を使用し、[正式な削除手順](./troubleshooting.mdx#削除再導入module構成を変更する)に従ってください。
 :::

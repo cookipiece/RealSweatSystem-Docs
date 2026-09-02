@@ -34,25 +34,36 @@ Mesh, material, Animator, and build-time modification tool configurations differ
 
 The selected Body must be a child `SkinnedMeshRenderer` with a valid mesh and submesh.
 
-- The current installer supports **one Body Renderer per installation**.
-- Multiple Body Renderers and body-swap avatars are not automatically handled by the current standard Setup. Only the one selected Body Renderer is officially supported.
-- If Body and Face use separate Renderers, adding the Face is outside the official automatic Setup. See the [unsupported manual reference procedure](./tools.mdx#unsupported-face-body) if needed.
-- For a mesh with multiple material slots, select the correct **Sweat Target Element**.
+- The primary Body Renderer is the scale reference and the default Effects emission source.
+- v1.1 supports selecting multiple material Elements in the primary Body Renderer.
+- Additional `SkinnedMeshRenderer` targets such as a separate face mesh are available as an **experimental** feature. Each target receives separate Rest data, masks, size/density normalization, material, and draw cost.
+- Automatic simultaneous installation across switchable Body Renderers is not guaranteed. Every Renderer/Element that should display sweat must be explicitly configured.
+- GameObject active/inactive Body swaps can be configured as separate targets. Swaps that change only `Renderer.enabled` are not guaranteed; configure every Renderer/Element explicitly and verify the final avatar build.
+- For a mesh with multiple material slots, select only the correct skin-side **Body Elements**.
 - If the source mesh has no valid tangents, use **Create Safe Copy (Recommended)**.
 - The final build must preserve the target submesh, material relationship, and readable mesh data needed by Real Sweat System.
 
+Experimental additional targets require:
+
+- readable mesh data and valid submesh, material, and tangents;
+- a unique GameObject/animation path;
+- a unique generated sweat-material lineage that is not shared with another target; and
+- final build topology compatible with the Rest data produced by Setup.
+
+Compatibility with every combination of face tracking, expressions, mesh merging, replacement, and optimization is not guaranteed. Avoid Tess around eyes and lips. Run the full Setup again after a mesh modifier.
+
 ## Write Defaults, MMD, and Face Tracking
 
-v1.0.2 automatically detects the avatar FX Write Defaults structure.
+v1.1 retains the automatic FX Write Defaults detection introduced in v1.0.2 and adds further final-build safeguards.
 
 - **Auto Detect (Recommended)** uses WD ON for every generated RealSweat layer only when all non-RealSweat FX states use WD ON.
 - WD OFF, mixed, or unknown setups retain the v1.0.1 Driver ON / Output OFF compatible split.
 - The final NDMF-merged FX controller is checked again during build, and the RealSweat WD structure is adjusted to the detected result.
-- After updating from v1.0.1 or earlier, import v1.0.2 and run Setup once.
+- After updating from v1.0.0–v1.0.2, import every owned module at the same v1.1.0 version and run the full Setup once.
 - Do not manually change the generated Merge Animator Priority.
 - Do not replace or clear the generated Animator field as a permanent workaround.
 
-v1.0.2 changes only states owned by RealSweat. It does not convert Write Defaults settings in FX states created by the avatar or other tools.
+Real Sweat System changes only states it owns. It does not convert Write Defaults settings in FX states created by the avatar or other tools.
 
 ### MMD world compatibility
 
@@ -60,7 +71,7 @@ If the avatar's FX Animator contains states with Write Defaults OFF, facial expr
 
 Modular Avatar's MMD World Support adjusts layer placement for MMD worlds that disable FX Animator layers 2 and 3. It does not guarantee compatibility with every MMD world or every Write Defaults configuration.
 
-Test facial expressions, lip sync, Sweat On, and Auto Mode in the MMD world you intend to use.
+Test facial expressions, lip sync, Sweat Display, and Auto Mode in the MMD world you intend to use.
 
 ## Avatar optimization and mesh replacement tools
 
@@ -71,6 +82,10 @@ If this happens, configure the other tool to exclude the target Body, preserve t
 If a tool modifies the Body only at build time and provides an exclusion list, add the Body Renderer used by Real Sweat System to that list. Compatibility cannot be guaranteed for tools that do not provide a Body exclusion feature.
 
 If you manually modify or replace the source Body Mesh in Unity, finish all mesh changes first and then run **Setup — Install / Update** again. Rerunning Setup alone cannot fix a tool that replaces the Mesh during every build.
+
+v1.1 adds a late-build recheck that can refresh Rest/tangent data when the final compatible mesh changes, plus protection for common d4rkAvatarOptimizer processing. It cannot recover a removed target slot/submesh or guarantee compatibility with Modular Avatar Shape Changer, Mesh Cutter, or every mesh modifier and processing order. A missing or incompatible final slot/submesh blocks the build.
+
+Do not delete, clear, move, replace, or merge a generated RealSweat material or Renderer slot to disable an experimental target. Tuning marks this as **Repair Required**, and avatar build stops instead of silently using another slot. Use **Manage Targets...** to repair or remove the target through the full Setup.
 
 ## PhysBone coexistence
 
@@ -84,9 +99,9 @@ If tessellated droplets protrude through clothing, use **RealSweatSystem Clothin
 
 ## Face Renderer
 
-The standard Setup officially tracks one Body-side SkinnedMeshRenderer. Manually adding sweat to a separate Face Renderer is an advanced modification and is not guaranteed to survive automatic updates or work with every face-tracking setup.
+A separate Face `SkinnedMeshRenderer` can be added through v1.1's experimental additional-target list. It gets independent Rest data and must not share its generated sweat material with the Body or another target.
 
-Because this is a frequent question, an [unsupported manual reference procedure](./tools.mdx#unsupported-face-body) is available at the bottom of the Auxiliary Tools page. It is not recommended or officially supported.
+This is still experimental: face BlendShapes, face tracking, optimizer/mesh replacement tools, and Tess around the eyes or lips require careful testing. A separate Face target adds its own material and draw cost. The old manual Face-material procedure is no longer the recommended path.
 
 ## Render queue and shadows
 
@@ -99,3 +114,14 @@ A manual Sweat Render Queue above **2500** enters Unity's transparent sorting ra
 :::
 
 **Follow Body Shadow Strength** is on by default, allowing sweat to darken correctly under actual scene shadows.
+
+Primary Body Sweat uses Render Queue 2455. With automatic ordering, an experimental additional target uses `max(2455, selected source material queue + 1)`.
+
+Strong colored world lights, ambient lighting, and reflection probes can tint the skin-surface sweat. v1.1 has no user-facing option that removes only lighting color while preserving its brightness. Test the intended worlds and mirrors before upload.
+
+## Module version and parameter safety
+
+- Keep Base and Effects at the same release version. Mixing v1.0.x and v1.1.x modules intentionally stops Setup and avatar build.
+- Setup checks all planned parameters against Avatar Expression Parameters and other Modular Avatar Parameters declarations, including prefixes and remaps.
+- A name collision stops Setup. If the projected total exceeds VRChat's 256-bit parameter budget, Setup warns before proceeding.
+- Additional-target validation and build guidance follow the selected tool UI language. Unity/NDMF exception headings and stack traces may still appear in English.

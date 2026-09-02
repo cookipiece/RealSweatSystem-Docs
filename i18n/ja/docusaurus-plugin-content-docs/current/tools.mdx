@@ -82,13 +82,13 @@ Bakerは元のFBX、RendererのsharedMesh、UV、BlendShape、他のMaterialを�
 :::
 
 <details id={'unsupported-face-body'}>
-<summary><strong>上級者向け：FaceとBodyへ同時に適用する手動参考手順</strong></summary>
+<summary><strong>旧版／上級者向け：FaceとBodyへ同時に適用する手動参考手順</strong></summary>
 
-:::danger[非推奨・公式サポート対象外]
-お問い合わせが多いため参考手順を掲載していますが、公式機能ではなく推奨していません。環境差が大きいため、導入支援、個別環境の調査、Update後の維持、動作保証はサポート対象外です。必ずアバターまたはUnityプロジェクトをBackupしてから作業してください。
+:::danger[v1.1の新規対象には使用しない]
+v1.1ではFaceなどの別 `SkinnedMeshRenderer` を実験的な追加対象としてSetupから管理できます。以下は既存のv1.0.x手動導入を識別・ロールバックするための旧参考手順です。新しいv1.1対象の導入方法として使用しないでください。自動更新・修復の対象外なので、作業前に必ずBackupしてください。
 :::
 
-現行版が正式に追跡する汗の表示対象は、Body側の1つの `SkinnedMeshRenderer` です。FaceとBodyが別Rendererの場合、通常のSetupでは同時適用できません。
+以下の手順は、v1.1の追加対象管理とは併用しないでください。同じFaceへ両方を適用すると、Material SlotやAnimation Curveが重複する場合があります。
 
 Faceへ汗Materialだけを追加すると、生成AnimationはBodyのHierarchy Pathだけを制御するため、Face側の汗が流れ続ける場合があります。また、FaceとBodyにはMeshごとに異なるRest Vertex Dataが必要なので、同じ汗Materialを共有できません。
 
@@ -106,7 +106,7 @@ Faceへ汗Materialだけを追加すると、生成AnimationはBodyのHierarchy 
 1. 通常どおりBodyへReal Sweat SystemをSetupし、先にBody、Menu、自動モードが正常に動くことを確認します。
 2. Bodyに生成されたNo Tessellation版の汗Materialを複製し、Face専用MaterialとしてReal Sweat Systemの生成Folder外へ保存します。BodyとFaceで同じ汗Materialを共有しないでください。
 3. Face RendererのInspectorで `Materials` の元の **Size** を記録し、**Sizeを1増やします**。新しく作られた最後の `Element` にFace専用Materialを割り当てます。既存のFace Materialを置き換えないでください。
-4. **CookiTools > Rest Vertex Data Baker** を開き、Target RendererにFace、Target MaterialにFace専用Materialを指定します。**1. メッシュを解析**、**2. ベイクして割り当て**、**3. 割り当てデータを検証** の順に実行します。
+4. **CookiTools > RealSweatSystem > Rest Vertex Data Baker (Advanced)** を開き、Target RendererにFace、Target MaterialにFace専用Materialを指定します。**1. メッシュを解析**、**2. ベイクして割り当て**、**3. 割り当てデータを検証** の順に実行します。
 5. Real Sweat Systemの生成Folderにある次のAnimation Clipを開きます。
 
    - `RealSweat_Off.anim`
@@ -127,7 +127,7 @@ Faceへ汗Materialだけを追加すると、生成AnimationはBodyのHierarchy 
    - **Property:** 上記と同じ3つのMaterial Property
 
    例としてHierarchyが `AvatarRoot/Armature/Body/Face` の場合、Binding Pathは `Armature/Body/Face` です。Avatar Root自身の名前は含めません。Body CurveのPathをそのまま複製せず、Face Rendererの実際の相対Pathへ変更してください。
-7. Manual ModeとAuto Modeの両方で、0%、50%、100%、汗オンOFF、自分にだけ表示を確認します。
+7. Manual ModeとAuto Modeの両方で、0%、50%、100%、汗の表示ON／OFF、自分にだけ表示を確認します。
 
 ### 手動で元に戻す
 
@@ -139,7 +139,7 @@ Faceへ汗Materialだけを追加すると、生成AnimationはBodyのHierarchy 
 
 ### 既知の制限
 
-- Face側はNo Tessellation固定です。**立体効果（撮影用・高負荷）** と **相手側を低負荷** はFaceへ適用されません。ただし、`RealSweat_LocalOnlyHidden`にもFace Curveを追加していれば、**自分にだけ表示** の時は相手側に表示されるFaceの汗量も0になります。
+- この旧手動手順のFace側はNo Tessellation固定です。**水滴の立体感（テッセレーション / 高負荷）** と **相手側を低負荷** はFaceへ適用されません。ただし、`RealSweat_LocalOnlyHidden`にもFace Curveを追加していれば、**自分にだけ表示** の時は相手側に表示されるFaceの汗量も0になります。
 - Faceが複数SubMeshの場合、追加した最後のMaterialが目的の肌SubMeshへ描画されない場合があります。
 - Setupまたは **FX に適用** を実行すると生成Clipが再作成され、手動追加したFace Curveは削除されます。通常設定をすべて完了した最後の段階でFace Curveを追加し、再実行した場合は同じ作業をやり直してください。
 - Tuningが追跡するMaterialはBody側だけです。全体の汗量、品質、水滴サイズなどを後から変更しても、Face専用Materialへ自動同期されない場合があります。

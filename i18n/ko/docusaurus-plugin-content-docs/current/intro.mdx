@@ -10,19 +10,22 @@ description: Real Sweat System 공식 설치, 설정 및 문제 해결 가이드
 **Real Sweat System**은 PC용 VRChat 아바타에 실시간 땀 표현을 추가하는 시스템입니다. Radial Menu에서 Sweat %를 직접 조절하거나, 몸의 움직임에 따라 땀이 쌓이고 움직임을 멈추면 천천히 마르는 Auto Mode를 사용할 수 있습니다.
 
 :::info[문서 기준 버전]
-이 문서는 **v1.0.2**를 기준으로 작성되었습니다.
+이 문서는 **v1.1.0**을 기준으로 작성되었습니다. v1.0.0～v1.0.2 사용자는 패키지를 삭제하지 말고 [업데이트 절차](./update-changelog.mdx#v102에서-v110으로-업데이트)를 먼저 확인하세요.
 :::
 
 ## 표현할 수 있는 효과
 
 - 피부 표면에 맺히고 흐르는 땀
 - 중력 방향을 따라 자연스럽게 내려가는 물방울
-- 온몸에서 떨어지는 땀방울
-- 바닥에 남는 젖은 자국
-- 몸에서 피어오르는 스팀
+- 온몸에서 떨어지는 2D 또는 선택형 3D 땀방울
+- 충돌 튀김과 바닥에 남는 3×3 젖은 자국
+- 기본 부위와 원하는 Transform에서 피어오르는 몸 김
 - Viseme 및 VRCFT 입력에 반응하는 입김
+- 여러 Body Material Element와 별도 Skinned Mesh Renderer의 표면 땀(실험적 기능)
 
 피부 표면의 땀은 **Sweat Base Module**, 낙하 물방울·바닥 물자국·입김·몸 김은 **Sweat Effects Module**에 포함됩니다. <strong>Full Pack (Base + Effects)</strong>은 두 모듈을 모두 포함한 완전 구성입니다.
+
+v1.1의 3D 파티클과 바디 땀 거울 전체 품질은 기본값이 꺼진 고부하 옵션입니다. 기존의 가벼운 2D 파티클과 기존 거울 품질을 그대로 선택할 수 있습니다.
 
 ## 목적별로 찾기
 
@@ -30,12 +33,17 @@ description: Real Sweat System 공식 설치, 설정 및 문제 해결 가이드
 - **인게임에서 땀 %와 자동 모드 조작하기:** [수동 모드와 자동 모드](./usage/modes.mdx)
 - **외형·감도·부하 조절하기:** [튜닝 가이드](./usage/tuning.mdx) → [성능 가이드](./performance.mdx)
 - **낙하 물방울·바닥 물자국·입김·몸 김 확인하기:** [이펙트 가이드](./usage/effects.mdx)
+- **v1.0.x에서 안전하게 업데이트하기:** [업데이트 및 변경 내역](./update-changelog.mdx)
 - **표시되지 않거나 메뉴·동작이 이상한 문제 해결하기:** [문제 해결](./troubleshooting.mdx)
 - **Render Queue·Write Defaults·다른 아바타 툴 호환성 확인하기:** [호환성](./compatibility.mdx)
-- **Face 비공식 적용이나 Rest Vertex Data Baker 알아보기:** [고급 도구](./tools.mdx)
+- **추가 대상 관리·Clothing Fix·Rest Vertex Data Baker 알아보기:** [보조 도구](./tools.mdx)
 
 처음 설치한다면 첫 번째 행의 두 문서를 순서대로 보면 설치와 기본 테스트까지 끝낼 수 있습니다. Face 적용과 수동 Rest 데이터 베이크는 일반 Body 설치에는 필요하지 않습니다.
 
 :::warning[지원 플랫폼]
 Real Sweat System은 <strong>PC용 VRChat(D3D11)</strong>을 대상으로 합니다. Quest 단독 실행 환경에서는 사용할 수 없습니다.
+:::
+
+:::warning[공식 Uninstall을 사용하세요]
+Real Sweat System을 제거할 때는 `RealSweat` 오브젝트나 `Assets/CookiTools/Generated`를 직접 삭제하지 마세요. **CookiTools > RealSweatSystem Setup／Uninstall > Uninstall**을 사용하고 [공식 제거 절차](./troubleshooting.mdx)를 따르세요.
 :::

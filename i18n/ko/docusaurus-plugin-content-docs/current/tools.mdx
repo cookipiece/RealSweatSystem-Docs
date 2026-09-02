@@ -1,50 +1,73 @@
 ---
 id: tools
 title: 보조 도구
-description: Clothing Fix와 Rest Vertex Data Baker의 사용 시점과 안전한 사용 방법입니다.
+description: Clothing Fix, 추가 대상 관리와 Rest Vertex Data Baker의 안전한 사용 방법입니다.
 ---
 
 # 보조 도구
 
-Real Sweat System의 일반 설치와 업데이트는 Setup에서 처리됩니다. 아래 도구는 특정 의상 문제를 보정하거나, 고급 사용자가 Mesh를 수동으로 변경했을 때 사용하는 보조 기능입니다.
-
-두 메뉴는 모두 **Sweat Base Module**이 설치된 경우에 사용할 수 있습니다.
+Real Sweat System의 일반 설치와 업데이트는 Setup에서 처리됩니다. 아래 기능은 의상 Render Queue를 보정하거나, v1.1의 실험적 추가 대상을 관리하거나, 고급 사용자가 Mesh를 수동으로 변경했을 때 사용합니다.
 
 ## RealSweatSystem Clothing Fix
 
 입체기능(테셀레이션)을 켰을 때 물방울이 의상을 관통해 보이는 경우에만 사용합니다. **No Tess 사용자는 일반적으로 필요하지 않습니다.**
 
-Unity 상단 메뉴의 **CookiTools > RealSweatSystem Clothing Fix**에서 엽니다.
+Unity 상단 메뉴의 **CookiTools > RealSweatSystem Clothing Fix**에서 엽니다. 이 도구는 Sweat Base Module이 설치된 경우에 사용할 수 있습니다.
 
-일반 Setup은 원본 Body 재질을 수정하거나 Poiyomi Lock을 해제하지 않습니다. 잠긴 의상 재질은 Clothing Fix가 처리하는 동안에만 자동으로 Unlock되며, 작업이 끝나면 자동으로 다시 Lock됩니다.
+일반 Setup은 원본 Body 재질을 수정하거나 Poiyomi Lock을 해제하지 않습니다. 잠긴 의상 재질은 Clothing Fix가 처리하는 동안에만 자동으로 Unlock되며, 작업이 끝나면 다시 Lock됩니다.
 
 ### 사용 방법
 
 1. Real Sweat System Setup을 먼저 완료합니다.
 2. Clothing Fix에서 대상 아바타를 선택합니다.
-3. 문제가 보이는 의상 Renderer를 드래그하거나 목록에 추가합니다.
+3. 문제가 보이는 의상 오브젝트를 드래그합니다. 비활성 하위 `SkinnedMeshRenderer`와 `MeshRenderer`도 자동 수집되며 중복은 한 번만 처리합니다.
 4. **Queue Preview**에서 변경될 재질과 순서를 확인합니다.
 5. <strong>마테리얼 복제본으로 적용 (권장)</strong>을 실행합니다.
 6. Play Mode에서 의상 표시, 땀, 아웃라인과 투명 표현을 함께 확인합니다.
 
-<strong>마테리얼 복제본으로 적용 (권장)</strong>은 의상용 재질 복사본을 만들어 적용하므로, 다른 아바타나 Prefab에서 같은 원본 재질을 사용하고 있어도 영향을 분리하기 쉽습니다.
+복제본 방식은 필요한 의상 마테리얼을 생성 폴더에 복제하고 선택한 Renderer 슬롯만 교체합니다. 원본을 공유하는 다른 아바타·Prefab·Scene에는 영향을 주지 않습니다.
 
-:::warning[Direct mode]
-Direct mode는 원본 재질 자체를 변경합니다. 해당 원본 재질을 공유하는 모든 의상, 아바타, Prefab과 Scene에 같은 변경이 적용될 수 있으므로 결과를 정확히 이해하는 경우에만 사용하세요.
+:::warning[원본 마테리얼에 직접 적용]
+원본 `.mat`의 Render Queue를 직접 변경하므로 같은 원본을 사용하는 모든 의상·아바타·Prefab·Scene에 영향을 줄 수 있습니다. 결과를 정확히 이해하는 경우에만 사용하세요. Poiyomi Lock 마테리얼은 확인 후 잠시 Unlock하고 작업이 끝나면 자동으로 다시 Lock합니다.
 :::
 
-변경을 되돌리려면 <strong>추적된 의상 변경 복원</strong>을 사용합니다.
+변경을 되돌리려면 <strong>추적된 의상 변경 복원</strong>을 사용합니다. RealSweatSystem Uninstall도 추적한 슬롯과 원본 Queue를 복원합니다.
 
 ### 확인할 사항
 
-- Clothing Fix는 땀 렌더 큐 이하에 있는 대상 재질만 변경합니다.
+- Clothing Fix는 땀 Render Queue 이하에 있는 대상 재질만 땀 + 1로 변경합니다. 이미 더 높은 재질은 복제하거나 수정하지 않습니다.
 - 투명, Cutout, Decal, Outline 또는 여러 Layer를 사용하는 재질은 렌더링 순서가 달라질 수 있습니다.
-- 적용 후 Scene과 Play Mode에서 의상의 앞뒤 관계와 기존 표현을 반드시 확인하세요.
+- 적용과 복원은 Undo를 지원하며, 사용하지 않는 생성 복제본은 Scene／Prefab 안전성을 위해 캐시에 보존될 수 있습니다.
 - 문제가 없는 의상에는 미리 적용할 필요가 없습니다.
+
+## 실험적 추가 대상 관리
+
+v1.1에서는 메인 Body의 여러 Material Element와 얼굴 등 별도 `SkinnedMeshRenderer`를 Setup에서 직접 추가할 수 있습니다. 과거 v1.0.x에서 사용하던 수동 Face 마테리얼·Animation Curve 복제 절차를 사용하지 마세요.
+
+### 추가
+
+1. **CookiTools > RealSweatSystem Setup／Uninstall**을 엽니다.
+2. 메인 Body와 피부 Element를 먼저 확인합니다.
+3. 실험적 추가 대상 목록에 Renderer와 대상 Element를 추가합니다.
+4. 대상별 크기·밀도·스폰/표시 마스크·Tess와 선택형 낙하 물방울을 설정합니다.
+5. 실험 기능 안내를 확인한 뒤 **Setup — 자동 설치 / 업데이트**를 실행합니다.
+
+### 복구 또는 제거
+
+Tuning에 **복구 필요**가 표시되면 **추가 대상 관리...** 또는 **Setup에서 복구...**를 눌러 현재 대상이 채워진 Setup을 엽니다.
+
+- 유지: 전체 Setup을 실행해 생성 마테리얼·슬롯·셸·Rest 데이터·애니메이션·선택형 낙하 물방울을 복구합니다.
+- 제거: 목록의 `-`로 해당 대상을 뺀 뒤 전체 Setup을 실행합니다.
+
+:::danger[마테리얼 슬롯을 직접 삭제하지 마세요]
+생성 RealSweat 마테리얼이나 Renderer 슬롯의 삭제·비움·이동·교체·병합은 대상 제외가 아니라 설치 손상입니다. v1.1은 이를 감지해 빌드를 중단하며 다른 슬롯으로 대체하거나 조용히 생략하지 않습니다.
+:::
+
+추가 대상은 Read/Write 가능한 Mesh, 유효한 Submesh·Material·Tangent, 고유한 GameObject/애니메이션 경로와 다른 대상이 공유하지 않는 고유한 땀 마테리얼 연결이 필요합니다. Face Tracking·표정·Mesh 병합·교체·최적화의 모든 조합은 보장되지 않으며 눈·입술 주변 Tess는 권장하지 않습니다.
 
 ## Rest Vertex Data Baker (고급)
 
-Setup은 필요한 **Rest Position / Normal / Tangent** 데이터를 자동으로 생성합니다. 따라서 일반적인 설치와 업데이트 과정에서는 이 도구를 직접 사용할 필요가 없습니다.
+Setup은 메인 Body와 실험적 추가 대상의 각 **Mesh**에 필요한 **Rest Position / Normal / Tangent** 데이터를 자동으로 생성합니다. Rest는 Material Element별 데이터가 아니므로 같은 Mesh의 여러 Element는 같은 Rest 기준을 사용합니다. 일반 설치·업데이트·추가 대상 구성에서는 이 도구를 직접 사용할 필요가 없습니다.
 
 다음과 같은 고급 작업에만 사용하세요.
 
@@ -60,9 +83,9 @@ Setup은 필요한 **Rest Position / Normal / Tangent** 데이터를 자동으�
 4. <strong>3. 할당 데이터 검증</strong>으로 결과를 확인합니다.
 5. Play Mode에서 땀의 위치와 방향을 확인합니다.
 
-Body Mesh를 다시 교체하거나 업데이트했다면 새 Mesh를 기준으로 다시 Bake해야 합니다.
+Body Mesh를 다시 교체하거나 버텍스 구성을 바꿨다면 새 Mesh를 기준으로 다시 Bake해야 합니다.
 
-대상은 유효한 sharedMesh가 있는 SkinnedMeshRenderer여야 합니다. Mesh를 읽을 수 없다는 안내가 나오면 FBX Import Settings에서 **Read/Write Enabled**를 일시적으로 켜고, Bake가 끝난 뒤 다시 꺼도 됩니다.
+대상은 유효한 `sharedMesh`가 있는 `SkinnedMeshRenderer`여야 합니다. Mesh를 읽을 수 없다는 안내가 나오면 **실제로 선택된 Renderer의 `sharedMesh`가 들어 있는 FBX** Import Settings에서 **Read/Write Enabled**를 켭니다. 이름이 비슷한 다른 FBX의 설정을 바꿔도 해결되지 않습니다. 수동 Baker 작업만을 위해 켰다면 Bake가 끝난 뒤 다시 꺼도 됩니다.
 
 <strong>이전 베이크 덮어쓰기</strong>는 이름이 같은 기존 Rest 생성 에셋을 교체합니다. 이전 데이터를 보존해야 한다면 먼저 백업하세요.
 
@@ -70,64 +93,4 @@ Body Mesh를 다시 교체하거나 업데이트했다면 새 Mesh를 기준으�
 Rest Vertex Data Baker는 원본 FBX, Renderer의 `sharedMesh`, UV, BlendShape 또는 다른 재질을 수정하지 않습니다. 선택한 호환 재질에 필요한 Rest 데이터만 생성하고 연결합니다.
 :::
 
-도구가 호환되지 않는 Renderer 또는 Material을 표시한다면 강제로 진행하지 말고, 기본 Setup에서 올바른 Body Mesh와 **땀 적용 Element**를 먼저 확인하세요.
-
-<details id={'unsupported-face-body'}>
-<summary><strong>비권장·공식 지원 대상 외: Face와 Body 동시 적용 수동 절차</strong></summary>
-
-:::danger[참고 정보 전용·공식 지원 대상 외]
-문의가 많아 절차를 안내하지만 공식 기능이 아니며 권장하지 않습니다. 환경별 설치 지원, 개별 문제 조사, 업데이트 이후 유지 및 동작 보증은 공식 지원 대상이 아닙니다. 반드시 아바타 또는 Unity 프로젝트를 백업한 뒤 작업하세요.
-:::
-
-현재 공식 버전이 땀 표시 대상으로 추적하는 것은 Body 측 SkinnedMeshRenderer 한 개입니다. Face와 Body가 별도 Renderer인 경우 일반 Setup으로 동시에 적용할 수 없습니다.
-
-Face에 땀 재질만 추가하면 생성 Animation이 Body 경로만 제어하므로 Face의 땀이 계속 흐를 수 있습니다. 또한 Face와 Body는 각 Mesh에 맞는 별도의 Rest Vertex Data가 필요하므로 하나의 땀 재질을 공유하면 안 됩니다.
-
-**이 절차를 진행할 수 있는 사용자**
-
-아래 작업은 Renderer의 Materials 배열, Animation Window의 Curve Binding과 에셋 참조를 직접 다룰 수 있는 고급 사용자를 대상으로 합니다. 다음 조건을 모두 충족하지 못한다면 진행하지 않는 것을 권장합니다.
-
-- Face 전용 Material과 Rest 에셋을 Body용 에셋과 구분할 수 있음
-- Avatar Root 기준의 Renderer 계층 경로를 확인하고 Animation Curve를 추가·삭제할 수 있음
-- 문제가 생기면 백업으로 복원하거나 아래 롤백 절차를 직접 수행할 수 있음
-
-**수동 절차**
-
-1. 일반적인 방법으로 Body에 Real Sweat System을 Setup합니다.
-2. Body에 생성된 No Tessellation 땀 재질을 복제하고, Face 전용 재질로 Real Sweat System 생성 폴더 밖에 저장합니다. Body와 Face가 같은 땀 재질을 공유하지 않도록 합니다.
-3. Face Renderer Inspector의 **Materials > Size**를 기존 값보다 1 늘리고, 새로 생긴 **마지막 Element**에 Face 전용 재질을 넣습니다. 기존 얼굴 재질을 교체하지 마세요.
-4. **CookiTools > Rest Vertex Data Baker**를 열고 Target Renderer에 Face, Target Material에 Face 전용 재질을 지정합니다. <strong>1. 메쉬 분석</strong>, <strong>2. 베이크 및 할당</strong>, <strong>3. 할당 데이터 검증</strong>을 순서대로 실행합니다.
-5. Real Sweat System 생성 폴더의 다음 Animation Clip을 엽니다.
-
-   - `RealSweat_Off.anim`
-   - `RealSweat_LocalOnlyHidden.anim`
-   - `RealSweat_Mid.anim`
-   - `RealSweat_On.anim`
-
-6. 각 Clip의 Body Renderer에 있는 다음 Material Curve를 값 변경 없이 Face Renderer에도 추가합니다. Curve Binding의 Path에는 **Avatar Root 기준 Face Renderer의 상대 계층 경로**를 정확히 입력하고, Binding Type은 `SkinnedMeshRenderer`로 유지합니다. 오브젝트 이름만 입력하거나 Scene 전체 경로를 입력하면 동작하지 않습니다.
-
-   - `material._DropletAmount`
-   - `material._SweatBuildUp`
-   - `material._RuntimeWarmup`
-
-7. Manual Mode와 Auto Mode에서 각각 끄기, 0%, 50%, 100% 상태를 확인합니다.
-
-**수동 되돌리기**
-
-1. Face Renderer의 마지막 Material Element에서 Face 전용 재질을 제거하고, Materials의 Size를 작업 전 값으로 되돌립니다.
-2. 위 네 Animation Clip에서 Face Renderer 상대 경로로 추가한 세 Material Curve를 모두 삭제합니다. Clip 백업이 있다면 백업본으로 복원해도 됩니다.
-3. 다른 곳에서 사용하지 않는 것이 확실한 경우에만 직접 만든 Face 전용 Material과 Rest 에셋을 삭제합니다.
-4. Body의 공식 설치 상태를 다시 확인하려면 아바타를 선택하고 **Setup — 자동 설치 / 업데이트**를 실행합니다.
-
-어떤 에셋과 Curve를 추가했는지 확실하지 않다면 부분적으로 지우지 말고 작업 전 아바타 또는 Unity 프로젝트 백업으로 복원하세요.
-
-**알려진 제한**
-
-- Face는 No Tessellation 고정입니다. <strong>입체효과 (사진전용, 고부하)</strong>와 **상대 저부하**는 Face에 적용되지 않습니다. 단, `RealSweat_LocalOnlyHidden`에도 Face Curve를 추가했다면 **나에게만 보이기**에서 원격 사용자의 Face 땀양은 0이 됩니다.
-- Face가 여러 SubMesh로 구성되어 있으면 추가 재질이 의도한 피부 SubMesh에 표시되지 않을 수 있습니다.
-- Setup 또는 FX에 적용을 실행하면 위 생성 Clip이 재작성되어 수동으로 추가한 Face Curve가 삭제됩니다. 일반 설정을 모두 마친 마지막 단계에서 Face Curve를 추가하고, 둘 중 하나를 다시 실행했다면 같은 작업을 다시 해야 합니다.
-- Tuning이 추적하는 재질은 Body 측 재질뿐입니다. 전체 땀양, 품질, 물방울 크기처럼 재질을 직접 바꾸는 설정을 나중에 조정해도 Face 전용 재질에는 자동 동기화되지 않을 수 있습니다.
-- Face Renderer의 계층 경로 변경, Mesh 교체, Mesh Optimizer 또는 Mesh 결합 이후에는 Animation Binding이나 Rest 데이터가 무효가 될 수 있습니다.
-- Face Tracking, Animator 및 다른 아바타 개조 도구의 모든 조합을 검증하지 않았습니다.
-
-</details>
+도구가 호환되지 않는 Renderer 또는 Material을 표시한다면 강제로 진행하지 말고, 기본 Setup에서 올바른 Body Mesh와 **땀 적용 Element**를 먼저 확인하세요. 빌드 과정에서 이후 Mesh가 교체되는 구성은 수동 Bake만으로 호환성을 보장할 수 없습니다.

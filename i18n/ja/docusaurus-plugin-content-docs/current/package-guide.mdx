@@ -13,17 +13,23 @@ description: Base Module、Effects Module、Full Packの機能差と導入時に
 | 機能・動作 | Base Module | Effects Module | Full Pack |
 |---|:---:|:---:|:---:|
 | 共通CoreとSetup | ✓ | ✓ | ✓ |
-| 汗オン・汗 %（Manual） | ✓ | ✓ | ✓ |
+| 汗の表示・汗 %（Manual） | ✓ | ✓ | ✓ |
 | 自動モード（対応リグ） | ✓ | ✓ | ✓ |
 | 肌表面の汗と流れる水滴 | ✓ | — | ✓ |
 | Rest Vertex Data | ✓ | — | ✓ |
 | Tess / No Tessと立体機能 | ✓ | — | ✓ |
+| 濡れ肌光沢・表示マスク | ✓ | — | ✓ |
+| 複数Element・追加Skinned Mesh Renderer（実験的） | ✓ | — | ✓ |
 | 相手側を低負荷 | ✓ | — | ✓ |
+| VRC Light Volumes切替 | ✓ | — | ✓ |
 | 自分にだけ表示 | ✓ | ✓ | ✓ |
 | 落下する滴 | — | ✓ | ✓ |
 | 床の濡れ跡 | — | ✓ | ✓ |
 | 息 | — | ✓ | ✓ |
 | 湯気 | — | ✓ | ✓ |
+| 2D／3Dパーティクル品質 | — | ✓ | ✓ |
+| Custom Steam Point | — | ✓ | ✓ |
+| 任意の湯気・吐息の濃さラジアル | — | ✓ | ✓ |
 | Body Meshの指定 | 必要 | 放出元として必要 | 必要 |
 | Body Material / Mesh / Rest Dataの変更 | あり | なし | あり |
 
@@ -31,11 +37,11 @@ description: Base Module、Effects Module、Full Packの機能差と導入時に
 
 ## Sweat Base Module
 
-選択した1つのBody Rendererへ肌表面の汗を追加します。Manual ModeとAuto Modeは同じSweat %を共有します。
+選択したBody Rendererの1つ以上のMaterial Elementへ肌表面の汗を追加します。実験的機能として、顔などの追加 `SkinnedMeshRenderer` も同じSetupで管理できます。Manual ModeとAuto Modeは同じSweat %を共有します。
 
-立体機能を搭載しない場合はNo Tess Materialを1つだけ導入します。搭載するとTessとNo Tessを同梱し、インゲームの **立体効果（撮影用・高負荷）** で同じBody Slotを切り替えます。
+立体機能を搭載しない場合は、各対象にNo Tess Materialを1つだけ導入します。搭載するとTessとNo Tessを同梱し、インゲームの **水滴の立体感（テッセレーション / 高負荷）** でTess対応として管理されるすべての汗Slotをまとめて切り替えます。各Slotで同時に描画されるのはTess／No Tessのどちらか1つです。
 
-Baseを導入すると **相手側を低負荷** が表示されます。
+Baseを導入すると **相手側を低負荷**、**表面の汗を非表示**、**VRC Light Volumes** が表示されます。表示マスクは表面の水滴・濡れ膜・光沢・屈折・暗化・Tess変位をまとめて隠しますが、Effectsの落下水滴には影響しません。
 
 ## Sweat Effects Module
 
@@ -43,7 +49,7 @@ Baseを導入すると **相手側を低負荷** が表示されます。
 
 Effects-only SetupはBody Material、Body Mesh、Rest Vertex Data、テッセレーション構成を変更しません。肌表面の汗も追加しません。
 
-Effectsを導入すると **負荷を軽減 > パーティクル** と、選択した個別Effectが表示されます。
+Effectsを導入すると独立した **エフェクト** サブメニューと、選択した個別Effectが表示されます。従来の軽量2Dまたは任意の高負荷3D品質をSetupで選択できます。Custom Steam Point、一人称の吐息、湯気・吐息の濃さラジアルも必要な場合だけ導入します。
 
 ## Full Pack (Base + Effects)
 
@@ -54,9 +60,10 @@ Full PackではBase PackageとEffects Packageの両方をImportし、必ず同�
 ## Setup構成によるメニュー差
 
 - 全構成: **自分にだけ表示**
-- Base導入時: **相手側を低負荷**
-- Effects導入時: **パーティクル** と選択したEffects
-- 立体機能を搭載した場合のみ: **立体効果（撮影用・高負荷）**
+- Base導入時: **表面の汗を非表示**、**相手側を低負荷**、**VRC Light Volumes**
+- Effects導入時: 独立した **エフェクト** サブメニューと選択したEffects
+- 立体機能を搭載した場合のみ: **水滴の立体感（テッセレーション / 高負荷）**
+- Setupで選択した場合のみ: **体の湯気・吐息の濃さ**
 - 立体機能を搭載しない場合: No Tess Materialのみ。立体効果Menuは表示されません。
 
 実際のメニュー構造は[手動モードと自動モード](./usage/modes.mdx)で確認できます。

@@ -9,12 +9,12 @@ title: 更新・変更履歴
 
 1. アバターPrefabまたはUnityプロジェクトをバックアップします。
 2. 現在のReal Sweat Systemバージョンを確認します。
-3. BaseとEffectsを使用している場合は同じバージョンへ揃えます。
-4. 新しいUnityPackageをImportします。
+3. 所有しているBase／Effectsを、すべて同じ新バージョンへ揃えます。
+4. 旧版をUninstallせず、新しいUnityPackageを既存ファイルへ上書きImportします。
 5. Unity上部メニューの **CookiTools > RealSweatSystem Setup／Uninstall** を開き、**Setup — 自動インストール / 更新** を1回実行します。
-6. ConsoleとPlay Modeで顔、汗オン、汗 %、自動モード、導入したEffectsを確認します。
+6. ConsoleとPlay Modeで顔、汗の表示、汗 %、自動モード、導入したEffectsを確認します。
 
-通常のバージョン更新では、先にUninstallする必要はありません。
+通常のバージョン更新では、先にUninstallしたり、Hierarchyの `RealSweat` や `Assets/CookiTools/Generated` を削除したりしないでください。**FXに適用**だけでは、Controller・Menu・Particle・追加Meshデータを含むバージョン更新は完了しません。
 
 ## Uninstallと再導入
 
@@ -23,14 +23,92 @@ title: 更新・変更履歴
 1. Play Modeを終了し、アバターPrefabまたはUnityプロジェクトをバックアップします。
 2. **CookiTools > RealSweatSystem Setup／Uninstall** を開きます。
 3. Uninstall欄で対象アバターを指定します。
-4. 生成済みのBake、Material、Animation、Menuも削除したい場合だけ **Uninstall 時に生成アセット(ベイク/マテリアル/アニメ/メニュー)も削除** をONにします。OFFの場合は再利用できるように生成アセットを保持します。
-5. **Uninstall — 削除** を実行します。
-6. BaseとEffectsを使用する場合は同じ製品バージョンをImportし、通常どおりSetupを実行します。
+4. **Uninstall — 削除** を実行します。
+5. BaseとEffectsを使用する場合は同じ製品バージョンをImportし、通常どおりSetupを実行します。
 
 Uninstallは、Setupが追加したRealSweatオブジェクトと追跡中の汗Material Slotを削除します。Modular AvatarのMenu、Parameters、FXは次のBuildで元へ戻ります。
 
+v1.1のUninstallはUndoおよびScene／Prefabの安全性を優先し、生成済みBake、Material、Animation、Menuなどのアセットを保持します。`RealSweat`オブジェクトや生成Material Slotだけを手動で削除しないでください。
+
 :::warning[手動改変は自動削除されません]
 Face用に手動追加したMaterial Slot、Face専用Material / Rest Asset、Animation Curveなど、Setupの追跡外で追加したデータはUninstallで自動削除されません。非公式なFace + Body手順を使用した場合は、[補助ツールの手動ロールバック](./tools.mdx#unsupported-face-body)も確認してください。
+:::
+
+## v1.0.2からv1.1.0へ更新
+
+v1.0.0／v1.0.1からも同じ手順で直接更新でき、中間バージョンは不要です。
+
+1. アバターとUnityプロジェクトをバックアップします。
+2. 所有しているBase／Effectsモジュールを、**すべて同じv1.1.0**で既存ファイルへ上書きImportします。
+3. 先に旧版をUninstallしたり、`RealSweat` オブジェクトや `Assets/CookiTools/Generated` を削除したりしないでください。
+4. `CookiTools → RealSweatSystem → Setup／Uninstall`を開き、現在のBody Element、追加対象、導入オプションを確認します。
+5. **Setup — 自動インストール / 更新**を一度実行します。
+6. Sceneを保存し、Play Modeとアバタービルドで確認します。
+
+:::caution[完全なSetupが必要]
+**FXに適用**だけでは、v1.1の生成Controller、Menu、Particle、追加対象データ、およびSetupが行う移行処理は更新されません。共有Shaderコードはv1.1パッケージのImport時点で置き換わります。通常のv1.0.2導入はSetup前でも従来機能が基本的に動作しますが、生成データとInstaller主導の移行をv1.1へ揃えるには完全なSetupが必要です。
+:::
+
+古いRealSweat生成データを含むSceneには閉じることのできる通知が表示されます。BaseとEffectsの旧版・新版が混在している場合は、Setupとビルドが意図的に停止します。同じv1.1.0へ揃えればよく、Uninstallは不要です。
+
+### 維持・移行される設定
+
+| 項目 | v1.0.2 → v1.1.0 |
+|---|---|
+| 感度、全体の汗量、自動反応、主なトグル、湯気位置 | 基本的に維持 |
+| 生成済みController・Menu・Clip・Particleへの直接編集 | Setupで上書きされる場合があるため、事前にバックアップ |
+| 床の濡れ跡の`Pooling Chance`が正確に`0.25` | `0`へ移行。その他のカスタム値は維持 |
+| 従来の体の湯気のミラー外観 | `Full`として維持。新規導入の既定値は`Low` |
+| 3Dパーティクル | Setupで選択しない限りOFF |
+| ミラーでのBodyの汗フル品質 | Setupで選択しない限りOFF |
+| 更新時の濡れ肌光沢 | 導入済み汗Materialの状態を維持 |
+| Uninstall後の生成アセット | UndoおよびScene／Prefabの安全性のため保持 |
+
+## v1.1.0
+
+### 表面・描画
+
+- 既存の濡れ肌光沢を制御するSetupオプションを追加
+- 最終表示マスクを追加。R/G/B/A、反転、強度、タイリング、オフセットに対応し、表面結果とTess変位を隠しますが落下水滴には影響しません
+- BodyのShadow Strength追従を、選択した複数Elementと追加対象へ拡張
+- VRC Light Volumesのゲーム内トグルを追加。既定ON
+- ミラーでもBodyの汗をフル品質で表示する任意の高負荷オプションを追加
+- Tess／No Tessの元Shaderと **見た目をリセット** の細い濡れ跡の初期値を`0`へ統一。見た目をリセットした際は、水滴サイズとPattern密度も管理対象および連動Particle設定へ反映
+
+### Effects
+
+- 従来の軽量2Dを維持しながら、吐息・体の湯気・落下水滴に任意の高負荷3D品質を追加
+- 3D落下水滴に任意の衝突スプラッシュを追加
+- 3D落下水滴と体を動かした時に飛び散る滴の既定サイズを、元のサイズより8%小さく調整
+- 専用Particle Shaderにより、World照明と通常のVRChat Mirrorによる表示差を低減
+- 任意の3D水滴Particle Shaderから未使用の照明／Soft Particle Variant軸を削除。見た目とGPU Instancingは変更しません
+- 体の湯気に`Full / Low / Hidden`のミラー設定を追加
+- 任意のCustom Steam Pointと、任意の一人称吐息を追加
+- 保存・同期される任意の **体の湯気・吐息の濃さ**ラジアルを追加。導入チェックは既定OFF、0%が0.1倍、50%が従来の見た目を維持する1.0倍、100%が1.5倍です。0%でも完全なOFFにはならず、不透明度だけを変えるためParticle数と処理負荷は減りません
+- 床の濡れ跡を2×2から3×3へ拡張し、衝突直後の広がり、重なり、縁から乾く表現を調整
+
+### Setup・Menu・安全対策
+
+- **実験的:** 1つのBody Renderer内の複数Material Elementと、追加 `SkinnedMeshRenderer` に対応
+- `RealSweatSystem Tuning`から **追加対象を管理...**／**Setupで修復...** を開けるようにし、生成Material／Slotの欠損・移動・置換・統合を検出した場合はビルドを停止
+- `汗オン`を`汗の表示`へ変更し、**表面の汗を非表示**を追加。Effects操作を独立した **エフェクト** サブメニューへ移動
+- Body自動検出を強化し、弱い・曖昧な候補は推測せず手動指定を要求
+- Avatar Expression ParametersとModular Avatar Parametersの名前衝突を事前検査し、予測合計が256bitを超える場合は警告
+- Write Defaults、VRCFT、最終Rest／Tangent、d4rkAvatarOptimizer、Moduleバージョン混在、Setup失敗時のロールバックを強化
+- ビルド後半のSubmesh `baseVertex` 変更に対応する互換処理を追加し、確認済みのModular Avatar Shape Changer Delete構成で表面の汗が破片状に崩れる問題を防止。すべてのメッシュ変更ツール／組み合わせとの完全互換を保証するものではありません
+- Bodyメッシュの内蔵頂点カラーによってパーティクルが表示されない場合に使用する任意の落下水滴互換設定を **Setup > トラブルシューティング** に追加。標準動作は変更されず、落下する滴と体を動かした時に飛び散る滴だけに適用
+
+### 同期コスト
+
+- 体の湯気・吐息の濃さを導入しない標準最大値: Base 21bit／Tess 22bit、Effects 23bit、Full Pack 26bit／Tess 27bit
+- 任意の濃さラジアルを導入した場合: Effects 31bit、Full Pack 34bit／Tess 35bit
+
+:::warning[実験的な追加対象]
+生成されたRealSweat MaterialやRenderer Slotを直接削除、空欄化、移動、置換、統合しないでください。`RealSweatSystem Tuning`の **追加対象を管理...** からSetupを開き、完全なSetupで修復または削除してください。Face Tracking・Mesh統合・置換・最適化との全組み合わせは保証されません。
+:::
+
+:::warning[負荷と依存関係]
+3Dパーティクルとミラーフル品質はGPU負荷を増やします。体の湯気の3D `Low`は現在`Full`と同じ見た目・負荷です。床の濡れ跡は落下水滴の衝突サブエフェクトなので、落下水滴が有効な間だけ使用できます。
 :::
 
 ## v1.0.2 — 2026-07-27
@@ -43,8 +121,8 @@ Face用に手動追加したMaterial Slot、Face専用Material / Rest Asset、An
 - WD OFF、ON/OFF混在、または判定不能の場合はv1.0.1のDriver ON / Output OFF互換構成を維持
 - NDMFで最終統合されたFXをビルド時に再確認し、検出結果に合わせてRealSweatのWD構成を調整
 
-:::note[v1.0.1から更新する場合]
-v1.0.2をImportした後、**Setup — 自動インストール / 更新** を1回実行してください。汗の見た目とユーザー設定に意図的な変更はありません。
+:::note[過去の更新案内]
+v1.0.1のリリース当時は、v1.0.2をImportしてSetupを1回実行する手順でした。現在のv1.0.0／v1.0.1導入は、中間バージョンを経由せず、上記の手順でv1.1.0へ直接更新できます。
 :::
 
 :::caution[MMDワールド]
@@ -64,8 +142,8 @@ WD OFFまたはON/OFF混在のFX構成では、ワールド側のFXレイヤー�
 - Rest Vertex Data Bakerの案内を日本語・英語・韓国語に対応
 - 通常のSetupではユーザーが直接操作する必要のない項目であることを明記
 
-:::note[v1.0.0から更新する場合]
-v1.0.1をImportした後、**Setup — 自動インストール / 更新** を1回実行してください。Setupが生成したMerge Animator PriorityやAnimator欄は手動で変更しないでください。
+:::note[過去の更新案内]
+このリリースは、正常に動作していたv1.0.0導入の見た目や通常操作を意図的に変更しませんでした。現在のv1.0.0導入は、中間バージョンを経由せず、上記の手順でv1.1.0へ直接更新できます。
 :::
 
 :::info[既存ユーザーへの影響]

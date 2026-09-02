@@ -10,12 +10,76 @@ description: Safe update steps and release notes for Real Sweat System.
 
 1. Back up the avatar Prefab or Unity project.
 2. Check the currently installed Real Sweat System version.
-3. If using both Base and Effects, update both to the same version.
-4. Import the new UnityPackage.
-5. Open **CookiTools > RealSweatSystem Setup／Uninstall**, select the **Install** tab, and run **Setup — Install / Update** once.
-6. Check the Console and test the avatar in Play Mode before upload.
+3. Import every Base and Effects module you own at the same new version over the existing files.
+4. Do **not** Uninstall the old version or delete the `RealSweat` object or `Assets/CookiTools/Generated` first.
+5. Open **CookiTools > RealSweatSystem > Setup／Uninstall**, review the current Body Elements, experimental additional targets, and Setup options.
+6. Run the full **Setup — Install / Update** once. **Apply to FX alone does not update generated controller, menu, particle, or additional-mesh data.**
+7. Save the scene, check the Console, and test the avatar in Play Mode and with an avatar build before upload.
+
+Mixing v1.0.x and v1.1.x Base/Effects modules is intentionally blocked during Setup and build.
 
 For removal, clean reinstallation, or changing between Base, Effects, and Full Pack, follow [Uninstall, reinstall, or change modules](./troubleshooting.mdx#uninstall-reinstall-or-change-modules).
+
+## v1.1.0
+
+### Updating from v1.0.0–v1.0.2 to v1.1.0
+
+No intermediate release is required.
+
+1. Back up the avatar and Unity project.
+2. Import every Base/Effects module you own at the **same v1.1.0 version** over the existing files.
+3. Do not Uninstall the old version or delete the `RealSweat` object or `Assets/CookiTools/Generated` first.
+4. Open `CookiTools → RealSweatSystem → Setup／Uninstall`.
+5. Review the current Body Elements, experimental additional targets, and installation options.
+6. Run **Setup — Install / Update** once, save the scene, and test an avatar build.
+
+:::caution[Full Setup required]
+**Apply to FX alone does not install the v1.1 controller, menu, particles, additional-mesh data, or installer-driven migrations.** Importing v1.1 replaces the shared shader code immediately, so shader-only changes can already affect existing generated materials. A normal v1.0.2 installation can generally keep using its old generated controls before Setup, but the v1.1 generated features and Setup-dependent fixes require the full Setup.
+:::
+
+Older generated data produces a dismissible Scene-view reminder. Updating generally preserves sensitivity, Overall Sweat Amount, automatic response, major toggles, and Steam locations. Direct edits to generated controllers, menus, clips, or particles can be overwritten, so back them up first.
+
+Migration details:
+
+- Floor Stain `Pooling Chance` migrates from the exact old default `0.25` to the new default `0`. Other custom values are preserved.
+- Existing Body Steam mirror appearance is preserved as `Full`; new installations default to `Low`.
+- 3D Particle Quality and Full-Quality Body Sweat in Mirrors remain off unless selected in Setup.
+- Wet Skin Gloss follows the installed sweat material state during an update.
+- Uninstall is not required before updating, and generated assets are retained by Uninstall for Undo and Scene/Prefab safety.
+
+### New and improved
+
+- Optional high-load 3D Breath, Body Steam, and Falling Drops while retaining the default lightweight 2D particles
+- Optional impact splashes for 3D Falling Drops
+- The default 3D Falling Drops and motion-fling droplets are 8% smaller than the original scale for a more natural appearance.
+- Dedicated particle shaders and Body Steam `Full / Low / Hidden` mirror modes
+- Optional Full-Quality Body Sweat in mirrors
+- Wet Skin Gloss Setup control, VRC Light Volumes in-game toggle, and **Hide Surface Sweat**
+- Final Body Surface Display Mask with channel, inversion, strength, tiling, and offset controls
+- Thin Wet Traces now default to `0` in the raw Tess／No Tess shaders and **Reset Visual**. Reset Visual also propagates the reset droplet size and pattern density to managed targets and dependent particle settings.
+- Experimental multiple Body Material Elements and additional `SkinnedMeshRenderer` targets
+- Tuning status, **Manage Targets...**, guided repair/removal, and build blocking for damaged generated slots
+- Custom Steam Points with per-point controls and mirrored pairs
+- Optional saved synchronized **Steam & Breath Intensity** radial, off by default: 0% = 0.1× opacity, 50% = the existing 1.0× appearance, and 100% = 1.5×. It changes opacity only, does not turn the effects off at 0%, and does not reduce particle or performance cost.
+- Optional **Show My Breath in First Person**
+- 3×3 Floor Stain variation, brief impact spread, gentler overlap density, and revised drying
+- Safer Body auto-detection, broader parameter-collision checks, final Rest/tangent validation, d4rkAvatarOptimizer protection, mixed-module blocking, and Setup rollback
+- Build-time compatibility handling for late submesh `baseVertex` changes, preventing surface-sweat fragmentation in confirmed Modular Avatar Shape Changer Delete cases. Compatibility with every mesh-modifying tool or combination is not guaranteed.
+- Added an opt-in Falling Drops visibility compatibility setting under **Setup > Troubleshooting** for Body meshes whose built-in vertex colors can hide the particles. Default behavior is unchanged; it affects Falling Drops and motion flings only.
+- Removed unused lighting and soft-particle shader variant axes from optional 3D Water particles without changing their appearance or GPU instancing.
+- Menu rename from **Sweat On** to **Sweat Display**; Effects now use a separate submenu
+
+### Important v1.1 limitations
+
+- Experimental additional targets support `SkinnedMeshRenderer` only and add one sweat material and draw cost per configured target.
+- Each target requires readable mesh data, valid submesh/material/tangents, a unique animation path, and an unshared generated sweat-material lineage.
+- Do not delete, clear, move, replace, or merge a generated RealSweat material or Renderer slot. Use **Manage Targets...** and the full Setup to repair or remove the target.
+- Face tracking, expressions, mesh merging, replacement, and optimization cannot be guaranteed in every combination. Avoid Tess around eyes and lips.
+- Floor Stains are collision sub-effects of Falling Drops and require Falling Drops to remain enabled.
+- Up to four Custom Steam slots can be active; mirrored pairs use two. Twelve combined built-in/custom emitters is the hard limit, and rate weight above `4.0` is normalized.
+- 3D particles and full-quality mirror options increase GPU load. In 3D mode, Body Steam `Low` currently costs the same as `Full`; use `Hidden` for the lowest mirror cost.
+
+The Full Pack maximum is **26 bits without Tess / 27 bits with Tess** when the optional intensity radial is not installed. Installing **Steam & Breath Intensity** adds one saved synchronized Float (8 bits), raising the maximum to **34/35 bits**.
 
 ## v1.0.2 — 2026-07-27
 
@@ -27,8 +91,8 @@ For removal, clean reinstallation, or changing between Base, Effects, and Full P
 - WD OFF, mixed, or unknown setups retain the v1.0.1 Driver ON / Output OFF compatible split
 - Rechecks the final NDMF-merged FX controller during build and adjusts the RealSweat WD structure to the detected result
 
-:::note[Updating from v1.0.1]
-Import v1.0.2 and run **Setup — Install / Update** once. There are no intended changes to the sweat appearance or user settings.
+:::note[Historical update note]
+v1.0.1 originally updated by importing v1.0.2 and running Setup once. Current v1.0.0 and v1.0.1 installations can update directly to v1.1.0 using the procedure above.
 :::
 
 :::caution[MMD worlds]
@@ -48,8 +112,8 @@ With a WD OFF or mixed FX setup, expressions or Real Sweat System may not work c
 - Added Japanese, English, and Korean labels for **Rest Vertex Data Baker**
 - Clarified that Rest Vertex Data Baker is not normally used in everyday setup
 
-:::note[Existing v1.0.0 users]
-This update does not intentionally change the appearance or normal controls of avatars that were already working correctly. Import v1.0.1 and run Setup once to update the generated installation.
+:::note[Historical update note]
+This release did not intentionally change the appearance or normal controls of working v1.0.0 installations. Current v1.0.0 installations can update directly to v1.1.0 using the procedure above.
 :::
 
 ## Documentation policy

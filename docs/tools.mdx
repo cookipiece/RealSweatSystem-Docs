@@ -66,13 +66,13 @@ Do not force the baker to run with an incompatible Renderer or material. If the 
 :::
 
 <details id={'unsupported-face-body'}>
-<summary><strong>Not recommended / unsupported: manual Face + Body setup</strong></summary>
+<summary><strong>Legacy v1.0.x reference — do not use for a new v1.1 Face target</strong></summary>
 
-:::danger[Reference only — not officially supported]
-This procedure is documented because it is frequently requested, but it is not an official feature and is not recommended. Environment-specific installation help, troubleshooting, maintenance after updates, and operation guarantees are outside official support. Back up the avatar or Unity project before making any changes.
+:::danger[Legacy reference only]
+v1.1 supersedes this manual procedure with experimental additional `SkinnedMeshRenderer` targets in Setup. For a new Face target, add the Face Renderer/Element in Setup so it receives tracked materials, Rest data, masks, animation, and repair/removal support. Do not follow the manual steps below for a new v1.1 installation.
 :::
 
-The current official implementation tracks one Body-side SkinnedMeshRenderer as the sweat display target. When Face and Body use separate Renderers, the normal Setup cannot install sweat on both at once.
+The steps below are retained only to identify or roll back a Face material that was manually added with v1.0.x. A full v1.1 Setup may overwrite its generated Clip edits.
 
 Adding only a sweat material to the Face can leave it permanently wet because the generated animations target only the Body path. Face and Body also require different Rest Vertex Data for their respective meshes, so they must not share one sweat material.
 
@@ -111,7 +111,7 @@ This procedure assumes that you can safely edit a Renderer **Materials** array, 
 
 **Known limitations**
 
-- The Face remains No Tessellation. **3D Effect (Photos Only, High Load)** and **Remote Low Load** do not apply to the Face. However, if Face curves were also added to `RealSweat_LocalOnlyHidden`, **Only Visible to Me** reduces the Face sweat amount to zero for remote viewers.
+- A Face added through this legacy v1.0.x procedure remains No Tessellation. The old 3D surface toggle and Remote Low Load do not apply to it. A Face configured as a v1.1 experimental additional target instead participates in the managed Tess/No Tess and Remote Low Load paths.
 - With multiple Face submeshes, an added material may not render on the intended skin submesh.
 - Running Setup or Apply to FX rebuilds the generated Clips and removes the manually added Face curves. Add the Face curves only after all normal settings are complete, and repeat the curve work after either command is run again.
 - Tuning tracks only the Body-side materials. Later changes to material-driven settings such as overall sweat amount, quality, or droplet size may not synchronize to the Face-only material.

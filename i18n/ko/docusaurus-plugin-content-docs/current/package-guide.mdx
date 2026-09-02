@@ -8,8 +8,8 @@ description: Base Module, Effects Module, Full Pack의 차이입니다.
 
 | 구성 | 포함되는 주요 기능 | 추천 대상 |
 |---|---|---|
-| **Sweat Base Module** | 피부 표면의 땀, Rest 데이터, Tess / No Tess, 렌더 순서, 상대 저부하 (Remote Low Load) | 피부의 땀 표현이 필요한 경우 |
-| **Sweat Effects Module** | 낙하 물방울, 바닥 물자국, 입김, 몸 김 | 주변 파티클 효과가 필요한 경우 |
+| **Sweat Base Module** | 피부 표면의 땀, Rest 데이터, Tess / No Tess, 표시 마스크, 여러 Element·추가 SMR(실험적), 거울·Light Volumes 설정 | 피부의 땀 표현이 필요한 경우 |
+| **Sweat Effects Module** | 2D/3D 낙하 물방울, 충돌 튀김, 바닥 물자국, 입김, 몸 김, Custom Steam | 주변 파티클 효과가 필요한 경우 |
 | **Full Pack (Base + Effects)** | Base + Effects | 모든 표현을 Sweat %에 맞춰 함께 사용하려는 경우 |
 
 각 모듈에는 실행에 필요한 공용 **Core**가 포함됩니다. Core는 별도로 구매하거나 직접 설정하는 제품이 아닙니다.
@@ -23,11 +23,14 @@ description: Base Module, Effects Module, Full Pack의 차이입니다.
 | Rest Position / Normal / Tangent 데이터 | ✓ | — | ✓ |
 | Tess / No Tess와 입체기능 | ✓ | — | ✓ |
 | 상대 저부하 | ✓ | — | ✓ |
+| 표면 표시 마스크·여러 Element·추가 SMR(실험적) | ✓ | — | ✓ |
+| 바디 땀 거울 전체 품질·VRC Light Volumes 토글 | ✓ | — | ✓ |
 | 나에게만 보이기 | ✓ | ✓ | ✓ |
-| 낙하 물방울 | — | ✓ | ✓ |
-| 바닥 물자국 | — | ✓ | ✓ |
-| 입김 | — | ✓ | ✓ |
-| 몸 김 | — | ✓ | ✓ |
+| 2D/3D 낙하 물방울·충돌 튀김 | — | ✓ | ✓ |
+| 3×3 바닥 물자국 | — | ✓ | ✓ |
+| 2D/3D 입김·1인칭 표시 옵션 | — | ✓ | ✓ |
+| 2D/3D 몸 김·Custom Steam·거울 모드 | — | ✓ | ✓ |
+| 선택형 몸 김·입김 진하기 래디얼 | — | ✓ | ✓ |
 | 설치 시 Body Mesh 지정 | ✓ | ✓ | ✓ |
 | Body 재질·Mesh·Rest 구성 변경 | ✓ | — | ✓ |
 
@@ -35,7 +38,7 @@ description: Base Module, Effects Module, Full Pack의 차이입니다.
 
 ## Sweat Base Module
 
-Body 재질과 Mesh를 대상으로 피부 표면의 땀을 구성합니다. Manual Mode와 Auto Mode, 렌더 순서, 그림자 반응, 선택형 입체기능 및 상대방용 경량 표시를 포함합니다.
+Body 재질과 Mesh를 대상으로 피부 표면의 땀을 구성합니다. Manual Mode와 Auto Mode, 렌더 순서, 그림자 반응, 최종 표시 마스크, 선택형 입체기능, VRC Light Volumes와 상대방용 경량 표시를 포함합니다. v1.1에서는 같은 Renderer의 여러 Material Element와 별도 Skinned Mesh Renderer를 실험적으로 추가할 수 있습니다.
 
 ## Sweat Effects Module
 
@@ -43,14 +46,15 @@ Effects만 설치해도 파티클 방출 위치를 계산하기 위해 **Body Me
 
 ## Full Pack (Base + Effects)
 
-Full Pack은 Base와 Effects를 모두 포함한 완전 구성입니다. 두 모듈이 같은 Sweat %를 공유하여 피부의 땀, 낙하 물방울, 바닥 물자국, 입김과 몸 김이 자연스럽게 연동됩니다. 두 패키지는 같은 버전을 사용하세요.
+Full Pack은 Base와 Effects를 모두 포함한 완전 구성입니다. 두 모듈이 같은 Sweat %를 공유하여 피부의 땀, 낙하 물방울, 바닥 물자국, 입김과 몸 김이 자연스럽게 연동됩니다. 두 패키지는 반드시 같은 버전을 사용하세요. v1.0.x와 v1.1.x를 섞으면 Setup과 빌드가 의도적으로 중단됩니다.
 
 ## 설치 구성에 따른 메뉴
 
-- Base 설치 시 **상대 저부하**가 표시됩니다.
+- Base 설치 시 **표면 땀 숨기기**, **상대 저부하**, **VRC Light Volumes**가 표시됩니다.
 - **나에게만 보이기**는 Base, Effects, Full Pack 모두에서 표시됩니다.
-- Effects 설치 시 **파티클** 하위 메뉴가 표시됩니다.
-- 입체기능을 탑재한 경우에만 <strong>입체효과 (사진전용, 고부하)</strong>가 표시됩니다.
+- Effects 설치 시 별도 **이펙트** 하위 메뉴가 표시됩니다.
+- 입체기능을 탑재한 경우에만 <strong>물방울 입체감(테셀레이션 / 고부하)</strong>이 표시됩니다.
+- 몸 김·입김 진하기 래디얼은 Setup에서 선택한 경우에만 표시되며, Effects 또는 Full Pack의 동기화 비용이 8bit 늘어납니다.
 - 설치하지 않은 모듈의 항목은 Tuning과 아바타 메뉴에 나타나지 않습니다.
 
 ## 게임·앱 라이선스

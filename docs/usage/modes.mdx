@@ -1,7 +1,7 @@
 ---
 id: modes
 title: Manual Mode & Auto Mode
-description: How Sweat On, Sweat %, Manual Mode, and Auto Mode work together.
+description: How Sweat Display, Sweat %, Manual Mode, and Auto Mode work together.
 ---
 
 # Manual Mode & Auto Mode
@@ -12,24 +12,28 @@ The full menu is assembled from the modules and options installed during Setup.
 
 ```text
 Sweat
-├─ Sweat On
+├─ Sweat Display
 ├─ Sweat %
 ├─ Auto Mode
+├─ Effects
+│  ├─ All Effects
+│  ├─ Falling Drops
+│  ├─ Floor Stains
+│  ├─ Breath Puffs
+│  ├─ Steam
+│  └─ Steam & Breath Intensity (optional radial)
 └─ Reduce Load
+   ├─ Hide Surface Sweat
    ├─ Remote Low Load
+   ├─ VRC Light Volumes
    ├─ Only Visible to Me
-   ├─ Particles
-   │  ├─ All Particles
-   │  ├─ Falling Drops
-   │  ├─ Floor Stains
-   │  ├─ Breath Puffs
-   │  └─ Steam
-   └─ 3D Effect (Photos Only, High Load)
+   └─ Droplet Depth (Tessellation / High Load)
 ```
 
 - **Remote Low Load** appears when Sweat Base Module is installed.
-- **Particles** appears when Sweat Effects Module is installed.
-- **3D Effect (Photos Only, High Load)** appears only when tessellation support is installed.
+- **Effects** appears when Sweat Effects Module is installed.
+- **Steam & Breath Intensity** appears only when its saved synchronized radial was selected during Setup.
+- **Droplet Depth (Tessellation / High Load)** appears only when tessellation support is installed.
 
 Items for modules or options that are not installed are omitted automatically.
 
@@ -53,16 +57,16 @@ The default sensitivity preset is **Balanced**.
 
 Auto Mode requires a Humanoid avatar with the expected Modular Avatar bone setup. Non-humanoid avatars and avatars without the required bone reference can use Manual Mode.
 
-## Sweat On versus Sweat 0%
+## Sweat Display versus Sweat 0%
 
-- **Sweat On + Sweat 0%:** the system remains ready, and Auto Mode can begin building sweat from zero.
-- **Sweat On off:** the sweat presentation is disabled.
+- **Sweat Display on + Sweat 0%:** the system remains ready, and Auto Mode can begin building sweat from zero.
+- **Sweat Display off:** the complete sweat presentation is disabled.
 
-Use Sweat On at 0% when you want the avatar to begin dry and get wetter naturally after movement starts.
+Use Sweat Display at 0% when you want the avatar to begin dry and get wetter naturally after movement starts.
 
 ## Quick behavior check
 
-1. Enable **Sweat On**.
+1. Enable **Sweat Display**.
 2. Turn the default Auto Mode off temporarily and inspect 0%, 25%, 50%, 75%, and 100%.
 3. Enable Auto Mode and move the avatar.
 4. Stop moving and confirm that the value falls gradually.
@@ -72,4 +76,4 @@ Use Sweat On at 0% when you want the avatar to begin dry and get wetter naturall
 
 - Change movement response in [Tuning Guide](./tuning.mdx).
 - Check Breath Puffs and Steam thresholds in [Effects Guide](./effects.mdx).
-- If the gauge or toggle does not respond, see [Troubleshooting](../troubleshooting.mdx#sweat-on-or-auto-mode-does-not-work).
+- If the gauge or toggle does not respond, see [Troubleshooting](../troubleshooting.mdx#sweat-display-or-auto-mode-does-not-work).

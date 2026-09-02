@@ -10,7 +10,7 @@ description: Official setup, usage, compatibility, and troubleshooting guide for
 **Real Sweat System** adds real-time sweat effects to PC VRChat avatars. Set **Sweat %** directly from the radial menu, or use **Auto Mode** to build sweat from body movement and let it dry gradually after movement stops.
 
 :::info[Current documentation]
-This documentation covers **Real Sweat System v1.0.2**.
+This documentation covers **Real Sweat System v1.1.0**.
 :::
 
 ## What it can display
@@ -21,6 +21,8 @@ This documentation covers **Real Sweat System v1.0.2**.
 - Wet marks left on the floor
 - Steam rising from the body
 - Breath puffs driven by Visemes or VRCFT
+- Optional 3D particles for falling drops, steam, and breath
+- Sweat on multiple Body material Elements or additional skinned meshes (experimental)
 
 Skin sweat is included in **Sweat Base Module**. Falling Drops, Floor Stains, Steam, and Breath Puffs are included in **Sweat Effects Module**. **Full Pack (Base + Effects)** includes both modules as the complete configuration.
 
@@ -38,6 +40,7 @@ Quest standalone is not supported. Auto Mode is available on Humanoid avatars; o
 ## Find the right page
 
 - **Install for the first time:** [Package Guide](./package-guide.mdx) → [5-Minute Quick Start](./quick-start.mdx)
+- **Update from v1.0.x:** [Update & Changelog](./update-changelog.mdx#updating-from-v100v102-to-v110)
 - **Control Sweat % or Auto Mode in game:** [Manual Mode & Auto Mode](./usage/modes.mdx)
 - **Adjust appearance, sensitivity, or load:** [Tuning Guide](./usage/tuning.mdx) → [Performance Guide](./performance.mdx)
 - **Check Falling Drops, Floor Stains, Breath, or Steam:** [Effects Guide](./usage/effects.mdx)
@@ -49,4 +52,8 @@ If this is your first installation, follow the first row from left to right. Fac
 
 :::warning[Keep a backup]
 Back up your avatar Prefab or Unity project before installation or update.
+:::
+
+:::warning[Use the official Uninstall]
+To remove Real Sweat System, do not manually delete the `RealSweat` object or `Assets/CookiTools/Generated`. Use **CookiTools > RealSweatSystem Setup／Uninstall > Uninstall** and follow the [removal procedure](./troubleshooting.mdx#uninstall-reinstall-or-change-modules).
 :::

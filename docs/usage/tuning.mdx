@@ -1,22 +1,18 @@
 ---
 id: tuning
 title: Setup & Tuning Option Reference
-description: Reference for every normal Setup and Tuning control in RealSweatSystem 1.0.2.
+description: Reference for the normal Setup and Tuning controls in RealSweatSystem 1.1.0.
 ---
 
 # Setup & Tuning Option Reference
 
-This page documents the normal user-facing controls in RealSweatSystem 1.0.2. Controls marked **Base** appear when the Sweat Base Module is installed; controls marked **Effects** require the Sweat Effects Module.
+This page documents the normal user-facing controls in RealSweatSystem 1.1.0. Controls marked **Base** appear when the Sweat Base Module is installed; controls marked **Effects** require the Sweat Effects Module.
 
 ## Open the Tuning component
 
 After Setup, expand the avatar in the Hierarchy and select the generated **RealSweat** object directly under the avatar root. Its Inspector contains **RealSweatSystem Tuning**.
 
-If the object is missing, open **CookiTools > RealSweatSystem Setup／Uninstall** and run **Setup — Install / Update**.
-
-[![RealSweatSystem Tuning Inspector in English](/img/guide/tuning-english.png)](/img/guide/tuning-english.png)
-
-*<small>The values in screenshots may come from a test scene and may differ from installation defaults.</small>*
+If the object is missing because the first Setup did not finish, resolve the first Console error and run **Setup — Install / Update** again. If an installed `RealSweat` object was deleted manually, do not rerun Setup without checking the Body first; follow [manual-deletion recovery](../troubleshooting.mdx).
 
 ## When changes take effect
 
@@ -27,7 +23,8 @@ If the object is missing, open **CookiTools > RealSweatSystem Setup／Uninstall*
 | **3D Detail Precision** | Updates the installed Tess material immediately. |
 | Automatic-response, accumulation-curve, retention, effect, and advanced FX values | Press **Apply to FX**. |
 | Body material Shadow Strength | Press **Apply to FX**, or run Setup again, to copy it. |
-| Setup structure, selected Body, render order, and installed tessellation support | Run **Setup — Install / Update**. |
+| Custom Steam Point values | Press **Apply to FX**, or run the full Setup. |
+| Setup structure, Body Elements, additional targets, 2D/3D particle quality, mirror options, first-person Breath, intensity radial, render order, and installed tessellation support | Run **Setup — Install / Update**. |
 
 The accumulation graphs preview pending values immediately, but they do not modify generated FX until **Apply to FX** is pressed.
 
@@ -36,11 +33,14 @@ The accumulation graphs preview pending values immediately, but they do not modi
 | Control | Module | Default | Meaning |
 |---|---|---:|---|
 | **Avatar** | All | None | Target object with a VRC Avatar Descriptor. |
-| **Body Mesh** | All | Auto-detect | The single SkinnedMeshRenderer that receives the sweat shell. |
-| **Sweat Target Element** | Base | Element 0 | Selects the Body material/submesh area to re-render. Element 0 is usually the main skin. |
-| **Automatic render order (Recommended)** | Base | On | Sets the sweat render queue to exactly `2455`. The selected Body material must be `2454` or lower. |
+| **Body Mesh** | All | Auto-detect | Primary skin-side `SkinnedMeshRenderer` on a Hierarchy object, scale reference, and default Effects emission surface. This is not an `.fbx` or Mesh asset from the Project window. Auto-detection evaluates Renderer, mesh, material, and BlendShape evidence and asks for manual selection when ambiguous. |
+| **Body Elements** | Base | Best detected skin Element | Selects one or more Body material/submesh areas to re-render. Verify the displayed material names. |
+| **Additional Renderer Targets (Experimental)** | Base | None | Adds selected Elements from separate `SkinnedMeshRenderer` targets with independent Rest data, size, density, masks, and draw cost. |
+| **Automatic render order (Recommended)** | Base | On | Sets Primary Body Sweat to `2455`. Additional targets use `max(2455, source material queue + 1)`. |
 | **Manual Sweat Render Queue** | Base | `2455` | Appears when automatic ordering is disabled. Set it above the selected Body material. |
-| **Follow Body Shadow Strength** | Base | On | Copies `_ShadowStrength` from the selected Body Element material to RealSweatSystem when Setup or **Apply to FX** runs. Supports lilToon and Poiyomi. |
+| **Follow Body Shadow Strength** | Base | On | Copies `_ShadowStrength` from each configured source Element material to its RealSweat material when Setup or **Apply to FX** runs. Supports lilToon and Poiyomi. |
+| **Wet Skin Gloss as Sweat Increases** | Base | On for new installations | Enables the existing wet-skin gloss response. Updates preserve the installed material state. |
+| **Full-Quality Body Sweat in Mirrors** | Base | Off | Restores droplet density, optics, Light Volumes, and Tess/No Tess quality in mirror cameras at additional GPU cost. |
 | **Overall Sweat Amount** | All | Low amount (Low Load) | Selects the surface calculation budget and matches animated wetness and effect intensity. |
 | **Auto Mode Sensitivity** | All | Balanced | Selects how strongly small body movement starts and builds automatic sweat. |
 | **Write Defaults Compatibility** | All | Auto Detect (Recommended) | Uses all-WD-ON RealSweat states only when every external FX state uses WD ON; otherwise uses the Driver ON / Output OFF compatible split. |
@@ -51,8 +51,15 @@ The accumulation graphs preview pending values immediately, but they do not modi
 | **Enable Floor Stains** | Effects | On | Installs wet floor marks made by Falling Drops. |
 | **Breath Puffs** | Effects | On | Installs the breath emitter. |
 | **Steam** | Effects | On | Installs body-steam emitters. |
+| **3D Particle Quality (Breath + Falling Drops + Body Steam) (High Load)** | Effects | Off | Uses mesh-particle rendering instead of the existing lightweight 2D particles. Changing it requires the full Setup. |
+| **Water Drop Impact Splash** | Effects + 3D particles | On | Adds small upward splashes when 3D Falling Drops collide. |
+| **Body Steam in Mirrors** | Effects | Low on new installs | `Full / Low / Hidden`. Updates preserve the old appearance as Full. |
+| **Show My Breath in First Person** | Effects | Off | Uses MA Visible Head Accessory; requires a valid Head bone and compatible Modular Avatar. |
+| **Install Steam & Breath Intensity Radial (+8 bits)** | Effects | Off | Adds a saved synchronized Float. 0% = 0.1× opacity, 50% = current appearance at 1.0×, 100% = 1.5×. This changes opacity only and does not reduce particle or performance cost. |
 | **Steam Locations** | Effects | Chest, shoulders, armpits, thighs on; crotch and feet off | Chooses which body-steam emitters Setup creates. |
-| **Also delete generated assets on Uninstall** | All | Off | Removes generated bake, material, animation, and menu assets during Uninstall. Leave off when you want to keep them. |
+| **Custom Steam Points** | Effects | None | Adds Steam to selected Transforms with size, rate, spread, direction, and mirrored-pair controls. |
+
+Before writing assets, Setup checks all planned parameters against Avatar Expression Parameters and other Modular Avatar declarations, including prefixes and remaps. A name collision stops Setup. A projected total above 256 bits produces a warning before continuing.
 
 ### Write Defaults Compatibility
 
@@ -76,7 +83,18 @@ Test close-up views and mirrors before upload. Sweat amount, pattern density, sc
 | **Balanced — Close-up Viewing** | `4` | Close viewing | Higher |
 | **Precise — Photo Capture** | `7` | Still images | Highest |
 
-Installing tessellation does not make both materials render together. The menu switches one Body slot between Tess and No Tess. Disabling the in-game 3D feature uses the true No Tess shader, so hull/domain tessellation work is not performed.
+Installing tessellation does not make both variants render together on one target. The menu switches every Tess-enabled sweat slot between Tess and No Tess. Disabling **Droplet Depth (Tessellation / High Load)** uses the true No Tess shader, so hull/domain tessellation work is not performed.
+
+For multiple configured targets, every target renders only its selected Tess or No Tess variant, but separate Body Elements and Renderers still add separate sweat draws. The in-game Droplet Depth toggle switches every Tess-enabled sweat slot together.
+
+### Experimental target safety
+
+`RealSweatSystem Tuning` shows the generated material/slot status of installed additional targets.
+
+- Use **Manage Targets...** to open Setup with the current target list loaded.
+- Use **Open Setup to Repair...** when a target is marked **Repair Required**.
+- To remove a target, remove it with `-` in Setup and run the full Setup.
+- Do not disable a target by deleting, clearing, moving, replacing, or merging its generated material or Renderer slot. Damage is not silently skipped; it blocks the avatar build until the target is repaired or removed.
 
 ## Tuning option reference
 
@@ -114,6 +132,7 @@ The supplied profiles keep the estimated time to 95% nearly equal; the visible p
 | **Tessellation Default On** | Base + Tess | Off | Initial local 3D state. This does not add a second draw. |
 | **3D Detail Precision** | Base + Tess | Simplified | Changes the active Tess material precision; GPU cost rises sharply with precision. |
 | **Follow Body Shadow Strength** | Base | On | Copies rather than continuously links the Body value. Press **Apply to FX** after changing the Body material. |
+| **Full-Quality Body Sweat in Mirrors** | Base | Off | Setup-time structural option; restores the full surface path in mirror cameras. |
 | **Retention Time Multiplier** | All | `1.0` | Multiplies dry-off duration. Higher values keep sweat visible longer. Range `0.5–2.0`. |
 
 ### Effect Toggles
@@ -128,6 +147,8 @@ This section appears only with the **Effects Module**.
 | **Breath Puffs** | On | Enables the breath emitter. |
 | **Steam** | On | Enables body steam. |
 | **Steam Locations** | Chest, shoulders, armpits, thighs on | Enables the installed emitters. Crotch and feet are off by default. If a location was not created by Setup, re-run Setup before expecting the toggle to add it. |
+
+Custom Steam Points are edited in the Setup/Tuning Custom Steam section. Up to four custom emitter slots can be active, a mirrored pair uses two, and twelve combined built-in/custom emitters is the hard limit. A combined rate weight over `4.0` is normalized proportionally.
 
 ## Advanced FX Tuning
 
@@ -152,7 +173,7 @@ Advanced controls modify generated animation or particle assets and require **Ap
 | Group | User-facing controls | Category defaults |
 |---|---|---|
 | **Falling Drops** | Rate, fall speed, lifetime, size, and length multipliers; Strong Movement Fling; fling threshold, chance, cooldown, and burst min/max | Multipliers `1.0`; fling on; threshold/chance `0.55`; cooldown `3.5 s`; burst `2–5` |
-| **Floor Stains** | Lifetime, size, opacity, center-drying contrast, pooling chance | Multipliers `1.0`; contrast `0.75`; pooling `0.25` |
+| **Floor Stains** | Lifetime, size, opacity, center-drying contrast, pooling chance | Multipliers `1.0`; contrast `0.75`; pooling `0` |
 | **Steam** | Start threshold; density, rise speed, lifetime, size, spread, opacity | Threshold `30%`; multipliers `1.0` |
 | **Breath Puffs** | Start threshold; mouth gate; mouth parameter and threshold; amount, speed, lifetime, size, spread, opacity, cycle speed | Threshold `25%`; gate Auto; parameter `v2/JawOpen`; mouth threshold `0.2`; multipliers `1.0` |
 | **Performance Limits** | Drop, stain, steam, and breath maximum-particle limits | Drop `64`, stain `80`, steam `24` per emitter, breath `48` |
@@ -171,6 +192,7 @@ These are material controls, not fields on the Tuning component. Open the genera
 | Control | Location | Purpose | Important settings |
 |---|---|---|---|
 | **Spawn Mask (White = Spawn)** | **Basic > Spawn Mask** | White allows droplets, black prevents them, and gray gives partial coverage. Use it to keep sweat off unwanted UV areas. | Uses UV0 and the red channel. |
+| **Body Surface Display Mask** | **Body Surface Display Mask** | Hides the complete final surface result, including droplets, trails, film, sheen, refraction, darkening, and Tess displacement. It does not hide Falling Drops particles. | Uses UV0; select R/G/B/A, inversion, strength, tiling, and offset. Import grayscale data with **sRGB Off**. Default strength `0` preserves the existing appearance. |
 | **Flow Guide Map (Optional)** | **Flow & Trails > Flow Guide Map (Optional)** | Steers flowing droplets and trails with an artist-authored UV0 tangent direction. | RG data texture; neutral is `(0.5, 0.5)` gray. Turn **sRGB Off** and **Generate Mip Maps On**. Strength `0` keeps world-gravity flow and avoids the guide-map sample; `0.35–0.65` is a useful starting range. |
 | **Body Normal Map (Fold / Sheen Only)** | **Advanced > Body Normal — Wet Look Only** | Changes wet highlights and fold pooling. | It does **not** steer droplets or trails. Use Flow Guide Map for direction. |
 
@@ -182,7 +204,13 @@ These are material controls, not fields on the Tuning component. Open the genera
 - Without tessellation support, the same No Tess material switches to its built-in Lite path.
 - It does not use a separate “Performance material,” and it does not lower the owner's local view.
 
-Mirror cameras automatically use a lower-cost optical path. Some close-range optical details are intentionally simplified in mirrors. There is no user-facing mirror-quality switch in Tuning.
+Mirror cameras automatically use a lower-cost optical path. Some close-range optical details are intentionally simplified in mirrors. Structural mirror choices are selected in Setup rather than changed by **Apply to FX**.
+
+Setup adds optional mirror controls:
+
+- **Full-Quality Body Sweat in Mirrors** restores full surface density, optics, Light Volumes, and Tess/No Tess quality. It is off by default.
+- **Body Steam in Mirrors** offers Full, Low, and Hidden. In 2D mode, Low skips blur and weakens mirror presentation without reducing particle count. In 3D mode, Low currently has the same appearance and cost as Full.
+- **VRC Light Volumes** is an in-game Reduce Load toggle and defaults to on.
 
 :::warning[Combined GPU load]
 High sweat amount, high pattern density, close-up screen coverage, mirrors, and tessellation can compound GPU load. Change one major setting at a time and test the uploaded avatar.

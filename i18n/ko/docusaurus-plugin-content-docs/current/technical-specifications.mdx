@@ -1,12 +1,12 @@
 ---
 id: technical-specifications
 title: 기술 사양 및 알려진 제한사항
-description: Real Sweat System v1.0.2의 모듈별 기능, 동기화 비용, 재질, PhysBone, Rest 데이터와 현재 제한사항입니다.
+description: Real Sweat System v1.1.0의 모듈별 기능, 동기화 비용, 재질, PhysBone, Rest 데이터와 현재 제한사항입니다.
 ---
 
 # 기술 사양 및 알려진 제한사항
 
-이 페이지는 **Real Sweat System v1.0.2**의 현재 사양을 정리합니다. Setup에서 선택한 모듈, 아바타 Rig, 활성화한 이펙트에 따라 실제로 생성되는 메뉴·파라미터·오브젝트가 달라집니다.
+이 페이지는 **Real Sweat System v1.1.0**의 현재 사양을 정리합니다. Setup에서 선택한 모듈, 아바타 Rig, 활성화한 이펙트에 따라 실제로 생성되는 메뉴·파라미터·오브젝트가 달라집니다.
 
 ## 모듈별 기술 범위
 
@@ -15,8 +15,9 @@ description: Real Sweat System v1.0.2의 모듈별 기능, 동기화 비용, 재
 | 피부 표면의 땀과 흐르는 물방울 | ✓ | — | ✓ |
 | Body용 땀 재질과 Rest 데이터 | ✓ | — | ✓ |
 | Tess / No Tess 및 상대 저부하 | ✓ | — | ✓ |
-| 낙하 물방울과 바닥 물자국 | — | ✓ | ✓ |
-| 입김과 몸 김 | — | ✓ | ✓ |
+| 표시 마스크·여러 Element·추가 SMR(실험적) | ✓ | — | ✓ |
+| 2D/3D 낙하 물방울·충돌 튀김·바닥 물자국 | — | ✓ | ✓ |
+| 2D/3D 입김·몸 김·Custom Steam | — | ✓ | ✓ |
 | Manual Mode | ✓ | ✓ | ✓ |
 | 대응 Rig의 Auto Mode | ✓ | ✓ | ✓ |
 | Body 재질·Mesh·Rest 구성 변경 | 있음 | 없음 | Base에서만 |
@@ -36,28 +37,30 @@ Humanoid 아바타가 주 지원 대상입니다. Motion Pendulum을 구성할 �
 
 ## 현재 공식 지원 범위
 
-- Setup 한 번으로 공식 추적하는 Body `SkinnedMeshRenderer`는 **1개**입니다.
-- Face와 Body가 별도 Renderer인 경우, Face까지 동시에 자동 적용하는 기능은 현재 공식 지원 대상이 아닙니다.
-- 여러 Body Renderer를 교체하는 구성에 동시에 자동 설치하는 기능은 현재 지원하지 않습니다.
+- Setup은 메인 Body `SkinnedMeshRenderer` 한 개를 기준으로 추적하며, 같은 Renderer의 여러 Material Element를 선택할 수 있습니다.
+- Face 등 별도 `SkinnedMeshRenderer`는 **실험적 추가 대상**으로 등록할 수 있습니다. 대상별 Rest 데이터·땀 재질·마스크와 Tess 설정을 유지합니다.
+- 런타임에서 여러 Body Renderer를 교체하는 모든 구성, Face Tracking·표정·Mesh 병합·교체·최적화 조합은 보장되지 않습니다.
 - 모든 서드파티 Optimizer, Mesh 병합, Material 병합, 업로드 시 변환 도구의 조합을 보장하지 않습니다.
 
-Face 수동 적용 참고 절차는 [고급 도구](./tools.mdx#unsupported-face-body)에 있지만, 권장하지 않으며 공식 지원 대상이 아닙니다.
+추가 대상마다 별도 마테리얼과 드로우콜이 추가됩니다. Read/Write 가능한 Mesh, 유효한 Submesh·Material·Tangent, 고유한 GameObject/애니메이션 경로와 고유한 땀 마테리얼 연결이 필요합니다.
 
 ## 동기화 파라미터
 
-아래 값은 Auto Mode를 사용할 수 있고 해당 모듈의 선택형 이펙트를 모두 설치한 경우의 **최대값**입니다. Setup은 설치하지 않은 모듈, 비활성화한 이펙트, 사용할 수 없는 기능의 파라미터를 제외하므로 실제 비용은 더 작을 수 있습니다.
+아래 값은 Humanoid Auto Mode와 표준 선택 이펙트 토글을 설치한 경우의 **최대 동기화 비용**입니다. Setup은 설치하지 않은 모듈, 이펙트와 사용할 수 없는 기능의 파라미터를 제외하므로 실제 비용은 더 작을 수 있습니다.
 
-| 구성 | 동기화 파라미터 수(최대) | 동기화 비용(최대) |
+| 구성 | 몸 김·입김 진하기 미설치 | 진하기 래디얼 설치 |
 |---|---:|---:|
-| Base / No Tess | 5 | 19 bit |
-| Base / Tess Support | 6 | 20 bit |
-| Effects | 9 | 23 bit |
-| Full Pack / No Tess | 10 | 24 bit |
-| Full Pack / Tess Support | 11 | 25 bit |
+| Base / No Tess | 21 bit | 해당 없음 |
+| Base / Tess Support | 22 bit | 해당 없음 |
+| Effects | 23 bit | 31 bit |
+| Full Pack / No Tess | 26 bit | 34 bit |
+| Full Pack / Tess Support | 27 bit | 35 bit |
 
-최대값에는 Sweat %, Auto Mode의 Float와 땀 ON, 표시 범위, 모듈별 토글이 포함됩니다. 낙하 물방울·바닥 물자국·입김·몸 김을 모두 설치하면 이펙트별 동기화 Bool이 최대 4개 추가됩니다. 테셀레이션 지원을 탑재하면 동기화 Bool 1개가 추가됩니다.
+최대값에는 Sweat %, Auto Mode, 땀 표시, 표시 범위, 표면·Light Volumes·모듈별 선택 토글이 포함됩니다. 낙하 물방울·바닥 물자국·입김·몸 김을 모두 설치하면 이펙트별 동기화 Bool이 최대 4개 추가되고, 테셀레이션 지원은 Bool 1개를 추가합니다. 선택형 몸 김·입김 진하기는 저장·동기화 Float 1개로 8bit를 추가합니다.
 
-Animator 내부 계산 파라미터와 동기화하지 않는 Exertion·Breath Rate 값은 위 동기화 파라미터 수와 bit 수에 포함하지 않습니다.
+운동 강도·체열·낙하 활동·피부 젖음 같은 내부 계산 신호는 NotSynced이며 위 비용에 포함되지 않습니다. 입김은 기존 `Cooki/SweatAmount`를 재사용하므로 별도 운동량 Float를 추가하지 않습니다.
+
+Setup은 설치할 파라미터 이름을 Avatar Expression Parameters와 다른 Modular Avatar Parameters 선언의 접두사·리맵까지 포함해 검사합니다. 이름이 충돌하면 변경하지 않고 중단하며, 예상 합계가 VRChat의 256bit를 넘으면 진행 전에 경고합니다.
 
 ## 땀 재질과 동시 렌더링 수
 
@@ -65,11 +68,11 @@ Animator 내부 계산 파라미터와 동기화하지 않는 Exertion·Breath R
 
 | Base 설치 설정 | 땀 표면 재질 | 동시에 렌더링되는 땀 재질 |
 |---|---:|---:|
-| 입체기능 미탑재 | No Tess 1개 | 1개 |
-| 입체기능 탑재 | Tess + No Tess 2개 | 1개 |
+| 입체기능 미탑재 | 설정한 각 Element/대상마다 No Tess 1개 | 대상마다 1개 |
+| 입체기능 탑재 | Tess를 켠 각 Element/대상마다 Tess + No Tess 2개 | 대상마다 1개 |
 | Effects-only | Body용 땀 재질을 추가하지 않음 | 0개 |
 
-입체기능을 탑재해도 Tess와 No Tess를 동시에 렌더링하지 않습니다. 동일한 Body Slot에서 둘을 교체합니다.
+한 대상에서는 Tess와 No Tess를 동시에 렌더링하지 않고 같은 Slot에서 교체합니다. 다만 여러 Body Element나 추가 Renderer를 설정하면 여러 땀 마테리얼이 동시에 렌더링되며 대상마다 드로우콜이 늘어납니다.
 
 ## PhysBone과 Collider
 
@@ -86,13 +89,13 @@ Real Sweat System의 표준 Setup은 기존 PhysBone을 편집하지 않습니�
 
 ## Rest Vertex Data
 
-Base Module은 선택한 표시 Mesh에 대응하는 다음 3개의 버텍스 단위 Rest 데이터 텍스처를 생성합니다.
+Base Module은 선택한 각 표시 **Mesh**에 대응하는 다음 3개의 버텍스 단위 Rest 데이터 텍스처를 생성합니다.
 
 - Rest Position
 - Rest Normal
 - Rest Tangent
 
-Rest Vertex Data Baker는 Mesh를 읽고 생성한 텍스처를 대상 땀 재질에 할당합니다. 원본 FBX, `sharedMesh`, UV, BlendShape 또는 다른 재질을 직접 수정하지 않습니다. Rest 데이터는 특정 Mesh의 버텍스 구성에 대응하므로, 서로 다른 Mesh가 동일한 땀 재질을 공유할 수 없습니다.
+Rest Vertex Data Baker는 Mesh를 읽고 생성한 텍스처를 대상 땀 재질에 할당합니다. 원본 FBX, `sharedMesh`, UV, BlendShape 또는 다른 재질을 직접 수정하지 않습니다. Rest 데이터는 Material Element별이 아니라 특정 Mesh의 버텍스 구성에 대응합니다. 같은 Mesh의 여러 Element는 같은 Rest 기준을 사용할 수 있지만, 서로 다른 Mesh가 동일한 땀 재질／Rest 데이터를 공유할 수는 없습니다. v1.1의 추가 대상도 각 Mesh에 맞는 Rest 데이터를 유지합니다.
 
 Setup 이후 Body Mesh를 교체하거나 버텍스 구성을 변경하거나 Submesh를 병합하면 Rest 데이터와 최종 표시 Mesh의 연결이 무효화될 수 있습니다.
 
@@ -100,6 +103,7 @@ Setup 이후 Body Mesh를 교체하거나 버텍스 구성을 변경하거나 Su
 
 - 자동 렌더 순서는 땀 재질의 Render Queue를 정확히 **2455**로 설정합니다.
 - 선택한 Body 재질은 **2454 이하**로 유지합니다.
+- 실험적 추가 대상의 자동 Queue는 `max(2455, 선택한 원본 마테리얼 Queue + 1)`입니다.
 - 자동 순서를 사용할 수 없는 구성에서는 수동 Queue를 사용할 수 있지만, 2501 이상은 Transparent 정렬의 영향을 받습니다.
 - **바디 Shadow Strength 따라가기**를 활성화하면 Setup 또는 **FX에 적용** 시 대상 Body 재질의 `_ShadowStrength`를 땀 재질에 반영합니다.
 
@@ -113,18 +117,21 @@ Base Module의 선택 기능입니다. No Tess보다 실루엣이 매끄럽고 �
 
 ### 상대 저부하
 
-Base Module이 설치된 경우 사용할 수 있습니다. 활성화하면 다른 사용자에게 보이는 땀을 No Tess의 내장 Lite 경로로 전환합니다.
+Base Module이 설치된 경우 사용할 수 있습니다. 활성화하면 다른 사용자에게 보이는 표면 땀을 No Tess의 내장 Lite 경로로 전환합니다.
 
 - Tess Support 탑재 시: 다른 사용자에게 No Tess 재질 + Lite 경로 적용
 - Tess Support 미탑재 시: 동일한 No Tess 재질의 Lite 경로 사용
 - 본인 화면: 본인이 선택한 Tess / No Tess 상태 유지
-- 동시 렌더링: 땀 재질은 항상 1개
+- 3D Effects: 상대 낙하 물방울 50%, 강한 움직임 추가 방울 OFF, 상대 몸 김／Custom Steam 25%
+- 동시 렌더링: 대상별 땀 재질은 항상 1개
 
 ### Effects
 
-Effects Module은 파티클로 낙하 물방울, 바닥 물자국, 입김과 몸 김을 표현합니다. Setup에서 선택한 이펙트만 메뉴와 파라미터에 추가되며, 인게임에서 각각 비활성화할 수 있습니다.
+Effects Module은 선택형 2D/3D 파티클로 낙하 물방울, 바닥 물자국, 입김과 몸 김을 표현합니다. 3D 품질에서는 낙하 물방울의 충돌 튀김을 선택할 수 있습니다. Setup에서 선택한 이펙트만 메뉴와 파라미터에 추가되며, 인게임에서 각각 비활성화할 수 있습니다.
 
-바닥 물자국은 월드의 바닥 Collider와 Layer 구성에 영향을 받습니다. 입김과 몸 김은 필요한 Head·Chest Anchor를 찾을 수 있는 구성에서 생성됩니다.
+바닥 물자국은 낙하 물방울의 충돌 Sub Emitter이며 월드의 Default·Environment Collider와 Layer 구성에 영향을 받습니다. 입김과 몸 김은 필요한 Head·Chest Anchor를 찾을 수 있는 구성에서 생성됩니다. Custom Steam Point에는 유효한 Animator와 MA Bone Proxy가 필요합니다.
+
+몸 김 거울 모드는 `Full / Low / Hidden`입니다. 2D Low는 블러를 생략하고 표시를 약하게 하지만 파티클 수를 줄이지 않습니다. 3D Low는 현재 Full과 같은 표현 및 부하입니다. 선택형 몸 김·입김 진하기 래디얼은 몸 김／Custom Steam과 입김 불투명도만 0.1～1.5배로 조절하며, 파티클 수와 성능 부하는 줄이지 않습니다.
 
 ## 빌드 시 Mesh를 변경하는 도구
 
@@ -137,4 +144,6 @@ Unity Editor에서는 정상이지만 VRChat 안에서만 땀의 위치·형태�
 
 이 경우 해당 도구에 예외 목록이 있다면 **Real Sweat가 사용하는 Body Renderer를 최적화나 병합 대상에서 제외**하세요. Body Renderer를 제외하는 기능이 없다면 해당 도구와의 호환성을 보장할 수 없습니다.
 
-Mesh 변경을 먼저 확정할 수 있는 작업 순서라면 최종 Mesh를 만든 뒤 Real Sweat System Setup을 실행하세요. 빌드 시에만 Mesh가 변경되는 구성은 최종 결과와의 호환성을 개별적으로 확인해야 합니다.
+v1.1은 빌드 후반의 최종 Mesh를 기준으로 Rest／Tangent를 다시 확인하고 갱신하는 범위를 보강했습니다. 그러나 Modular Avatar Shape Changer／Mesh Cutter를 포함해 버텍스·Submesh·Material Slot을 바꾸는 모든 조합의 완전 호환을 뜻하지는 않습니다. 추적 중인 생성 마테리얼 슬롯이나 대상 Submesh가 삭제·이동·교체·병합되어 안전하게 대응시킬 수 없으면 잘못된 Mesh로 계속 빌드하지 않고 중단합니다.
+
+Mesh 변경을 먼저 확정할 수 있는 작업 순서라면 최종 Mesh를 만든 뒤 Real Sweat System Setup을 실행하세요. 빌드 시에만 Mesh가 변경되는 구성은 **Build & Test**와 실제 VRChat에서 최종 결과를 개별적으로 확인해야 합니다.

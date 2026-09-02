@@ -59,8 +59,8 @@ const config: Config = {
     ],
     colorMode: {respectPrefersColorScheme: true},
     announcementBar: {
-      id: 'current_version_1_0_2',
-      content: '<strong>Real Sweat System v1.0.2</strong>',
+      id: 'current_version_1_1_0',
+      content: '<strong>Real Sweat System v1.1.0</strong>',
       backgroundColor: '#d9f5f7',
       textColor: '#20323a',
       isCloseable: true,

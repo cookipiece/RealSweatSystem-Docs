@@ -8,8 +8,8 @@ description: Differences between the Base Module, Effects Module, and Full Pack.
 
 | Package | Main features | Best for |
 |---|---|---|
-| **Sweat Base Module** | Skin sweat, flowing droplets, Rest data, Tess/No Tess support, render-order controls, Remote Low Load | Users who need skin sweat |
-| **Sweat Effects Module** | Falling Drops, Floor Stains, Breath Puffs, Steam | Users who need surrounding particle effects |
+| **Sweat Base Module** | Skin sweat, flowing droplets, masks, Rest data, Tess/No Tess support, mirror controls, render-order controls, Remote Low Load | Users who need skin sweat |
+| **Sweat Effects Module** | 2D or optional 3D Falling Drops, Floor Stains, Breath Puffs, Body/Custom Steam | Users who need surrounding particle effects |
 | **Full Pack (Base + Effects)** | Base Module + Effects Module | The complete linked sweat presentation |
 
 Each module includes the common **Core** files it needs. Core is not a separate user-facing product.
@@ -18,16 +18,22 @@ Each module includes the common **Core** files it needs. Core is not a separate 
 
 | Feature or behavior | Base Module | Effects Module | Full Pack |
 |---|:---:|:---:|:---:|
-| Shared **Sweat On**, **Sweat %**, and **Auto Mode** controls | Yes | Yes | Yes |
+| Shared **Sweat Display**, **Sweat %**, and **Auto Mode** controls | Yes | Yes | Yes |
 | Skin sweat and gravity-driven surface droplets | Yes | — | Yes |
 | **Overall Sweat Amount** and surface-material tuning | Yes | — | Yes |
 | Optional Tess/No Tess material switching | Yes | — | Yes |
+| Body Surface Spawn Mask and final Display Mask | Yes | — | Yes |
+| Multiple Body Elements and additional skinned targets (experimental) | Yes | — | Yes |
+| Full-Quality Body Sweat in Mirrors option | Yes | — | Yes |
 | **Remote Low Load** | Yes | — | Yes |
+| **VRC Light Volumes** and **Hide Surface Sweat** | Yes | — | Yes |
 | **Only Visible to Me** | Yes | Yes | Yes |
 | Falling Drops | — | Yes | Yes |
 | Floor Stains | — | Yes | Yes |
 | Breath Puffs | — | Yes | Yes |
-| Steam | — | Yes | Yes |
+| Body Steam and Custom Steam Points | — | Yes | Yes |
+| Optional 3D particle quality and impact splashes | — | Yes | Yes |
+| Optional synchronized Steam & Breath Intensity radial | — | Yes | Yes |
 | Uses the Body Mesh as an emission/reference surface | Yes | Yes | Yes |
 | Creates or updates Body-side sweat material, display-mesh mapping, and Rest data | Yes | **No** | Yes, through Base |
 
@@ -35,11 +41,11 @@ Auto Mode requires a compatible Humanoid motion setup. Breath Puffs and Steam ad
 
 ## Sweat Base Module
 
-The Base Module adds sweat to one selected Body Renderer. Manual Mode and Auto Mode share the same Sweat % value. If tessellation support is installed, the in-game menu can switch between Tess and No Tess display.
+The Base Module adds sweat to selected material Elements of the primary Body Renderer. v1.1 can also install sweat on additional `SkinnedMeshRenderer` targets such as a separate face mesh as an **experimental** feature. Rest data is generated per mesh, not per Element; Elements on the same Renderer share that mesh mapping, while a separate Renderer gets its own Rest data. Each configured sweat Element still adds its own material and draw. Manual Mode and Auto Mode share the same Sweat % value. If tessellation support is installed, the in-game menu switches all Tess-enabled sweat slots together.
 
 ## Sweat Effects Module
 
-The Effects Module uses the selected Body Mesh as its emission surface. It does **not** modify the Body material, Body mesh, Rest data, or tessellation setup.
+The Effects Module uses the selected Body Mesh as its emission surface. It does **not** modify the Body material, Body mesh, Rest data, or tessellation setup. The existing lightweight 2D particles remain the default; optional high-load 3D rendering is selected during the full Setup.
 
 The Effects menu appears only when this module is installed.
 
@@ -51,15 +57,16 @@ The avatar menu is built from the installed modules:
 
 - **Only Visible to Me** appears in every package configuration.
 - **Remote Low Load** appears when Base is installed.
-- **Particles** appears when Effects is installed.
-- **3D Effect (Photos Only, High Load)** appears only when tessellation support is installed.
+- **Effects** appears when Effects is installed.
+- **Droplet Depth (Tessellation / High Load)** appears only when tessellation support is installed.
 
 ## Installing, updating, or changing packages
 
 - For a new installation, follow [5-Minute Quick Start](./quick-start.mdx).
 - Keep Base and Effects on the same version when both are present.
+- Do not mix v1.0.x and v1.1.x modules. Setup and avatar build intentionally stop when installed module versions do not match.
 - To expand Base or Effects into Full Pack, import the missing module at the same version, then run **Setup — Install / Update** once.
-- To update an installed avatar, import the newer module package or packages and run **Setup — Install / Update** once.
+- To update from v1.0.x, import every module you own at the same v1.1.0 version **over the existing files**. Do not Uninstall first or delete the `RealSweat` object. Review the targets and options, then run the full **Setup — Install / Update** once. **Apply to FX alone is not an update.**
 - To remove the system or change back to a single-module installation, follow [Uninstall, reinstall, or change modules](./troubleshooting.mdx#uninstall-reinstall-or-change-modules).
 
 ## Game and app distribution
