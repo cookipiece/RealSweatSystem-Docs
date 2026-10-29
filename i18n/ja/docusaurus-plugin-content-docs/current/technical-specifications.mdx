@@ -1,30 +1,30 @@
 ---
 id: technical-specifications
 title: 技術仕様・既知の制限
-description: Real Sweat System v1.1.0のModule別機能、同期コスト、Material、PhysBone、Restデータ、および既知の制限。
+description: Real Sweat System v2.0.0のModule別機能、同期コスト、Material、パーティクル、PhysBone、Restデータ、および既知の制限。
 ---
 
 # 技術仕様・既知の制限
 
-このページは **Real Sweat System v1.1.0** の現在の仕様をまとめたものです。Setupで選択したModule、アバターのRig、選択したEffectによって、実際に生成されるメニュー・Parameter・Objectは変わります。
+このページでは **Real Sweat System v2.0.0** の現在の動作を説明します。Setupが生成するメニュー、パラメーター、オブジェクトは、導入したModule、アバターのRig、選択したElement／対象、有効にしたオプションによって変わります。
 
-## Module別の技術的な範囲
+## Module別の技術範囲
 
 | 項目 | Sweat Base Module | Sweat Effects Module | Full Pack |
 |---|:---:|:---:|:---:|
-| 肌表面の汗・流れる滴 | ✓ | — | ✓ |
-| Body用の汗MaterialとRestデータ | ✓ | — | ✓ |
-| Tess / No Tess・相手側を低負荷 | ✓ | — | ✓ |
-| 複数Element・追加Skinned Mesh Renderer（実験的） | ✓ | — | ✓ |
-| 表示マスク・濡れ肌光沢・Light Volumes切替 | ✓ | — | ✓ |
-| 落下する滴・床の濡れ跡 | — | ✓ | ✓ |
-| 息・湯気 | — | ✓ | ✓ |
-| 2D／3Dパーティクル・Custom Steam | — | ✓ | ✓ |
-| Manual Mode | ✓ | ✓ | ✓ |
-| 対応RigでのAuto Mode | ✓ | ✓ | ✓ |
-| Body Material・Body Mesh・Rest構成の変更 | あり | なし | Base側のみ |
+| 肌の汗（アニメ / リアル）と流れ落ちる表面の水滴 | ○ | — | ○ |
+| Bodyの汗マテリアルとRestデータ | ○ | — | ○ |
+| 水滴の立体感（Tess / No Tess）と相手側を低負荷 | ○ | — | ○ |
+| 発生マスク、最終の表示マスク、肌の汗を非表示、表面のミラー品質 | ○ | — | ○ |
+| 複数のBody Elementと追加のSkinned Mesh対象（実験的） | ○ | — | ○ |
+| 落下する滴、はね、床の濡れ跡 | — | ○ | ○ |
+| 2Dまたは任意の3Dの吐息・落下する滴・体の湯気 | — | ○ | ○ |
+| Custom Steamと任意の共通の濃さラジアル | — | ○ | ○ |
+| 手動モード | ○ | ○ | ○ |
+| 互換性のあるRigでの自動モード | ○ | ○ | ○ |
+| BodyのMaterial、Body Mesh、Restの対応を変更 | ○ | なし | Base経由のみ |
 
-Effects-only構成でも、Particleの放出元としてBody Meshを指定します。ただしBody Material、Body Mesh、Rest Vertex Data、テッセレーション構成は変更しません。
+Effectsだけの導入でも、パーティクルの放出元としてBody Meshが必要です。BodyのMaterial、Body Mesh、Rest Vertex Data、水滴の立体感の構成は変更しません。
 
 ## 対応環境
 
@@ -33,128 +33,163 @@ Effects-only構成でも、Particleの放出元としてBody Meshを指定しま
 - Modular Avatar
 - PC版VRChat（Direct3D 11）
 
-本製品は **PC版VRChat向け**です。Quest単体版は対応していません。
+本製品は **PC版VRChat** 向けです。Quest では汗は表示されません（安全な Hidden フォールバック）。
 
-Humanoidが主な対応対象です。HumanoidでMotion Pendulumを構成できる場合はManual ModeとAuto Modeを利用できます。Non-Humanoid、または必要なBone情報を取得できない構成ではManual Modeへフォールバックします。Rigによる機能差は[対応環境・互換性](./compatibility.mdx#avatar-rig)を確認してください。
+主な対応対象はHumanoidアバターです。Motion Pendulumを作成できるHumanoid Rigでは、手動モードと自動モードの両方を使用できます。Non-Humanoidアバター、または必要なボーン情報を取得できない構成では手動モードになります。Rigによる機能の違いは[対応環境・互換性](./compatibility.mdx#avatar-type)を確認してください。
 
-## 現在の対応範囲
+## 現在の公式対応範囲
 
-- メインBody `SkinnedMeshRenderer`では、複数のMaterial Elementを同時に追跡できます。
-- 別の `SkinnedMeshRenderer` は実験的な追加対象として登録できます。対象ごとに専用Material、Restデータ、サイズ・密度・マスクを管理します。
-- 実験的な追加対象には読み取り可能なMesh、有効なSubmesh・Material・Tangent、固有のGameObject／Animation Path、他の対象と共有しない固有Material系統が必要です。
-- 複数Rendererを実行時に差し替える構成、および全ての第三者製Optimizer、Mesh／Material統合、Face Tracking、アップロード時変換との組み合わせは保証されません。
+- 1つのメインBody `SkinnedMeshRenderer` が、スケールとEffectsの既定の放出元の基準になります。
+- そのBody内の複数のMaterial Elementを設定できます。
+- Faceなどの別 `SkinnedMeshRenderer` は、個別のRestデータ、マスク、マテリアル、描画負荷を持つ **実験的** 機能として対応します。
+- 切り替え式のすべてのBody構成の自動処理は保証しません。対象は明示的に設定する必要があります。
+- 他社の最適化ツール、メッシュ統合、マテリアル統合、ビルド時の変換ツールとの全組み合わせでの互換性は保証しません。
 
-## 同期Parameter
+実験的なFace対象は、アバターのBlendShape、表情、フェイストラッキング構成と一緒に確認してください。目や唇周辺のTessは推奨しません。
 
-次の表は、Auto Modeを利用でき、該当Moduleの任意Effectを全て導入した場合の **最大同期値**です。Setupは導入していないModule、無効なEffect、利用できない機能のParameterを省略するため、実際の値はこれより小さくなる場合があります。
+## 同期パラメーター {/* #synced-parameters */}
 
-| 構成 | 同期コスト（最大） |
-|---|---:|
-| Base / No Tess | 21 bit |
-| Base / Tess Support | 22 bit |
-| Effects | 23 bit |
-| Full Pack / No Tess | 26 bit |
-| Full Pack / Tess Support | 27 bit |
-| Effects + 体の湯気・吐息の濃さ | 31 bit |
-| Full Pack + 体の湯気・吐息の濃さ | 34 bit / Tess 35 bit |
+次の値は、Humanoidの自動モードと、`自分にだけ表示` を含む標準の任意トグルを導入したときの **最大値** です。Setupは、導入していないModule、無効なエフェクト、使えない機能のパラメーターを省くため、実際のコストはこれより低くなる場合があります。
 
-最大値には、Sweat %、Auto Mode、汗の表示、表示範囲、Module別の切替が含まれます。Effectsの個別切替は、落下する滴・床の濡れ跡・息・湯気を全て導入した場合に最大4個の同期Boolを追加します。テッセレーション対応は同期Boolを1個、任意の体の湯気・吐息の濃さは保存・同期Floatを1個（8bit）追加します。
-
-Animator内部の計算Parameterや、同期しないExertion・Breath Rateは上の同期コストに含みません。
-
-Setupは導入予定のParameter名をAvatar Expression Parametersと他のModular Avatar Parameters宣言（接頭辞・リマップを含む）に照合します。名前の衝突はSetup前に停止し、予測合計が256bitを超える場合は続行前に警告します。運動強度・体熱・落下活動・皮膚の濡れなどの内部信号はNotSyncedで、同期コストを追加しません。
-
-## 汗Materialと描画数
-
-ここでのMaterial数は、BaseがBodyの汗表面用として管理するMaterialだけを指します。EffectsのParticle用Materialは含みません。
-
-| 対象ごとのBase導入設定 | 汗表面Material | その対象で同時に描画される汗Material |
+| 構成 | 標準の同期コスト（最大） | 体の湯気・吐息の濃さを導入した場合 |
 |---|---:|---:|
-| 立体機能を搭載しない | No Tess 1個 | 1個 |
-| 立体機能を搭載する | Tess + No Tessの2個 | 1個 |
-| Effects-only | Body用汗Materialを追加しない | 0個 |
+| Base / No Tess | 20bit | 該当なし |
+| Base / 水滴の立体感（Tess）あり | 21bit | 該当なし |
+| Effects | 23bit | 31bit |
+| Full Pack / No Tess | 25bit | 33bit |
+| Full Pack / 水滴の立体感（Tess）あり | 26bit | 34bit |
 
-立体機能を搭載しても、各管理SlotでTessとNo Tessを同時描画するのではありません。ゲーム内のTess切替は、Tess対応として管理されるすべての汗Slotをまとめて切り替えます。
+v2.0.0 で「VRCライトボリューム」のメニュートグルと同期パラメーター（1bit）を削除しました。任意の保存・同期の体の湯気・吐息の濃さFloatは、EffectsのみとFullの導入に8bitを追加します。Baseのみの構成は変わりません。
 
-複数のBody Elementまたは追加Rendererを登録した場合、**各対象につき**上記のMaterial系統と描画（ドローコール）が追加されます。ゲーム内のTess切替は、Tess対応として管理されている全対象をまとめて切り替えます。
+吐息は既存の `Cooki/SweatAmount` Float を再利用するため、同期Floatパラメーターは追加されません。運動強度・体熱・落下活動・皮膚の濡れの内部信号はNotSyncedで、パラメーターのコストはありません。メニューの汗量は1%刻みで更新され、リモートの Float 同期精度は約1/127 (0.8%)です。
+
+## 汗マテリアルと同時描画
+
+このマテリアル数は、Baseが管理するBodyの汗の表面マテリアルだけを数えたものです。Effectsのパーティクルマテリアルは含みません。
+
+| Baseの導入設定 | 設定した対象ごとのマテリアル | 対象ごとの描画 |
+|---|---:|---:|
+| 水滴の立体感を導入しない | No Tessマテリアル1つ（`RealSweatSystem No Tessellation`） | 1 |
+| 水滴の立体感を導入する | Tess + No Tessの2つ | 1 |
+| Effectsのみ | Bodyの汗マテリアルを追加しない | 0 |
+
+水滴の立体感を導入しても、TessとNo Tessを同時に描画するわけではありません。設定した各スロットを、両者の間で切り替えます。そのため、複数のBody Elementや追加Rendererを選択すると、複数の汗マテリアルが同時に描画されます。
+
+- シェーダー名は `RealSweatSystem No Tessellation` と `RealSweatSystem` です。レンダーキューが2350以外の汗は、名前の後ろに ` (Late Queue)` が付いたシェーダーを使います。
+- アバターは、選んだ汗のスタイルのシェーダーだけを使います。
+- はねはパーティクルシステムとマテリアルスロットを2つずつ追加します。
 
 ## PhysBoneとCollider
 
 | 項目 | Setupが作成する数 |
 |---|---:|
-| Auto Mode用 `VRCPhysBone` | 対応Rigでは1個、Manual-only構成では0個 |
-| `VRCPhysBoneCollider` | 0個 |
+| 自動モード用 `VRCPhysBone` | 互換性のあるRigでは1、手動のみの構成では0 |
+| `VRCPhysBoneCollider` | 0 |
 
-Auto Mode用PhysBoneは、`RealSweat`配下の専用Motion Pendulumに作成されます。Real Sweat Systemは、アバターに既に存在する胸・髪・衣装などのPhysBoneやColliderを意図的に変更しません。
+自動モード用のPhysBoneは、`RealSweat` の下の専用Motion Pendulumに作成されます。Real Sweat Systemは、胸、髪、衣装、その他のシステムが使う既存のPhysBoneやColliderを意図的に編集しません。
 
-:::note[既存PhysBoneが動かなくなった場合]
-Real Sweat Systemの標準Setupが既存PhysBoneを編集する仕様ではありません。別のToolによるBuild時のBone・Component統合、Avatar側のConstraint、またはPlay Modeで生成された最終構成を確認してください。
+:::note[既存のPhysBoneが動かなくなった場合]
+標準のReal Sweat Setupは既存のPhysBoneを編集しません。ボーンやコンポーネントを統合する他のツール、アバターのConstraint、その他のビルド時の変更がないか、Play Modeの最終構成を確認してください。
 :::
 
 ## Rest Vertex Data
 
-Base Moduleは選択した表示Meshに対応する、頂点単位の次の3つのRestデータTextureを作成します。
+Base Moduleは、設定した表示Meshごとに、頂点単位のRestデータテクスチャを3つ作成します。
 
 - Rest Position
 - Rest Normal
 - Rest Tangent
 
-Rest Vertex Data Bakerは元のFBX、`sharedMesh`、UV、BlendShape、他のMaterialを直接変更せず、Meshを読み取って生成したTextureを対象の汗Materialへ割り当てます。RestデータはMeshの頂点構成に対応するため、異なるMesh間で同じ汗Materialを共有できません。追加対象にもMeshごとのRestデータが必要です。
+新しい見た目は、Rest データが有効な場所にだけ汗を描きます。1.1.x のように UV 模様で代わりに描くことはありません。Setup が Rest データを自動でベイクするため、通常は気にする必要はありません。
 
-Setup後にBody Meshの置換、頂点構成の変更、Submesh統合を行った場合は、Restデータと最終表示Meshの対応が無効になることがあります。
+- まだインストールしていないマテリアルや、ベイクの後に変わったメッシュでは、Scene ビューに汗が表示されないことがあります。マテリアルインスペクター上部の **Rest データ** 欄と Tuning の **メッシュおよびRestデータ診断** がこれを知らせます。メッシュが変わった場合は、次のビルド（アップロード）時に最終メッシュから再ベイクします。
+- 上方向はヒューマノイドのボーン（Hips→Head）から決め、メッシュ内で体が軸の負の方向に立っていても正しく保存します。ヒューマノイドではないアバターは、メッシュの形（最も長い軸）から決めます。
+- Restデータは **Material ElementごとではなくMeshごと** です。1つのRenderer内で選択した複数のElementは、同じMeshの対応を使います。別のRenderer／Meshには個別のRestデータが作成されます。
+- Rest Vertex Data Bakerは、Meshを読み取り、生成したテクスチャを対象の汗マテリアルに割り当てます。元のFBX、`sharedMesh`、UV、BlendShape、他のマテリアルは直接変更しません。Restデータは特定のMesh構成に対応するため、生成された汗マテリアルとRestデータを別の対象と共有してはいけません。
 
-## Render Queueと影
+Setup後にBody Meshを置き換える、頂点構成を変える、SubMeshを統合すると、Restデータと最終の表示Meshの対応が無効になることがあります。
 
-- 自動描画順では、汗MaterialのRender Queueを **2455** に設定します。
-- 選択したBody Materialは **2454以下**にします。
-- 実験的な追加対象は `max(2455, 選択元MaterialのRender Queue + 1)` を使用します。
-- 自動描画順を使用できない構成では手動Queueを使用できますが、2501以上ではTransparent Sortの影響を受けます。
-- **ボディのShadow Strengthに合わせる**を有効にすると、Setupまたは「FXに適用」時に対象Body Materialの`_ShadowStrength`を汗Materialへ反映します。
+## 水滴サイズと模様
 
-詳細と例外は[対応環境・互換性](./compatibility.mdx#render-queueと影)を確認してください。
+- 水滴サイズはアバターの体の大きさに自動で合わせます。胴と脚のヒューマノイドのボーンの長さで測るため、髪、帽子、姿勢、メッシュの単位（cm／m）に左右されず、どのアバターでも水滴は体に対して同じ大きさになります。バウンディングボックスは使いません。
+- 顔などの他のメッシュもボディと同じ大きさになり、アバターの倍率を変えると水滴も同じ割合で変わります。ヒューマノイドではないアバターは視点の位置（目の高さ）で測ります。さらに大きさを変えるには **水滴サイズ** を使ってください。
+- Setup がアバターごとに模様番号を一度決めて Tuning に保存し、そのアバターのすべての汗マテリアル（他のメッシュを含む）に書き込みます。そのため、同じアバター2体が同じ場所に汗をかくことはありません。再インストールしても番号は変わりません。
+- 削除してから新しくインストールすると、新しい番号になります。複製したアバターも、Setup が新しい生成フォルダを作るときに新しい番号になります。
+- 水滴は10～25秒残り、流れ跡は水滴が止まってから2～5秒で乾きます。
 
-## Tess・相手側を低負荷・Effectsの技術的な動作
+## 描画順と影
 
-### Tessellation
+- 自動描画順は、メインBodyの汗をレンダーキュー **2350** で描画します。
+- 2350以降のボディマテリアル（不透明・Cutout）があると、**［インストール / 更新］** が2349に下げるか一度だけ確認し、削除のときに元に戻します。**そのままにする** を選ぶと、汗はそれらの中で最も高いキュー + 1 で描画され、2459を超えません。
+- 追加対象には `max(ボディの汗のレンダーキュー（通常2350）, 選択マテリアルのレンダーキュー + 1)` を使用します。
+- 自動描画順を使えない場合は手動のキューを使えますが、2501以上の値はTransparentの並べ替えの影響を受けます。
+- レンダーキューが2350以外の汗は **RealSweatSystem (Late Queue)** シェーダーを使い、描画するときに画面を個別にコピーします。
+- **ボディの Shadow Strength に合わせる** が有効な場合、**［インストール / 更新］** または **FX に適用** で、対象Bodyマテリアルの `_ShadowStrength` を汗マテリアルへコピーします。
 
-Base Moduleの任意機能です。No Tessより滑らかな輪郭と水滴の立体的な変位を追加しますが、GPU負荷が増加します。搭載しない場合はNo Tess Material 1個だけをアップロードします。
+詳細と例外は[対応環境・互換性](./compatibility.mdx#render-queue-and-shadows)を確認してください。
+
+## 水滴の立体感・相手側を低負荷・エフェクトの技術的な動作
+
+### 水滴の立体感（テッセレーション）
+
+水滴の立体感は、Base Moduleの任意の機能です。オンにすると、近くでは水滴と流れ落ちる水滴が実際に肌から盛り上がり、横から見ても丸く見えます。両方の汗のスタイルで動作します。近くでは GPU 負荷が増え、既定の精度（簡素）では約 0.7 m より離れると立体感なしと同じ描画になります。導入しない場合は、No Tessマテリアルが1つだけアップロードされます。
 
 ### 相手側を低負荷
 
-Base Module導入時に利用できます。有効にすると、他のユーザーから見える汗をNo Tessの内蔵Lite経路へ切り替えます。
+相手側を低負荷は、Baseを導入した場合に使用できます。
 
-- Tess Support搭載時: 他のユーザーにはNo Tess Material + Lite経路を使用
-- Tess Support非搭載時: 同じNo Tess MaterialのLite経路を使用
-- 自分側: 自分が選択したTess / No Tess状態を維持
-- 同時描画: 汗Materialは常に1個
+- 肌の汗: 相手側ではNo Tessで、汗腺の小さな水滴なしに描き、低負荷と軽量では残り滴とアニメの膜の細い線も省き、面の向きが切り替わる所の処理を減らします（相手側の GPU 時間は低負荷で約 4~8 %、標準で 23~29 % 減ります）。
+- 相手側を低負荷では、水滴の立体感は盛り上がりません。
+- 自分の画面: 自分で選んだ品質と水滴の立体感の状態を保ちます。
+- 体の湯気: 相手側の体の湯気／Custom Steamは数はそのままで濃さを0.6倍にします（3Dの体の湯気は数が25%）。
+- 3Dパーティクル: 相手側の落下する滴を50%へ減らし、強い動きによる追加水滴を停止します。
+- 同時描画: 設定した対象ごとに汗マテリアル1つです。
 
-### Effects
+### ミラーとライティング
 
-Effects ModuleはParticleを使用して落下する滴、床の濡れ跡、息、湯気を表現します。各EffectはSetupで導入したものだけがメニューとParameterへ追加され、独立した **エフェクト** サブメニューで個別に無効化できます。
+- ミラーでも汗を高品質は任意で、既定ではオフです。オフのときはミラーで汗腺の小さな水滴を省き、水滴の立体感も盛り上がりません。オンにすると、ミラーでも通常の画面と同じに描きます。
+- 体の湯気のミラー表示は Full、Low、Hidden です。2Dの`Low`はパーティクル数を変えずに、ミラー内の湯気を`Full`の0.8倍の濃さで描きます。3Dの`Low`は現在`Full`と同じ見た目と負荷です。
+- 肌の汗の環境光は Unity のライトプローブ（SH）だけを使います。VRC Light Volumes への対応は v2.0.0 で削除しました。
+- Light Limit Changer でアバターの明るさを変えると、肌の汗も同じ割合で追従します（ボディの肌が lilToon または Poiyomi の場合）。
 
-- 2D品質は従来の軽量Particleです。3D品質は任意の高負荷Mesh Particleで、Setupの再実行によって切り替えます。
-- 3D落下水滴では任意の衝突スプラッシュを使用できます。
-- 床の濡れ跡は落下水滴の衝突サブエフェクトです。落下水滴が無効なら生成されません。
-- 体の湯気はミラーで `Full / Low / Hidden` を選べます。2Dの`Low`はぼかしを省略しますが、3Dの`Low`は現在`Full`と同じ見た目・負荷です。
-- Custom Steam Pointは有効スロット最大4個、左右ペアは2スロットを使用します。内蔵／Custom合計12個が上限で、10個を超えると警告します。発生量Weightの合計が`4.0`を超える場合は、全Emitterを同じ比率で下げて正規化します。有効なAnimatorとMA Bone Proxyを解決できることが必要です。
+### エフェクト
 
-床の濡れ跡はWorldのFloor ColliderとDefault／Environment Layer構成の影響を受けます。息と湯気は必要なHead・Chest Anchorを解決できる構成で生成されます。一人称吐息にはMA Visible Head Accessoryが必要です。
+Effects Moduleは、落下する滴、はね、床の濡れ跡、吐息、体の湯気にパーティクルを使います。既定は軽量な2Dモードで、任意の高負荷の3Dパーティクルでは、吐息・落下する滴・体の湯気がメッシュパーティクルの描画に変わります。Setupで選んだエフェクトだけが項目とパラメーターを追加し、それぞれゲーム内でオフにできます。
 
-## Build時にMeshを変更するTool
+- 落下する滴とはねは汗のスタイルに従います。**落下水滴の最大数（システムごと）** の既定値は12で、強い動きの滴はその3分の2の8個までを使います。
+- 床の濡れ跡は落下する滴の衝突サブエフェクトで、落下する滴が有効な間だけ使用できます。衝突にはワールドの Default と Environment レイヤーを使い、アバター・Player系レイヤーは除外するため、ワールドの床のColliderやレイヤーが合わない場合は濡れ跡が出ません。
+- 吐息と体の湯気は、必要なHeadとChestのアンカーを取得できる場合だけ生成されます。
+- 体の湯気: 既定値での最大パーティクル数は、湯気12か所で131、既定の導入の7か所で95です。
+- 3Dの体の湯気・吐息: 既定の導入の Mesh Particle Active Polys は92です。
+- 有効なCustom Steamのスロットは最大4つで、左右ミラーペアは2つを使います。内蔵／Customを合わせて10個を超えるとミラー負荷の警告を表示し、合計12個が上限です。発生量ウェイトの合計が `4.0` を超える場合は、同じ比率で下げて上限内に収めます。
 
-Unity Editorでは正常で、VRChat内だけ汗の位置・形・表示が崩れる場合は、アップロード時に別のToolが次のいずれかを変更している可能性があります。
+## 生成した対象の整合性とビルドの停止
 
-- 対象Body RendererまたはMesh
-- 頂点・Submesh構成
-- Material Slotの順序
-- Restデータを参照する最終表示Mesh
+Setupは、実験的な追加対象ごとに、想定される生成マテリアルとRendererスロットを記録します。生成スロットの欠損、空欄化、移動、置換、統合は、導入状態の破損として扱われます。
 
-この場合、該当Toolに除外リストがある場合は、**Real Sweatが使用するBody Rendererを最適化・統合の対象から除外**してください。Body Rendererを除外する機能が無い場合、そのToolとの互換性は保証できません。
+- Tuningに **修復が必要** と表示されます。
+- アバタービルドは、別のマテリアルスロットへ切り替えたり対象を黙って省略したりせず、停止します。
+- **追加対象を管理...** または **Setup ウィンドウで修復...** を使い、**［インストール / 更新］** を押して修復または削除してください。
 
-Mesh変更を先に確定できるWorkflowでは、最終Meshへ変更した後にReal Sweat SystemのSetupを実行してください。Build時にのみ変更される構成では、最終結果との互換性を個別に確認する必要があります。
+## ビルド中にメッシュを変更するツール
 
-## 追加対象の整合性とビルド停止
+Unity Editorでは汗が正しく見えるのに、VRChatでだけ位置、形、表示が壊れる場合は、別のビルド時のツールが次のいずれかを変更している可能性があります。
 
-導入済み対象の生成RealSweat MaterialまたはRenderer Slotを直接削除、空欄化、移動、置換、統合すると、対象を意図的に無効にしたのではなく**導入状態の破損**として扱います。Tuningに **修復が必要** と表示し、別Slotへのフォールバックや黙った省略を行わず、アバタービルドを停止します。
+- 対象のBody RendererまたはMesh
+- 頂点またはSubMeshの構成
+- マテリアルスロットの順番
+- Restデータが参照する最終の表示Mesh
 
-`RealSweatSystem Tuning`の **追加対象を管理...** または **Setupで修復...** から現在の対象を読み込んだSetupを開きます。維持する場合は完全なSetupで修復し、削除する場合は一覧から対象を外して完全なSetupを実行してください。RealSweatSystemの案内本文は選択中のツール言語に従いますが、Unity／NDMFの例外タイトルとスタックトレースは英語のままの場合があります。
+そのツールに除外リストがある場合は、**Real Sweatが使うBody Rendererを最適化や統合の対象から除外** してください。Body Rendererを除外する機能が無いツールとの互換性は保証できません。
+
+先にメッシュの変更を確定できるワークフローでは、最終メッシュを作ってからReal Sweat SystemのSetupを実行してください。ビルド中にだけメッシュが変わる場合は、その構成で最終結果との互換性を確認する必要があります。
+
+## 既知の制限
+
+- 有効な Rest データがないと汗は描かれません。たとえば Setup 前のマテリアルや、ベイク後に変わったメッシュです（次のビルドで再ベイクされるまで）。
+- 水滴の立体感は近くで GPU 負荷が増える高負荷オプションのままです。
+- 汗 0 % と汗の表示オフは完全に無料ではありません。屈折のための画面コピー（GrabPass、約 +0.05 ms）が残ります。負荷がなくなるのは肌の汗を非表示だけです。
+- 相手側を低負荷: 面の向きが切り替わる所（胴の横や腕など）で、他の人の画面では水滴の下の端がまっすぐ切れて見えることがあります。まれで、小さな差です。
+- リアルは会話距離、暗いワールド、反射プローブのないワールドでアニメより目立ちにくくなります。折れ目（おへその上など）では小さな水滴が2つに分かれて見えることがあり、水滴どうしが実際に合わさることはありません。リアルの軽量は、リアルの低負荷・標準と水滴の並びが少し違います。
+- 服に付く RealRain 自身のリアルな雨粒は、RealRain のアップデートで提供されます。RealRain が肌に付ける雨は、すでに汗のスタイルに従います。
+- 2.0.0 に以前の見た目は含まれません。以前の見た目を使い続けるには、v1.1.3 のままにしてください。

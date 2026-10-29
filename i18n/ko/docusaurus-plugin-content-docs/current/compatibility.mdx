@@ -1,6 +1,7 @@
 ---
 id: compatibility
 title: 호환성
+description: 지원하는 Unity, VRChat, 아바타, 마테리얼, 빌드 도구 조건입니다.
 ---
 
 # 호환성
@@ -9,115 +10,144 @@ title: 호환성
 
 | 항목 | 지원 조건 |
 |---|---|
-| Unity | 2022.3 |
-| VRChat SDK | Avatars SDK3 |
-| 설치 기반 | Modular Avatar 필수 |
-| 플랫폼 | PC / D3D11 |
-| 아바타 | Humanoid 권장 |
-| Body | 아바타 하위의 유효한 SkinnedMeshRenderer |
+| Unity | **2022.3** |
+| VRChat | **Avatars SDK3** |
+| 아바타 빌드 기반 | **Modular Avatar 필수** (VCC에서 설치) |
+| 플랫폼 | **PC / Direct3D 11** |
+| Quest 단독 실행 | 지원하지 않습니다. 땀이 표시되지 않습니다(안전한 Hidden 폴백). |
 
-Quest 단독 실행 환경에서는 지원되지 않으며, 해당 플랫폼에서는 표시되지 않도록 처리됩니다. VRCFury는 필수 의존성이 아닙니다.
+VRCFury는 Real Sweat System에 필요하지 않습니다.
 
-## Humanoid와 Non-Humanoid
+## 아바타 종류 {/* #avatar-type */}
 
-- Humanoid 아바타에서 MA Bone Proxy 기반 Motion Pendulum을 만들 수 있으면 Manual Mode와 Auto Mode를 사용할 수 있습니다.
-- Non-Humanoid 아바타이거나 MA Bone Proxy 기반 Motion Pendulum을 만들 수 없으면 Manual Mode와 **낙하 물방울**, **바닥 물자국**은 사용할 수 있습니다. 이 경우 **자동 모드**, **입김**, **몸 김** 메뉴는 생성되지 않습니다.
-- Motion Pendulum은 만들었지만 필수 Head·Chest Anchor를 찾지 못하면 **자동 모드**는 사용할 수 있으며, **입김**과 **몸 김** 메뉴만 생성되지 않습니다.
+- **Modular Avatar 움직임추를 만들 수 있는 Humanoid:** 수동 모드와 자동 모드를 사용할 수 있습니다.
+- **Non-Humanoid이거나 Modular Avatar 움직임추를 만들 수 없음:** 수동 모드, 낙하 물방울, 바닥 물자국을 사용할 수 있습니다. 자동 모드, 입김, 몸 김은 생성되지 않습니다.
+- **움직임추는 만들었지만 필요한 Head／Chest 앵커를 찾지 못함:** 자동 모드는 사용할 수 있습니다. 입김과 몸 김은 생성되지 않습니다.
+
+자동 모드에는 Humanoid Animator와 MA Bone Proxy가 필요합니다. 조건을 충족하지 않으면 수동 모드만 설치됩니다. Custom Steam Point에는 유효한 Animator와 MA Bone Proxy가 필요합니다. **내 시점에서도 입김 보기**에는 유효한 Head 본과 MA Visible Head Accessory가 포함된 Modular Avatar 버전이 필요합니다.
+
+Rest의 위 방향은 휴머노이드 뼈(Hips→Head)로 정합니다. 휴머노이드가 아닌 아바타는 메쉬 모양(가장 긴 축)으로 정하고, 물방울 크기는 시점 위치(눈높이)로 잽니다.
 
 ## 지원 아바타 범위
 
-Real Sweat System은 특정 아바타 전용이 아닌 Humanoid 아바타용 범용 시스템입니다. 일반 설치에서는 Animator를 직접 편집할 필요가 없지만, VCC에서 프로젝트 열기, Unity에서 아바타 Root와 Body Renderer 선택하기, Console 확인하기 등의 기본 조작은 필요합니다.
+Real Sweat System은 특정 아바타 전용이 아닌 Humanoid 아바타용 범용 시스템입니다. 일반 설치에서는 Animator를 직접 편집할 필요가 없지만, 프로젝트 열기, 아바타 선택, Console 확인 같은 VCC와 Unity의 기본 조작은 필요합니다.
 
-Mesh, 재질, Animator 및 업로드 과정에서 동작하는 다른 개조 도구의 구성이 아바타마다 다르므로 모든 아바타와 모든 개조 조합의 호환성을 보장하지는 않습니다. Non-Humanoid에서는 위에 안내된 것처럼 일부 기능이 제한됩니다.
+메쉬, 마테리얼, Animator, 빌드 중 변경 도구의 구성은 아바타마다 다릅니다. 따라서 모든 아바타와 모든 변경 조합과의 호환을 보장하지는 않습니다. Non-Humanoid 아바타에는 위의 기능 제한이 있습니다.
 
-## Body Mesh와 Submesh
+## Body Mesh
 
-메인 Body Renderer 한 개를 기준으로 설치합니다. Body에 재질 슬롯이 여러 개라면 **땀 적용 Element**에서 피부가 있는 정확한 Submesh를 선택합니다. v1.1에서는 같은 Body Renderer의 여러 Material Element를 동시에 선택할 수 있습니다.
+선택한 Body는 유효한 메쉬와 Submesh를 가진 하위 `SkinnedMeshRenderer`여야 합니다. 바디 메쉬는 자동으로 찾으며, 결과는 설치 창의 **땀을 넣을 곳** 줄에 보입니다.
 
-별도 Body나 Face `SkinnedMeshRenderer`는 v1.1의 **실험적 추가 대상**에 등록할 수 있습니다. 대상마다 별도 땀 마테리얼·Rest 데이터·스케일 정규화·크기·밀도·스폰/표시 마스크·Tess 설정을 유지하며, Effects가 있으면 대상별 낙하 물방울도 선택할 수 있습니다.
+- 메인 Body Renderer는 크기 기준이자 기본 이펙트 방출원입니다.
+- 메인 Body Renderer의 여러 Material Element는 **고급 설정 > 땀을 넣을 곳**에서 고를 수 있습니다. 피부 마테리얼만 체크해 주십시오.
+- 얼굴 메쉬 같은 별도 `SkinnedMeshRenderer` 대상은 **실험적** 기능으로 사용할 수 있습니다. 대상마다 Rest 데이터, 마스크, 마테리얼, 드로우 부하가 따로 생깁니다. 얼굴 같은 다른 메쉬도 바디와 같은 물방울 크기가 됩니다.
+- 전환되는 여러 Body Renderer에 자동으로 함께 설치하는 것은 보장하지 않습니다. 땀을 표시할 Renderer／Element는 모두 직접 설정해야 합니다.
+- GameObject 활성／비활성으로 Body를 바꾸는 구성은 각각을 별도 대상으로 설정할 수 있습니다. `Renderer.enabled`만 바꾸는 방식은 보장하지 않으므로, 사용할 모든 Renderer／Element를 직접 설정하고 최종 아바타 빌드에서 확인해 주십시오.
+- 원본 메쉬에 유효한 Tangent가 없다면 <strong>안전한 사본 생성 (권장)</strong>을 사용해 주십시오.
+- 최종 빌드는 Real Sweat System에 필요한 대상 Submesh, 마테리얼 대응, 읽을 수 있는 메쉬 데이터를 유지해야 합니다.
 
-GameObject 활성／비활성으로 바디를 교체하는 구성은 각 Renderer／Element를 별도 대상으로 등록해 사용할 수 있습니다. `Renderer.enabled`만 바꾸는 방식의 스왑은 보장되지 않으므로, 사용할 모든 Renderer／Element를 명시적으로 등록하고 실제 아바타 빌드에서 확인하세요.
+실험적 추가 대상에는 다음이 필요합니다.
 
-:::warning[실험적 기능의 범위]
-추가 대상은 Read/Write 가능한 Mesh, 유효한 Submesh·Material·Tangent, 고유한 GameObject/애니메이션 경로와 다른 대상이 공유하지 않는 고유한 땀 마테리얼 연결이 필요합니다. Face Tracking·표정·Mesh 병합·교체·최적화의 모든 조합은 보장되지 않으며, 눈·입술 주변 Tess는 권장하지 않습니다.
-:::
+- Read/Write 가능한 메쉬 데이터와 유효한 Submesh·마테리얼·Tangent
+- 고유한 GameObject／애니메이션 경로
+- 다른 대상이 공유하지 않는 고유한 생성 땀 마테리얼 연결
+- 설치 창이 만든 Rest 데이터와 호환되는 최종 빌드 구성
 
-업로드 과정에서 Body Mesh를 합치거나 교체하는 도구를 사용한다면 다음 조건을 유지해야 합니다.
+Face Tracking·표정·메쉬 병합·교체·최적화의 모든 조합은 보장되지 않습니다. 눈·입술 주변 Tess는 피해 주십시오. 메쉬 수정 도구를 적용한 뒤에는 <strong>[설치 / 업데이트]</strong>를 다시 눌러 주십시오.
 
-- 땀 대상 Submesh와 재질의 대응 관계가 유지될 것
-- 최종 Mesh 데이터에 접근할 수 있을 것
-- 설치 후 땀 대상 Submesh가 제거되지 않을 것
+## Write Defaults, MMD, Face Tracking
 
-Unity에서는 정상인데 VRChat에서만 깨지는 경우, 업로드 단계에서 다른 도구가 Body Renderer 또는 Mesh를 교체하지 않는지 확인하세요.
+Real Sweat System은 v1.0.2에서 도입한 FX Write Defaults 자동 판정과 최종 빌드 보호 장치를 유지합니다.
 
-설치된 추가 대상을 끄기 위해 생성된 RealSweat 마테리얼이나 Renderer 슬롯을 직접 삭제·비우기·이동·교체·병합하지 마세요. v1.1은 이를 설치 손상으로 감지해 **복구 필요**로 표시하고 빌드를 중단합니다. Tuning의 **추가 대상 관리...**에서 목록을 수정한 뒤 전체 Setup을 실행하세요.
-
-## Tangent
-
-Body Mesh에 Tangent가 없다면 Setup에서 **안전한 사본 생성 (권장)**을 사용하세요. Tangent 처리 결과가 다른 Mesh 변환 도구에 의해 다시 교체되지 않도록 확인해야 합니다.
-
-## Write Defaults · MMD · Face Tracking
-
-v1.1.0은 아바타 FX의 Write Defaults 구성을 자동으로 판정합니다.
-
-- **자동 감지 (권장)**는 RealSweat 외부 FX State가 모두 WD ON일 때만 생성되는 RealSweat 레이어도 모두 WD ON으로 구성합니다.
-- WD OFF, ON/OFF 혼합 또는 판정 불가 환경에서는 v1.0.1의 Driver ON / Output OFF 호환 구조를 유지합니다.
+- <strong>자동 감지 (권장)</strong>는 RealSweat 외부 FX State가 모두 WD ON일 때만 생성되는 RealSweat 레이어를 모두 WD ON으로 구성합니다.
+- WD OFF, 혼합 또는 판정 불가 구성에서는 v1.0.1의 Driver ON / Output OFF 호환 구조를 유지합니다.
 - 빌드 시 NDMF로 최종 병합된 FX를 다시 검사하고, 감지 결과에 맞춰 RealSweat의 WD 구성을 조정합니다.
-- v1.0.x에서 업데이트했다면 보유한 모듈을 모두 같은 v1.1.0으로 임포트한 뒤 전체 Setup을 한 번 실행하세요.
-- Setup이 생성한 Merge Animator Priority 또는 Animator 항목을 수동으로 바꾸지 마세요.
+- 1.x에서 업데이트한 뒤에는 보유한 모듈을 모두 같은 v2.0.0으로 임포트하고 <strong>[설치 / 업데이트]</strong>를 한 번 눌러 주십시오.
+- 생성된 Merge Animator Priority를 직접 바꾸지 마십시오.
+- 생성된 Animator 항목을 바꾸거나 비우는 것을 영구적인 회피책으로 쓰지 마십시오.
 
-RealSweatSystem은 자신이 소유한 State만 변경합니다. 아바타 또는 다른 도구가 추가한 FX State의 Write Defaults 설정은 변환하지 않습니다.
+Real Sweat System은 자신이 만든 State만 바꿉니다. 아바타나 다른 도구가 만든 FX State의 Write Defaults 설정은 바꾸지 않습니다.
 
-### MMD 월드 호환성
+### MMD 월드 호환성 {/* #mmd-world-compatibility */}
 
-아바타의 FX Animator에 Write Defaults OFF State가 포함되어 있으면, 월드의 FX 레이어 제어 방식에 따라 일부 MMD 재생 중 표정·립싱크 또는 Real Sweat System이 정상적으로 작동하지 않을 수 있습니다. Write Defaults ON/OFF가 혼재된 아바타 역시 호환성을 보장하지 않습니다. 이는 모든 WD OFF 아바타가 MMD에서 미지원이라는 뜻은 아닙니다.
+아바타의 FX Animator에 Write Defaults OFF State가 있으면, 월드가 FX 레이어를 제어하는 방식에 따라 일부 월드의 MMD 재생 중 얼굴 표정, 립싱크 또는 Real Sweat System이 정상적으로 동작하지 않을 수 있습니다. Write Defaults ON과 OFF를 섞은 아바타도 호환을 보장하지 않습니다. 모든 WD OFF 아바타가 MMD 월드에서 지원되지 않는다는 뜻은 아닙니다.
 
-Modular Avatar의 MMD World Support는 FX Animator의 제2·제3 레이어를 비활성화하는 방식의 MMD 월드에 맞춰 레이어 배치를 보정하는 기능입니다. 모든 MMD 월드 또는 모든 Write Defaults 구성과의 호환성을 보장하는 기능은 아닙니다.
+Modular Avatar의 MMD World Support는 FX Animator 레이어 2와 3을 끄는 MMD 월드에 맞춰 레이어 위치를 조정합니다. 모든 MMD 월드나 모든 Write Defaults 구성과의 호환을 보장하지는 않습니다.
 
-실제로 사용할 MMD 월드에서 표정·립싱크·땀 표시·Auto Mode를 확인하세요.
+실제로 사용할 MMD 월드에서 표정·립싱크·땀 표시·자동 모드를 확인해 주십시오.
 
-## Modular Avatar, VRCFury와 최적화 도구
+## 아바타 최적화·메쉬 교체 도구
 
-Modular Avatar는 필수입니다. VRCFury, Avatar Optimizer와 기타 비파괴 도구는 함께 사용할 수 있지만, 업로드 시 Body를 최종적으로 교체하는 기능이 있다면 위의 Mesh 조건을 지켜야 합니다. v1.1은 빌드 후반의 최종 Rest/Tangent 상태 재검증과 d4rkAvatarOptimizer 보호를 보강했지만 모든 도구 조합을 보장하는 것은 아닙니다.
+업로드 중 Body를 최적화하거나 교체하는 도구는 땀 대상 Submesh와 마테리얼 연결을 유지해야 합니다. Real Sweat System이 준비한 뒤 다른 빌드 도구가 최종 Body를 교체하면, Unity 에디터에서는 정상으로 보여도 VRChat에서는 깨질 수 있습니다.
 
-Modular Avatar Shape Changer／Mesh Cutter처럼 버텍스·Submesh·Material Slot을 변경하는 기능도 완전 호환을 보장하지 않습니다. 추적 중인 생성 마테리얼 슬롯이나 대상 Submesh가 삭제·이동·교체·병합되어 안전하게 대응시킬 수 없으면 v1.1은 잘못된 위치로 계속 빌드하지 않고 중단합니다. 도구를 끈 상태와 비교하고, Scene／Play Mode만이 아니라 VRChat SDK의 **Build & Test**로 최종 결과를 확인하세요.
+이런 경우 다른 도구에서 대상 Body를 제외하거나, 필요한 Submesh를 유지하거나, 문서에 있는 빌드 순서를 바꿔 주십시오.
 
-특정 도구에서만 문제가 발생하면 해당 도구가 Real Sweat 설치 후 Body Mesh 또는 재질 슬롯을 바꾸는지 먼저 확인하세요.
+빌드할 때만 Body를 바꾸는 도구에 제외 목록이 있다면 Real Sweat System에서 사용하는 Body Renderer를 그 목록에 추가해 주십시오. Body 제외 기능이 없는 도구와의 호환성은 보장할 수 없습니다.
 
-빌드할 때만 Body를 변경하는 도구가 원인이라면 해당 도구에 제외 목록이 있을 경우 Real Sweat System에서 사용하는 Body Renderer를 추가하세요. Body 제외 기능이 없는 도구와의 호환성은 보장할 수 없습니다.
+Unity에서 원본 Body Mesh를 직접 바꾸거나 교체했다면 모든 메쉬 변경을 끝낸 뒤 <strong>[설치 / 업데이트]</strong>를 다시 눌러 주십시오. 빌드할 때마다 메쉬를 교체하는 도구는 설치를 다시 실행하는 것만으로 해결되지 않습니다.
 
-Unity에서 원본 Body Mesh를 직접 변경하거나 교체했다면 모든 Mesh 변경을 끝낸 다음 **Setup — 자동 설치 / 업데이트**를 다시 실행하세요. 빌드할 때마다 다른 도구가 Mesh를 교체하는 구성은 Setup을 다시 실행하는 것만으로 해결되지 않습니다.
+Real Sweat System은 굽기 뒤에 메쉬가 바뀌었을 때 빌드 후반에 최종 메쉬로 Rest 데이터를 다시 굽는 재확인과, 일반적인 d4rkAvatarOptimizer 처리에 대한 보호를 포함합니다. 제거된 대상 슬롯／Submesh를 복구하거나, Modular Avatar Shape Changer, Mesh Cutter, 모든 메쉬 변경 도구와 처리 순서와의 호환을 보장하지는 않습니다. 최종 슬롯／Submesh가 없거나 맞지 않으면 빌드가 중단됩니다.
+
+실험적 대상을 끄기 위해 RealSweat이 생성한 마테리얼이나 Renderer 슬롯을 삭제·비우기·이동·교체·병합하지 마십시오. Tuning에 **복구 필요**로 표시되고, 아바타 빌드는 대상을 조용히 생략하지 않고 중단됩니다. <strong>추가 대상 관리...</strong>로 대상을 연 뒤 <strong>[설치 / 업데이트]</strong>로 복구하거나 제거해 주십시오.
 
 ## PhysBone 공존
 
-Real Sweat System은 자동 모드를 위해 자체 Motion Pendulum PhysBone과 전용 파라미터를 생성합니다. 기존 아바타의 가슴 등에 설정된 PhysBone을 의도적으로 변경하거나 비활성화하거나 제거하지 않습니다.
+Real Sweat System은 자동 모드를 위해 자체 움직임추 PhysBone과 전용 파라미터를 만듭니다. 아바타의 가슴 PhysBone 같은 기존 PhysBone을 의도적으로 수정하거나 끄거나 삭제하지 않습니다.
 
-다만 Bone, PhysBone, Animator 또는 빌드 데이터를 변경하는 다른 도구와의 조합은 환경마다 다르므로 개별 조합은 Play Mode와 업로드 후 환경에서 각각 확인해야 합니다. 설치 후 기존 PhysBone만 움직이지 않는 상태는 정상 동작이 아닙니다.
+뼈·PhysBone·Animator·빌드 데이터를 바꾸는 다른 도구와의 조합은 환경마다 다르므로, Play Mode와 업로드한 빌드 양쪽에서 확인해야 합니다. 설치 후 기존 PhysBone이 멈추는 것은 예상된 동작이 아닙니다.
 
-## 의상과 입체기능
+## 의상과 물방울 입체감
 
-입체 물방울이 의상을 뚫고 보이는 경우 **RealSweatSystem Clothing Fix**를 사용하세요. 의상의 두께와 Body 사이의 거리에 따라 별도 조절이 필요할 수 있습니다.
-
-## Render Queue와 그림자
-
-<strong>렌더 순서 자동 설정 (권장)</strong>이 켜져 있으면 메인 Body의 땀 재질 Render Queue는 정확히 **2455**로 고정됩니다. 땀이 Body 재질보다 나중에 그려지도록 선택한 Body 재질의 Render Queue를 **2454 이하**로 유지하세요. 실험적 추가 대상은 선택한 원본 마테리얼 뒤에 오도록 `max(2455, 원본 Queue + 1)`을 사용합니다.
-
-Body 재질을 2454 이하로 설정할 수 없다면 <strong>렌더 순서 자동 설정 (권장)</strong>을 끄고, **수동 땀 렌더 큐**를 Body 재질보다 큰 값으로 설정하세요.
-
-:::warning[Render Queue 2500 초과]
-수동 땀 렌더 큐를 2500보다 크게 설정하면 Unity의 Transparent 정렬 범위에 들어갑니다. Body보다 나중에 그리는 순서는 유지되더라도 월드 오브젝트나 다른 투명 재질과의 앞뒤 정렬은 카메라와 월드에 따라 달라질 수 있습니다. 특별한 이유가 없다면 자동값 2455를 사용하세요.
-:::
-
-**바디 Shadow Strength 따라가기**가 켜져 있으면 실제 그림자 안의 땀도 함께 어두워집니다. Body 재질의 `_ShadowStrength`는 Setup 또는 **FX에 적용**을 실행할 때 복사됩니다.
-
-## 월드 조명색과 환경 반사
-
-피부 표면 물방울과 젖은 광택은 월드의 Directional／Local Light, Ambient SH, VRC Light Volumes와 Reflection Probe 영향을 받을 수 있습니다. 파란색이나 색이 강한 월드에서는 표면 땀도 해당 색으로 물들어 보일 수 있습니다.
-
-v1.1.0에는 밝기는 유지하면서 월드 조명색만 무채색으로 줄이는 사용자 옵션이 없습니다. **VRC Light Volumes** 토글은 Light Volumes 경로만 켜고 끄며 다른 조명·환경광·Reflection Probe 색까지 제거하지 않습니다.
+테셀레이션 물방울이 불투명 의상 밖으로 비치면 설치를 마친 뒤 `CookiTools → RealSweatSystem → Clothing Fix`를 열어 해당 의상에 적용해 주십시오. 물방울 입체감을 끄면 No Tess 표시로도 돌아갑니다. [보조 도구](./tools.mdx#realsweatsystem-clothing-fix)를 확인해 주십시오.
 
 ## Face Renderer
 
-v1.1에서는 Face가 별도 `SkinnedMeshRenderer`라면 실험적 추가 대상으로 등록할 수 있습니다. Setup에서 별도 Rest 데이터와 땀 마테리얼을 생성하므로 과거의 수동 Material/Animation Curve 복제 절차를 사용하지 마세요.
+별도의 Face `SkinnedMeshRenderer`는 **고급 설정**에서 실험적 추가 대상으로 추가할 수 있습니다. 별도 Rest 데이터를 받으며, 생성 땀 마테리얼을 Body나 다른 대상과 공유하면 안 됩니다. 바디와 같은 물방울 크기와 아바타의 땀 스타일을 씁니다.
 
-Face Tracking·표정·BlendShape·Mesh 최적화 조합은 아바타마다 다릅니다. 눈·입술 주변에는 No Tess를 우선 사용하고 Play Mode와 실제 VRChat 빌드를 모두 확인하세요. 문제가 생기면 Face 대상을 목록에서 제거한 뒤 전체 Setup을 다시 실행하면 메인 Body 설치만 유지할 수 있습니다.
+아직 실험적 기능입니다. 얼굴 BlendShape, Face Tracking, 최적화·메쉬 교체 도구, 눈·입술 주변 Tess는 꼼꼼한 확인이 필요합니다. 별도 Face 대상은 자기 마테리얼과 드로우 부하를 추가합니다. 과거의 수동 Face 마테리얼 절차는 더 이상 권장하지 않습니다.
+
+## 렌더 큐와 그림자 {/* #render-queue-and-shadows */}
+
+- 설치 창은 선택한 Body Element의 현재 렌더 큐와 최종 땀 렌더 큐를 함께 표시합니다.
+- 기본값인 **렌더 순서 자동 설정**은 기본 Body의 땀을 렌더 큐 **2350**에 그립니다. 보통 피부(2000)보다 뒤, Cutout(2450)과 투명(3000), 바디 위에 겹쳐 그리는 그림자·데칼 마테리얼보다 앞입니다. 1.1.x는 2455였습니다.
+- 바디 렌더러(땀을 넣는 렌더러)에 2350 이상에 그려지는 불투명·Cutout 마테리얼이 있으면 <strong>[설치 / 업데이트]</strong>가 한 번 묻습니다. <strong>2349로 낮추기 (권장)</strong>를 고르면 마테리얼마다 원래 큐를 기억해 두고 2349로 낮춥니다. <strong>[제거]</strong>하면 원래 큐로 되돌립니다. 그 사이에 직접 바꾼 큐는 그대로 둡니다.
+- **그대로 두기**를 고르면 땀을 그 마테리얼 중 가장 높은 큐 + 1에 그립니다. RealWetSystem과 맞춘 상한 2459를 넘지 않으므로, 바디가 2459 이상이면 그대로 둔 땀은 그 마테리얼이 덮는 곳에서 가려집니다.
+- 고른 답은 아바타마다 기억하므로 업데이트할 때마다 묻지 않습니다. 해당 바디 마테리얼이나 큐가 바뀌면 다시 묻습니다. 그대로 두기를 고른 뒤 다시 정하려면 **고급 설정 > 호환성**의 <strong>[다시 묻기]</strong>를 누른 뒤 <strong>[설치 / 업데이트]</strong>를 눌러 주십시오.
+- 마테리얼 에셋 자체를 바꾸므로 같은 마테리얼을 쓰는 다른 아바타, 프리팹, 씬에도 적용됩니다. 다른 렌더러도 쓰는 마테리얼이면 질문 창에 그 렌더러를 보여 줍니다. 두 아바타가 같은 마테리얼을 쓰면, 한쪽을 제거해도 열려 있는 씬에 다른 쪽이 설치되어 있는 동안에는 낮춘 큐를 유지합니다. 모델 파일이나 패키지 안의 마테리얼은 바꿀 수 없으므로 그대로 둡니다.
+- 불투명·Cutout 판정은 셰이더 제품이 아니라 마테리얼의 섞기(`_SrcBlend`/`_DstBlend`)와 깊이 쓰기(`_ZWrite`), 셰이더 파일의 Blend/ZWrite 설정, RenderType 태그, 렌더 큐 범위로 합니다. 섞어 그리거나 깊이를 쓰지 않는 마테리얼(가짜 그림자, 데칼, 겹침 마테리얼)과 렌더 큐 3000 이상은 바꾸지 않습니다. RealSweat, RealWet, RealRain의 마테리얼도 바꾸지 않습니다.
+- 추가 대상은 선택한 마테리얼보다 뒤에 그려지도록 `max(바디 땀 렌더 큐(보통 2350), 선택 마테리얼 렌더 큐 + 1)`을 사용합니다.
+- 수동 렌더 큐는 다른 셰이더가 특정 순서를 요구할 때만 사용해 주십시오. 수동 렌더 큐를 쓰면 바디 마테리얼을 묻거나 바꾸지 않습니다.
+- 2.0.0의 땀은 새 이름의 화면 복사(GrabPass)로 피부를 읽으므로 같은 화면의 1.x 땀과 섞이지 않습니다. 렌더 큐가 2350이 아닌 땀(그대로 두기, Cutout 다음의 추가 대상, 수동 렌더 큐)은 셰이더가 자동으로 **RealSweatSystem (Late Queue)** 쪽으로 바뀌고, 그릴 때 화면을 따로 복사합니다(그만큼 부하가 조금 늘어납니다).
+
+:::warning[2500보다 높은 큐]
+수동 땀 렌더 큐를 **2500**보다 크게 정하면 Unity의 투명 정렬 범위에 들어갑니다. 투명한 월드 오브젝트, 머리카락, 의상, 데칼, 다른 아바타 마테리얼과의 앞뒤 정렬이 카메라 각도에 따라 바뀔 수 있습니다. 아바타의 마테리얼 구성이 요구할 때만 2500보다 높은 큐를 쓰고, 사용할 월드에서 여러 각도로 확인해 주십시오.
+:::
+
+**바디 Shadow Strength 따라가기**는 기본값이 켜짐입니다. 선택한 땀 적용 Element에 지정된 lilToon/Poiyomi 마테리얼의 `_ShadowStrength`를 RealSweatSystem의 드리운 그림자 강도로 복사합니다. 실시간 링크가 아니라 **[설치 / 업데이트]** 또는 **FX에 적용**을 누를 때 갱신됩니다. 해당 프로퍼티가 없는 셰이더라면 RealSweatSystem의 현재 값을 유지합니다.
+
+## 조명 {/* #lighting */}
+
+- **VRC Light Volumes:** v2.0.0에서 지원을 없앴습니다. 피부 땀의 주변광은 Unity 라이트 프로브(SH)만 씁니다. <strong>[설치 / 업데이트]</strong>나 **FX에 적용**을 누르면 기존 설치에 남은 'VRC 라이트 볼륨' 메뉴 토글과 동기화 파라미터(1bit)가 빠집니다.
+- 강한 색의 월드 조명, 주변광, 반사 프로브는 피부 땀에 색을 입힐 수 있습니다. 실사는 어두운 월드와 반사 프로브가 없는 월드에서 애니보다 덜 눈에 띕니다. 업로드 전에 사용할 월드와 거울에서 확인해 주십시오.
+- 어두운 피부: 물방울이 회색 원판처럼 보이지 않고 밝은 반짝임이 맺히며, 막과 흐른 자국이 덜 번들거립니다. 흰 피부, 보통 피부, 태닝 피부는 짙은 그림자 속 몇 픽셀을 빼면 그대로입니다.
+
+### Light Limit Changer {/* #light-limit-changer */}
+
+Light Limit Changer(LLC)의 메뉴로 아바타의 밝기를 바꾸면 피부 땀도 같은 비율로 따라갑니다. 아바타를 어둡게 하면 땀의 하이라이트도 어두워지고, 어두운 월드에서는 LLC의 최소 밝기가 피부처럼 땀도 밝혀 줍니다.
+
+- 바디 피부가 lilToon이나 Poiyomi일 때 동작합니다. 따로 정할 것은 없고, 메뉴와 파라미터도 늘지 않습니다.
+- LLC가 없으면 땀의 모습은 바뀌지 않습니다. LLC가 설치되어 있으면 슬라이더를 건드리지 않아도 땀이 피부와 같은 밝기 제한을 받으므로, 밝은 월드에서는 땀의 하이라이트도 피부처럼 제한됩니다.
+- LLC의 밝기(최소·최대 밝기)만 따르고, 채도·모노크롬, Unlit, 색온도, 이미션 같은 다른 조절은 땀을 바꾸지 않습니다.
+- 낙하 물방울, 바닥 물자국, 몸 김, 입김 파티클은 따르지 않습니다.
+
+## RealWet와 RealRain
+
+- RealWet / Clothing Wetness는 별도 제품입니다. 땀 마테리얼의 RealWet 젖음 연결은 v2.0.0으로 업데이트해도 그대로 남습니다.
+- RealRain과 함께 쓸 때 피부에 맺히는 빗물은 RSS가 그리므로 고른 땀 스타일을 그대로 따릅니다. 옷에 맺히는 빗방울의 실사 스타일은 RealRain 업데이트로 제공되며, RealRain이 이 아바타의 땀 스타일을 읽어 맞춥니다.
+
+## 모듈 버전과 파라미터 안전
+
+- Base와 Effects는 같은 릴리스 버전으로 맞춰 주십시오. 버전이 섞여 있으면 설치 창이 같은 버전으로 다시 임포트하라고 알리고 설치를 막으며, 아바타 빌드도 중단됩니다.
+- 설치 창은 예정된 모든 파라미터를 Avatar Expression Parameters와 다른 Modular Avatar Parameters 선언(접두사·리맵 포함)과 비교합니다.
+- 이름이 겹치면 설치를 멈춥니다. 예상 합계가 VRChat의 256bit 파라미터 한도를 넘으면 계속하기 전에 경고합니다.
+- 추가 대상 검증과 빌드 안내는 선택한 도구 UI 언어를 따릅니다. Unity／NDMF 예외 제목과 스택 트레이스는 영어로 남을 수 있습니다.

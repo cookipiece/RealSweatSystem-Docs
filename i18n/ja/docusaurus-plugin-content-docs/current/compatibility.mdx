@@ -1,116 +1,153 @@
 ---
 id: compatibility
 title: 対応環境・互換性
+description: 対応する Unity、VRChat、アバター、マテリアル、ビルドツールの条件。
 ---
 
 # 対応環境・互換性
 
-## 必要環境
+## 必要な環境
 
-- Unity 2022.3
-- VRChat Avatars SDK3
-- Modular Avatar
-- PC版VRChat（Direct3D 11）
+| 項目 | 条件 |
+|---|---|
+| Unity | **2022.3** |
+| VRChat | **Avatars SDK3** |
+| アバタービルド | **Modular Avatarが必要**（VCC からインストール） |
+| プラットフォーム | **PC / Direct3D 11** |
+| Quest単体版 | 非対応。汗は表示されません（安全な Hidden フォールバック） |
 
-**Modular Avatarは必須です。VRCFuryは必須ではありません。** Quest単体版では汗表現を表示しません。
+Real Sweat System に VRCFury は必要ありません。
 
-## Avatar Rig
+## アバターの種類 {/* #avatar-type */}
 
-HumanoidアバターでModular Avatar Bone ProxyによるMotion Pendulumを作成できる場合は、Manual ModeとAuto Modeを使用できます。
+- **Modular Avatarのモーション振り子を作成できるHumanoid:** 手動モードと自動モードを使用できます。
+- **Non-Humanoid、またはModular Avatarのモーション振り子を作成できない場合:** 手動モード、落下する滴、床の濡れ跡を使用できます。自動モード、吐息、体の湯気は作成されません。
+- **モーション振り子は作成できるが、必要なHead／Chestのアンカーが無い場合:** 自動モードは使用できます。吐息と体の湯気は作成されません。
 
-Non-Humanoidアバター、またはModular Avatar Bone ProxyによるMotion Pendulumを作成できない構成ではManual Modeを使用します。この場合もFalling DropsとFloor Stainsは使用できますが、Auto Mode、Breath Puffs、Steamのメニュー項目は生成されません。
+自動モードには、Humanoid AnimatorとMA Bone Proxyが必要です。利用できない場合は手動モードのみ導入されます。Custom Steam Pointには、有効なAnimatorとMA Bone Proxyが必要です。**自分の視点でも吐息を表示** には、有効なHeadボーンとMA Visible Head Accessoryを含むModular Avatarが必要です。
 
-Motion Pendulumを作成できても、必須のHead・Chest Anchorを解決できない場合はAuto Modeを使用できますが、Breath PuffsとSteamのメニュー項目は生成されません。
+Rest の上方向はヒューマノイドのボーン（Hips→Head）から決めます。ヒューマノイドではないアバターは、メッシュの形（最も長い軸）から上方向を決め、水滴サイズは視点の位置（目の高さ）で測ります。
 
-## 対応アバターの範囲
+## 対応するアバターの範囲
 
-Real Sweat Systemは特定のアバター専用ではなく、Humanoidアバター向けの汎用システムです。通常の導入ではAnimatorを手動編集する必要はありませんが、VCCでプロジェクトを開く、UnityでアバターRootとBody Rendererを選択する、Consoleを確認するといった基本操作は必要です。
+Real Sweat System は特定のアバター専用ではなく、Humanoidアバター向けの汎用システムです。標準のインストーラーでは手動のAnimator編集は不要ですが、プロジェクトを開く、アバターを選ぶ、Consoleを確認するといった、VCCとUnityの基本操作は必要です。
 
-Mesh、Material、Animator、アップロード時に動作する他の改変ツールの構成はアバターごとに異なるため、すべてのアバターおよびすべての改変の組み合わせを保証するものではありません。Non-Humanoidでは、上記のとおり一部機能に制限があります。
+Mesh、Material、Animator、ビルド時に変更を行うツールの構成はアバターごとに異なります。そのため、すべてのアバターとすべての改変の組み合わせでの互換性は保証できません。Non-Humanoidアバターには、上で説明した機能の制限があります。
 
-## Body Renderer
+## Body Mesh
 
-- アバター配下のSkinnedMeshRendererを指定します。
-- Rendererには有効なMeshとSubmeshが必要です。
-- メインBody Rendererでは、複数のMaterial Elementを同時に選択できます。
-- 実験的機能として、顔などの別 `SkinnedMeshRenderer` とElementを追加対象に登録できます。対象ごとに専用Material、Restデータ、描画負荷が追加されます。
-- 追加対象には読み取り可能なMesh、有効なSubmesh・Material・Tangent、固有のGameObject／Animation Path、および他の対象と共有しない固有の汗Material系統が必要です。
-- GameObjectのActive／InactiveでBodyを切り替える構成は、各Renderer／Elementを別対象として登録できます。`Renderer.enabled`だけを変更する切替は保証されないため、使用するすべてのRenderer／Elementを明示的に登録し、最終的なアバタービルドで確認してください。
-- Bodyを実行時に別Rendererへ切り替えるアバター、Face Tracking・Mesh統合・置換・Optimizerを含む全組み合わせは保証されません。目や唇周辺のTessは推奨しません。
-- Tangentが無いMeshではSafe Copy（Recommended）を使用します。
+選択するBodyは、有効なMeshとSubMeshを持つ子の `SkinnedMeshRenderer` である必要があります。ボディメッシュは自動で見つかり、Setup ウィンドウの **汗を付ける場所** の行に表示されます。
 
-導入後に生成されたRealSweat MaterialやRenderer Slotを直接削除、空欄化、移動、置換、統合しないでください。対象を変更する場合は `RealSweatSystem Tuning` の **追加対象を管理...** からSetupを開いてください。欠損や変更を検出すると、別Slotへ自動的に置き換えたり黙って省略したりせず、安全のためアバタービルドを停止します。
+- メインのBody Rendererは、スケールの基準とEffectsの既定の放出元です。
+- メインのBody Renderer内の複数のMaterial Elementは、**詳細設定 > 汗を付ける場所** で選択できます。肌のマテリアルだけにチェックしてください。
+- 顔メッシュなどの別 `SkinnedMeshRenderer` は **実験的** 機能として追加できます。対象ごとに、個別のRestデータ、マスク、マテリアル、描画負荷があります。顔などの他のメッシュもボディと同じ水滴サイズになります。
+- 切り替え式の複数のBody Rendererへの自動同時導入は保証しません。汗を表示するすべてのRenderer／Elementを明示的に設定してください。
+- GameObjectのアクティブ／非アクティブでBodyを切り替える構成は、それぞれ別の対象として設定できます。`Renderer.enabled` だけを切り替える方式は保証しません。すべてのRenderer／Elementを明示的に設定し、最終的なアバタービルドで確認してください。
+- 元のMeshに有効なTangentが無い場合は、**セーフコピーを作成（推奨）** を使用してください。
+- 最終ビルドでは、対象のSubMesh、Materialの対応、Real Sweat Systemに必要な読み取り可能なMeshデータが保たれている必要があります。
 
-## Write Defaults / MMD / Face Tracking
+実験的な追加対象には、次が必要です。
 
-v1.1.0では、アバターFXのWrite Defaults構成を自動判定します。
+- 読み取り可能なMeshデータと、有効なSubMesh・Material・Tangent
+- 固有のGameObject／Animationパス
+- 他の対象と共有しない、固有の生成汗マテリアル系統
+- Setupが作成したRestデータと互換性のある、最終ビルドのトポロジー
 
-- **Auto Detect（推奨）** は、RealSweat以外のFX StateがすべてWD ONの場合だけ、生成するRealSweatレイヤーもすべてWD ONにします。
-- WD OFF、ON/OFF混在、または判定不能の場合は、v1.0.1のDriver ON / Output OFF互換構成を維持します。
-- ビルド時にNDMFで最終統合されたFXを再確認し、検出結果に合わせてRealSweatのWD構成を調整します。
-- v1.0.xから更新した場合は、所有するModuleをすべて同じv1.1.0へ揃え、完全なSetupを1回実行してください。
-- Setupが生成したMerge Animator PriorityやAnimator欄を手動で変更しないでください。
+フェイストラッキング・表情・メッシュ統合・置換・最適化の全組み合わせは保証されません。目や唇周辺のTessは避けてください。メッシュ変更ツールを適用した後は、**［インストール / 更新］** をもう一度押してください。
 
-RealSweatが変更するのはRealSweatが所有するStateだけです。アバターや他のツールが追加したFX StateのWrite Defaults設定は変更しません。
+## Write Defaults・MMD・フェイストラッキング
 
-### MMDワールドとの互換性
+Real Sweat System は、v1.0.2 で追加したFX Write Defaultsの自動判定と、最終ビルド時の保護を引き続き使っています。
 
-アバターのFX AnimatorにWrite Defaults OFFのStateが含まれている場合、ワールド側のFXレイヤー制御方式によっては、MMD再生中の表情・リップシンクまたはReal Sweat Systemが正しく動作しないことがあります。Write Defaults ON/OFFが混在するアバターについても互換性は保証されません。これは、すべてのWD OFFアバターでMMDが非対応という意味ではありません。
+- **自動検出（推奨）** は、RealSweat以外のすべてのFX StateがWD ONの場合だけ、生成するすべてのRealSweatレイヤーをWD ONにします。
+- WD OFF、混在、または判定不能の環境では、v1.0.1のDriver ON / Output OFF互換構成を維持します。
+- ビルド時にNDMFで最終統合されたFXコントローラーを再確認し、判定結果に合わせてRealSweatのWD構成を調整します。
+- 1.x から更新した後は、所有しているModuleをすべて同じ v2.0.0 でインポートし、**［インストール / 更新］** を一度押してください。
+- 生成されたMerge Animator Priorityを手動で変更しないでください。
+- 生成されたAnimator欄の置き換えや空欄化を、恒久的な回避策として使わないでください。
 
-Modular AvatarのMMD World Supportは、FX Animatorの第2・第3レイヤーを無効化する方式のMMDワールドに合わせてレイヤー配置を補正する機能です。すべてのMMDワールド、またはすべてのWrite Defaults構成との互換性を保証するものではありません。
+Real Sweat System が変更するのは自分のStateだけです。アバターや他のツールが作ったFX StateのWrite Defaults設定は変換しません。
 
-実際に使用するMMDワールドで、表情・リップシンク・汗の表示・Auto Modeを確認してください。
+### MMDワールドとの互換性 {/* #mmd-world-compatibility */}
 
-## Modular Avatar / NDMFと他の改変ツール
+アバターのFX AnimatorにWrite Defaults OFFのStateがある場合、ワールドがFXレイヤーをどう制御するかによって、一部のワールドではMMD再生中に表情、リップシンク、Real Sweat Systemが正しく動作しない場合があります。Write Defaults ONとOFFが混在するアバターも互換性は保証されません。これは、WD OFFのアバターがすべてMMDワールドで使えないという意味ではありません。
 
-Real Sweatは非破壊ビルド環境で使用できます。ただし、アップロード時に別のツールがBody MeshやRendererを置換・統合する場合は、最終的なMeshが次の条件を保つ必要があります。
+Modular AvatarのMMD World Supportは、FX Animatorのレイヤー2と3を無効にするMMDワールド向けにレイヤー配置を調整します。すべてのMMDワールドやすべてのWrite Defaults構成との互換性を保証するものではありません。
 
-- 汗を適用したSubmeshとMaterial Slotの対応が維持されている
-- 必要なMeshデータをビルド時に読み取れる
-- Real Sweatが参照するBody Rendererの系統が維持されている
+使う予定のMMDワールドで、表情、リップシンク、汗の表示、自動モードを確認してください。
 
-Unity Editorでは正常でVRChat内だけ表示が崩れる場合は、アップロード時にBodyを変更するOptimizer、Mesh変換、Material統合ツールの設定を確認してください。
+## アバター最適化・メッシュ置換ツール
 
-v1.1は最終Rest／Tangentの再検証、d4rkAvatarOptimizerによる対象変更の保護、Setup失敗時のロールバックを強化しています。ただし、Modular AvatarのMesh Cutter／Shape Changer Deleteなどで最終Meshの頂点順・Topology・Material Slotが変わる構成をすべて保証するものではありません。
+アップロード時にBodyを最適化または置換するツールは、汗の対象SubMeshとマテリアル系統を保つ必要があります。Real Sweat Systemが準備した後に別のビルドツールが最終Bodyを置き換えると、Unity Editorでは正しく見えても、VRChatでは壊れることがあります。
 
-ビルド時だけBodyを変更するツールが原因の場合は、そのツールに除外リストがあれば、Real Sweat Systemで使用しているBody Rendererを追加してください。Bodyを除外する機能が無いツールとの互換性は保証できません。
+その場合は、他のツールで対象Bodyを除外するか、必要なSubMeshを保つか、文書化されたビルド順を変更してください。
 
-Unity上で元のBody Meshを手動で変更・交換した場合は、Mesh変更をすべて完了してから **Setup — Install / Update** を再実行してください。ビルドのたびに別ツールがMeshを置換する構成は、Setupの再実行だけでは解決しません。
+ビルド時だけBodyを変更するツールに除外リストがある場合は、Real Sweat Systemが使うBody Rendererをそのリストに追加してください。Bodyを除外する機能が無いツールとの互換性は保証できません。
+
+UnityでBody Meshを手動で変更または置換した場合は、すべてのMesh変更を終えてから **［インストール / 更新］** をもう一度押してください。ビルドのたびにMeshを置き換えるツールは、Setupを再実行するだけでは解決できません。
+
+Real Sweat System には、ベイク後にメッシュが変わった場合に最終メッシュからRestデータを再ベイクするビルド後半の再確認と、一般的なd4rkAvatarOptimizer処理への保護があります。削除された対象スロットやSubMeshは復元できず、Modular Avatar Shape Changer、Mesh Cutter、すべてのメッシュ変更ツールと処理順との互換性も保証できません。最終的なスロットやSubMeshが無い、または互換性が無い場合はビルドが停止します。
+
+実験的な対象を無効にするために、RealSweatが生成したマテリアルやRendererスロットを削除、空欄化、移動、置換、統合しないでください。Tuningに **修復が必要** と表示され、対象を黙って省略せずにアバタービルドが停止します。**追加対象を管理...** を使い、**［インストール / 更新］** で対象を修復または削除してください。
 
 ## PhysBoneとの共存
 
-Real Sweat SystemはAuto Mode用に専用のMotion Pendulum PhysBoneとパラメーターを作成します。既存アバターの胸などに設定されているPhysBoneを意図的に変更、無効化、削除する処理は行いません。
+Real Sweat System は、自動モード用に専用のMotion Pendulum PhysBoneと専用パラメーターを作成します。アバターの胸のPhysBoneなど、既存のPhysBoneを意図的に変更、無効化、削除することはありません。
 
-ただし、Bone、PhysBone、Animator、ビルドデータを変更する他のツールとの組み合わせは環境ごとに異なるため、個別の組み合わせはPlay Modeとアップロード後の両方で確認してください。導入後に既存PhysBoneだけが動かなくなる状態は通常動作ではありません。
+ボーン、PhysBone、Animator、ビルドデータを変更する他のツールとの組み合わせは環境によって異なるため、Play Modeとアップロードしたビルドの両方で確認してください。導入後に既存のPhysBoneが止まるのは想定された動作ではありません。
+
+## 衣装と水滴の立体感
+
+テッセレーションの水滴が不透明な衣装を突き抜けて見える場合は、Setup後に `CookiTools → RealSweatSystem → Clothing Fix` を開き、該当する衣装に適用してください。水滴の立体感をオフにしても、表示はNo Tessに戻ります。詳しくは[補助ツール](./tools.mdx#realsweatsystem-clothing-fix)を確認してください。
 
 ## Face Renderer
 
-Faceはv1.1の **追加Skinned Mesh Renderer（実験的）**としてSetupへ登録できます。Faceごとに専用のRestデータと汗Materialを生成しますが、表情・VRCFT・Mesh統合・最適化との全組み合わせは保証されません。まずNo Tessで確認し、目や唇周辺へのTessは避けてください。
+別のFace `SkinnedMeshRenderer` は、**詳細設定** で実験的な追加対象として追加できます。個別のRestデータを持ち、生成された汗マテリアルをBodyや他の対象と共有してはいけません。ボディと同じ水滴サイズと、アバターの汗のスタイルを使います。
 
-v1.0.xの手動Face適用を維持している場合は、[上級者向けの旧手動手順](./tools.mdx#unsupported-face-body)を確認できます。v1.1の自動管理へ移行する場合は、手動Curve／Materialをバックアップして重複適用を避けてください。
+これはまだ実験的な機能です。顔のBlendShape、フェイストラッキング、最適化・メッシュ置換ツール、目や唇周辺のTessは慎重に確認してください。別のFace対象は、個別のマテリアルと描画負荷を追加します。以前の手動のFaceマテリアル手順は、推奨する方法ではなくなりました。
 
-## 衣装との干渉
+## 描画順と影 {/* #render-queue-and-shadows */}
 
-立体機能の水滴が衣装を貫通して見える場合は **RealSweatSystem Clothing Fix** を使用してください。
+- Setupには、選択したBody Elementの現在のレンダーキューと最終的な汗のレンダーキューが同時に表示されます。
+- **描画順を自動設定** は初期状態で有効で、メインBodyの汗をレンダーキュー **2350** で描画します。通常の肌（2000）より後、Cutout（2450）、透明（3000）、ボディに重ねて描く影・デカールのマテリアルより前です（1.1.x は 2455）。
+- ボディのレンダラー（汗を入れるレンダラー）に2350以降で描画される不透明・Cutoutのマテリアルがあると、**［インストール / 更新］** が一度だけ確認します。**2349に下げる（推奨）** を選ぶと、マテリアルごとに元のキューを記録してから2349に下げます。**［削除］** すると元のキューに戻します。その間に自分で変更したキューはそのままにします。
+- **そのままにする** を選ぶと、汗はそれらの中で最も高いキュー + 1 で描画されます。RealWetSystem と合わせた上限2459を超えないため、ボディが2459以降なら、そのままにした汗はそのマテリアルが覆う所で隠れます。
+- 選んだ答えはアバターごとに記録するため、更新のたびには確認しません。該当するボディマテリアルやキューが変わると、もう一度確認します。そのままにした後で選び直すには、**詳細設定 > 互換性** の **［もう一度確認］** を押してから **［インストール / 更新］** を押してください。
+- マテリアルアセット自体を変更するため、同じマテリアルを使う他のアバター、プレハブ、シーンにも反映されます。ほかのレンダラーも使うマテリアルなら、確認ダイアログにそのレンダラーを表示します。2つのアバターが同じマテリアルを使う場合、片方を削除しても、開いているシーンにもう片方がインストールされている間は下げたキューを保ちます。モデルファイルやパッケージの中のマテリアルは変更できないため、そのままにします。
+- 不透明・Cutoutかどうかは、シェーダーの製品名ではなく、マテリアルのブレンド（`_SrcBlend`/`_DstBlend`）と深度書き込み（`_ZWrite`）、シェーダーファイルの Blend/ZWrite、RenderType タグ、レンダーキューの範囲で判定します。ブレンドして描く、または深度を書かないマテリアル（疑似影、デカール、重ねマテリアル）とレンダーキュー3000以降は変更しません。RealSweat、RealWet、RealRain のマテリアルも変更しません。
+- 追加対象には、選択したマテリアルより後に描画されるよう `max(ボディの汗のレンダーキュー（通常2350）, 選択マテリアルのレンダーキュー + 1)` を使用します。
+- 手動のレンダーキューは、他のシェーダーで特定の順序が必要な場合のみ使用してください。手動のレンダーキューでは、ボディマテリアルの確認も変更もしません。
+- 2.0.0 の汗は新しい名前の画面コピー（GrabPass）から肌を読むため、同じ画面の 1.x の汗と混ざりません。レンダーキューが2350以外の汗（そのままにする、Cutoutの後の追加対象、手動のレンダーキュー）は自動で **RealSweatSystem (Late Queue)** シェーダーに切り替わり、描画するときに画面を個別にコピーします（そのぶん負荷が少し増えます）。
 
-## ワールド照明の色
-
-表面の汗はワールド照明、Ambient、Light Volumes、Reflection Probeの影響を受けるため、強い青・赤などの環境では水滴や濡れた光沢も着色して見える場合があります。v1.1.0には、明るさだけを維持して照明色の影響を無彩色化するユーザー向けオプションはありません。白色照明だけでなく、実際に使用する色付きワールドとミラーでも外観を確認してください。
-
-## Render Queueと影
-
-汗MaterialのRender Queue初期値は **2455** です。**描画順を自動設定（推奨）** と **ボディの Shadow Strength に合わせる** は初期状態でONです。衣装側が2755など別のRender Queueを使用していても、身体側の汗Materialとは個別に扱われます。
-
-メインBodyの汗は自動設定で2455を使用します。実験的な追加対象は、選択元Materialより後に描画するため `max(2455, 選択元MaterialのRender Queue + 1)` を使用します。
-
-:::warning[自動描画順の条件]
-**描画順を自動設定（推奨）** をONにすると、汗MaterialのRender QueueはBodyの値に追従するのではなく、常に **2455** に固定されます。汗をBodyより後に描画するため、選択したBody MaterialのRender Queueは **2454以下** にしてください。
-
-Body Materialを2454以下にできない場合は **描画順を自動設定（推奨）** をOFFにし、**汗のレンダーキュー（手動）** をBody Materialより大きい値に設定してください。
+:::warning[2500を超えるキュー]
+手動の汗のレンダーキューを **2500** より大きくすると、UnityのTransparentの並べ替え範囲に入ります。透明なワールドオブジェクト、髪、衣装、デカール、他のアバターマテリアルとの前後関係が、カメラの角度によって変わることがあります。2500を超えるキューは、アバターのマテリアル構成で必要な場合だけ使い、使う予定のワールドで複数の角度から確認してください。
 :::
 
-:::warning[Render Queueを2500より大きくする場合]
-Unityでは **2501以上** がTransparent Queueとして扱われ、距離やCamera Angleによる透明Sortの影響を受けます。汗や衣装の前後関係が角度によって変わる、輪郭が急に消える、他のTransparent Materialと順序が競合する場合があります。
+**ボディの Shadow Strength に合わせる** は既定でオンです。選択した汗の対象 Element に割り当てられた lilToon/Poiyomi マテリアルの `_ShadowStrength` を、RealSweatSystem の Cast Shadow Strength へコピーします。実行時の常時リンクではなく、**［インストール / 更新］** または **FX に適用** を押したときに更新されます。元シェーダーに該当プロパティがない場合、RealSweatSystem の現在値を維持します。
 
-Bodyの構成上どうしても手動Queueを2501以上にする場合は、Unity Play Modeだけでなく、VRChatの通常Camera・Mirror・近距離で確認してください。衣装との貫通だけを解決したい場合は、汗Queueを大きく上げる前に[RealSweatSystem Clothing Fix](./tools.mdx#realsweatsystem-clothing-fix)を使用してください。
-:::
+## ライティング {/* #lighting */}
+
+- **VRC Light Volumes:** v2.0.0 で対応を削除しました。肌の汗の環境光は Unity のライトプローブ（SH）だけを使います。**［インストール / 更新］** または **FX に適用** を押すと、既存の導入に残る「VRCライトボリューム」のメニュートグルと同期パラメーター（1bit）が外れます。
+- 色の強いワールドのライト、環境光、反射プローブによって、肌の汗に色が付くことがあります。リアルは、暗いワールドや反射プローブのないワールドでアニメより目立ちにくくなります。アップロード前に、使う予定のワールドとミラーで確認してください。
+- 暗い肌: 水滴が灰色の円盤のように見えず明るいきらめきが出るようになり、膜と流れ跡のぎらつきが減りました。白い肌、普通の肌、日焼けした肌は、濃い影の中の数ピクセルを除いてそのままです。
+
+### Light Limit Changer {/* #light-limit-changer */}
+
+Light Limit Changer（LLC）のメニューでアバターの明るさを変えると、肌の汗も同じ割合で追従します。アバターを暗くすると汗のハイライトも暗くなり、暗いワールドでは LLC の明るさの下限が肌と同じように汗も明るくします。
+
+- ボディの肌が lilToon または Poiyomi のときに動作します。設定は不要で、メニューやパラメーターも増えません。
+- LLC がない場合、汗の見た目は変わりません。LLC を導入していると、スライダーを動かさなくても汗に肌と同じ明るさの制限がかかるため、明るいワールドでは汗のハイライトも肌と同じように抑えられます。
+- 追従するのは LLC の明るさ（下限・上限）だけで、彩度・モノクロ、Unlit、色温度、エミッションなどのほかの調整は汗を変えません。
+- 落下する滴、床の濡れ跡、体の湯気、吐息のパーティクルは追従しません。
+
+## RealWet・RealRain
+
+- RealWet / Clothing Wetness は別の製品です。汗マテリアルの RealWet の濡れ連携は、v2.0.0 に更新してもそのまま残ります。
+- RealRain と一緒に使う場合、肌に付く雨は RSS が描くため、選んだ汗のスタイルにそのまま従います。服に付く雨粒のリアルなスタイルは RealRain のアップデートで提供され、RealRain がこのアバターの汗のスタイルを読み取って合わせます。
+
+## Moduleのバージョンとパラメーターの安全性
+
+- BaseとEffectsは同じリリースバージョンにそろえてください。バージョンが混ざっていると、Setup ウィンドウが同じバージョンで再インポートするよう知らせてインストールを止め、アバタービルドも停止します。
+- Setupは、導入予定のすべてのパラメーターをAvatar Expression Parametersと他のModular Avatar Parameters宣言（接頭辞・リマップを含む）に照合します。
+- 名前が衝突する場合はSetupを停止します。予測合計がVRChatの256bitのパラメーター上限を超える場合は、続行前に警告します。
+- 追加対象の検証とビルドの案内は、選択したツールUI言語に従います。UnityやNDMFの例外タイトルとスタックトレースは、英語のまま表示される場合があります。

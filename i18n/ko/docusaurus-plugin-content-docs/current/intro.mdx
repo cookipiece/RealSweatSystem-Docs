@@ -2,48 +2,61 @@
 id: intro
 title: Real Sweat System 문서
 slug: /
-description: Real Sweat System 공식 설치, 설정 및 문제 해결 가이드입니다.
+description: Real Sweat System 공식 설치, 사용, 호환성 및 문제 해결 가이드입니다.
 ---
 
 # Real Sweat System
 
-**Real Sweat System**은 PC용 VRChat 아바타에 실시간 땀 표현을 추가하는 시스템입니다. Radial Menu에서 Sweat %를 직접 조절하거나, 몸의 움직임에 따라 땀이 쌓이고 움직임을 멈추면 천천히 마르는 Auto Mode를 사용할 수 있습니다.
+**Real Sweat System**은 PC용 VRChat 아바타에 실시간 땀 표현을 추가하는 시스템입니다. 래디얼 메뉴에서 <strong>땀 %</strong>를 직접 조절하거나, 몸의 움직임에 따라 땀이 쌓이고 움직임을 멈추면 천천히 마르는 **자동 모드**를 사용할 수 있습니다.
 
 :::info[문서 기준 버전]
-이 문서는 **v1.1.0**을 기준으로 작성되었습니다. v1.0.0～v1.0.2 사용자는 패키지를 삭제하지 말고 [업데이트 절차](./update-changelog.mdx#v102에서-v110으로-업데이트)를 먼저 확인하세요.
+이 문서는 **Real Sweat System v2.0.0**을 기준으로 작성되었습니다. 피부 땀 모양, 설치 창, 몸 김을 새로 만든 큰 업데이트입니다. 1.x 설치를 업데이트하려면 [1.x에서 업데이트하는 방법](./quick-start.mdx#updating-from-1x)을 따라 주십시오.
 :::
 
 ## 표현할 수 있는 효과
 
-- 피부 표면에 맺히고 흐르는 땀
-- 중력 방향을 따라 자연스럽게 내려가는 물방울
-- 온몸에서 떨어지는 2D 또는 선택형 3D 땀방울
-- 충돌 튀김과 바닥에 남는 3×3 젖은 자국
-- 기본 부위와 원하는 Transform에서 피어오르는 몸 김
-- Viseme 및 VRCFT 입력에 반응하는 입김
-- 여러 Body Material Element와 별도 Skinned Mesh Renderer의 표면 땀(실험적 기능)
+- 피부에 맺히는 땀과 물방울. 스타일은 <strong>애니 (기본)</strong>와 **실사** 두 가지입니다.
+- 실제 중력을 따라 거의 곧게 내려가는 흘러내리는 물방울과 흐른 자국
+- 선택형 **물방울 입체감**: 가까이 있는 물방울이 피부 위로 실제로 솟습니다.
+- 떨어지는 땀방울과 짧은 튀김
+- 바닥을 어둡게 하는 바닥 물자국
+- 각 부위 주변에서 천천히 피어오르는 옅은 몸 김
+- Viseme 또는 VRCFT에 반응하는 입김
+- 낙하 물방울·몸 김·입김의 선택형 3D 파티클
+- 여러 Body Material Element와 별도 Skinned Mesh의 땀(실험적 기능)
 
-피부 표면의 땀은 **Sweat Base Module**, 낙하 물방울·바닥 물자국·입김·몸 김은 **Sweat Effects Module**에 포함됩니다. <strong>Full Pack (Base + Effects)</strong>은 두 모듈을 모두 포함한 완전 구성입니다.
+피부의 땀은 **Sweat Base Module**, 낙하 물방울·바닥 물자국·입김·몸 김은 **Sweat Effects Module**에 포함됩니다. <strong>Full Pack (Base + Effects)</strong>은 두 모듈을 모두 포함한 완전 구성입니다.
 
-v1.1의 3D 파티클과 바디 땀 거울 전체 품질은 기본값이 꺼진 고부하 옵션입니다. 기존의 가벼운 2D 파티클과 기존 거울 품질을 그대로 선택할 수 있습니다.
+## 시작하기 전에
+
+Real Sweat System에는 다음이 필요합니다.
+
+- Unity 2022.3
+- VRChat Avatars SDK3
+- Modular Avatar
+- Direct3D 11을 사용하는 PC 아바타
+
+Quest 단독 실행 환경은 지원하지 않습니다. 자동 모드는 Humanoid 아바타에서 사용할 수 있으며, 다른 아바타에서도 수동 모드는 사용할 수 있습니다.
 
 ## 목적별로 찾기
 
 - **처음 설치하기:** [패키지 안내](./package-guide.mdx) → [5분 빠른 시작](./quick-start.mdx)
+- **1.x에서 업데이트하기:** [1.x에서 업데이트하는 방법](./quick-start.mdx#updating-from-1x)
+- **v2.0.0에서 바뀐 점 보기:** [업데이트 및 변경 내역](./update-changelog.mdx#v200)
+- **구매 인증하기:** [구매 인증](./license-activation.mdx)
 - **인게임에서 땀 %와 자동 모드 조작하기:** [수동 모드와 자동 모드](./usage/modes.mdx)
-- **외형·감도·부하 조절하기:** [튜닝 가이드](./usage/tuning.mdx) → [성능 가이드](./performance.mdx)
+- **모양·감도·부하 조절하기:** [설치 창·Tuning 옵션 전체 안내](./usage/tuning.mdx) → [성능 가이드](./performance.mdx)
 - **낙하 물방울·바닥 물자국·입김·몸 김 확인하기:** [이펙트 가이드](./usage/effects.mdx)
-- **v1.0.x에서 안전하게 업데이트하기:** [업데이트 및 변경 내역](./update-changelog.mdx)
 - **표시되지 않거나 메뉴·동작이 이상한 문제 해결하기:** [문제 해결](./troubleshooting.mdx)
-- **Render Queue·Write Defaults·다른 아바타 툴 호환성 확인하기:** [호환성](./compatibility.mdx)
-- **추가 대상 관리·Clothing Fix·Rest Vertex Data Baker 알아보기:** [보조 도구](./tools.mdx)
+- **렌더 순서·Write Defaults·다른 아바타 툴 호환성 확인하기:** [호환성](./compatibility.mdx)
+- **Clothing Fix·Rest Vertex Data Baker 사용하기:** [보조 도구](./tools.mdx)
 
-처음 설치한다면 첫 번째 행의 두 문서를 순서대로 보면 설치와 기본 테스트까지 끝낼 수 있습니다. Face 적용과 수동 Rest 데이터 베이크는 일반 Body 설치에는 필요하지 않습니다.
+처음 설치한다면 첫 번째 행의 문서를 왼쪽부터 순서대로 보면 됩니다. 일반 Body 설치에는 수동 Rest 데이터 베이크가 필요하지 않습니다.
 
-:::warning[지원 플랫폼]
-Real Sweat System은 <strong>PC용 VRChat(D3D11)</strong>을 대상으로 합니다. Quest 단독 실행 환경에서는 사용할 수 없습니다.
+:::warning[백업해 두십시오]
+설치하거나 업데이트하기 전에 아바타와 프로젝트를 백업해 주십시오. 업데이트할 때는 백업을 프로젝트 밖에 두어 주십시오.
 :::
 
-:::warning[공식 Uninstall을 사용하세요]
-Real Sweat System을 제거할 때는 `RealSweat` 오브젝트나 `Assets/CookiTools/Generated`를 직접 삭제하지 마세요. **CookiTools > RealSweatSystem Setup／Uninstall > Uninstall**을 사용하고 [공식 제거 절차](./troubleshooting.mdx)를 따르세요.
+:::warning[공식 제거를 사용해 주십시오]
+Real Sweat System을 제거할 때는 `RealSweat` 오브젝트나 `Assets/CookiTools/Generated`를 직접 삭제하지 마십시오. `CookiTools → RealSweatSystem → Setup／Uninstall`을 열고 **제거** 탭을 사용해 [제거 절차](./troubleshooting.mdx#uninstall-reinstall-or-change-modules)를 따라 주십시오.
 :::

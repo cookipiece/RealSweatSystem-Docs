@@ -10,53 +10,111 @@ description: Safe update steps and release notes for Real Sweat System.
 
 This list summarizes the latest user-visible patches. Select a version to jump to its full details.
 
-- **[v1.1.0 — Current](#v110)**
-  - **New effects:** The lightweight 2D effects remain available, while optional 3D Breath, 3D Body Steam, and 3D Falling Drops with impact splashes were added. Floor Stains now use 3×3 variations, and Custom Steam Points let you place additional Body Steam where you want.
-  - **Menus and additional meshes:** Controls are now organized into **Sweat Display** and **Effects** menus, with new options such as **Hide Surface Sweat** and **Steam & Breath Intensity**. Experimental additional-mesh support can also apply sweat to multiple Material Elements on one Body Renderer and to additional SkinnedMeshRenderers.
-  - **Setup and stability:** Body auto-detection and Setup troubleshooting have been improved, with stronger checks for damaged Material Slots, parameter conflicts, and mixed module versions during Setup and build.
+- **[v2.0.0 — Current](#v200)**
+  - **New sweat look:** the skin sweat was rebuilt from scratch, with two styles picked by picture: **Anime (default)** and **Realistic**. **Droplet Depth** was rebuilt, and droplets close to the camera really rise from the skin in both styles.
+  - **New Setup window, body steam, falling drops, and splash:** the first screen shows only what you need, with the look and load picked there. Body steam rises softly from a wide area, falling drops and the splash were redrawn, and floor stains only darken the floor.
+  - **Lighter:** the first-load freeze other players get is about two-thirds shorter than in v1.1.3, and the default install at 100% sweat costs about half of v1.1.3's.
+- **[v1.1.3](#v113):** Fixed setup failing when Steam is disabled, and deselected effects no longer leave particles or dedicated FX behind.
+- **[v1.1.2](#v112):** Hide Surface Sweat uses a dedicated invisible material instead of an empty material slot.
+- **[v1.1.1](#v111):** Fewer repeated reference checks, improved No Tess uninstall handling, and per-stage diagnostic logs.
+- **[v1.1.0](#v110):** Optional 3D particles, Custom Steam Points, the Display Mask, and experimental additional meshes.
 - **[v1.0.2 — 2026-07-27](#v102--2026-07-27):** Added automatic Write Defaults detection and final-build correction to reduce cases where expressions or lip sync stopped during MMD playback.
 - **[v1.0.1 — 2026-07-27](#v101--2026-07-27):** Improved compatibility with VRCFT, Face Tracking, and Write Defaults OFF avatars so facial animation, sweat controls, and Auto Mode can work together.
 
 ## Safe update procedure
 
-1. Back up the avatar Prefab or Unity project.
+1. Back up the avatar and the project outside the project.
 2. Check the currently installed Real Sweat System version.
-3. Import every Base and Effects module you own at the same new version over the existing files.
-4. Do **not** Uninstall the old version or delete the `RealSweat` object or `Assets/CookiTools/Generated` first.
-5. Open **CookiTools > RealSweatSystem > Setup／Uninstall**, review the current Body Elements, experimental additional targets, and Setup options.
-6. Run the full **Setup — Install / Update** once. **Apply to FX alone does not update generated controller, menu, particle, or additional-mesh data.**
-7. Save the scene, check the Console, and test the avatar in Play Mode and with an avatar build before upload.
+3. Import every Base and Effects module you own at the same new version over the existing files. The import order does not matter.
+4. Do **not** uninstall the old version or delete the `RealSweat` object or `Assets/CookiTools/Generated` first.
+5. Open `CookiTools → RealSweatSystem → Setup／Uninstall` and press **[Install / Update]** once for each avatar. **Apply to FX alone does not do this update.**
+6. Save the scene, check the Console, and test the avatar in Play Mode and with an avatar build before upload.
 
-Mixing v1.0.x and v1.1.x Base/Effects modules is intentionally blocked during Setup and build.
+If the versions are mixed, the Setup window asks you to re-import them at the same version and does not install.
+
+For the 1.x → v2.0.0 update, read [Updating from 1.x](./quick-start.mdx#updating-from-1x) first: the look values of earlier sweat materials are set to the new defaults, and the first press of **[Install / Update]** stores new per-avatar data.
 
 For removal, clean reinstallation, or changing between Base, Effects, and Full Pack, follow [Uninstall, reinstall, or change modules](./troubleshooting.mdx#uninstall-reinstall-or-change-modules).
 
-## v1.1.0
+## v2.0.0 {/* #v200 */}
 
-### Updating from v1.0.0–v1.0.2 to v1.1.0
+This update applies to Core, which is shared by the Base Module, Effects Module, and Full Pack. The skin sweat look, the Setup window, and the body steam are new. To update, follow [Updating from 1.x](./quick-start.mdx#updating-from-1x).
 
-No intermediate release is required.
+### Highlights
 
-1. Back up the avatar and Unity project.
-2. Import every Base/Effects module you own at the **same v1.1.0 version** over the existing files.
-3. Do not Uninstall the old version or delete the `RealSweat` object or `Assets/CookiTools/Generated` first.
-4. Open `CookiTools → RealSweatSystem → Setup／Uninstall`.
-5. Review the current Body Elements, experimental additional targets, and installation options.
-6. Run **Setup — Install / Update** once, save the scene, and test an avatar build.
+- **Two sweat styles, picked by picture:** on the Setup window's first screen you click one of two pictures. **Anime (default)** has clear, cartoon-like droplets with bright highlights that read well from afar. **Realistic** has many small droplets that reflect the light and the surroundings; it is subtler and reads as a wet gloss from afar. The style is one per avatar, and Tuning's **Basic Settings > Sweat Style** changes it later.
+- **3D droplets in both styles:** Droplet Depth (tessellation, high load) was rebuilt. Up close, resting and running droplets really rise from the skin and look round from the side, in Anime and in Realistic. At the default precision it draws the same as without it from about 0.7 m away.
+- **New skin sweat look:** rebuilt from scratch: resting and running droplets, pore droplets, trails and their fresh sheen, the thin wet film, and the look from afar. Trails run almost straight down, as in v1.1.x. In Anime a running droplet has a rounded head and its trail joins it smoothly, so the trail and the droplet no longer look cut apart. In Realistic the small droplets a running droplet takes from its path no longer pop back right behind it; they return as the trail dries.
+- **Droplets that read clearly up close:** droplets are a little larger (Droplet Size 1.6) and their glint is larger and brighter. The material inspector's **Glint Size** and **Glint Strength** (Quick Setup, both 1.5) change the glint; 1 gives a calmer look.
+- **Sweat Flow:** a new slider in the material inspector's Quick Setup sets how many droplets run down steep skin, and how far. 1 (the default) is the standard look of each style; 0 keeps the droplets in place, 2 lets most of them run.
+- **Dark skin:** droplets show a bright glint instead of grey discs, and the film and trails look much less oily. Pale, normal, and tanned skin look the same.
+- **Droplet size from the body:** measured from the humanoid bone lengths of the spine and the legs, never from a bounding box, so hair, hats, accessories, and the pose do not change it. A droplet has the same size relative to the body on every avatar and every mesh (cm or m), and it scales with the avatar. Avatars without humanoid bones use the view position.
+- **New Setup window:** the first screen shows the status, where the sweat goes, what will be installed, the style pictures, the **Look** pictures (**Flat** / **Depth (High Load)**), the **Load** buttons (**Low Load (Recommended)** / **Standard**), Auto Mode sensitivity, and **[Install / Update]**; the other options are under **Advanced Settings**. **Depth (High Load)** turns on Droplet Depth, 3D Particles, and the drop splash together and shows **On from the Start** under it; a new install starts with **Flat**, without the splash. **Lightweight** is picked in **Advanced Settings > Quality & Load**. The tabs are Install / Troubleshooting / Uninstall, results appear right under the button you pressed, and the longer steps show a progress bar.
+- **New body steam:** instead of one big puff from a point, soft smudged steam rises slowly from a wide area around each spot (upper chest, shoulder line, front of the thighs and ankles). It follows the body when you walk, shows in worlds without a depth texture, does not glow in dark worlds, and uses fewer particles (a default install: at most 168 → 95).
+- **New falling drops and splash:** smaller drops that stretch as they fall and a short splash of round droplets, in both sweat styles and in 2D and 3D particles. 2D now has a splash too; the ring-shaped 3D crown is gone. Floor stains keep the soft shapes of 1.1.3 and only darken the floor.
+- **3D body steam and breath in the performance rank:** they look the same, and their Mesh Particle Active Polys in the VRChat performance rank are far lower (a default install's steam and breath: 96,000 → 92).
+- **Much lighter:** the shader compile freeze other players get when they first load this avatar is about two-thirds shorter than with v1.1.3. The default install at 100% sweat costs about half of v1.1.3's, and sweat at 0% costs far less. See the [measured numbers](./performance.mdx#measured-load).
+- **Render queue 2350:** the skin sweat now renders at queue 2350 (v1.1.x: 2455), so it no longer shares a queue with shadow or decal materials drawn over the body, and cutout clothing and hair cover it. If the body renderer has an opaque or cutout material at 2350 or above, Setup asks once whether to lower it to 2349 (recommended) and restores the original queue on uninstall.
+- **A screen copy of its own:** 2.0.0 sweat reads the skin from a screen copy with a new name, so it never mixes with v1.1.x sweat on the same screen. Sweat drawn at a queue other than 2350 uses the "(Late Queue)" shaders.
+- **Follows Light Limit Changer:** when Light Limit Changer (LLC) changes the avatar's brightness (its minimum and maximum light), the skin sweat follows with the same ratio. It works when the body skin uses lilToon or Poiyomi, with nothing to set up and no extra parameter.
 
-:::caution[Full Setup required]
-**Apply to FX alone does not install the v1.1 controller, menu, particles, additional-mesh data, or installer-driven migrations.** Importing v1.1 replaces the shared shader code immediately, so shader-only changes can already affect existing generated materials. A normal v1.0.2 installation can generally keep using its old generated controls before Setup, but the v1.1 generated features and Setup-dependent fixes require the full Setup.
-:::
+### Other changes
 
-Older generated data produces a dismissible Scene-view reminder. Updating generally preserves sensitivity, Overall Sweat Amount, automatic response, major toggles, and Steam locations. Direct edits to generated controllers, menus, clips, or particles can be overwritten, so back them up first.
+- **Sweat Quality** (was Overall Sweat Amount) picks one of three tiers: Standard, Low Load (Recommended, the default), and Lightweight. The amount of skin sweat is now the same in all three (0.30 at 30%, 1.00 at 100%), so avatars that used Low Load or Lightweight look sweatier than in v1.1.x.
+- Each avatar gets its own pattern number, so two copies of the same avatar do not sweat in the same places.
+- The new look needs Rest data, which Setup bakes. The material inspector and Tuning say when a material has none.
+- **High-Quality Sweat in Mirrors** off (the default): mirrors leave out the small pore droplets and Droplet Depth does not rise there.
+- **Remote Low Load** now lightens the skin sweat other players see in every tier. Other players see the body steam at 0.6× density instead of losing puffs.
+- The material inspector shows only what the new look reads; the presets became one **Reset Look** button.
+- Removed: milk mode, the body normal map's wet effect, the optical LUT, the flow guide map, the Rest pattern rotation, the manual Rest axis modes, and VRC Light Volumes support. The update removes the "VRC Light Volumes" menu toggle and its 1-bit parameter. Old values stay hidden in the materials, and avatar builds no longer upload the retired textures.
+- In-game menu names: Breath Puffs → Breath, Steam → Body Steam, Hide Surface Sweat → Hide Skin Sweat, Steam & Breath Intensity → Body Steam & Breath Intensity. Parameters and saved values are unchanged.
+- After Uninstall, a prefab instance whose material list matches the prefab again keeps no material override.
+- **3D particle body steam:** keeps v1.1.3's amount per tier (0.65× Standard's at Low Load and Lightweight). Puffs drawn at wrong places in the 2.0.0 test builds that only a few testers received (long streaks and stray coloured patches; v1.1.x never had this) are fixed as well. If an avatar uses 3D particles, press **[Install / Update]** or **Apply to FX** once and upload it again.
+- **3D particle body steam and breath without a depth texture:** they no longer disappear in worlds whose camera has no depth texture (for example, a world without a realtime directional light that casts shadows).
+- **Realistic at the body's outline:** the thin film's reflection of the sky no longer brightens toward the silhouette, so the light line along the body's outline is less than half as bright. Anime is unchanged.
+- **Falling drops, floor stains, and splash:** existing installs get the new look when you press **[Install / Update]** once. The default **Drop Particle Limit (Per System)** goes from 64 to 12, and the strong-movement drops use two thirds of it (8). Only installs still at 64 change. Updating a v1.1.x 2D particle install keeps it without a splash; to use the splash, turn on **Drop Splash** or choose **Depth (High Load)** before you press **[Install / Update]**.
 
-Migration details:
+### Known limitations
 
+- No sweat is drawn without valid Rest data, for example on a material before Setup or on a mesh changed after the bake (until the next build bakes again).
+- Droplet Depth costs more GPU up close and remains a high-load option.
+- Sweat 0% and Sweat Display off are not completely free: the screen copy for refraction (GrabPass, about +0.05 ms) remains. Only Hide Skin Sweat costs nothing.
+- Remote Low Load: where two surface directions meet (the sides of the torso and the arms, for example), a droplet can look cut straight at its lower edge on other players' screens. It is rare and small.
+- Realistic shows less than Anime at talking distance, in dark worlds, and in worlds without a reflection probe. In folds (above the navel, for example) a small droplet can look split in two, and droplets do not really merge. Its Lightweight places droplets a little differently from its Low Load and Standard.
+- RealRain's own realistic raindrops on clothes come with a RealRain update. The rain RealRain puts on the skin already follows the sweat style.
+
+### Going back
+
+v2.0.0 does not include the old look. If you need it, stay on v1.1.3. To go back after updating, restore the backup you made before updating.
+
+## v1.1.3 {/* #v113 */}
+
+- Fixed setup failing when Steam is disabled.
+- Particles and dedicated FX for deselected Breath, Body Steam, and Falling Drops are no longer created or left behind.
+- The pre-uninstall shared-asset check now batches dependency queries for scenes with many avatars or referenced files. Checks that preserve generated files used by other objects remain in place.
+
+## v1.1.2 {/* #v112 */}
+
+- Hide Surface Sweat now uses a dedicated invisible material instead of an empty material slot. A full Setup also regenerates the hide/show animations for existing Base installations.
+
+## v1.1.1 {/* #v111 */}
+
+- Reduced repeated reference checks during installation, updates, and removal.
+- Improved part of No Tess uninstall handling.
+- Added per-stage diagnostic logs.
+
+## v1.1.0 {/* #v110 */}
+
+### Updating from v1.0.0–v1.0.2
+
+No intermediate release is required. Today, v1.0.0–v1.0.2 installations update directly to v2.0.0 with [the same procedure](./quick-start.mdx#updating-from-1x). The following v1.1.0 migration details still apply to them:
+
+- Older generated data produces a dismissible Scene-view reminder. Press **[Install / Update]** in the Setup window when you are ready.
+- Existing sensitivity, Sweat Quality, automatic response, major toggles, and steam locations are mostly preserved. If you edited generated controllers, menus, clips, or particles directly, back them up because Setup can regenerate them.
 - Floor Stain `Pooling Chance` migrates from the exact old default `0.25` to the new default `0`. Other custom values are preserved.
 - Existing Body Steam mirror appearance is preserved as `Full`; new installations default to `Low`.
-- 3D Particle Quality and Full-Quality Body Sweat in Mirrors remain off unless selected in Setup.
-- Wet Skin Gloss follows the installed sweat material state during an update.
-- Uninstall is not required before updating, and generated assets are retained by Uninstall for Undo and Scene/Prefab safety.
+- 3D particles and full-quality Body Sweat in mirrors are not enabled automatically. Wet Skin Gloss also follows the installed material state when updating.
+- Mixing old and new Base/Effects module versions is blocked during Setup and build. Uninstall is not required.
 
 ### New and improved
 
@@ -65,9 +123,9 @@ Migration details:
 - The default 3D Falling Drops and motion-fling droplets are 8% smaller than the original scale for a more natural appearance.
 - Dedicated particle shaders and Body Steam `Full / Low / Hidden` mirror modes
 - Optional Full-Quality Body Sweat in mirrors
-- Wet Skin Gloss Setup control, VRC Light Volumes in-game toggle, and **Hide Surface Sweat**
+- Wet Skin Gloss Setup control, VRC Light Volumes in-game toggle, and **Hide Surface Sweat**. The VRC Light Volumes in-game toggle was removed in v2.0.0.
 - Final Body Surface Display Mask with channel, inversion, strength, tiling, and offset controls
-- Thin Wet Traces now default to `0` in the raw Tess／No Tess shaders and **Reset Visual**. Reset Visual also propagates the reset droplet size and pattern density to managed targets and dependent particle settings.
+- Thin Wet Traces default to `0` in the raw Tess／No Tess shaders and **Reset Visual**. Reset Visual also propagates the reset droplet size and pattern density to managed targets and dependent particle settings. In v2.0.0 the presets were replaced by one **Reset Look** button.
 - Experimental multiple Body Material Elements and additional `SkinnedMeshRenderer` targets
 - Tuning status, **Manage Targets...**, guided repair/removal, and build blocking for damaged generated slots
 - Custom Steam Points with per-point controls and mirrored pairs
@@ -76,7 +134,7 @@ Migration details:
 - 3×3 Floor Stain variation, brief impact spread, gentler overlap density, and revised drying
 - Safer Body auto-detection, broader parameter-collision checks, final Rest/tangent validation, d4rkAvatarOptimizer protection, mixed-module blocking, and Setup rollback
 - Build-time compatibility handling for late submesh `baseVertex` changes, preventing surface-sweat fragmentation in confirmed Modular Avatar Shape Changer Delete cases. Compatibility with every mesh-modifying tool or combination is not guaranteed.
-- Added an opt-in Falling Drops visibility compatibility setting under **Setup > Troubleshooting** for Body meshes whose built-in vertex colors can hide the particles. Default behavior is unchanged; it affects Falling Drops and motion flings only.
+- Added an opt-in Falling Drops visibility compatibility setting in the Setup window's **Troubleshooting** tab for Body meshes whose built-in vertex colors can hide the particles. Default behavior is unchanged; it affects Falling Drops and motion flings only.
 - Removed unused lighting and soft-particle shader variant axes from optional 3D Water particles without changing their appearance or GPU instancing.
 - Menu rename from **Sweat On** to **Sweat Display**; Effects now use a separate submenu
 
@@ -84,15 +142,15 @@ Migration details:
 
 - Experimental additional targets support `SkinnedMeshRenderer` only and add one sweat material and draw cost per configured target.
 - Each target requires readable mesh data, valid submesh/material/tangents, a unique animation path, and an unshared generated sweat-material lineage.
-- Do not delete, clear, move, replace, or merge a generated RealSweat material or Renderer slot. Use **Manage Targets...** and the full Setup to repair or remove the target.
+- Do not delete, clear, move, replace, or merge a generated RealSweat material or Renderer slot. Use **Manage Targets...** and **[Install / Update]** to repair or remove the target.
 - Face tracking, expressions, mesh merging, replacement, and optimization cannot be guaranteed in every combination. Avoid Tess around eyes and lips.
 - Floor Stains are collision sub-effects of Falling Drops and require Falling Drops to remain enabled.
 - Up to four Custom Steam slots can be active; mirrored pairs use two. Twelve combined built-in/custom emitters is the hard limit, and rate weight above `4.0` is normalized.
 - 3D particles and full-quality mirror options increase GPU load. In 3D mode, Body Steam `Low` currently costs the same as `Full`; use `Hidden` for the lowest mirror cost.
 
-The Full Pack maximum is **26 bits without Tess / 27 bits with Tess** when the optional intensity radial is not installed. Installing **Steam & Breath Intensity** adds one saved synchronized Float (8 bits), raising the maximum to **34/35 bits**.
+For the current synchronized parameter cost, see [Technical Specifications](./technical-specifications.mdx#synced-parameters).
 
-## v1.0.2 — 2026-07-27
+## v1.0.2 — 2026-07-27 {/* #v102--2026-07-27 */}
 
 ### Compatibility
 
@@ -103,14 +161,14 @@ The Full Pack maximum is **26 bits without Tess / 27 bits with Tess** when the o
 - Rechecks the final NDMF-merged FX controller during build and adjusts the RealSweat WD structure to the detected result
 
 :::note[Historical update note]
-v1.0.1 originally updated by importing v1.0.2 and running Setup once. Current v1.0.0 and v1.0.1 installations can update directly to v1.1.0 using the procedure above.
+Updating from v1.0.1 to v1.0.2 originally required a full Setup. Today, v1.0.0 and v1.0.1 can update directly to v2.0.0 by following [Updating from 1.x](./quick-start.mdx#updating-from-1x).
 :::
 
 :::caution[MMD worlds]
 With a WD OFF or mixed FX setup, expressions or Real Sweat System may not work correctly during MMD playback in some worlds, depending on how the world controls FX layers. See [Compatibility](./compatibility.mdx#mmd-world-compatibility).
 :::
 
-## v1.0.1 — 2026-07-27
+## v1.0.1 — 2026-07-27 {/* #v101--2026-07-27 */}
 
 ### Fixed
 
@@ -124,9 +182,9 @@ With a WD OFF or mixed FX setup, expressions or Real Sweat System may not work c
 - Clarified that Rest Vertex Data Baker is not normally used in everyday setup
 
 :::note[Historical update note]
-This release did not intentionally change the appearance or normal controls of working v1.0.0 installations. Current v1.0.0 installations can update directly to v1.1.0 using the procedure above.
+This release did not intentionally change the appearance or normal controls of working v1.0.0 installations. A current v1.0.0 installation can also update directly to v2.0.0 without an intermediate release.
 :::
 
 ## Documentation policy
 
-The current v1.x documentation is updated in place. Separate archived instructions are kept only when a future release requires substantially different installation steps.
+This documentation describes the current release and is updated in place. Separate archived instructions are kept only when a future release requires substantially different installation steps.

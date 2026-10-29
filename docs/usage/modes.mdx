@@ -19,23 +19,26 @@ Sweat
 │  ├─ All Effects
 │  ├─ Falling Drops
 │  ├─ Floor Stains
-│  ├─ Breath Puffs
-│  ├─ Steam
-│  └─ Steam & Breath Intensity (optional radial)
+│  ├─ Breath
+│  ├─ Body Steam
+│  └─ Body Steam & Breath Intensity (optional radial)
 └─ Reduce Load
-   ├─ Hide Surface Sweat
+   ├─ Hide Skin Sweat
    ├─ Remote Low Load
-   ├─ VRC Light Volumes
    ├─ Only Visible to Me
    └─ Droplet Depth (Tessellation / High Load)
 ```
 
 - **Remote Low Load** appears when Sweat Base Module is installed.
 - **Effects** appears when Sweat Effects Module is installed.
-- **Steam & Breath Intensity** appears only when its saved synchronized radial was selected during Setup.
-- **Droplet Depth (Tessellation / High Load)** appears only when tessellation support is installed.
+- **Body Steam & Breath Intensity** appears only when its saved synchronized radial was selected during Setup.
+- **Droplet Depth (Tessellation / High Load)** appears only when Droplet Depth was installed.
 
-Items for modules or options that are not installed are omitted automatically.
+Items for modules or options that are not installed are omitted automatically. In-game menu names are made in the Setup window's language when you press **[Install / Update]**.
+
+:::note[Menu names changed in v2.0.0]
+Breath Puffs → **Breath**, Steam → **Body Steam**, Hide Surface Sweat → **Hide Skin Sweat**, Steam & Breath Intensity → **Body Steam & Breath Intensity**. Parameters are unchanged, so saved values stay. The names change when you press **[Install / Update]** or **Apply to FX**. The old **VRC Light Volumes** toggle was removed.
+:::
 
 ## Manual Mode
 
@@ -43,11 +46,13 @@ Turn **Auto Mode** off and set **Sweat %** directly from 0–100%. Manual Mode i
 
 Manual and Auto Mode do not keep separate values. Turning Auto Mode off preserves the current **Sweat %** as the manual value. Turning it on again continues from that value instead of resetting the gauge.
 
+The menu gauge updates in 1% steps; remote Float synchronization has approximately 1/127 (0.8%) precision.
+
 ## Auto Mode
 
 **Auto Mode is on by default** after installation. It detects physical body movement: more movement builds Sweat % faster, and Sweat % gradually falls after movement stops.
 
-Tracked motion such as dancing, squats, exercise-ball movement, and torso sway can drive the sensor. **WASD locomotion and jumping are intentionally excluded**, including a short settling delay after locomotion, so simply moving through a world does not make the avatar sweat.
+Tracked motion such as dancing, squats, exercise-ball movement, and torso sway can drive the sensor. **WASD locomotion and jumping are intentionally excluded**, including a short settling delay after locomotion, so simply moving through a world does not make the avatar sweat. Motion response, build-up, and recovery use fixed 0.1-second updates, so their timing does not change with game FPS.
 
 - **Auto Mode Sensitivity** controls how strongly movement is interpreted.
 - The **Custom Accumulation Speed Curve** changes the build rate across the Sweat % range.
@@ -64,6 +69,8 @@ Auto Mode requires a Humanoid avatar with the expected Modular Avatar bone setup
 
 Use Sweat Display at 0% when you want the avatar to begin dry and get wetter naturally after movement starts.
 
+Sweat 0% and Sweat Display off are not completely free: the screen copy for refraction (GrabPass, about +0.05 ms) remains. Only **Hide Skin Sweat** removes the skin sweat's cost. See [Performance Guide](../performance.mdx).
+
 ## Quick behavior check
 
 1. Enable **Sweat Display**.
@@ -74,6 +81,6 @@ Use Sweat Display at 0% when you want the avatar to begin dry and get wetter nat
 
 ## Related guides
 
-- Change movement response in [Tuning Guide](./tuning.mdx).
-- Check Breath Puffs and Steam thresholds in [Effects Guide](./effects.mdx).
+- Change movement response in [Setup & Tuning Option Reference](./tuning.mdx).
+- Check Breath and Body Steam thresholds in [Effects Guide](./effects.mdx).
 - If the gauge or toggle does not respond, see [Troubleshooting](../troubleshooting.mdx#sweat-display-or-auto-mode-does-not-work).

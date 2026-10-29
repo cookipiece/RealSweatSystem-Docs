@@ -1,34 +1,58 @@
 ---
 id: performance
 title: Performance Guide
-description: Reduce Real Sweat System load while keeping the intended look.
+description: Reduce Real Sweat System load while keeping the intended look, with measured v2.0.0 numbers.
 ---
 
 # Performance Guide
 
-Real Sweat System load changes with the amount of sweat visible on screen, droplet density, tessellation, mirrors, particle effects, and how many avatars are being rendered.
+Real Sweat System load changes with the Sweat Quality tier, how much of the screen the sweat covers, Droplet Depth, mirrors, particle effects, and how many avatars are being rendered.
+
+v2.0.0 is much lighter than v1.1.3. The shader compile freeze other players get when they first load this avatar is about two-thirds shorter, the default install at 100% sweat costs about half of v1.1.3's, and sweat at 0% costs far less.
 
 ## Recommended adjustment order
 
-1. Keep **3D Particle Quality** off and use the default lightweight 2D particles.
-2. Turn **Droplet Depth (Tessellation / High Load)** off, if tessellation support was installed.
-3. Use **Low amount (Lightweight)** or **Low amount (Low Load)**.
-4. Lower Pattern Density if the avatar is still expensive at close range.
-5. Disable optional effects, starting with Steam.
-6. Set **Body Steam in Mirrors** to **Hidden** if mirror steam is not needed.
-7. Leave **Full-Quality Body Sweat in Mirrors** off.
-8. Enable **Remote Low Load** for other viewers.
-9. Use **Only Visible to Me** when remote visibility is not needed.
+1. Keep **3D Particles** off and use the default lightweight 2D particles.
+2. Keep the **Flat** look, or turn **Droplet Depth (Tessellation / High Load)** off in game if Droplet Depth was installed.
+3. Use **Low Load (Recommended)** instead of **Standard**. **Lightweight** leaves out a little more but costs about the same GPU time as Low Load.
+4. Disable optional effects, starting with Body Steam.
+5. Set **Body Steam in Mirrors** to **Hidden** if mirror steam is not needed.
+6. Leave **High-Quality Sweat in Mirrors** off.
+7. Enable **Remote Low Load** for other viewers.
+8. Use **Only Visible to Me** when remote visibility is not needed.
+9. Use **Hide Skin Sweat** when you do not need the skin sweat at all. It costs nothing.
 
 Make one change at a time and compare the same camera distance and mirror state.
 
-## Tess and No Tess
+## Measured load {/* #measured-load */}
 
-Tessellation support is optional and is not installed by default. If you include it, the avatar menu can switch **Droplet Depth** on or off.
+GPU time of the avatar as a multiple of the same avatar without RSS (lower is lighter). One PC (RTX 5090, D3D11, 2880 × 2880, no MSAA), Milltina filling 28% (full body) / 69% (upper body) of the screen, median of 7 alternating runs of 100 frames. Other GPUs give other multiples, so compare the rows with each other. Anime unless noted.
 
-When Droplet Depth is off, the system uses the No Tess material instead of continuing to process tessellation invisibly. Leave it off for general play and enable it only when its close-up shape is useful.
+| Full body / upper body | v1.1.3 | v2.0.0 |
+|---|---|---|
+| Default install (Low Load), sweat 100% | 5.04× / 4.44× | 2.68× / 2.36× (Realistic 2.61× / 2.27×) |
+| Standard, sweat 100% | 5.25× / 4.55× | 3.59× / 2.98× (Realistic 3.90× / 3.23×) |
+| Droplet Depth, Low Load, sweat 100% | 6.58× / 5.33× | 3.57× / 2.93× |
+| Default install as other players see it with Remote Low Load | 3.53× / 3.22× | 2.45× / 2.18× |
+| Sweat 0% | 2.10× / 2.09× | 1.18× / 1.10× |
+| Hide Skin Sweat | 1.00× / 1.00× | 1.00× / 1.00× |
 
-This surface-tessellation option is separate from **3D Particle Quality**, which changes Breath, Falling Drops, and Body Steam to mesh particles.
+- Anime Standard costs about as much as v1.1.3's Public material preset (3.21× / 2.86×); Realistic Standard costs a little more.
+- First load (shader compile freeze for other players, same PC): about 0.81 s with v1.1.3, about 0.27 s with v2.0.0.
+- An avatar uses only the shader of its own style, so other players' first load is about the same whichever style you pick.
+- Sweat 0% and Sweat Display off are not completely free: the screen copy for refraction (GrabPass, about +0.05 ms) remains. Only Hide Skin Sweat costs nothing.
+
+## Droplet Depth (Tess and No Tess)
+
+Droplet Depth is optional and is not installed by default. If you include it, the avatar menu can switch **Droplet Depth** on or off.
+
+It costs more GPU up close. At the default precision (Simplified) it draws the same as without Droplet Depth from about 0.7 m away (from about 1.5 m for Balanced and 2.2 m for Precise). When Droplet Depth is off, the system uses the No Tess material instead of continuing to process tessellation invisibly. Leave it off for general play and enable it only when its close-up shape is useful.
+
+This surface option is separate from **3D Particles**, which changes Breath, Falling Drops, and Body Steam to mesh particles.
+
+## Sweat style
+
+Realistic has slightly fewer shader instructions than Anime (3445 against 3506 at Standard). Its GPU time is about the same, up to about 14% more when the whole torso fills the screen up close. With Droplet Depth it costs about 1.07× Anime's Droplet Depth at Standard and about 0.95× at Low Load.
 
 ## Mirrors
 
@@ -39,17 +63,21 @@ A mirror draws the avatar through another camera, so visible shader and particle
 - At normal conversation distance
 - In a close-up where the Body fills much of the view
 
-If the drop is significant, first disable Droplet Depth and full-quality Body Sweat mirrors, set Body Steam mirrors to Hidden, then reduce Overall Sweat Amount or Pattern Density.
+If the drop is significant, first turn Droplet Depth off, leave High-Quality Sweat in Mirrors off, set Body Steam mirrors to Hidden, then lower Sweat Quality.
 
-**Full-Quality Body Sweat in Mirrors** restores surface droplet density, optics, Light Volumes, and Tess/No Tess quality in mirror cameras. It is off by default because it increases mirror GPU work.
+**High-Quality Sweat in Mirrors** is off by default. While it is off, mirrors leave out the small pore droplets and Droplet Depth does not rise there. When it is on, mirrors draw the same as the normal view, increasing mirror GPU load.
 
-Body Steam offers Full, Low, and Hidden mirror modes. In 2D mode, Low skips blur and weakens mirror presentation without reducing the number of particles. In 3D mode, Low currently costs the same as Full; use Hidden for the lowest mirror cost.
+Body Steam offers Full, Low, and Hidden mirror modes. 2D `Low` draws the steam in mirrors at 0.8× the density of `Full` without reducing particle count. 3D `Low` currently costs the same as `Full`; use `Hidden` for the lowest mirror cost.
 
 ## Remote Low Load
 
 **Remote Low Load** keeps your chosen local presentation while reducing the work shown to other users. It does not require a separate performance material to be uploaded by the user.
 
-This option is available when the Base Module is installed. With 3D particles, it also halves remote Falling Drop emission, disables remote strong-motion fling, and reduces remote Body/Custom Steam emission to 25%. Local quality is unchanged.
+Other users' screens draw No Tess without the small pore droplets, and at Low Load and Lightweight also without the residual beads and Anime's thin film lines, with less work where two surface directions meet (about 4-8% less GPU time for them at Low Load, 23-29% at Standard). Remote Body／Custom Steam keeps its puffs at 0.6× density (3D body steam: 25% of the puffs). With 3D particles, it also halves remote Falling Drop emission and disables remote strong-motion fling. Local quality is unchanged.
+
+## Render queue and screen copy
+
+2.0.0 sweat reads the skin from a screen copy (GrabPass). Sweat drawn at a queue other than 2350 (a kept body queue, another mesh after cutout, a manual queue) uses the "(Late Queue)" shaders and takes its own copy when it is drawn, which costs one more screen copy. See [Compatibility](./compatibility.mdx#render-queue-and-shadows).
 
 ## Multiple sweat targets
 
@@ -62,6 +90,10 @@ When the Effects Module is installed, open:
 **Sweat → Effects**
 
 Disable only the effects you do not need, or use **All Effects** as a single master control.
+
+- The splash adds 2 particle systems and 2 material slots, so the VRChat performance rank can drop one step (for example 15 → 17 material slots: Medium → Poor).
+- The new body steam uses fewer particles (a default install: at most 168 → 95), but the wider steam draws more pixels up close.
+- The 3D body steam and breath have far lower Mesh Particle Active Polys in the VRChat performance rank (a default install's steam and breath: 96,000 → 92).
 
 :::info[About FPS]
 FPS depends on the CPU, GPU, VR headset mode, world, mirrors, and every visible avatar. A specific FPS increase cannot be guaranteed from one setting change.

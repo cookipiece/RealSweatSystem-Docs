@@ -8,15 +8,21 @@ description: Diagnose common installation, animation, mesh, effect, and download
 
 Clear the Unity Console, reproduce the issue once, and begin with the **first error**. Later errors are often consequences of the first one.
 
+Normal-operation lines go to the Console only when **Write detailed logs to the Console** is on in the Setup window's **Troubleshooting** tab. Turn it on when you need more detail for a report.
+
 ## Quick symptom index
 
 - [No sweat is visible](#no-sweat-is-visible)
+- [The Setup window says "Installed with an older version."](#installed-with-an-older-version)
+- [The Setup window asks to re-import at the same version](#mixed-module-versions)
+- [Setup asks to lower body materials to 2349](#render-queue-question)
 - [The Sweat menu is missing or incomplete](#the-sweat-menu-is-missing-or-incomplete)
 - [Tuning changes are not applied](#tuning-changes-are-not-applied)
 - [Import or shader compilation takes a long time](#import-or-shader-compilation-takes-a-long-time)
 - [The face breaks in Play Mode or VRChat](#the-face-breaks-in-play-mode-or-vrchat)
 - [Expressions or lip sync stop during an MMD dance](#expressions-or-lip-sync-stop-during-an-mmd-dance)
 - [Sweat Display or Auto Mode does not work](#sweat-display-or-auto-mode-does-not-work)
+- [A warning says a duplicate avatar shares the generated files](#duplicate-avatar-shares-generated-files)
 - [An additional target shows Repair Required or blocks the build](#an-additional-target-shows-repair-required-or-blocks-the-build)
 - [Falling Drops or Floor Stains are missing or appear above the floor](#falling-drops-or-floor-stains-are-not-visible)
 - [It works in Unity but breaks only in VRChat](#it-works-in-unity-but-breaks-only-in-vrchat)
@@ -27,50 +33,71 @@ Clear the Unity Console, reproduce the issue once, and begin with the **first er
 - [Microsoft Defender warns about or blocks the download](#microsoft-defender-warns-about-or-blocks-the-download)
 - [Common usage tips](#common-usage-tips)
 
-## No sweat is visible
+## No sweat is visible {/* #no-sweat-is-visible */}
 
 First determine what was installed:
 
-- **Effects Module only** does not display skin sweat. It displays Falling Drops, Floor Stains, Breath Puffs, and Steam.
+- **Effects Module only** does not display skin sweat. It displays Falling Drops, Floor Stains, Breath, and Body Steam.
 - **Base Module** or **Full Pack** is required for sweat on the Body surface.
 
 For Base or Full Pack:
 
 1. In Play Mode, turn **Sweat Display** on.
 2. Turn the default **Auto Mode** off temporarily and set **Sweat %** to 50% or higher.
-3. Confirm that Setup uses the intended **Body Mesh** and skin-side **Body Elements**.
-4. With **Automatic render order (Recommended)** on, confirm that the selected Body material uses Render Queue **2454 or lower** and Sweat uses **2455**.
-5. Exit Play Mode, open **CookiTools > RealSweatSystem Setup／Uninstall**, and run **Setup — Install / Update** again.
-6. If another upload-time tool replaces or combines the Body, continue with [It works in Unity but breaks only in VRChat](#it-works-in-unity-but-breaks-only-in-vrchat).
+3. Check that **Hide Skin Sweat** under **Reduce Load** is off.
+4. In the Setup window, confirm that the **Sweat on** line shows the intended body mesh, and that only the skin materials are checked under **Advanced Settings > Sweat Target**.
+5. Check the Rest data. The new look draws sweat only where the Rest data is valid; it no longer falls back to a UV pattern. A material that is not installed yet, or a mesh that changed after the bake, may show no sweat in the Scene view. The **Rest Data** cell at the top of the material inspector and the Tuning's **Mesh and Rest Data Diagnostics** tell you when this happens. If the mesh changed, the next build (upload) bakes again from the final mesh.
+6. Check the render order. With automatic render order, the skin sweat renders at queue **2350**. If you chose **Keep As Is** for a body material at 2459 or later, the sweat is hidden where that material covers it. See [Setup asks to lower body materials to 2349](#render-queue-question).
+7. Exit Play Mode, open `CookiTools → RealSweatSystem → Setup／Uninstall`, and press **[Install / Update]** again.
+8. If another upload-time tool replaces or combines the Body, continue with [It works in Unity but breaks only in VRChat](#it-works-in-unity-but-breaks-only-in-vrchat).
 
-## The Sweat menu is missing or incomplete
+## The Setup window says "Installed with an older version." {/* #installed-with-an-older-version */}
+
+The avatar was installed with 1.x. Press **[Install / Update]** once for each avatar. **Apply to FX alone does not do this update.** Follow [Updating from 1.x](./quick-start.mdx#updating-from-1x) for the full procedure, including the backup.
+
+## The Setup window asks to re-import at the same version {/* #mixed-module-versions */}
+
+Base and Effects are at different versions. Import every Base／Effects module you own at the same version over the existing files, then open the Setup window again. Setup and avatar build intentionally stop while the versions are mixed. Uninstall is not required.
+
+## Setup asks to lower body materials to 2349 {/* #render-queue-question */}
+
+The skin sweat renders at queue 2350. If the body renderer (the renderer the sweat is installed on) has an opaque or cutout material drawn at 2350 or later, **[Install / Update]** asks once.
+
+- **Lower to 2349 (Recommended)** remembers each material's original queue and lowers it to 2349. **[Uninstall]** puts the original queue back. A queue you changed yourself in the meantime is kept.
+- **Keep As Is** draws the sweat at the highest such queue + 1, never past 2459. With a body material at 2459 or later, the kept sweat is hidden where that material covers it.
+- The answer is remembered per avatar. To decide again after Keep As Is, press **[Ask Again]** in **Advanced Settings > Compatibility**, then **[Install / Update]**.
+
+The material assets themselves are changed, so every avatar, prefab, and scene that uses them is affected. See [Compatibility](./compatibility.mdx#render-queue-and-shadows) for which materials are never changed.
+
+## The Sweat menu is missing or incomplete {/* #the-sweat-menu-is-missing-or-incomplete */}
 
 Menu entries depend on the imported modules and Setup options:
 
 - **Remote Low Load** requires Base.
 - **Effects** and its individual controls require Effects.
-- **Steam & Breath Intensity** appears only when the optional synchronized radial was selected in Setup.
-- **Droplet Depth (Tessellation / High Load)** appears only when **Install 3D Feature (Tessellation) (High Load)** was enabled during Setup.
+- **Body Steam & Breath Intensity** appears only when the optional synchronized radial was selected in Setup.
+- **Droplet Depth (Tessellation / High Load)** appears only when Droplet Depth was installed (the **Depth (High Load)** look, or the Droplet Depth toggle in **Advanced Settings > Quality & Load**).
+- The **VRC Light Volumes** toggle was removed in v2.0.0, and some names changed: Breath Puffs → Breath, Steam → Body Steam, Hide Surface Sweat → Hide Skin Sweat, Steam & Breath Intensity → Body Steam & Breath Intensity.
 
 If an expected entry is absent:
 
 1. Exit Play Mode and clear all compile errors.
 2. Confirm that **Modular Avatar** is installed and enabled in the project.
 3. Confirm that the required Base and/or Effects module is imported, with matching versions for Full Pack.
-4. Open **CookiTools > RealSweatSystem Setup／Uninstall** and run **Setup — Install / Update**.
+4. Open `CookiTools → RealSweatSystem → Setup／Uninstall` and press **[Install / Update]**.
 5. Start a fresh Gesture Manager or Play Mode preview so it rebuilds the current menu state.
 
-## Tuning changes are not applied
+## Tuning changes are not applied {/* #tuning-changes-are-not-applied */}
 
 Select the generated **RealSweat** object under the avatar root and use its **RealSweatSystem Tuning** component.
 
-- Material quality and supported surface-appearance controls update the Tess and No Tess materials immediately.
-- Automatic response, the custom curve, animated wetness, Falling Drops, fling particles, Breath Puffs, and Steam require **Apply to FX**.
-- **Follow Body Shadow Strength** reads the selected Body material when **Setup — Install / Update** or **Apply to FX** runs; it is not a live runtime link.
-- If the Inspector reports outdated routing, run **Setup — Install / Update** once, then press **Apply to FX** again.
-- Experimental additional targets configured by v1.1 Setup are tracked. An old manually added Face material is not tracked and should be replaced with an experimental Setup target if appropriate.
+- Sweat Quality changes the material quality immediately, and Sweat Style applies to every sweat material of the avatar at once.
+- Automatic response, the custom curve, Falling Drops, fling particles, Breath, and Body Steam require **Apply to FX**.
+- **Follow Body Shadow Strength** reads the selected Body material when **[Install / Update]** or **Apply to FX** runs; it is not a live runtime link.
+- If **Apply to FX** reports an installation configuration change, press **[Install / Update]** before applying tuning values. Adding or removing installed effects cannot be completed with Apply to FX alone.
+- Look values you change before pressing **[Install / Update]** for the 1.x update go back to the new defaults when you press it. Tune the look after the update.
 
-## Import or shader compilation takes a long time
+## Import or shader compilation takes a long time {/* #import-or-shader-compilation-takes-a-long-time */}
 
 The first package import can take longer while Unity imports assets, compiles shaders, and updates the Asset Database. This compile time is not the same as the shader's in-game runtime load.
 
@@ -78,32 +105,26 @@ The first package import can take longer while Unity imports assets, compiles sh
 - Do not repeatedly click Setup while Unity is still processing assets.
 - Resolve the **first Console compile error** before judging the import as complete.
 - Later imports can be faster because Unity reuses cached results. Cache behavior differs by PC and project.
+- In a big project, the first **[Install / Update]** after the 1.x update may take a little while; a progress bar shows it.
 
-## Updating from v1.0.0–v1.0.2 to v1.1.0
+## Updating from 1.x
 
-1. Back up the avatar or project.
-2. Import every Base/Effects module you own at the same v1.1.0 version over the existing files.
-3. Do not Uninstall the old version or delete the `RealSweat` object first.
-4. Review the current Body Elements, experimental additional targets, and Setup options.
-5. Run the full **Setup — Install / Update** once. **Apply to FX alone is not an update.**
-6. Check the face, Sweat Display, Sweat %, Auto Mode, installed Effects, and an avatar build.
+Follow [Updating from 1.x](./quick-start.mdx#updating-from-1x). In short: back up outside the project, import every module you own at the same v2.0.0 version over the existing files without uninstalling first, then press **[Install / Update]** once for each avatar. **Apply to FX alone is not an update.**
 
-Importing the package replaces the shared shader code immediately, so shader-only changes can already affect existing generated materials. The full Setup is still required for v1.1 generated controllers, menus, particles, additional-target data, and installer-driven migrations.
-
-## The face breaks in Play Mode or VRChat
+## The face breaks in Play Mode or VRChat {/* #the-face-breaks-in-play-mode-or-vrchat */}
 
 This can occur when an older Real Sweat setup conflicts with a Write Defaults OFF Face Tracking animator.
 
-1. Update every owned module to the same v1.1.0 version.
+1. Update every owned module to the same current version.
 2. Undo any diagnostic changes made to the generated Animator field or Merge Animator Priority.
-3. Run Setup again.
+3. Press **[Install / Update]** again.
 4. Confirm that facial expressions, sweat toggles, and Auto Mode all work together.
 
 Do not use a manually changed animator order as a permanent workaround.
 
-## Expressions or lip sync stop during an MMD dance
+## Expressions or lip sync stop during an MMD dance {/* #expressions-or-lip-sync-stop-during-an-mmd-dance */}
 
-1. Update every owned module to the same v1.1.0 version and run **Setup — Install / Update** once.
+1. Update every owned module to the same current version and press **[Install / Update]** once.
 2. Set **Write Defaults Compatibility** to **Auto Detect (Recommended)**.
 3. Update Modular Avatar and enable MMD World Support when it is needed by the target setup.
 4. Test expressions, lip sync, Sweat Display, and Auto Mode in the actual MMD world you intend to use, not only in Play Mode.
@@ -112,32 +133,38 @@ When every external FX state uses WD ON, Real Sweat System also uses WD ON for t
 
 Forcing only RealSweat to WD ON can recreate a mixed ON/OFF controller when external states use WD OFF. Do not use a forced mode as a permanent workaround unless you know the target avatar or MMD environment requires an all-WD-ON FX controller.
 
-## Sweat Display or Auto Mode does not work
+## Sweat Display or Auto Mode does not work {/* #sweat-display-or-auto-mode-does-not-work */}
 
 - Confirm that **Sweat Display** is enabled.
 - For manual control, disable Auto Mode and adjust Sweat %.
-- For Auto Mode, confirm that the avatar is Humanoid and has the required bone reference.
+- For Auto Mode, confirm that the avatar is Humanoid and has the required bone reference. Auto Mode requires a Humanoid Animator and MA Bone Proxy; if they are unavailable, Setup installs Manual Mode only.
 - Do not manually edit the generated animator or its ordering.
-- Run **Setup — Install / Update** again after importing a newer version.
+- Press **[Install / Update]** again after importing a newer version.
 
-## Body Mesh is not detected
+## A warning says a duplicate avatar shares the generated files {/* #duplicate-avatar-shares-generated-files */}
 
-Assign the Hierarchy object with the correct skin-side `SkinnedMeshRenderer` manually. Do not assign an `.fbx` or Mesh asset from the Project window. The Renderer must have a valid mesh and at least one valid submesh.
+First press **[Install / Update]** on the avatar you want to adjust. Only the selected avatar's generated files are separated; you do not need to delete the other duplicates.
 
-The primary Body must be selected manually if auto-detection is weak or ambiguous. Experimental additional targets are added separately and must be `SkinnedMeshRenderer` components.
+If you saved a duplicate of the avatar in another scene or as a prefab, a closed duplicate does not show in the Tuning Inspector's warning, so Tuning changes made before separating also change the duplicate's sweat settings. **Apply to FX** also checks saved scenes and prefabs: when a duplicate uses the same generated files, it changes nothing and shows this warning.
+
+## The body mesh is not detected
+
+The body mesh is found automatically and shown on the **Sweat on** line. If it is not found or the wrong Renderer is shown, use a Hierarchy object with the correct skin-side `SkinnedMeshRenderer`; an `.fbx` or Mesh asset from the Project window cannot be used. The Renderer must have a valid mesh and at least one valid submesh.
+
+Experimental additional targets are added separately in **Advanced Settings** and must be `SkinnedMeshRenderer` components.
 
 ## Sweat appears on the wrong material slot
 
-For a Body with multiple submeshes, choose only the exact skin-side **Body Elements** by the material names displayed beside them, then run Setup again. Do not assume Element 0 is the skin.
+For a Body with multiple materials, check only the skin materials under **Advanced Settings > Sweat Target**, then press **[Install / Update]** again. Do not assume Element 0 is the skin.
 
-## An additional target shows Repair Required or blocks the build
+## An additional target shows Repair Required or blocks the build {/* #an-additional-target-shows-repair-required-or-blocks-the-build */}
 
-Do not delete, clear, move, replace, or merge a generated RealSweat material or Renderer slot to disable an experimental target. v1.1 treats a changed generated slot as installation damage and blocks the avatar build instead of falling back to another slot or silently skipping the target.
+Do not delete, clear, move, replace, or merge a generated RealSweat material or Renderer slot to disable an experimental target. A missing or changed generated material/slot is treated as installation damage, shown as **Repair Required** in Tuning, and blocks the avatar build instead of silently omitting the target.
 
 1. Select the generated **RealSweat** object.
 2. In **RealSweatSystem Tuning**, use **Manage Targets...** or **Open Setup to Repair...**.
-3. To keep the target, verify its Renderer and Element, then run the full Setup to regenerate its material/slot, shell, Rest data, animations, and optional Falling Drops.
-4. To remove it, use `-` in Setup and then run the full Setup.
+3. To keep the target, verify its Renderer and Element, then press **[Install / Update]** to rebuild its material/slot, shell, Rest data, animation, and optional Falling Drops.
+4. To remove it, use `-` in the list and then press **[Install / Update]**.
 
 Console guidance from Real Sweat System follows the selected tool UI language. Unity/NDMF exception headings and stack traces may remain in English.
 
@@ -145,7 +172,7 @@ Console guidance from Real Sweat System follows the selected tool UI language. U
 
 Choose **Create Safe Copy (Recommended)**. This is the supported fallback for a source mesh without suitable tangent data.
 
-## It works in Unity but breaks only in VRChat
+## It works in Unity but breaks only in VRChat {/* #it-works-in-unity-but-breaks-only-in-vrchat */}
 
 An optimizer, retargeter, or other upload-time tool may be replacing the Body Renderer or mesh after Real Sweat System prepares it.
 
@@ -157,9 +184,9 @@ If the tool provides an exclusion feature, add the Body Renderer used by Real Sw
 
 Compatibility cannot be guaranteed with a tool that provides no way to exclude the Body. Back up the avatar and compare the result with that tool disabled.
 
-After changing the tool settings, select the final Body in Edit Mode and run **Setup — Install / Update** again. Verify both Play Mode and the actual VRChat upload. Real Sweat System cannot automatically repair an arbitrary mesh replacement performed later by another build-time tool.
+After changing the tool settings, select the final Body in Edit Mode and press **[Install / Update]** again. Verify both Play Mode and the actual VRChat upload. Real Sweat System cannot automatically repair an arbitrary mesh replacement performed later by another build-time tool.
 
-## An existing PhysBone stops moving after installation
+## An existing PhysBone stops moving after installation {/* #an-existing-physbone-stops-moving-after-installation */}
 
 Real Sweat System adds its own Auto Mode PhysBone and parameters under `RealSweat`. It is not designed to modify or delete existing avatar PhysBones such as chest PhysBones.
 
@@ -172,113 +199,108 @@ If the existing PhysBone still does not move after uninstalling Real Sweat Syste
 
 ## Rest data cannot be regenerated
 
-Confirm that the final source mesh is readable and that the selected sweat submesh still exists. Reassign the correct Body Mesh and Body Element before running Setup again.
+Confirm that the final source mesh is readable and that the selected sweat submesh still exists. Check the **Sweat on** line and **Advanced Settings > Sweat Target** before pressing **[Install / Update]** again.
 
 The **Rest Vertex Data Baker** is a support or advanced-maintenance tool. It is not normally needed during everyday use. See [Auxiliary Tools](./tools.mdx) before running it manually.
 
 ## Tessellated droplets pass through clothing
 
-Apply **RealSweatSystem Clothing Fix** to the affected clothing, or turn **Droplet Depth (Tessellation / High Load)** off to use No Tess. See [Auxiliary Tools](./tools.mdx) for the complete workflow and cautions.
+Open `CookiTools → RealSweatSystem → Clothing Fix` and apply it to the affected clothing, or turn **Droplet Depth (Tessellation / High Load)** off to use No Tess. See [Auxiliary Tools](./tools.mdx) for the complete workflow and cautions.
 
 ## Effects-only setup shows no particles
 
-The Effects Module does not modify the Body, but it still needs the Body Mesh as its emission surface. Confirm that the correct Body is assigned and that the particle controls are enabled under:
+The Effects Module does not modify the Body, but it still needs the Body Mesh as its emission surface. Confirm that the correct Body is shown on the **Sweat on** line and that the particle controls are enabled under:
 
 **Sweat → Effects**
 
-## Falling Drops or Floor Stains are not visible
+## Falling Drops or Floor Stains are not visible {/* #falling-drops-or-floor-stains-are-not-visible */}
 
-1. Confirm that **Falling Drops** was selected in Setup. Floor Stains also require Falling Drops because they are collision sub-effects.
+1. Confirm that falling drops were selected in **Advanced Settings > Effects to Install**. Floor Stains also require Falling Drops because they are collision sub-effects.
 2. In **Sweat → Effects**, turn on **All Effects**, **Falling Drops**, and **Floor Stains**. For a manual test, turn Auto Mode off and set **Sweat %** to 100%.
 3. If Falling Drops are visible but Floor Stains are not, test a world floor with a Collider on the **Default** or **Environment** layer.
 4. If Falling Drops or Floor Stains appear suspended above the floor, a Unity physics Collider inside or beneath the avatar—such as a Box, Capsule, or Mesh Collider on the body, feet, clothing, an accessory, or a test object—may be intercepting the collision before the world floor when it uses the **Default** or **Environment** layer. This does not refer to a VRC PhysBone Collider. Temporarily disable the suspected Unity Colliders one at a time for an isolation test. If the stain then appears on the world floor, an intervening Collider was the cause.
-5. If no Falling Drops are emitted only from one particular Body Renderer while another avatar works, exit Play Mode and open **CookiTools > RealSweatSystem > Setup／Uninstall > Troubleshooting**.
-6. Select the avatar, click **Try Falling Drops Visibility Fix**, save the scene, and check both Play Mode and **Build & Test**.
-7. This opt-in setting makes installed Falling Drops and motion flings ignore the Body's built-in vertex colors. It does not modify the Body mesh, materials, FX controller, or Floor Stain settings, and the default behavior remains unchanged until you apply it.
-8. If it does not help, click **Restore Default Falling Drops Behavior** before sending a support report. Include the Renderer, Element, mesh-import settings, and particle Shape screenshots.
+5. If no Falling Drops are emitted only from one particular Body while another avatar works, exit Play Mode and open the **Troubleshooting** tab of the Setup window.
+6. Press **[Apply Fix]**, save the scene, and check both Play Mode and **Build & Test**.
+7. This opt-in compatibility setting makes installed Falling Drops and motion flings ignore the Body's built-in vertex colors. It does not modify the Body mesh, materials, FX controller, or Floor Stain settings, and the default behavior is unchanged until you apply it.
+8. If it does not help, press **[Restore Default]** before sending a support report. Include the Renderer, Element, mesh-import settings, and particle Shape screenshots.
 
-Do not rerun the entire surface-sweat Setup on a Face Renderer merely to diagnose Falling Drops; doing so changes the selected surface target.
+Do not rerun the surface-sweat Setup on a Face Renderer merely to diagnose Falling Drops; doing so changes the selected surface target.
 
 ## The first build fails but a second build succeeds
 
 Immediately after import, shader compilation and Asset Database processing may still be in progress. Wait for Unity to finish importing, resolve the **first Console error**, and then build again. A successful second build does not mean that every error from the first build can be ignored.
 
-## Invalid localAABB mentions Exhale
+## Invalid localAABB mentions Exhale {/* #invalid-localaabb-mentions-exhale */}
 
 If the Console repeatedly reports an invalid local AABB and the message points to the breath object:
 
 1. Check the avatar hierarchy for invalid transforms or extreme scale values.
-2. Temporarily turn Breath Puffs off to confirm whether the repeated log stops.
-3. Use v1.0.1 or later.
+2. Temporarily turn Breath off to confirm whether the repeated log stops.
+3. Use the current version.
 
 A breath-object bounds error and a facial animator conflict can be separate issues, so verify both independently.
 
-## Uninstall, reinstall, or change modules
+## Uninstall, reinstall, or change modules {/* #uninstall-reinstall-or-change-modules */}
 
 Back up the avatar or project first.
 
 ### Remove the installed avatar setup
 
-1. Open **CookiTools > RealSweatSystem Setup／Uninstall**.
+1. Open `CookiTools → RealSweatSystem → Setup／Uninstall`.
 2. Select the **Uninstall** tab and assign the avatar.
-3. Press **Uninstall — Remove** and wait for Unity to finish.
+3. Press **[Uninstall]** and wait for Unity to finish. The longer steps show a progress bar, and the result appears right under the button.
 4. Check that the generated **RealSweat** object is gone.
 5. For Base or Full Pack, confirm that the primary Body and additional targets no longer reference generated RealSweat meshes and that the RealSweat material slots added by Setup are gone. Effects-only does not modify Body meshes or materials, so this check is not required.
 6. Test the avatar before upload.
 
-v1.1 retains generated assets for Undo and Scene/Prefab safety. Because the installation uses Modular Avatar, its generated menu, parameters, and FX integration are not included in the next build after the RealSweat object is removed. If ownership, folder sharing, or original-mesh restoration cannot be verified, Uninstall makes no changes or rolls the transaction back. Restore the original mesh before any Setup retry.
+Do not delete only the `RealSweat` object or component: Uninstall must restore the Body mesh/materials and external effect objects. Thanks to Modular Avatar's non-destructive build, menu/parameters/FX revert automatically on the next build. Sweat materials/slots you created yourself are never touched.
 
-<a id="manual-delete-recovery" />
+Uninstall removes the installation object, its descendants, and its dedicated generated folder. Generated files shared by another avatar or object in the current scene are retained, and the generated folder is kept when another saved scene or prefab uses the same generated files or that check cannot finish. Original bodies, outfits, and external assets are not deleted. Removal stops if the original mesh cannot be restored; check its reference before trying again. Body materials lowered to 2349 at install get their original render queue back.
 
-### If only the `RealSweat` object was deleted
+### If only the `RealSweat` object was deleted {/* #manual-delete-recovery */}
 
-Setup can replace the Body Renderer mesh with a generated mesh that contains an additional sweat submesh and append a RealSweat material slot. The original/generated mesh mapping is stored on the generated `RealSweat` object. Deleting only that object can remove the Modular Avatar menu, parameters, and FX from the next build while leaving the generated Body mesh and sweat material slot assigned.
+Setup can replace the Body Renderer mesh with a generated mesh that contains an additional sweat submesh and append a RealSweat material slot. The original/generated mesh mapping is stored on the generated `RealSweat` object. Deleting only that object can remove the menu, parameters, and FX from the next build while leaving the generated Body mesh and sweat material slot assigned.
 
-If you deleted **only the `RealSweat` GameObject from the Hierarchy**, have not deleted any Project assets, and the deletion just happened, use **Ctrl+Z** to restore that object. Then remove the installation with **Setup／Uninstall > Uninstall**.
+1. **Only if you deleted the `RealSweat` GameObject from the Hierarchy and did not delete any Project assets**, use **Ctrl+Z** immediately to restore the object, then press **[Uninstall]**.
+2. If Undo is unavailable, back up the current avatar and do not delete `Assets/CookiTools/Generated`.
+3. Restore **Skinned Mesh Renderer > Mesh** on the Body to the exact mesh used immediately before installation. Use a pre-installation backup or the original Prefab; when possible, revert only the Mesh property.
+4. With the original mesh assigned, press **[Uninstall]**. Only if ownership recovery is still requested, press **[Install / Update]** once and then uninstall again.
+5. If automatic recovery still cannot verify the installation, restore the Body **Materials** array—and any additional target Renderer—from the same backup, preserving the original references, order, and slot count.
 
-If Undo is unavailable, inspect **Body > Skinned Mesh Renderer > Mesh** first. If only the `RealSweat` object was deleted, the Project assets are still present, and the Body already uses the exact pre-installation Mesh, confirm **Body Mesh**, **Body Elements**, and any additional targets, then run Setup again. Settings stored only on the deleted object may return to their defaults.
-
-Deleting `Assets/CookiTools/Generated` is a different incident. Do **not** rely on Ctrl+Z to recover a deleted Project folder; follow [the Generated-folder recovery steps below](#if-the-generated-folder-was-deleted-and-the-body-disappeared) and reconnect the exact pre-installation Body Mesh first.
-
-If Undo is no longer available:
-
-1. Back up the current avatar and do **not** delete `Assets/CookiTools/Generated` or any remaining generated assets.
-2. Restore **Skinned Mesh Renderer > Mesh** on the Body to the exact mesh used immediately before RealSweatSystem was installed. Use the pre-installation backup or original avatar Prefab; when possible, revert only the Mesh property.
-3. With the original mesh restored, run **Uninstall**. If ownership recovery is still requested, run the full Setup once **only while the original mesh is assigned**, then run Uninstall again.
-4. If automatic recovery still cannot verify the installation, restore the Body **Materials** array—and any additional target Renderer—from the same backup, preserving the original references, order, and slot count.
-
-:::warning[Do not run Setup while the generated Body mesh is still assigned]
-Without the original tracking object, Setup cannot safely know that `RealSweat_BodyShellMesh`, a mesh whose name ends in `_RealSweatTangents`, or another mesh under `Assets/CookiTools/Generated` is already generated and may treat it as a new source mesh. Do not run Setup while the Body Mesh is generated or **Missing**. Restore the original Body mesh first. If the exact pre-installation mesh cannot be identified, do not force-delete generated assets; recover from a backup or compare against a clean copy of the avatar.
+:::warning[Do not assume Ctrl+Z will recover a deleted Generated folder]
+Follow [the Generated-folder recovery steps below](#if-the-generated-folder-was-deleted-and-the-body-disappeared) and reconnect the exact pre-installation Body Mesh first.
 :::
 
-### If the `Generated` folder was deleted and the Body disappeared
+:::warning[Do not press Install / Update while the generated Body mesh is still assigned]
+Do not press **[Install / Update]** while a generated Body mesh such as `RealSweat_BodyShellMesh` is still assigned. Without the original tracking object, Setup may treat that generated mesh as a new source. If the exact pre-installation mesh cannot be identified, do not force-delete generated assets; recover from a backup or compare against a clean copy of the avatar.
+:::
 
-Base or Full Pack Setup may save a generated Body Mesh with an additional sweat submesh under `Assets/CookiTools/Generated/<AvatarName>` and assign it to the Body Renderer. Manually deleting that folder, or the entire parent `CookiTools` folder, can remove the Mesh asset still referenced by the Body and make the Body disappear.
+### If the `Generated` folder was deleted and the Body disappeared {/* #if-the-generated-folder-was-deleted-and-the-body-disappeared */}
 
-Deleting only the `Assets/CookiTools/RealSweatSystem` product folder normally leaves the generated Mesh in its separate folder. In that case, first reimport the same package version you own. If `Generated` was also deleted:
+Base or Full Pack Setup may save a generated Body Mesh with an additional sweat submesh under `Assets/CookiTools/Generated/<AvatarName>` and assign it to the Body Renderer. Manually deleting that folder, or the entire parent `CookiTools` folder, can remove the Mesh asset still referenced by the Body and make the Body disappear. Deleting only the `Assets/CookiTools/RealSweatSystem` product folder normally leaves the generated Mesh in its separate folder; first reimport the same package version you own.
 
-1. Exit Play Mode and back up the current avatar. Reimport the product files if needed, but do not run Setup yet.
+1. Exit Play Mode and back up the current avatar. Even after reimporting the product files, do not press **[Install / Update]** yet.
 2. Using the original avatar Prefab or a pre-installation backup, restore **Skinned Mesh Renderer > Mesh** on the Body to the exact Mesh used immediately before RealSweatSystem was installed. When possible, **Revert** only the Prefab Mesh property.
 3. If additional sweat targets were installed, restore each target Mesh too. If the Body or additional-target **Materials** array still contains Missing or RealSweat slots, restore its original references, order, and slot count from the same backup.
-4. To keep using RealSweatSystem, import every Base／Effects module you own at the same version and run **Setup — Install / Update**. To remove it, keep the original Mesh assigned and use the official **Uninstall**.
+4. To keep using RealSweatSystem, import every Base／Effects module you own at the same version and press **[Install / Update]**. To remove it, keep the original Mesh assigned and use **[Uninstall]**.
 
-If you cannot identify the exact original Mesh, do not assign a guess or run Setup while the Mesh is Missing. Compare against a pre-installation backup or a clean copy of the avatar without RealSweatSystem.
+If you cannot identify the exact original Mesh, do not assign a guess or press **[Install / Update]** while the Mesh is Missing. Compare against a pre-installation backup or a clean copy of the avatar without RealSweatSystem.
 
 ### Reinstall or update
 
-1. Import the intended current package or packages over the existing files. For a normal v1.0.x → v1.1.0 update, do not Uninstall first or delete the existing `RealSweat` object or `Assets/CookiTools/Generated`.
+1. Import the intended current package or packages over the existing files. For an update from 1.x, do not uninstall first or delete the existing `RealSweat` object or `Assets/CookiTools/Generated`; follow [Updating from 1.x](./quick-start.mdx#updating-from-1x).
 2. Keep Base and Effects on the same exact version when both are installed.
-3. Open the **Install** tab in **CookiTools > RealSweatSystem Setup／Uninstall**.
-4. Confirm **Avatar**, **Body Mesh**, **Body Elements**, and experimental additional targets.
-5. Run **Setup — Install / Update**, then test Manual Mode, Auto Mode, the face, and installed Effects.
+3. Open the **Install** tab in `CookiTools → RealSweatSystem → Setup／Uninstall`.
+4. Confirm **Avatar**, the **Sweat on** line, **Advanced Settings > Sweat Target**, and experimental additional targets.
+5. Press **[Install / Update]**, then test Manual Mode, Auto Mode, the face, and installed Effects.
 
-To expand Base or Effects into Full Pack, import the missing same-version module and run Setup again. To return from Full Pack to one module, uninstall the avatar setup first, remove the module package files you no longer want from the Unity project, and then reinstall with the remaining module.
+To expand Base or Effects into Full Pack, import the missing same-version module and press **[Install / Update]** again. To return from Full Pack to one module, uninstall the avatar setup first, remove the module package files you no longer want from the Unity project, and then reinstall with the remaining module.
 
 :::warning[Manual additions are not removed]
 Uninstall does not remove materials, Renderer slots, Rest assets, or Animation changes that you created manually outside the supported Setup. Restore unsupported manual changes from your backup.
 :::
 
-## Microsoft Defender warns about or blocks the download
+## Microsoft Defender warns about or blocks the download {/* #microsoft-defender-warns-about-or-blocks-the-download */}
 
 The Microsoft Defender alert reported on some systems for the v1.0.0 release package was classified by Microsoft as a false positive, and Microsoft issued a detection update.
 
@@ -288,36 +310,23 @@ Defender security-intelligence and cloud-protection updates can reach individual
 - Download the current version again from your BOOTH purchase library.
 - If the warning continues, confirm the exact detection name, filename, and Real Sweat System version.
 
-## Common usage tips
+## Common usage tips {/* #common-usage-tips */}
 
-### Temporarily hide skin sweat in the Unity editor
+### Show Breath in your own first-person view
 
-To clear the sweat preview in the Scene view without uninstalling the system:
+Breath being hidden from the wearer's first-person view is the normal default. To see it yourself, enable **Show My Breath in First Person** in Tuning. It requires a valid Head bone and a Modular Avatar version that includes MA Visible Head Accessory; if it reports that MA Visible Head Accessory is unavailable, update Modular Avatar in VCC.
 
-1. Exit Play Mode.
-2. Open the generated Real Sweat material used by the Body. Do not edit the original skin material.
-3. In the material Inspector, open **Basic > Sweat Amount** (`_DropletAmount`), record the current value, and set it to `0`.
-4. Record the previous value and restore it before normal testing or upload. A new installation normally starts at `1`, but a customized material may use another value.
+Build and verify the result in VR, not only in Gesture Manager. The particles can overlap the face or camera at some avatar scales, which is why the option is off by default.
 
-Use this only as an editor-preview adjustment. It is different from using **Sweat Display + Sweat 0%** in the VRChat menu, and Play Mode animations control the runtime value. Do not remove a generated material slot. If Tessellation support is installed, apply the same temporary value to both generated Tess and No Tess materials so either Droplet Depth state remains hidden.
+### Keep sweat off selected body areas
 
-### Show Breath Puffs in your own first-person view
+Use the Tuning's **Body Surface Spawn Mask** for places that should stay dry. It limits where attached droplets, wet film, and Tess displacement are generated. The mask uses UV0, so paint it to match the Body's UV0 layout.
 
-Breath Puffs being hidden from the wearer's first-person camera is the normal default. To see them yourself, enable **Setup Features > Show My Breath in First Person** and run Setup. RealSweatSystem adds **MA Visible Head Accessory** to the generated `Exhale` object and removes it again when the option is disabled. Existing manual `Exhale` markers are preserved when upgrading.
+To hide the complete final surface result in an area, including trails, sheen, and Tess displacement, use the **Body Surface Display Mask**. Import it with **sRGB (Color Texture) Off** for accurate grayscale values. Neither mask affects the Falling Drops, Floor Stains, Breath, or Body Steam particles.
 
-Build and verify the result in VR, not only in Gesture Manager. The particles can overlap the face or camera at some avatar scales, which is why the option is off by default. It adds no synchronized parameter or runtime Animator layer. If the option reports that MA Visible Head Accessory is unavailable, update Modular Avatar in VCC.
+### Calm the glint or the running droplets
 
-### Restrict procedural droplets on selected body areas
-
-The generated Tess and No Tess materials include **Basic > Spawn Mask**:
-
-1. Create a grayscale texture that matches the Body UV0 layout. The shader reads its red channel, so do not use an alpha-only mask.
-2. Paint areas where procedural droplets may appear **white** and areas to exclude **black**.
-3. Assign it to **Spawn Mask (White = Spawn)**.
-4. Raise **Mask Strength** above `0`; use `1` for the full mask effect.
-5. Adjust **Mask Threshold** and **Mask Edge Softness** if the border needs refinement. **Invert Mask** reverses the result.
-
-Apply the same texture and mask settings to both generated Tess and No Tess materials when Tessellation support is installed. The mask restricts procedural droplet spawning and tessellated droplet displacement. It is not a hard mask for every broad wet-skin sheen, and it does not remap the separate Falling Drops, Floor Stains, Breath Puffs, or Steam particle emitters.
+In the generated sweat material's inspector, **Quick Setup > Glint Size** and **Glint Strength** change the light's glint on the droplets (both `1.5` by default; `1` gives a calmer look), and **Quick Setup > Sweat Flow** sets how many droplets run (`0` keeps them in place, `2` lets most of them run). **Reset Look** puts the look values back to the defaults.
 
 ## Information to include in a support report
 
@@ -325,6 +334,7 @@ Apply the same texture and mask settings to both generated Tess and No Tess mate
 - Unity and VRCSDK versions
 - Avatar name and Face Tracking package, if used
 - Screenshot of the Setup window and Avatar Descriptor
+- Sweat Style (Anime / Realistic) and Look (Flat / Depth (High Load))
 - Full text of the first Console error after clearing the Console
 - Whether it happens in Unity, desktop VRChat, VR, or VR Face Tracking
 - Modular Avatar version
@@ -338,6 +348,7 @@ You can copy this template:
 ```text
 Real Sweat System version:
 Package: Base / Effects / Full Pack
+Sweat Style / Look:
 Unity:
 VRCSDK:
 Modular Avatar:

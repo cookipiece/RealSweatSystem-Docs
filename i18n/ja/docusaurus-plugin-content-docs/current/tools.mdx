@@ -7,53 +7,44 @@ description: RealSweatSystem Clothing Fix と Rest Vertex Data Baker の使用�
 
 # 補助ツール
 
-通常の導入はSetupだけで完了します。このページのツールは、特定の衣装や高度な改変で追加作業が必要な場合に使用してください。
+このページのツールは、特定の互換性の問題や保守のための作業に使います。通常の Real Sweat System の導入では、どちらのツールも必要ありません。
 
 どちらのメニューも **Sweat Base Module** を導入している場合に使用できます。
 
-## RealSweatSystem Clothing Fix
+## RealSweatSystem Clothing Fix {/* #realsweatsystem-clothing-fix */}
 
-立体機能（テッセレーション）を使用した時に、水滴が衣装を貫通して見える場合のRender Queue調整ツールです。**Real Sweat SystemのSetup完了後**に使用します。
+**Clothing Fix** は、Setup後にテッセレーションの水滴が不透明な衣装を突き抜けて見える場合だけ使用してください。水滴の立体感を使わない場合は、通常このツールは必要ありません。
 
-Unity上部メニューの **CookiTools > RealSweatSystem Clothing Fix** から開きます。
+Unity上部メニューの `CookiTools → RealSweatSystem → Clothing Fix` から開きます。
 
-通常のSetupは元のBody Materialを変更せず、Poiyomi Lockも解除しません。Lock済みの衣装Materialは、Clothing Fixの処理中だけ自動でUnlockされ、処理完了後に自動で再Lockされます。
+### おすすめの手順
 
-:::info[No Tessの場合]
-No Tessだけを使用するアバターでは、通常このツールは必要ありません。
+1. 先に Real Sweat System の Setup を完了します。
+2. Clothing Fix で対象アバターを選択します。
+3. 対象の衣装オブジェクトをドロップ領域に入れます。複数をまとめて入れることができ、非アクティブを含む子階層の SkinnedMeshRenderer と MeshRenderer を自動収集し、重複対象は1回だけ処理します。
+4. 変更を適用する前に、Render Queue のプレビューを確認します。
+5. **マテリアル複製で適用（推奨）** を選びます。
+6. Play Mode と、使う予定のワールドやライティングでアバターを確認します。
+
+- **マテリアル複製で適用（推奨）** は必要なマテリアルだけを生成フォルダーへ複製し、選択したRendererスロットだけを置き換えます。元アセットとそれを使う他の衣装は変更しません。
+- **元マテリアルへ直接適用** は元の .mat のレンダーキューを変更します。同じマテリアルを使う衣装、アバター、Prefab、Sceneのすべてに反映されるため、確認ダイアログを表示します。
+- どちらの方式も汗以下のレンダーキューだけを 汗 + 1 に変更します。すでに汗より高いマテリアルは複製も編集もしません。
+- **元マテリアルへ直接適用** は、ボディも使うマテリアル（インストール時に2349に下げたものを含む）のレンダーキューを変更しません。変更すると汗がボディに隠れるためです。
+- 対象にPoiyomi Lockマテリアルがある場合は先に確認します。承認後にLockを一時解除して処理し、元データと必要な複製を自動で再Lockします。
+
+**追跡中の衣装変更を復元** と RealSweatSystem の **［削除］** は、追跡中のスロットと元のレンダーキューを復元します。適用と復元は1つのUndoグループにまとめられ、Ctrl+Zで戻せます。未使用の生成コピーも、UndoとScene/Prefabの安全性を保つためキャッシュに保持されます。
+
+:::warning[描画順の変更による影響]
+描画順の変更により、透明、Cutout、デカール、アウトライン、重ねマテリアルの見え方やバッチングが変わる場合があります。プレビューを確認し、適用後にアバターを確認してください。
 :::
-
-### 基本手順
-
-1. 対象アバターを選択します。
-2. 調整したい衣装Rendererをドラッグするか、一覧へ追加します。
-3. Queue Previewで変更対象と変更後の値を確認します。
-4. 原則として **マテリアル複製で適用（推奨）** を使用します。
-5. Play Modeとアップロード前のBuildで、表示順と衣装の見た目を確認します。
-
-**マテリアル複製で適用（推奨）** は調整用Material Copyを作成して適用するため、元のMaterial Assetを保護しやすい方法です。
-
-:::warning[Direct Mode]
-Direct Modeは元のMaterial Assetを直接変更します。同じMaterialを使う他の衣装、Prefab、Sceneにも変更が反映されるため、影響範囲を理解している場合だけ使用してください。
-:::
-
-### 変更対象
-
-- 汗MaterialのQueue以下にある衣装Materialだけが調整対象です。
-- 汗Materialより後に描画されるMaterialは変更されません。
-- Transparent、Cutout、Decal、Outline、複数Layerを使用するMaterialは、Render Queue変更によって表示順や見た目が変わる場合があります。
-
-適用前にQueue Previewを確認し、適用後は透明部分、輪郭、Decal、Layer同士の順序を必ず確認してください。
-
-### 元に戻す
-
-ツールが追跡している変更は **追跡中の衣装変更を復元** で復元できます。元Materialを直接編集した場合に備え、作業前にPrefabまたはUnityプロジェクトのBackupも作成してください。
 
 ## Rest Vertex Data Baker（上級）
 
-Rest Vertex Data Bakerは、高度なMesh構成や復旧作業に使用する補助ツールです。Rest Position、Rest Normal、Rest TangentのデータはSetupが自動作成するため、**通常のユーザーが手動で実行する必要はありません。**
+Real Sweat System に必要な Rest Position、Rest Normal、Rest Tangent のデータは Setup が自動で作成します。通常の導入では **Rest Vertex Data Baker** を直接使いません。2.0.0 の見た目は Rest データが有効な場所にだけ汗を描き、ベイクの後にメッシュが変わった場合は、次のビルド（アップロード）時に最終メッシュから再ベイクします。
 
-### 使用する場面
+`CookiTools → RealSweatSystem → Rest Vertex Data Baker (Advanced)` から開きます。
+
+この上級者向けツールは、次の場合だけ使用してください。
 
 - Setup後に最終Body Meshを別のMeshへ置き換えた
 - 対応するCustom MaterialへRest Dataを割り当てたい
@@ -62,33 +53,31 @@ Rest Vertex Data Bakerは、高度なMesh構成や復旧作業に使用する補
 ### 基本手順
 
 1. 対象Rendererと互換性のあるMaterialを選択します。
-2. **1. メッシュを解析** を実行し、対象と警告を確認します。
-3. 問題が無ければ **2. ベイクして割り当て** を実行します。
-4. **3. 割り当てデータを検証** で結果を確認します。
-5. Play ModeとBuildで表示を確認します。
+2. **1. メッシュを解析** を実行し、結果を確認します。
+3. **2. ベイクして割り当て** を実行します。
+4. **3. 割り当てデータを検証** を実行し、割り当てたデータが対象と一致することを確認します。
+5. アップロード前に結果を確認します。
 
-Meshを交換または更新した場合は、交換後の最終Meshに対して再度Bakeしてください。
+Meshを交換または更新した場合は、そのたびに再度Bakeしてください。
 
-対象は有効なsharedMeshを持つSkinnedMeshRendererです。Meshを読み取れない場合はFBX Import SettingsのRead/Write Enabledを一時的に有効にし、Bake完了後に戻せます。
+対象は有効なsharedMeshを持つSkinnedMeshRendererです。Meshを読み取れない場合はFBX Import Settingsの **Read/Write Enabled** を一時的に有効にし、Bake完了後に戻せます。
 
 **以前のベイクを上書き** は同じ名前の生成済みRest Assetを置き換えます。以前のデータを残す必要がある場合は、先にBackupを作成してください。
 
-:::info[変更されないもの]
 Bakerは元のFBX、RendererのsharedMesh、UV、BlendShape、他のMaterialを変更しません。
-:::
 
 :::warning
 互換性のないRendererやMaterialを選択したまま実行しないでください。通常のSetupで問題なく動作している場合は、Bakerを追加実行しないでください。
 :::
 
 <details id={'unsupported-face-body'}>
-<summary><strong>旧版／上級者向け：FaceとBodyへ同時に適用する手動参考手順</strong></summary>
+<summary><strong>旧版 v1.0.x の参考手順 — 新しいFace対象には使用しない</strong></summary>
 
-:::danger[v1.1の新規対象には使用しない]
-v1.1ではFaceなどの別 `SkinnedMeshRenderer` を実験的な追加対象としてSetupから管理できます。以下は既存のv1.0.x手動導入を識別・ロールバックするための旧参考手順です。新しいv1.1対象の導入方法として使用しないでください。自動更新・修復の対象外なので、作業前に必ずBackupしてください。
+:::danger[旧版の参考手順です]
+v1.1 以降、この手動手順は Setup の実験的な追加 `SkinnedMeshRenderer` 対象に置き換わりました。新しくFaceを対象にする場合は、Setup ウィンドウの **詳細設定** でFaceのRenderer／Elementを追加してください。追跡されるマテリアル、Restデータ、マスク、アニメーション、修復・削除の支援を受けられます。新しい導入では以下の手動手順を使用しないでください。
 :::
 
-以下の手順は、v1.1の追加対象管理とは併用しないでください。同じFaceへ両方を適用すると、Material SlotやAnimation Curveが重複する場合があります。
+以下の手順は、v1.0.x で手動追加したFaceのマテリアルを識別・ロールバックするためだけに残しています。**［インストール / 更新］** を押すと、生成Clipへの手動編集が上書きされる場合があります。
 
 Faceへ汗Materialだけを追加すると、生成AnimationはBodyのHierarchy Pathだけを制御するため、Face側の汗が流れ続ける場合があります。また、FaceとBodyにはMeshごとに異なるRest Vertex Dataが必要なので、同じ汗Materialを共有できません。
 
@@ -106,7 +95,7 @@ Faceへ汗Materialだけを追加すると、生成AnimationはBodyのHierarchy 
 1. 通常どおりBodyへReal Sweat SystemをSetupし、先にBody、Menu、自動モードが正常に動くことを確認します。
 2. Bodyに生成されたNo Tessellation版の汗Materialを複製し、Face専用MaterialとしてReal Sweat Systemの生成Folder外へ保存します。BodyとFaceで同じ汗Materialを共有しないでください。
 3. Face RendererのInspectorで `Materials` の元の **Size** を記録し、**Sizeを1増やします**。新しく作られた最後の `Element` にFace専用Materialを割り当てます。既存のFace Materialを置き換えないでください。
-4. **CookiTools > RealSweatSystem > Rest Vertex Data Baker (Advanced)** を開き、Target RendererにFace、Target MaterialにFace専用Materialを指定します。**1. メッシュを解析**、**2. ベイクして割り当て**、**3. 割り当てデータを検証** の順に実行します。
+4. **Rest Vertex Data Baker** を開き、Target RendererにFace、Target MaterialにFace専用Materialを指定します。**1. メッシュを解析**、**2. ベイクして割り当て**、**3. 割り当てデータを検証** の順に実行します。
 5. Real Sweat Systemの生成Folderにある次のAnimation Clipを開きます。
 
    - `RealSweat_Off.anim`
@@ -127,22 +116,22 @@ Faceへ汗Materialだけを追加すると、生成AnimationはBodyのHierarchy 
    - **Property:** 上記と同じ3つのMaterial Property
 
    例としてHierarchyが `AvatarRoot/Armature/Body/Face` の場合、Binding Pathは `Armature/Body/Face` です。Avatar Root自身の名前は含めません。Body CurveのPathをそのまま複製せず、Face Rendererの実際の相対Pathへ変更してください。
-7. Manual ModeとAuto Modeの両方で、0%、50%、100%、汗の表示ON／OFF、自分にだけ表示を確認します。
+7. 手動モードと自動モードの両方で、Off、0%、50%、100%を確認します。
 
 ### 手動で元に戻す
 
-1. Play Modeを終了します。
-2. Face Rendererの `Materials` を作業前のSizeへ戻し、最後に追加したFace専用Materialを外します。
-3. **Setup — 自動インストール / 更新** を実行して生成Clipを再作成するか、4つのClipからFace Pathへ追加した各3本のCurveを手動削除します。
-4. Face専用MaterialがFace RendererやAnimationから参照されていないことを確認し、そのMaterialとFace用Rest Assetが不要なら削除します。
-5. 元のMaterials Sizeや手動変更箇所が分からない場合は、作業前のBackupへ戻します。
+1. Play Modeを終了し、不確かな手順があればBackupへ戻します。
+2. **［インストール / 更新］** を押して、手動のFace Curveを含まない標準のClipを再作成します。
+3. Face Rendererの **Materials > Size** を1減らし、最後に追加したElementだけを外します。元のFace Materialは外さないでください。
+4. Face専用Materialと手動でベイクしたRest Assetは、どのRendererやMaterialからも参照されていないことを確認してから削除します。
+5. アップロード前に、対応するBodyだけの導入をもう一度確認します。
 
 ### 既知の制限
 
-- この旧手動手順のFace側はNo Tessellation固定です。**水滴の立体感（テッセレーション / 高負荷）** と **相手側を低負荷** はFaceへ適用されません。ただし、`RealSweat_LocalOnlyHidden`にもFace Curveを追加していれば、**自分にだけ表示** の時は相手側に表示されるFaceの汗量も0になります。
+- この旧手動手順のFace側はNo Tessellation固定です。**水滴の立体感** の切替と **相手側を低負荷** はFaceへ適用されません。実験的な追加対象として設定したFaceは、管理されたTess／No Tessと相手側を低負荷の経路に参加します。
 - Faceが複数SubMeshの場合、追加した最後のMaterialが目的の肌SubMeshへ描画されない場合があります。
-- Setupまたは **FX に適用** を実行すると生成Clipが再作成され、手動追加したFace Curveは削除されます。通常設定をすべて完了した最後の段階でFace Curveを追加し、再実行した場合は同じ作業をやり直してください。
-- Tuningが追跡するMaterialはBody側だけです。全体の汗量、品質、水滴サイズなどを後から変更しても、Face専用Materialへ自動同期されない場合があります。
+- **［インストール / 更新］** または **FX に適用** を押すと生成Clipが再作成され、手動追加したFace Curveは削除されます。通常設定をすべて完了した最後の段階でFace Curveを追加し、どちらかを再実行した場合は同じ作業をやり直してください。
+- Tuningが追跡するMaterialはBody側だけです。汗の品質、スタイル、水滴サイズなどを後から変更しても、Face専用Materialへ自動同期されない場合があります。
 - Face RendererのHierarchy Path変更、Mesh交換、Mesh Optimizer、Mesh結合後はAnimation BindingまたはRest Dataが無効になる場合があります。
 - Face Tracking、Animator、他の改変ツールとの全組み合わせは検証していません。
 

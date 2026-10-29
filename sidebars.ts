@@ -33,6 +33,7 @@ const sidebars: SidebarsConfig = {
       items: ['technical-specifications', 'tools'],
     },
     'update-changelog',
+    'license-activation',
     'license',
   ],
 };

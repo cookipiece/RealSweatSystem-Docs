@@ -12,34 +12,37 @@ description: Supported Unity, VRChat, avatar, material, and build-tool condition
 |---|---|
 | Unity | **2022.3** |
 | VRChat | **Avatars SDK3** |
-| Avatar build framework | **Modular Avatar required** |
+| Avatar build framework | **Modular Avatar required** (install via VCC) |
 | Platform | **PC / Direct3D 11** |
-| Quest standalone | Not supported; the product uses a hidden fallback |
+| Quest standalone | Not supported; the sweat is not visible (safe Hidden fallback) |
 
 VRCFury is not required for Real Sweat System.
 
-## Avatar type
+## Avatar type {/* #avatar-type */}
 
 - **Humanoid with a Modular Avatar motion pendulum:** Manual Mode and Auto Mode are available.
-- **Non-humanoid or unable to create the Modular Avatar motion pendulum:** Manual Mode, Falling Drops, and Floor Stains are available. Auto Mode, Breath Puffs, and Steam are not created.
-- **Motion pendulum created, but required Head/Chest anchors unavailable:** Auto Mode remains available. Breath Puffs and Steam are not created.
+- **Non-humanoid or unable to create the Modular Avatar motion pendulum:** Manual Mode, Falling Drops, and Floor Stains are available. Auto Mode, Breath, and Body Steam are not created.
+- **Motion pendulum created, but required Head/Chest anchors unavailable:** Auto Mode remains available. Breath and Body Steam are not created.
+
+Auto Mode requires a Humanoid Animator and MA Bone Proxy. If they are unavailable, Setup installs Manual Mode only. Custom Steam Points require a valid Animator and MA Bone Proxy. **Show My Breath in First Person** requires a valid Head bone and a Modular Avatar version that includes MA Visible Head Accessory.
+
+The Rest up direction comes from the humanoid bones (Hips→Head). Avatars without humanoid bones take it from the mesh shape (its longest axis), and their droplet size uses the view position (eye height).
 
 ## Supported avatar scope
 
-Real Sweat System is a general-purpose system for Humanoid avatars, not an avatar-specific product. The standard installer does not require manual Animator editing, but basic VCC and Unity operation is still required, including opening the project, selecting the avatar root and Body Renderer, and checking the Console.
+Real Sweat System is a general-purpose system for Humanoid avatars, not an avatar-specific product. The standard installer does not require manual Animator editing, but basic VCC and Unity operation is still required, including opening the project, selecting the avatar, and checking the Console.
 
 Mesh, material, Animator, and build-time modification tool configurations differ between avatars. Compatibility with every avatar and every combination of modifications is therefore not guaranteed. Non-humanoid avatars have the feature limitations described above.
 
 ## Body Mesh
 
-The selected Body must be a child `SkinnedMeshRenderer` with a valid mesh and submesh.
+The selected Body must be a child `SkinnedMeshRenderer` with a valid mesh and submesh. The body mesh is found automatically and shown on the Setup window's **Sweat on** line.
 
 - The primary Body Renderer is the scale reference and the default Effects emission source.
-- v1.1 supports selecting multiple material Elements in the primary Body Renderer.
-- Additional `SkinnedMeshRenderer` targets such as a separate face mesh are available as an **experimental** feature. Each target receives separate Rest data, masks, size/density normalization, material, and draw cost.
+- Multiple material Elements in the primary Body Renderer can be selected under **Advanced Settings > Sweat Target**. Check only the skin materials.
+- Additional `SkinnedMeshRenderer` targets such as a separate face mesh are available as an **experimental** feature. Each target receives separate Rest data, masks, material, and draw cost. Other meshes such as a face get the body's droplet size.
 - Automatic simultaneous installation across switchable Body Renderers is not guaranteed. Every Renderer/Element that should display sweat must be explicitly configured.
 - GameObject active/inactive Body swaps can be configured as separate targets. Swaps that change only `Renderer.enabled` are not guaranteed; configure every Renderer/Element explicitly and verify the final avatar build.
-- For a mesh with multiple material slots, select only the correct skin-side **Body Elements**.
 - If the source mesh has no valid tangents, use **Create Safe Copy (Recommended)**.
 - The final build must preserve the target submesh, material relationship, and readable mesh data needed by Real Sweat System.
 
@@ -50,22 +53,22 @@ Experimental additional targets require:
 - a unique generated sweat-material lineage that is not shared with another target; and
 - final build topology compatible with the Rest data produced by Setup.
 
-Compatibility with every combination of face tracking, expressions, mesh merging, replacement, and optimization is not guaranteed. Avoid Tess around eyes and lips. Run the full Setup again after a mesh modifier.
+Compatibility with every combination of face tracking, expressions, mesh merging, replacement, and optimization is not guaranteed. Avoid Tess around eyes and lips. Press **[Install / Update]** again after a mesh modifier.
 
 ## Write Defaults, MMD, and Face Tracking
 
-v1.1 retains the automatic FX Write Defaults detection introduced in v1.0.2 and adds further final-build safeguards.
+Real Sweat System retains the automatic FX Write Defaults detection introduced in v1.0.2 and its final-build safeguards.
 
 - **Auto Detect (Recommended)** uses WD ON for every generated RealSweat layer only when all non-RealSweat FX states use WD ON.
 - WD OFF, mixed, or unknown setups retain the v1.0.1 Driver ON / Output OFF compatible split.
 - The final NDMF-merged FX controller is checked again during build, and the RealSweat WD structure is adjusted to the detected result.
-- After updating from v1.0.0–v1.0.2, import every owned module at the same v1.1.0 version and run the full Setup once.
+- After updating from 1.x, import every owned module at the same v2.0.0 version and press **[Install / Update]** once.
 - Do not manually change the generated Merge Animator Priority.
 - Do not replace or clear the generated Animator field as a permanent workaround.
 
 Real Sweat System changes only states it owns. It does not convert Write Defaults settings in FX states created by the avatar or other tools.
 
-### MMD world compatibility
+### MMD world compatibility {/* #mmd-world-compatibility */}
 
 If the avatar's FX Animator contains states with Write Defaults OFF, facial expressions, lip sync, or Real Sweat System may not work correctly during MMD playback in some worlds, depending on how the world controls FX layers. Compatibility is also not guaranteed for avatars that mix Write Defaults ON and OFF. This does not mean that every WD OFF avatar is unsupported in MMD worlds.
 
@@ -81,11 +84,11 @@ If this happens, configure the other tool to exclude the target Body, preserve t
 
 If a tool modifies the Body only at build time and provides an exclusion list, add the Body Renderer used by Real Sweat System to that list. Compatibility cannot be guaranteed for tools that do not provide a Body exclusion feature.
 
-If you manually modify or replace the source Body Mesh in Unity, finish all mesh changes first and then run **Setup — Install / Update** again. Rerunning Setup alone cannot fix a tool that replaces the Mesh during every build.
+If you manually modify or replace the source Body Mesh in Unity, finish all mesh changes first and then press **[Install / Update]** again. Rerunning Setup alone cannot fix a tool that replaces the Mesh during every build.
 
-v1.1 adds a late-build recheck that can refresh Rest/tangent data when the final compatible mesh changes, plus protection for common d4rkAvatarOptimizer processing. It cannot recover a removed target slot/submesh or guarantee compatibility with Modular Avatar Shape Changer, Mesh Cutter, or every mesh modifier and processing order. A missing or incompatible final slot/submesh blocks the build.
+Real Sweat System includes a late-build recheck that bakes the Rest data again from the final mesh when the mesh changed after the bake, plus protection for common d4rkAvatarOptimizer processing. It cannot recover a removed target slot/submesh or guarantee compatibility with Modular Avatar Shape Changer, Mesh Cutter, or every mesh modifier and processing order. A missing or incompatible final slot/submesh blocks the build.
 
-Do not delete, clear, move, replace, or merge a generated RealSweat material or Renderer slot to disable an experimental target. Tuning marks this as **Repair Required**, and avatar build stops instead of silently using another slot. Use **Manage Targets...** to repair or remove the target through the full Setup.
+Do not delete, clear, move, replace, or merge a generated RealSweat material or Renderer slot to disable an experimental target. Tuning marks this as **Repair Required**, and avatar build stops instead of silently omitting the target. Use **Manage Targets...** to repair or remove the target with **[Install / Update]**.
 
 ## PhysBone coexistence
 
@@ -93,35 +96,58 @@ Real Sweat System creates its own Motion Pendulum PhysBone and dedicated paramet
 
 Combinations with other tools that modify bones, PhysBones, Animators, or build data vary by environment and must be verified in both Play Mode and an uploaded build. Existing PhysBones stopping after installation is not expected behavior.
 
-## Clothing and tessellation
+## Clothing and Droplet Depth
 
-If tessellated droplets protrude through clothing, use **RealSweatSystem Clothing Fix** for the affected clothing setup. Turning the 3D Effect off also returns the display to No Tess.
+If tessellated droplets show through opaque clothing, open `CookiTools → RealSweatSystem → Clothing Fix` after Setup and apply it to the affected clothing. Turning Droplet Depth off also returns the display to No Tess. See [Auxiliary Tools](./tools.mdx#realsweatsystem-clothing-fix).
 
 ## Face Renderer
 
-A separate Face `SkinnedMeshRenderer` can be added through v1.1's experimental additional-target list. It gets independent Rest data and must not share its generated sweat material with the Body or another target.
+A separate Face `SkinnedMeshRenderer` can be added as an experimental additional target in **Advanced Settings**. It gets independent Rest data and must not share its generated sweat material with the Body or another target. It gets the body's droplet size and the avatar's sweat style.
 
 This is still experimental: face BlendShapes, face tracking, optimizer/mesh replacement tools, and Tess around the eyes or lips require careful testing. A separate Face target adds its own material and draw cost. The old manual Face-material procedure is no longer the recommended path.
 
-## Render queue and shadows
+## Render queue and shadows {/* #render-queue-and-shadows */}
 
-With **Automatic Render Order** enabled, the sweat Render Queue is fixed at **2455** and the selected Body material must use **2454 or lower**. If the Body material cannot use 2454 or lower, disable Automatic Render Order and set the Sweat Render Queue to a value greater than the Body material.
-
-This requirement applies to the selected Body material. It is separate from an outfit material using another queue such as 2755.
+- Setup displays the selected Body Element's current render queue and the final Sweat render queue together.
+- **Automatic render order** is enabled by default and draws the primary Body Sweat at render queue **2350**: after ordinary skin (2000), before cutout (2450), transparent (3000), and the shadow or decal materials drawn over the body. 1.1.x used 2455.
+- If the body renderer (the renderer the sweat is installed on) has an opaque or cutout material drawn at 2350 or later, **[Install / Update]** asks once. **Lower to 2349 (Recommended)** remembers each material's original queue and lowers it to 2349; **[Uninstall]** puts the original queue back. A queue you changed yourself in the meantime is kept.
+- **Keep As Is** draws the sweat at the highest such queue + 1, never past 2459 (the limit agreed with RealWetSystem). With a body material at 2459 or later, the kept sweat is hidden where that material covers it.
+- The answer is remembered per avatar, so an update does not ask every time; it asks again when those body materials or their queues change. To decide again after Keep As Is, press **[Ask Again]** in **Advanced Settings > Compatibility**, then **[Install / Update]**.
+- The material assets themselves are changed, so every avatar, prefab, and scene that uses them is affected. When another renderer uses the material too, the question lists it. When two avatars share a material, uninstalling one keeps the lowered queue while the other is installed in an open scene. Materials inside a model file or a package can't be changed and stay as they are.
+- Opaque or cutout is decided from the material's blend (`_SrcBlend`/`_DstBlend`) and depth write (`_ZWrite`), the shader file's Blend/ZWrite, the RenderType tag, and the render queue band, not from the shader product. Blended or non-depth-writing materials (fake shadows, decals, layered materials) and render queues of 3000 or later are never changed, nor are RealSweat, RealWet, and RealRain materials.
+- Additional targets use `max(body sweat render queue (usually 2350), selected material render queue + 1)` so their Sweat layer renders afterward.
+- Use a manual render queue only when another shader requires a specific order. With a manual queue, Setup neither asks about nor changes body materials.
+- 2.0.0 sweat reads the skin from a screen copy (GrabPass) with a new name, so it never mixes with 1.x sweat on the same screen. Sweat at a render queue other than 2350 (Keep As Is, an additional target after cutout, a manual queue) is switched automatically to the **RealSweatSystem (Late Queue)** shaders, which take their own screen copy when drawn (a little more load).
 
 :::warning[Queues above 2500]
-A manual Sweat Render Queue above **2500** enters Unity's transparent sorting range. Sweat can still render after the Body, but ordering against transparent world geometry, hair, clothing, decals, and other avatar materials can change with the camera angle. Use a queue above 2500 only when the avatar's material setup requires it, then test from several angles in the intended world.
+A manual Sweat Render Queue above **2500** enters Unity's transparent sorting range. Ordering against transparent world geometry, hair, clothing, decals, and other avatar materials can change with the camera angle. Use a queue above 2500 only when the avatar's material setup requires it, then test from several angles in the intended world.
 :::
 
-**Follow Body Shadow Strength** is on by default, allowing sweat to darken correctly under actual scene shadows.
+**Follow Body Shadow Strength** is on by default. It copies `_ShadowStrength` from the lilToon/Poiyomi material assigned to the selected Sweat Target Element into RealSweatSystem's Cast Shadow Strength. This is refreshed when you press **[Install / Update]** or **Apply to FX**, not as a live runtime link. If the source shader has no such property, the current RealSweatSystem value is kept.
 
-Primary Body Sweat uses Render Queue 2455. With automatic ordering, an experimental additional target uses `max(2455, selected source material queue + 1)`.
+## Lighting {/* #lighting */}
 
-Strong colored world lights, ambient lighting, and reflection probes can tint the skin-surface sweat. v1.1 has no user-facing option that removes only lighting color while preserving its brightness. Test the intended worlds and mirrors before upload.
+- **VRC Light Volumes:** support was removed in v2.0.0. The skin sweat uses Unity light probes (SH) only for ambient light. **[Install / Update]** or **Apply to FX** removes the old "VRC Light Volumes" menu toggle and its synchronized parameter (1 bit) from an existing installation.
+- Strong colored world lights, ambient lighting, and reflection probes can tint the skin-surface sweat. Realistic shows less than Anime in dark worlds and in worlds without a reflection probe. Test the intended worlds and mirrors before upload.
+- Dark skin: droplets show a bright glint instead of looking like grey discs, and the film and trails look much less oily. Pale, normal, and tanned skin look the same as before, apart from a few pixels in deep shadow.
+
+### Light Limit Changer {/* #light-limit-changer */}
+
+When the Light Limit Changer (LLC) menu changes the avatar's brightness, the skin sweat follows with the same ratio. A darker avatar gets darker sweat highlights, and in dark worlds LLC's minimum light lifts the sweat as it lifts the skin.
+
+- It works when the body skin uses lilToon or Poiyomi. There is nothing to set up: no extra menu and no extra parameter.
+- Without LLC, the sweat looks exactly the same. With LLC installed, the sweat gets the same light limits as the skin even when you leave the LLC slider alone, so in bright worlds its highlights are limited the way the skin is.
+- Only LLC's brightness (minimum and maximum light) is followed; its other controls (saturation and monochrome, unlit, color temperature, emission) do not change the sweat.
+- Falling drops, floor stains, body steam, and breath particles do not follow it.
+
+## RealWet and RealRain
+
+- RealWet / Clothing Wetness is a separate product. The RealWet wetness link of a sweat material is kept when you update to v2.0.0.
+- With RealRain, RSS draws the rain on the skin, so it follows the sweat style you pick. A realistic style for the raindrops on clothes comes with a RealRain update; RealRain reads this avatar's sweat style to match it.
 
 ## Module version and parameter safety
 
-- Keep Base and Effects at the same release version. Mixing v1.0.x and v1.1.x modules intentionally stops Setup and avatar build.
+- Keep Base and Effects at the same release version. If the versions are mixed, the Setup window asks you to re-import them at the same version and does not install, and avatar build stops.
 - Setup checks all planned parameters against Avatar Expression Parameters and other Modular Avatar Parameters declarations, including prefixes and remaps.
 - A name collision stops Setup. If the projected total exceeds VRChat's 256-bit parameter budget, Setup warns before proceeding.
 - Additional-target validation and build guidance follow the selected tool UI language. Unity/NDMF exception headings and stack traces may still appear in English.

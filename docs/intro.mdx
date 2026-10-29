@@ -10,21 +10,22 @@ description: Official setup, usage, compatibility, and troubleshooting guide for
 **Real Sweat System** adds real-time sweat effects to PC VRChat avatars. Set **Sweat %** directly from the radial menu, or use **Auto Mode** to build sweat from body movement and let it dry gradually after movement stops.
 
 :::info[Current documentation]
-This documentation covers **Real Sweat System v1.1.0**.
+This documentation covers **Real Sweat System v2.0.0**. It is a major update with a new skin sweat look, a new Setup window, and new body steam. To update a 1.x installation, follow [Updating from 1.x](./quick-start.mdx#updating-from-1x).
 :::
 
 ## What it can display
 
-- Sweat and droplets on the skin
-- Sweat that naturally flows with gravity
-- Falling sweat drops
-- Wet marks left on the floor
-- Steam rising from the body
-- Breath puffs driven by Visemes or VRCFT
-- Optional 3D particles for falling drops, steam, and breath
+- Sweat and droplets on the skin, in two styles: **Anime (default)** and **Realistic**
+- Running droplets and trails that follow real-world gravity and run almost straight down
+- Optional **Droplet Depth**: droplets close to the camera really rise from the skin
+- Falling sweat drops and a short splash
+- Floor stains that darken the floor
+- Soft body steam that rises slowly from the area around each spot
+- Breath driven by Visemes or VRCFT
+- Optional 3D particles for falling drops, body steam, and breath
 - Sweat on multiple Body material Elements or additional skinned meshes (experimental)
 
-Skin sweat is included in **Sweat Base Module**. Falling Drops, Floor Stains, Steam, and Breath Puffs are included in **Sweat Effects Module**. **Full Pack (Base + Effects)** includes both modules as the complete configuration.
+Skin sweat is included in **Sweat Base Module**. Falling Drops, Floor Stains, Breath, and Body Steam are included in **Sweat Effects Module**. **Full Pack (Base + Effects)** includes both modules as the complete configuration.
 
 ## Before you begin
 
@@ -40,20 +41,22 @@ Quest standalone is not supported. Auto Mode is available on Humanoid avatars; o
 ## Find the right page
 
 - **Install for the first time:** [Package Guide](./package-guide.mdx) → [5-Minute Quick Start](./quick-start.mdx)
-- **Update from v1.0.x:** [Update & Changelog](./update-changelog.mdx#updating-from-v100v102-to-v110)
+- **Update from 1.x:** [Updating from 1.x](./quick-start.mdx#updating-from-1x)
+- **See what changed in v2.0.0:** [Update & Changelog](./update-changelog.mdx#v200)
+- **Verify your purchase:** [Purchase Verification](./license-activation.mdx)
 - **Control Sweat % or Auto Mode in game:** [Manual Mode & Auto Mode](./usage/modes.mdx)
-- **Adjust appearance, sensitivity, or load:** [Tuning Guide](./usage/tuning.mdx) → [Performance Guide](./performance.mdx)
-- **Check Falling Drops, Floor Stains, Breath, or Steam:** [Effects Guide](./usage/effects.mdx)
+- **Adjust the look, sensitivity, or load:** [Setup & Tuning Option Reference](./usage/tuning.mdx) → [Performance Guide](./performance.mdx)
+- **Check Falling Drops, Floor Stains, Breath, or Body Steam:** [Effects Guide](./usage/effects.mdx)
 - **Fix missing visuals, menus, or unexpected behavior:** [Troubleshooting](./troubleshooting.mdx)
-- **Check Render Queue, Write Defaults, or other avatar tools:** [Compatibility](./compatibility.mdx)
-- **Research unofficial Face setup or Rest Vertex Data Baker:** [Advanced Tools](./tools.mdx)
+- **Check render order, Write Defaults, or other avatar tools:** [Compatibility](./compatibility.mdx)
+- **Use Clothing Fix or the Rest Vertex Data Baker:** [Auxiliary Tools](./tools.mdx)
 
-If this is your first installation, follow the first row from left to right. Face setup and manual Rest-data baking are not needed for a normal Body installation.
+If this is your first installation, follow the first row from left to right. Manual Rest-data baking is not needed for a normal Body installation.
 
 :::warning[Keep a backup]
-Back up your avatar Prefab or Unity project before installation or update.
+Back up your avatar and project before installation or update. For an update, keep the backup outside the project.
 :::
 
 :::warning[Use the official Uninstall]
-To remove Real Sweat System, do not manually delete the `RealSweat` object or `Assets/CookiTools/Generated`. Use **CookiTools > RealSweatSystem Setup／Uninstall > Uninstall** and follow the [removal procedure](./troubleshooting.mdx#uninstall-reinstall-or-change-modules).
+To remove Real Sweat System, do not manually delete the `RealSweat` object or `Assets/CookiTools/Generated`. Open `CookiTools → RealSweatSystem → Setup／Uninstall`, use the **Uninstall** tab, and follow the [removal procedure](./troubleshooting.mdx#uninstall-reinstall-or-change-modules).
 :::
