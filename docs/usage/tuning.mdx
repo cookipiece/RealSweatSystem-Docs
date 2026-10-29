@@ -10,7 +10,7 @@ This page documents the normal user-facing controls in RealSweatSystem 2.0.0. Co
 
 ## Open the Tuning component
 
-After Setup, expand the avatar in the Hierarchy and select the generated **RealSweat** object directly under the avatar root. Its Inspector contains **RealSweatSystem Tuning**.
+After Setup, expand the avatar in the Hierarchy and select the generated **RealSweat** object directly under the avatar root. Its Inspector contains **RealSweatSystem Tuning**. When the avatar is installed, the Setup window's **Status** line also has an **Open Tuning** button.
 
 If the object is missing because the first Setup did not finish, resolve the first Console error and press **[Install / Update]** again. If an installed `RealSweat` object was deleted manually, do not rerun Setup without checking the Body first; follow [manual-deletion recovery](../troubleshooting.mdx#manual-delete-recovery).
 
@@ -18,14 +18,15 @@ If the object is missing because the first Setup did not finish, resolve the fir
 
 | Change | When it takes effect |
 |---|---|
-| **Sweat Quality** | Material quality changes immediately. Press **Apply to FX** to write every other change into the generated FX assets. |
-| **Sweat Style** (Tuning: **Basic Settings > Sweat Style**) | Applies to every sweat material of the avatar at once. |
-| **Droplet Size** | The Droplet Depth and flat surface materials update immediately. Press **Apply to FX** to also refresh falling-drop and strong-movement-fling scale. |
-| **3D Detail Precision** | Updates the installed Droplet Depth material immediately. |
-| Automatic-response, accumulation-curve, retention, effect, and advanced FX values | Press **Apply to FX**. |
-| Body material Shadow Strength | Press **Apply to FX**, or press **[Install / Update]** again, to copy it. |
-| Custom Steam Point values | Press **Apply to FX** or **[Install / Update]**. |
-| Sweat targets, other meshes, installed effects, 2D/3D particles, Drop Splash, mirror options, first-person Breath, intensity radial, render order, and installed Droplet Depth | Press **[Install / Update]**. |
+| **Sweat Quality** | The sweat material's quality changes immediately. Press **Apply to FX** to also retune the falling drops and body steam. |
+| **Sweat Style** | Applies at once to every sweat material of the avatar, and to its falling drops, floor stains, and splash. |
+| **Droplet Size** | The sweat materials update immediately. Press **Apply to FX** to also refresh falling-drop and fling particle scale. |
+| **3D Detail Precision** | Updates all installed Droplet Depth materials immediately. |
+| **Body Surface Spawn Mask** / **Body Surface Display Mask** | Update the sweat materials immediately. |
+| **On from the Start**, effect toggles, steam locations, **Body Steam in Mirrors**, **Show My Breath in First Person**, Custom Steam Points, Auto Mode settings, Effect Details, and Performance and Advanced Settings | Press **Apply to FX**. |
+| **Follow Body Shadow Strength** | Copied when you press **Apply to FX** or **[Install / Update]**. |
+| A steam location that was excluded at installation, or adding or removing an installed effect | Press **[Install / Update]**. |
+| Setup window options: Sweat Target, other meshes, Effects to Install, the Body Steam & Breath Intensity menu, 3D Particles, Drop Splash, installing Droplet Depth, High-Quality Sweat in Mirrors, Wet Skin Gloss, render order, and Write Defaults | Press **[Install / Update]**. |
 
 The accumulation graphs preview pending values immediately, but they do not modify generated FX until **Apply to FX** is pressed. If **Apply to FX** reports an installation configuration change, press **[Install / Update]** first; adding or removing installed effects cannot be completed with Apply to FX alone.
 
@@ -38,48 +39,45 @@ Open `CookiTools → RealSweatSystem → Setup／Uninstall`. The tabs are **Inst
 | Control | Module | Default | Meaning |
 |---|---|---|---|
 | **Avatar** | All | None | Select your avatar in the Hierarchy or drag it into this field. |
-| **Status** | All | — | Shows whether the avatar is installed. An avatar installed with an earlier version shows the yellow box "Installed with an older version." |
-| **Sweat on** | All | Auto-detect | The body mesh is found automatically and shown on this line. |
-| **Will install** | All | — | Shows what Setup will install. |
-| **Sweat Style** | Base | **Anime (default)** | Click one of two pictures: **Anime (default)** or **Realistic**. When you open the window again, the avatar's current style is selected. |
-| **Look** | Base / Effects | **Flat** | Click one of two pictures. **Depth (High Load)** turns on Droplet Depth, 3D Particles, and Drop Splash together and shows **On from the Start** under it. **Flat** turns Droplet Depth and 3D Particles off. |
+| **Status** | All | — | Shows whether the avatar is installed. An avatar installed with an earlier version shows the yellow box "Installed with an older version." **Open Tuning** selects the installed `RealSweat` object. |
+| **Sweat on** | Base | Auto-detect | The body mesh is found automatically and shown on this line. **Change** opens **Advanced Settings > Sweat Target**. With only the Effects Module this line is **Drops from**. |
+| **Will install** | All | — | Shows what Setup will install, and the heavy options that are on. **Change** opens the matching Advanced Settings group. |
+| **Sweat Style** | Base | **Anime (default)** | Click one of two pictures: **Anime (default)** or **Realistic**. When you open the window again, the avatar's current style is selected. This row appears only when the Base Module is installed. |
+| **Look** | Base / Effects | **Flat** | **Flat** or **Depth (High Load)**. **Depth (High Load)** turns on Droplet Depth, 3D Particles, and Drop Splash together and shows **On from the Start** under it. **Flat** turns them off. With the Base Module the two choices are pictures; with only the Effects Module they are buttons. |
 | **Load** | All | **Low Load (Recommended)** | Buttons: **Low Load (Recommended)** or **Standard**. **Lightweight** is in **Advanced Settings > Quality & Load**. |
-| **Auto Mode Sensitivity** | All | **Balanced (recommended)** | **Balanced (recommended)** or **Sensitive**. |
+| **Auto Mode Sensitivity** | All | **Balanced: recommended motion-proportional response** | **Balanced: recommended motion-proportional response** or **Sensitive: faster build-up from small movements**. |
 | **[Install / Update]** | All | — | Installs or updates the avatar. The result appears in the box right under the button, and the longer steps show a progress bar. |
 
 ### Advanced Settings
 
-| Control | Module | Default | Meaning |
-|---|---|---:|---|
-| **Sweat Target** | Base | Best detected skin Element | If the body has several materials, check only the skin materials here. Other meshes such as a separate face can be added as **experimental** targets with independent Rest data, masks, and draw cost. |
-| **Effects to Install** | Effects | On | Chooses falling drops, floor stains, breath, and body steam before installation. Floor stains require falling drops. |
-| **Quality & Load > Sweat Quality** | All | Low Load (Recommended) | The dropdown with all three tiers: **Standard**, **Low Load (Recommended)**, **Lightweight**. |
-| **Quality & Load > 3D Particles (High Load)** | Effects | Off | Changes only rendering to mesh particles; gravity, collision, floor stains, and effect toggles remain. Switching between 2D and 3D requires **[Install / Update]**. |
-| **Quality & Load > Drop Splash** | Effects | Off with **Flat** | A short splash of small round droplets, in 2D and 3D. Turns on when you choose **Depth (High Load)**, and can also be turned on or off by itself. Adds 2 particle systems and 2 material slots. |
-| **Quality & Load > Droplet Depth** | Base | Off | **Droplet Depth (Tessellation, High Load)**. Off installs only `RealSweatSystem No Tessellation`. On installs the Tess/No Tess material pair and adds **Droplet Depth (Tessellation / High Load)** under **Reduce Load**. **On from the Start** is under this toggle. |
-| **Compatibility > [Ask Again]** | Base | — | After **Keep As Is**, press it and then **[Install / Update]** to decide the render-queue question again. |
+**Advanced Settings** contains these groups, in this order. When you change something, a button returns the values to the installed state (**Revert to Installed**) or, before the first install, to the recommended state (**Reset to Recommended**).
 
-### Other Setup options
+| Group | Module | Controls and defaults |
+|---|---|---|
+| **Sweat Target** (with only the Effects Module: **Falling Drops Material**) | All | **Body Mesh** (found automatically; set it only if it is wrong) and **Find Again**. If the body has several materials, check only the skin materials. With only the Effects Module, **Falling Drops Material** picks the material Element the drops come from (usually Element 0). |
+| **Effects to Install** | Effects | **Falling Drops** (on), **Floor Stains** (on, needs Falling Drops), **Breath** (on), **Body Steam** (on). Under Body Steam, **Locations**: **Chest Hollow**, **Shoulders**, **Armpits**, **Thighs** (on) and **Crotch**, **Feet** (off). **Add Body Steam & Breath Intensity Menu (+8 bits)** (off). |
+| **Quality & Load** | All | **Sweat Quality** (**Lightweight** / **Low Load (Recommended)** / **Standard**). **Droplet Depth (Tessellation, High Load)** (off) with **On from the Start** under it (Base). **3D Particles (High Load)** (off) and **Drop Splash** (off with the Flat look) (Effects). **High-Quality Sweat in Mirrors (High Load)** (off) and **Wet Skin Gloss** (on) (Base). |
+| **Compatibility (only if needed)** | All | **Automatic Render Order (Recommended)** (on) and, when it is off, **Sweat Render Queue** (Base). A line shows the body and sweat render queues ("Body … → Sweat …"), and **[Ask Again]** appears here after **Keep As Is**. **Write Defaults** (**Auto (Recommended)** / **WD ON** / **WD OFF**) with **Detect Again** and the detected result. |
+| **Sweat on Other Meshes (Experimental)** | Base | Other meshes such as a separate face, with independent Rest data, masks, and draw cost. |
 
-| Control | Module | Default | Meaning |
-|---|---|---:|---|
-| **Automatic render order** | Base | On | Draws the primary Body Sweat at render queue `2350`. Additional targets use `max(body sweat render queue (usually 2350), selected material render queue + 1)`. |
-| **Manual render queue** | Base | — | Use it only when another shader requires a specific order. With a manual queue, Setup neither asks about nor changes body materials. |
-| **Wet Skin Gloss as Sweat Increases** | Base | On for new installations | Enables the wet-skin gloss response. Updates follow the installed material state. |
-| **High-Quality Sweat in Mirrors (High Load)** | Base | Off | While it is off, mirrors leave out the small pore droplets and Droplet Depth does not rise there. When it is on, mirrors draw the same as the normal view, at a higher mirror GPU load. |
-| **Write Defaults Compatibility** | All | Auto Detect (Recommended) | Uses all-WD-ON RealSweat states only when every external FX state uses WD ON; otherwise uses the Driver ON / Output OFF compatible split. |
-| **Body Steam & Breath Intensity radial (+8 bits)** | Effects | Off | Adds a saved synchronized Float. 0% = 0.1× opacity, 50% = current appearance at 1.0×, 100% = 1.5×. This changes opacity only and does not reduce particle or performance cost. |
-| **Steam locations** | Effects | Chest, shoulders, armpits, thighs on; crotch and feet off | Chooses which body-steam emitters Setup creates. |
+- **Wet Skin Gloss:** the skin gets glossier as sweat increases. Off sets the sweat material's **Wet Skin Film** to 0.
+- **High-Quality Sweat in Mirrors (High Load):** while it is off, mirrors leave out the small pore droplets and Droplet Depth does not rise there. When it is on, mirrors draw the same as the normal view, at a higher mirror GPU load. The same switch is also in the sweat material inspector under **Advanced > Mirrors**.
+- **Add Body Steam & Breath Intensity Menu (+8 bits):** adds the in-game **Body Steam & Breath Intensity** radial (starts at 50%). 0% = 0.1× opacity, 50% = current appearance at 1.0×, 100% = 1.5×. It changes opacity only and does not reduce particle or performance cost. It uses 8 more synced bits.
+- **Automatic Render Order (Recommended):** draws the primary Body Sweat at render queue `2350`. Additional targets use `max(body sweat render queue (usually 2350), selected material render queue + 1)`. Use **Sweat Render Queue** only when another shader requires a specific order; with a manual queue, Setup neither asks about nor changes body materials.
 
 Follow Body Shadow Strength, droplet-depth precision, Body Steam in mirrors, Show My Breath in First Person, and Custom Steam Points are set after install in Tuning on the `RealSweat` object.
 
 Before writing assets, Setup checks all planned parameters against Avatar Expression Parameters and other Modular Avatar declarations, including prefixes and remaps. A name collision stops Setup. A projected total above 256 bits produces a warning before continuing.
 
-### Write Defaults Compatibility
+### Write Defaults
 
-- **Auto Detect (Recommended):** Uses WD ON for every RealSweat state only when every external FX state uses WD ON. WD OFF, mixed, or unknown setups use the WD OFF-compatible structure.
-- **WD ON Compatibility:** Forces every RealSweat state to WD ON. Use it only when an avatar or MMD environment is known to require an all-WD-ON FX controller.
-- **WD OFF Compatibility:** Keeps the v1.0.1 Driver ON / Output OFF split for WD OFF or mixed avatars.
+The **Write Defaults** dropdown is in **Advanced Settings > Compatibility (only if needed)**. Leave it on **Auto (Recommended)** in most cases.
+
+- **Auto (Recommended):** uses WD ON for every RealSweat state only when every external FX state uses WD ON. WD OFF, mixed, or unknown setups use the WD OFF-compatible structure.
+- **WD ON:** forces every RealSweat state to WD ON. Choose it only if your avatar's FX must be all WD ON.
+- **WD OFF:** keeps the Driver ON / Output OFF split for WD OFF or mixed avatars.
+
+**Detect Again** checks the avatar's FX again, and the line under the dropdown shows the detected result.
 
 ### Sweat Quality
 
@@ -98,6 +96,7 @@ Before writing assets, Setup checks all planned parameters against Avatar Expres
 
 - **Anime (default)** has droplets with crisp highlights that read well from afar. **Realistic** has many small droplets, drawn with small reflections of the light and the surroundings instead of white highlights, with refraction and a dark rim. Clusters of tiny droplets sit between them, and from afar it reads as a wet gloss rather than dots. Only the big droplets run, and their trails are thin and faint.
 - The style is one per avatar: the body and the other meshes (their Droplet Depth pairs included) all use the same style. After installing, you can change it in Tuning (**Basic Settings > Sweat Style**); the material inspector only shows the current style.
+- The style is picked only when the Base Module is installed. With only the Effects Module, the Setup window and Tuning have no Sweat Style, and the falling drops, floor stains, and splash use the Anime look.
 - New installs and avatars updated from 1.1.x start with Anime.
 - The quality tiers apply to both styles. Realistic's Lightweight also leaves out the tiny droplets.
 - Cost: Realistic has slightly fewer shader instructions than Anime (3445 against 3506 at Standard). Its GPU time is about the same, up to about 14% more when the whole torso fills the screen up close. With Droplet Depth it costs about 1.07× Anime's Droplet Depth at Standard and about 0.95× at Low Load. An avatar uses only the shader of its own style, so other players' first load is about the same whichever style you pick.
@@ -107,11 +106,11 @@ Before writing assets, Setup checks all planned parameters against Avatar Expres
 
 When Droplet Depth is on, droplets and running droplets really rise from the skin up close and look round from the side, in both styles. Trails, small pore droplets, and the residual beads on trails stay flat.
 
-| 3D Detail Precision | Droplets rise within about | Draws the same as without Droplet Depth from about |
-|---|---:|---:|
-| **Simplified** (default) | 0.35 m | 0.7 m |
-| **Balanced** | 0.6 m | 1.5 m |
-| **Precise** | 0.9 m | 2.2 m |
+| 3D Detail Precision | Tess factor | Droplets rise within about | Draws the same as without Droplet Depth from about |
+|---|---:|---:|---:|
+| **Simplified — General Play** (default) | `2.5` | 0.35 m | 0.7 m |
+| **Balanced — Close-up Viewing** | `4` | 0.6 m | 1.5 m |
+| **Precise — Photo Capture** | `7` | 0.9 m | 2.2 m |
 
 Installing Droplet Depth does not make both variants render together on one target. The menu switches every Droplet Depth sweat slot between Tess and No Tess. Turning **Droplet Depth (Tessellation / High Load)** off uses the No Tess shader, so hull/domain tessellation work is not performed. Droplets do not rise in mirrors while **High-Quality Sweat in Mirrors** is off, or under **Remote Low Load**.
 
@@ -128,19 +127,45 @@ For multiple configured targets, every target renders only its selected Tess or 
 
 ## Tuning option reference
 
-### Automatic Accumulation Response
+The Tuning component is grouped into **Basic Settings**, **Effect Toggles**, **Auto Mode Settings**, **Surface Sweat Settings**, **Effect Details**, and **Performance and Advanced Settings**, followed by **Mesh and Rest Data Diagnostics** and the **Apply to FX** button. Groups for a module that is not installed are hidden.
+
+### Basic Settings
+
+| Control | Module | Default | Range | Meaning |
+|---|---|---:|---:|---|
+| **Sweat Quality** | All | Low Load (Recommended) | — | Same three tiers as Setup. |
+| **Sweat Style** | Base | Anime | — | Changes the look of every sweat material of the avatar at once. |
+| **Sensitivity Preset** | All | Balanced | — | **Balanced** follows movement strength. **Sensitive** reaches full response sooner and reacts more to small motion. Selecting a preset loads its response threshold, saturation point, rise/decay reference, and smoothing values. |
+| **Build Speed Multiplier** | All | `1.0` | `0.25–4` | Multiplies the preset's overall automatic build speed. |
+| **Retention Time Multiplier** | All | `1.0` | `0.5–2` | Multiplies dry-off duration. Higher values keep sweat visible longer. |
+| **Surface Droplet Appearance > Droplet Size** | Base | `1.6` | `0.5–2.0` | Size of droplets attached to the body. The base size follows the avatar's body size automatically; use this to change it further. |
+
+The Pattern Density control is hidden in 2.0.0.
+
+### Effect Toggles
+
+This group appears only with the **Effects Module**.
 
 | Control | Default | Meaning |
 |---|---:|---|
-| **Sensitivity Preset** | Balanced | **Balanced** follows movement strength. **Sensitive** reaches full response sooner and reacts more to small motion. Selecting a preset resets its response threshold, saturation point, rise/decay reference, and smoothing values. |
-| **Build Speed Multiplier** | `1.0` | Multiplies the preset's overall automatic build speed. Range `0.25–4.0`. |
-| **Horizontal Motion Sensitivity** | `1.0` | Left/right and forward/back response. Range `0.95–1.10`. |
-| **Vertical Motion Sensitivity** | `1.2` | Up/down response. Range `0.90–1.30`; `1.2` is recommended for small-travel bouncing and squats. |
-| **Preview Direction** | Mixed | Changes only the graph preview. All directions remain active in game. |
-| **Movement Response** | Folded | Shows the current threshold, saturation, smoothing, and directional response. It is a preview only. |
-| **Accumulation Profile** | Uniform | Shapes build speed across the current Sweat % without adding a synced parameter or runtime layer. |
-| **Detailed Values** | Folded | For an enabled curve, edits the five multipliers at `0/25/50/75/100%`. Range `0.1–2.0`. |
-| **Accumulation Graphs** | Folded | Shows the profile and an estimated timeline to 95% under steady movement. Actual PhysBone input depends on the avatar and animation. |
+| **Falling Drops** | On | Enables falling body droplets. |
+| **Enable Floor Stains** | On | Enables floor stains from falling drops. Falling Drops must be active to create them. |
+| **Breath** | On | Enables the breath emitter. |
+| **Body Steam** | On | Enables body steam. |
+
+### Auto Mode Settings
+
+**Automatic Accumulation Response** controls how sensed movement becomes visible sweat over time.
+
+| Control | Default | Range | Meaning |
+|---|---:|---:|---|
+| **Horizontal Motion Sensitivity** | `1.0` | `0.95–1.10` | Left/right and forward/back response. |
+| **Vertical Motion Sensitivity** | `1.2` | `0.90–1.30` | Up/down response; `1.2` is recommended for small-travel bouncing and squats. |
+| **Preview Direction** | Mixed | — | **Mixed** / **Horizontal** / **Vertical**. Changes only the preview. All directions remain active in game. |
+| **Movement Response** | Folded | — | Shows the current threshold, saturation, smoothing, and directional response. It is a preview only. |
+| **Accumulation Profile** | Uniform | — | Shapes build speed across the current Sweat % without adding a synced parameter or runtime layer. |
+| **Detailed Values** | Folded | `0.1–2` | Edits the five multipliers at `0/25/50/75/100%`. |
+| **Accumulation Graphs** | Folded | — | Shows the profile and an estimated timeline to 95% under steady movement. Actual PhysBone input depends on the avatar and animation. |
 
 Accumulation profiles:
 
@@ -150,70 +175,30 @@ Accumulation profiles:
 - **Late Acceleration:** starts slowly and becomes faster later.
 - **Custom:** enables direct editing of the five points.
 
-The supplied profiles keep the estimated time to 95% nearly equal; the visible progression and final 5% can differ. Sensitivity, build-speed multiplier, directional sensitivity, and the accumulation profile all affect Auto Mode together.
+The supplied profiles keep the estimated time to 95% nearly equal; the final 5% can differ. Sensitivity, build-speed multiplier, directional sensitivity, and the accumulation profile all affect Auto Mode together.
 
-### Surface and general controls
+### Surface Sweat Settings
 
-| Control | Module | Default | Meaning / load |
-|---|---|---:|---|
-| **Sweat Quality** | All | Low Load (Recommended) | Same three tiers as Setup. Material quality updates immediately; generated FX require **Apply to FX**. |
-| **Sweat Style** (**Basic Settings**) | Base | Anime | Changes the style of every sweat material of the avatar at once. |
-| **Droplet Size** | Base | `1.6` | Size of droplets attached to the body. The base size follows the avatar's body size automatically; use this to change it further. Range `0.5–2.0`. |
-| **On from the Start** | Base + Droplet Depth | Off | Keeps Droplet Depth on from the start. Turning it on shows a one-time warning about continuous GPU load. |
-| **3D Detail Precision** | Base + Droplet Depth | Simplified | Sets how close up the droplets rise (see [Droplet Depth choices](#droplet-depth-choices)). |
-| **Follow Body Shadow Strength** | Base | On | Copies rather than continuously links the Body value. Press **Apply to FX** after changing the Body material. |
-| **Body Surface Spawn Mask** | Base | — | Limits where attached droplets, wet film, and Tess displacement are generated. Use it for places that should stay dry. |
-| **Mesh and Rest Data Diagnostics** | Base | — | Tells you when a material has no valid Rest data, or the mesh changed after the bake. |
-| **Retention Time Multiplier** | All | `1.0` | Multiplies dry-off duration. Higher values keep sweat visible longer. Range `0.5–2.0`. |
-
-The Pattern Density control is hidden in 2.0.0.
-
-### Effect Toggles
-
-This section appears only with the **Effects Module**.
+This group appears only with the **Base Module**.
 
 | Control | Default | Meaning |
 |---|---:|---|
-| **Falling Drops** | On | Enables falling body droplets. |
-| **Bloom Sparkle** | On | Adds a restrained highlight to falling drops. It spreads only in bloom-enabled worlds. |
-| **Enable Floor Stains** | On | Enables floor stains from falling drops. Falling Drops must be active to create them. |
-| **Breath** | On | Enables the breath emitter. |
-| **Body Steam** | On | Enables body steam. |
-| **Steam Locations** | Chest, shoulders, armpits, thighs on | Enables the installed emitters. Crotch and feet are off by default. Enabling a location excluded during installation requires **[Install / Update]**. |
-| **Body Steam in Mirrors** | Low on new installs | `Full / Low / Hidden`. Updates preserve the old appearance as Full. |
-| **Show My Breath in First Person** | Off | Keeps breath visible to yourself. Requires a valid Head bone and a Modular Avatar version that includes MA Visible Head Accessory. |
+| **Follow Body Shadow Strength** | On | Copies `_ShadowStrength` from the material assigned to the selected Body Element into RealSweatSystem's Cast Shadow Strength whenever you press **[Install / Update]** or **Apply to FX**. Supports lilToon and Poiyomi. |
+| **Droplet Depth > On from the Start** | Off | Whether Droplet Depth is already on when the avatar loads. The in-game menu can still turn it on and off. Turning it on shows a one-time warning about continuous GPU load. Shown only when Droplet Depth is installed. |
+| **Droplet Depth > 3D Detail Precision** | Simplified — General Play | Sets how close up the droplets rise (see [Droplet Depth choices](#droplet-depth-choices)). |
+| **Surface Masks and Per-Mesh Settings > Body Surface Spawn Mask** | No texture | See [Surface masks](#surface-masks). |
+| **Surface Masks and Per-Mesh Settings > Body Surface Display Mask** | No texture | See [Surface masks](#surface-masks). |
 
-Custom Steam Points are added in Tuning. Up to four custom emitter slots can be active, a mirrored pair uses two, and twelve combined built-in/custom emitters is the hard limit. A combined rate weight over `4.0` is normalized proportionally.
+### Effect Details
 
-## Advanced FX Tuning
+This group appears only with the **Effects Module**. **3D Particle Quality (Installed by Setup)** and **Impact Splash (Installed by Setup)** are shown read-only; to change 2D or 3D particle quality, press **[Install / Update]** in the Setup window. Each category has a **Restore Category Defaults** button.
 
-Advanced controls modify generated animation or particle assets and require **Apply to FX**. Use **Restore Category Defaults** to reset only one group, or **Reset Advanced FX Values** for all advanced groups.
-
-### Automatic Response
-
-| Control | Default | Meaning |
-|---|---:|---|
-| **Response Threshold** | Balanced `0.04`; Sensitive `0.015` | Motion level where automatic build starts. |
-| **Saturation Point** | Balanced `0.35`; Sensitive `0.18` | Motion level where the rise rate reaches full response. |
-| **Smoothing** | Balanced `0.12`; Sensitive `0.16` | Higher values respond faster; lower values feel heavier. |
-| **Sweat Accumulation Resistance (%)** | `100%` | Gradually resists high-Sweat buildup while preserving full-strength motion. `0%` restores the legacy response. |
-| **Movement Resume Delay** | `1 s` | Delay after locomotion or jumping stops before pendulum motion can raise sweat again. |
-| **Drop Recovery Time** | `3 s` | How quickly falling-drop activity settles after movement stops. |
-| **Exertion Recovery Time** | `9 s` | Recovery of the intermediate exertion stage used by body heat, not breath visibility. |
-| **Body Heat Recovery Time** | `30 s` | Recovery of the body-steam cadence modifier. |
-| **Pendulum Bone** | Hips | Motion sensor attachment. Chest, head, and hands are available; head/hands can overreact, especially with Sensitive. |
-
-### Effects Module advanced groups
-
-| Group | User-facing controls | Category defaults |
-|---|---|---|
-| **Falling Drops** | Rate, fall speed, lifetime, size, and length multipliers; Strong Movement Fling; fling threshold, chance, cooldown, and burst min/max | Multipliers `1.0`; fling on; threshold/chance `0.55`; cooldown `3.5 s`; burst `2–5` |
-| **Floor Stains** | Lifetime, size, opacity, center-drying contrast, pooling chance | Multipliers `1.0`; contrast `0.75`; pooling `0` |
-| **Body Steam** | Start threshold; density, rise speed, lifetime, size, spread, opacity | Threshold `30%`; multipliers `1.0` |
-| **Breath** | Start threshold; mouth gate; mouth parameter and threshold; amount, speed, lifetime, size, spread, opacity, cycle speed | Threshold `25%`; gate Auto; parameter `v2/JawOpen`; mouth threshold `0.2`; multipliers `1.0` |
-| **Performance Limits** | Drop, stain, steam, and breath maximum-particle limits | **Drop Particle Limit (Per System)** `12` (strong-movement drops use two thirds of it, 8), stain `80`, steam `24` per emitter, breath `48` |
-
-Steam and 3D breath use only as many particles as they need, never more than the limit; 2D breath uses the value as is. The drop limit default changed from 64 to 12 in v2.0.0 because the drops fall faster, so at most 8 drops of a system are in the air at once.
+| Category | Controls (default, range) |
+|---|---|
+| **Falling Drops** | **Bloom Sparkle** (on): a restrained highlight that spreads only in worlds with bloom. **Drop Rate Multiplier** (`1.0`, `0.5–1.5`), **Fall Speed Multiplier** (`1.0`, `0.5–1.5`), **Drop Lifetime Multiplier** (`1.0`, `0.75–2`), **Drop Size Multiplier** (`1.0`, `0.75–1.5`), **Drop Length Multiplier** (`1.0`, `0.75–1.5`). **Strong Movement Fling** (on) with **Fling Motion Threshold** (`0.55`, `0.25–0.99`), **Fling Chance** (`0.55`, `0–1`), **Fling Cooldown** (`3.5 s`, `1.5–8`), **Fling Drop Minimum** (`2`, `1–5`), **Fling Drop Maximum** (`5`, `2–8`). |
+| **Floor Stains** | **Stain Lifetime Multiplier** (`1.0`, `0.5–3`), **Stain Size Multiplier** (`1.0`, `0.7–1.5`), **Stain Opacity Multiplier** (`1.0`, `0.5–1.5`), **Edge Drying Contrast** (`0.75`, `0–1`), **Pooling Chance** (`0`, `0–0.6`). |
+| **Breath** | **Show My Breath in First Person** (off). **Breath Threshold** (`0.25`, `0.02–0.99`; the Sweat % where breath starts). **Breath Mouth Gate** (Auto). **Mouth Parameter** (`v2/JawOpen`) and **Mouth Open Threshold** (`0.2`, `0.05–0.95`) for Custom Parameter and Auto. **Breath Amount Multiplier** (`1.0`, `0.5–1.5`), **Breath Speed Multiplier** (`1.0`, `0.6–1.5`), **Breath Lifetime Multiplier** (`1.0`, `0.7–1.5`), **Breath Size Multiplier** (`1.0`, `0.75–1.5`), **Breath Spread Multiplier** (`1.0`, `0.5–1.5`), **Breath Opacity Multiplier** (`1.0`, `0.5–1.5`), **Breath Cycle Speed** (`1.0`, `0.75–1.25`). |
+| **Body Steam** | **Steam Locations**: **Chest Hollow**, **Shoulders**, **Armpits**, **Thighs** (on), **Crotch**, **Feet** (off). **Body Steam in Mirrors** (**Full** / **Low (2D Reduced Opacity)** / **Hidden**; Low on new installs). **Additional Features — Custom Steam Points**. **Steam Threshold** (`0.3`, `0.05–0.85`; the sweat level where body steam starts fading in), **Steam Density Multiplier** (`1.0`, `0.5–1.5`), **Steam Rise Speed Multiplier** (`1.0`, `0.6–1.5`), **Steam Lifetime Multiplier** (`1.0`, `0.7–1.5`), **Steam Size Multiplier** (`1.0`, `0.75–1.5`), **Steam Spread Multiplier** (`1.0`, `0.5–1.5`), **Steam Opacity Multiplier** (`1.0`, `0.5–1.5`). |
 
 **Breath Mouth Gate** options:
 
@@ -222,6 +207,39 @@ Steam and 3D breath use only as many particles as they need, never more than the
 - **Custom Parameter (VRCFT):** uses the selected float parameter and mouth-open threshold.
 - **Auto (active VRCFT, Viseme fallback):** starts on Viseme and prefers VRCFT after detecting a real `JawOpen` open/close change. Once JawOpen has gone down to a closed value (below 0.015) and 8 seconds pass without it rising above 0.03, it returns to Viseme.
 
+**Show My Breath in First Person** adds MA Visible Head Accessory to the generated Exhale object. It requires a Humanoid avatar with a valid Head bone and a Modular Avatar version that includes MA Visible Head Accessory.
+
+Custom Steam Points: up to four custom emitter slots can be active, a mirrored pair uses two, and twelve combined built-in/custom emitters is the hard limit. A combined rate weight over `4.0` is normalized proportionally.
+
+### Performance and Advanced Settings
+
+These values update generated FX assets when you press **Apply to FX**. **Reset Advanced FX Values** resets all advanced groups.
+
+**Automatic Response** (with **Restore Category Defaults**):
+
+| Control | Default | Range | Meaning |
+|---|---:|---:|---|
+| **Response Threshold** | Balanced `0.04`; Sensitive `0.015` | `0–0.6` | Motion level where automatic build starts. |
+| **Saturation Point** | Balanced `0.35`; Sensitive `0.18` | `0.05–1` | Motion level where the rise rate reaches full response. |
+| **Smoothing** | Balanced `0.12`; Sensitive `0.16` | `0.01–0.5` | Higher values respond faster; lower values feel heavier. |
+| **Sweat Accumulation Resistance (%)** | `100%` | `0–100%` | Builds to 20% of the selected resistance by 40% sweat, then applies the main curve toward 95%. Strong motion keeps full efficiency; `0%` restores the legacy response. |
+| **Movement Resume Delay** | `1 s` | `0.5–2` | Seconds after WASD or jumping stops before pendulum sweat can rise again. |
+| **Drop Recovery Time** | `3 s` | `1–8` | How quickly falling-drop activity settles after movement stops. |
+| **Exertion Recovery Time** | `9 s` | `5–15` | Recovery of the intermediate exertion stage used by body heat, not breath visibility. |
+| **Body Heat Recovery Time** | `30 s` | `15–60` | Recovery of the body-steam cadence modifier. |
+| **Pendulum Bone** | Hips | — | **Hips** / **Chest** / **Head** / **Left Hand** / **Right Hand**. Hands and head swing much more than hips; Balanced is recommended, and Sensitive may overreact. |
+
+**Performance Limits** (Effects Module, with **Restore Category Defaults**):
+
+| Control | Default | Range | Meaning |
+|---|---:|---:|---|
+| **Drop Particle Limit (Per System)** | `12` | `8–128` | Particle limit of each falling-drop system. Normal drops use this limit; the strong-movement drops use two thirds of it (8 at the default). |
+| **Stain Particle Limit (Per System)** | `80` | `20–160` | Maximum particles per floor-stain system. |
+| **Steam Particle Limit (Per Emitter)** | `24` | `4–64` | The generated steam uses only as many as it needs and never more. 3D particles emit 1.5 times as many puffs, so their limit is 1.5 times this value. |
+| **Breath Particle Limit (Per Emitter)** | `48` | `12–96` | With 3D particles the breath uses only as many as it needs; 2D breath uses this value. |
+
+The drop limit default changed from 64 to 12 in v2.0.0 because the drops fall faster, so at most 8 drops of a system are in the air at once.
+
 ## Sweat material inspector
 
 These are material controls, not fields on the Tuning component. Open the generated RealSweat material Inspector. It shows only what the new look reads: **Quick Setup**, **Distribution**, **Flow**, **Lighting**, and **Advanced**. The 1.1.x values are hidden but kept in the material.
@@ -229,16 +247,23 @@ These are material controls, not fields on the Tuning component. Open the genera
 | Control | Location | Purpose |
 |---|---|---|
 | **Rest Data** | Top of the inspector | Tells you when the material has no valid Rest data. |
+| **Reset Look** | **Sweat Look** row | Resets only the look values and keeps the amount, quality, pattern number, masks, stencil, Rest data, and the Setup choices. The presets of 1.1.x were replaced by this one button. |
+| **Sweat Amount (Preview)** | **Quick Setup** | The in-game menu drives this; the value here is what the editor shows. |
+| **Droplet Size** | **Quick Setup** | Scales the droplet radius. `1.6` is the standard look. |
 | **Glint Size** / **Glint Strength** | **Quick Setup** | The light's glint on the droplets. Both are `1.5` by default; `1` gives a calmer look. |
 | **Sweat Flow** | **Quick Setup** | How many droplets run down steep skin, and how far. The default `1` is the standard look of each style; `0` keeps the droplets in place, `2` lets most of them run. |
+| **Wet Skin Film** | **Quick Setup** | The thin wet film and its gloss between the droplets. `0` turns it off (Setup's **Wet Skin Gloss** off). |
+| **Spawn Mask (White = Spawn)** | **Distribution** | The same mask as Tuning's Body Surface Spawn Mask. |
 | **Pattern Seed** / **New Pattern** | **Distribution** | The avatar's pattern number. **New Pattern** changes it. |
-| **Reset Look** | Inspector button | Resets only the look values and keeps the amount, quality, pattern number, masks, stencil, Rest data, and the Setup choices. The presets of 1.1.x were replaced by this one button. |
+| **Surface Sweat Mask** | **Advanced** | The same mask as Tuning's Body Surface Display Mask. |
+| **High-Quality Sweat in Mirrors (High Load)** | **Advanced > Mirrors** | The same switch as the Setup window option. |
 
-### Surface masks
+### Surface masks {/* #surface-masks */}
 
-- **Body Surface Spawn Mask** limits where attached droplets, wet film, and Tess displacement are generated. Use the Tuning's **Body Surface Spawn Mask** for places that should stay dry.
-- **Body Surface Display Mask** supports R/G/B/A channel selection, inversion, strength, tiling, and offset. It hides the complete final surface result, including droplets, trails, film, sheen, refraction, darkening, and Tess displacement, but not Falling Drops particles. For accurate grayscale values, import the Display Mask with **sRGB (Color Texture) Off**. Its default strength is `0`, so updating does not change the existing appearance until you configure it.
-- Both masks use UV0.
+Both masks are in Tuning under **Surface Sweat Settings > Surface Masks and Per-Mesh Settings**, and in the sweat material inspector. Both use the mesh's UV0. Assigning a texture sets **Mask Strength** to 1; removing it sets it to 0.
+
+- **Body Surface Spawn Mask:** white areas allow surface sweat and black areas block it. It limits where attached droplets, wet film, and Tess displacement are generated, and it does not change Falling Drops particles. **Mask Advanced** has **Threshold**, **Softness**, **Invert Mask**, **Tiling**, and **Offset**. In the material inspector it is **Distribution > Spawn Mask (White = Spawn)**, which reads the red channel, with **Mask Strength**, **Mask Threshold**, **Mask Edge Softness**, and **Invert Mask**.
+- **Body Surface Display Mask:** white areas show surface sweat and black areas hide it completely. It hides the final surface result, including droplets, trails, film, sheen, refraction, darkening, and Tess displacement, but not Falling Drops particles. **Mask Advanced** has **Mask Channel** (R/G/B/A), **Invert Mask**, **Tiling**, and **Offset**. In the material inspector it is **Advanced > Surface Sweat Mask**. For accurate grayscale values, import the texture with **sRGB (Color Texture) Off**. Its default strength is `0`, so updating does not change the existing appearance until you configure it.
 
 ### Removed in v2.0.0
 
@@ -253,7 +278,7 @@ When Light Limit Changer (LLC) changes the avatar's brightness, the skin sweat f
 Mirror options:
 
 - **High-Quality Sweat in Mirrors** is off by default. While it is off, mirrors leave out the small pore droplets and Droplet Depth does not rise there. When it is on, mirrors draw the same as the normal view.
-- **Body Steam in Mirrors** offers Full, Low, and Hidden. 2D `Low` draws the steam in mirrors at 0.8× the density of `Full` without reducing particle count. 3D `Low` currently uses the same appearance and cost as `Full`. `Hidden` has the lowest mirror cost.
+- **Body Steam in Mirrors** offers **Full**, **Low (2D Reduced Opacity)**, and **Hidden**. 2D Low draws the steam in mirrors at 0.8× the density of Full without reducing particle count. 3D Low currently uses the same appearance and cost as Full. Hidden has the lowest mirror cost.
 
 :::warning[Combined GPU load]
 Standard quality, close-up screen coverage, mirrors, and Droplet Depth can compound GPU load. Change one major setting at a time and test the uploaded avatar.

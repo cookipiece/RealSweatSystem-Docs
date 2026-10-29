@@ -43,7 +43,7 @@ The selected Body must be a child `SkinnedMeshRenderer` with a valid mesh and su
 - Additional `SkinnedMeshRenderer` targets such as a separate face mesh are available as an **experimental** feature. Each target receives separate Rest data, masks, material, and draw cost. Other meshes such as a face get the body's droplet size.
 - Automatic simultaneous installation across switchable Body Renderers is not guaranteed. Every Renderer/Element that should display sweat must be explicitly configured.
 - GameObject active/inactive Body swaps can be configured as separate targets. Swaps that change only `Renderer.enabled` are not guaranteed; configure every Renderer/Element explicitly and verify the final avatar build.
-- If the source mesh has no valid tangents, use **Create Safe Copy (Recommended)**.
+- If the source mesh has no valid tangents, Setup asks first; choose **Make Safe Copy (Recommended)**, which keeps the original model.
 - The final build must preserve the target submesh, material relationship, and readable mesh data needed by Real Sweat System.
 
 Experimental additional targets require:
@@ -57,9 +57,9 @@ Compatibility with every combination of face tracking, expressions, mesh merging
 
 ## Write Defaults, MMD, and Face Tracking
 
-Real Sweat System retains the automatic FX Write Defaults detection introduced in v1.0.2 and its final-build safeguards.
+Real Sweat System retains the automatic FX Write Defaults detection introduced in v1.0.2 and its final-build safeguards. The **Write Defaults** dropdown is in the Setup window's **Advanced Settings > Compatibility (only if needed)**: **Auto (Recommended)** / **WD ON** / **WD OFF**.
 
-- **Auto Detect (Recommended)** uses WD ON for every generated RealSweat layer only when all non-RealSweat FX states use WD ON.
+- **Auto (Recommended)** uses WD ON for every generated RealSweat layer only when all non-RealSweat FX states use WD ON.
 - WD OFF, mixed, or unknown setups retain the v1.0.1 Driver ON / Output OFF compatible split.
 - The final NDMF-merged FX controller is checked again during build, and the RealSweat WD structure is adjusted to the detected result.
 - After updating from 1.x, import every owned module at the same v2.0.0 version and press **[Install / Update]** once.
@@ -109,10 +109,10 @@ This is still experimental: face BlendShapes, face tracking, optimizer/mesh repl
 ## Render queue and shadows {/* #render-queue-and-shadows */}
 
 - Setup displays the selected Body Element's current render queue and the final Sweat render queue together.
-- **Automatic render order** is enabled by default and draws the primary Body Sweat at render queue **2350**: after ordinary skin (2000), before cutout (2450), transparent (3000), and the shadow or decal materials drawn over the body. 1.1.x used 2455.
+- **Automatic Render Order (Recommended)** (Advanced Settings > Compatibility (only if needed)) is enabled by default and draws the primary Body Sweat at render queue **2350**: after ordinary skin (2000), before cutout (2450), transparent (3000), and the shadow or decal materials drawn over the body. 1.1.x used 2455.
 - If the body renderer (the renderer the sweat is installed on) has an opaque or cutout material drawn at 2350 or later, **[Install / Update]** asks once. **Lower to 2349 (Recommended)** remembers each material's original queue and lowers it to 2349; **[Uninstall]** puts the original queue back. A queue you changed yourself in the meantime is kept.
 - **Keep As Is** draws the sweat at the highest such queue + 1, never past 2459 (the limit agreed with RealWetSystem). With a body material at 2459 or later, the kept sweat is hidden where that material covers it.
-- The answer is remembered per avatar, so an update does not ask every time; it asks again when those body materials or their queues change. To decide again after Keep As Is, press **[Ask Again]** in **Advanced Settings > Compatibility**, then **[Install / Update]**.
+- The answer is remembered per avatar, so an update does not ask every time; it asks again when those body materials or their queues change. To decide again after Keep As Is, press **[Ask Again]** in **Advanced Settings > Compatibility (only if needed)**, then **[Install / Update]**.
 - The material assets themselves are changed, so every avatar, prefab, and scene that uses them is affected. When another renderer uses the material too, the question lists it. When two avatars share a material, uninstalling one keeps the lowered queue while the other is installed in an open scene. Materials inside a model file or a package can't be changed and stay as they are.
 - Opaque or cutout is decided from the material's blend (`_SrcBlend`/`_DstBlend`) and depth write (`_ZWrite`), the shader file's Blend/ZWrite, the RenderType tag, and the render queue band, not from the shader product. Blended or non-depth-writing materials (fake shadows, decals, layered materials) and render queues of 3000 or later are never changed, nor are RealSweat, RealWet, and RealRain materials.
 - Additional targets use `max(body sweat render queue (usually 2350), selected material render queue + 1)` so their Sweat layer renders afterward.

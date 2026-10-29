@@ -65,7 +65,7 @@ The skin sweat renders at queue 2350. If the body renderer (the renderer the swe
 
 - **Lower to 2349 (Recommended)** remembers each material's original queue and lowers it to 2349. **[Uninstall]** puts the original queue back. A queue you changed yourself in the meantime is kept.
 - **Keep As Is** draws the sweat at the highest such queue + 1, never past 2459. With a body material at 2459 or later, the kept sweat is hidden where that material covers it.
-- The answer is remembered per avatar. To decide again after Keep As Is, press **[Ask Again]** in **Advanced Settings > Compatibility**, then **[Install / Update]**.
+- The answer is remembered per avatar. To decide again after Keep As Is, press **[Ask Again]** in **Advanced Settings > Compatibility (only if needed)**, then **[Install / Update]**.
 
 The material assets themselves are changed, so every avatar, prefab, and scene that uses them is affected. See [Compatibility](./compatibility.mdx#render-queue-and-shadows) for which materials are never changed.
 
@@ -125,7 +125,7 @@ Do not use a manually changed animator order as a permanent workaround.
 ## Expressions or lip sync stop during an MMD dance {/* #expressions-or-lip-sync-stop-during-an-mmd-dance */}
 
 1. Update every owned module to the same current version and press **[Install / Update]** once.
-2. Set **Write Defaults Compatibility** to **Auto Detect (Recommended)**.
+2. In **Advanced Settings > Compatibility (only if needed)**, set **Write Defaults** to **Auto (Recommended)**. **Detect Again** checks the avatar's FX again.
 3. Update Modular Avatar and enable MMD World Support when it is needed by the target setup.
 4. Test expressions, lip sync, Sweat Display, and Auto Mode in the actual MMD world you intend to use, not only in Play Mode.
 
@@ -149,9 +149,9 @@ If you saved a duplicate of the avatar in another scene or as a prefab, a closed
 
 ## The body mesh is not detected
 
-The body mesh is found automatically and shown on the **Sweat on** line. If it is not found or the wrong Renderer is shown, use a Hierarchy object with the correct skin-side `SkinnedMeshRenderer`; an `.fbx` or Mesh asset from the Project window cannot be used. The Renderer must have a valid mesh and at least one valid submesh.
+The body mesh is found automatically and shown on the **Sweat on** line (with only the Effects Module, **Drops from**). If it is not found or the wrong Renderer is shown, press **Change** on that line, or open **Advanced Settings > Sweat Target**, and set **Body Mesh** to the Hierarchy object with the correct skin-side `SkinnedMeshRenderer`; an `.fbx` or Mesh asset from the Project window cannot be used. **Find Again** runs the automatic search again. The Renderer must have a valid mesh and at least one valid submesh.
 
-Experimental additional targets are added separately in **Advanced Settings** and must be `SkinnedMeshRenderer` components.
+Experimental additional targets are added separately in **Advanced Settings > Sweat on Other Meshes (Experimental)** and must be `SkinnedMeshRenderer` components.
 
 ## Sweat appears on the wrong material slot
 
@@ -170,7 +170,7 @@ Console guidance from Real Sweat System follows the selected tool UI language. U
 
 ## Missing tangent warning
 
-Choose **Create Safe Copy (Recommended)**. This is the supported fallback for a source mesh without suitable tangent data.
+When the body mesh lacks tangents (data needed for sweat), Setup asks first. Choose **Make Safe Copy (Recommended)**: it keeps the original model, and Uninstall restores it. **Edit Original** affects other avatars using the same model and is hard to undo. **Cancel** stops without changes.
 
 ## It works in Unity but breaks only in VRChat {/* #it-works-in-unity-but-breaks-only-in-vrchat */}
 
@@ -219,7 +219,7 @@ The Effects Module does not modify the Body, but it still needs the Body Mesh as
 2. In **Sweat → Effects**, turn on **All Effects**, **Falling Drops**, and **Floor Stains**. For a manual test, turn Auto Mode off and set **Sweat %** to 100%.
 3. If Falling Drops are visible but Floor Stains are not, test a world floor with a Collider on the **Default** or **Environment** layer.
 4. If Falling Drops or Floor Stains appear suspended above the floor, a Unity physics Collider inside or beneath the avatar—such as a Box, Capsule, or Mesh Collider on the body, feet, clothing, an accessory, or a test object—may be intercepting the collision before the world floor when it uses the **Default** or **Environment** layer. This does not refer to a VRC PhysBone Collider. Temporarily disable the suspected Unity Colliders one at a time for an isolation test. If the stain then appears on the world floor, an intervening Collider was the cause.
-5. If no Falling Drops are emitted only from one particular Body while another avatar works, exit Play Mode and open the **Troubleshooting** tab of the Setup window.
+5. If no Falling Drops are emitted only from one particular Body while another avatar works, exit Play Mode and open the **Troubleshooting** tab of the Setup window. Look for **Falling drops don't appear**.
 6. Press **[Apply Fix]**, save the scene, and check both Play Mode and **Build & Test**.
 7. This opt-in compatibility setting makes installed Falling Drops and motion flings ignore the Body's built-in vertex colors. It does not modify the Body mesh, materials, FX controller, or Floor Stain settings, and the default behavior is unchanged until you apply it.
 8. If it does not help, press **[Restore Default]** before sending a support report. Include the Renderer, Element, mesh-import settings, and particle Shape screenshots.
@@ -314,21 +314,39 @@ Defender security-intelligence and cloud-protection updates can reach individual
 
 ### Show Breath in your own first-person view
 
-Breath being hidden from the wearer's first-person view is the normal default. To see it yourself, enable **Show My Breath in First Person** in Tuning. It requires a valid Head bone and a Modular Avatar version that includes MA Visible Head Accessory; if it reports that MA Visible Head Accessory is unavailable, update Modular Avatar in VCC.
+Breath being hidden from the wearer's first-person view is the normal default. To see it yourself, enable **Show My Breath in First Person** in Tuning under **Effect Details > Breath**, then press **Apply to FX**. It requires a valid Head bone and a Modular Avatar version that includes MA Visible Head Accessory; if it reports that MA Visible Head Accessory is unavailable, update Modular Avatar in VCC.
 
 Build and verify the result in VR, not only in Gesture Manager. The particles can overlap the face or camera at some avatar scales, which is why the option is off by default.
 
 ### Keep sweat off selected body areas
 
-Use the Tuning's **Body Surface Spawn Mask** for places that should stay dry. It limits where attached droplets, wet film, and Tess displacement are generated. The mask uses UV0, so paint it to match the Body's UV0 layout.
+1. Create a grayscale texture that matches the Body's UV0 layout. Paint areas where sweat may appear **white** and areas to exclude **black**.
+2. Select the generated **RealSweat** object and open **Surface Sweat Settings > Surface Masks and Per-Mesh Settings > Body Surface Spawn Mask** in Tuning.
+3. Assign the texture to **Spawn Mask**. **Mask Strength** becomes `1`; lower it for a partial effect.
+4. Under **Mask Advanced**, adjust **Threshold** and **Softness** if the border needs refinement. **Invert Mask** reverses the result.
 
-To hide the complete final surface result in an area, including trails, sheen, and Tess displacement, use the **Body Surface Display Mask**. Import it with **sRGB (Color Texture) Off** for accurate grayscale values. Neither mask affects the Falling Drops, Floor Stains, Breath, or Body Steam particles.
+The change applies to the sweat materials at once. The same mask is also in the sweat material inspector at **Distribution > Spawn Mask (White = Spawn)**, which reads the red channel. It limits where attached droplets, wet film, and Tess displacement are generated.
+
+To hide the complete final surface result in an area, including trails, sheen, and Tess displacement, use **Body Surface Display Mask** in the same place. Import it with **sRGB (Color Texture) Off** for accurate grayscale values. Neither mask affects the Falling Drops, Floor Stains, Breath, or Body Steam particles.
+
+### Temporarily hide skin sweat in the Unity editor
+
+To clear the sweat preview in the Scene view without uninstalling the system:
+
+1. Exit Play Mode.
+2. Open the generated sweat material used by the Body. Do not edit the original skin material.
+3. In **Quick Setup**, record the current **Sweat Amount (Preview)** (`_DropletAmount`) and set it to `0`.
+4. Restore the recorded value before normal testing or upload.
+
+The in-game menu drives this value, so Play Mode animations control the runtime value. It is different from using **Hide Skin Sweat** or **Sweat Display + Sweat 0%** in the VRChat menu. Do not remove a generated material slot. If Droplet Depth is installed, apply the same temporary value to both generated Tess and No Tess materials.
 
 ### Calm the glint or the running droplets
 
 In the generated sweat material's inspector, **Quick Setup > Glint Size** and **Glint Strength** change the light's glint on the droplets (both `1.5` by default; `1` gives a calmer look), and **Quick Setup > Sweat Flow** sets how many droplets run (`0` keeps them in place, `2` lets most of them run). **Reset Look** puts the look values back to the defaults.
 
 ## Information to include in a support report
+
+In the Setup window's **Troubleshooting** tab, **Copy Support Info** (under **When contacting support**) copies versions, the avatar name, and the last results, so you can paste them into your message. Include the following as well:
 
 - Real Sweat System version and purchased package
 - Unity and VRCSDK versions

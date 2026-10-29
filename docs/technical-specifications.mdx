@@ -119,7 +119,7 @@ Replacing the Body mesh, changing its vertex layout, or merging submeshes after 
 
 ## Render Queue and shadows
 
-- Automatic render order draws the primary Body Sweat at render queue **2350**.
+- **Automatic Render Order (Recommended)** draws the primary Body Sweat at render queue **2350**.
 - Body materials (opaque or cutout) at 2350 or later: **[Install / Update]** asks once whether to lower them to 2349 and restores them on uninstall. **Keep As Is** draws the sweat at the highest such queue + 1, never past 2459.
 - Additional targets use `max(body sweat render queue (usually 2350), selected material render queue + 1)`.
 - A manual queue is available when automatic order cannot be used, but values of 2501 or higher are affected by Transparent sorting.
@@ -156,7 +156,7 @@ Remote Low Load is available when Base is installed.
 
 The Effects Module uses particles for Falling Drops, the splash, Floor Stains, Breath, and Body Steam. The lightweight 2D mode is the default; optional high-load 3D Particles change Breath, Falling Drops, and Body Steam to mesh-particle rendering. Only effects selected during Setup add their controls and parameters, and each can be disabled in game.
 
-- Falling drops and the splash follow the sweat style. **Drop Particle Limit (Per System)** defaults to 12, and the strong-movement drops use two thirds of it (8).
+- Falling drops and the splash follow the sweat style; with only the Effects Module they use the Anime look. **Drop Particle Limit (Per System)** defaults to 12, and the strong-movement drops use two thirds of it (8).
 - Floor Stains are collision sub-effects of Falling Drops and are available only while Falling Drops is enabled. Collision uses world Default and Environment layers; avatar/player layers are excluded, so an incompatible world floor collider or layer can produce no stain.
 - Breath and Body Steam are generated only when the required Head and Chest anchors can be resolved.
 - Body steam: the maximum particle count at the default sliders is 131 for 12 steam spots and 95 for the 7 spots of a default install.

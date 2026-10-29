@@ -41,7 +41,7 @@ The 3D body steam and breath look the same as before, and their Mesh Particle Ac
 
 Sweat droplets fall from locations across the body, and they get denser toward 100% Sweat. Falling drops are small, round while slow, and stretch longer the faster they fall. 3D draws them as a teardrop-shaped water lens, 2D as a water drop lit by the scene.
 
-Falling drops follow the sweat style: **Anime** with crisp white highlights and outlines, **Realistic** with a dark rim and a small glint.
+Falling drops follow the sweat style: **Anime** with crisp white highlights and outlines, **Realistic** with a dark rim and a small glint. The style is picked only when the Base Module is installed; with only the Effects Module, the drops, floor stains, and splash use the Anime look.
 
 Because the drops fall fast, at most 8 drops of a system are in the air at once. The default of **Drop Particle Limit (Per System)** is 12, and the strong-movement drops use two thirds of it (8).
 
@@ -76,7 +76,7 @@ Viseme input and VRCFT input are both supported. In both Manual and Auto Mode, s
 
 With the breath gate set to **Auto**, the system scans the Avatar Descriptor and Modular Avatar for `v2/JawOpen` and prefixed names such as `FT/v2/JawOpen`. Even when a matching Float exists, Auto starts on Viseme, then prefers VRCFT after detecting a real JawOpen open/close change. Once JawOpen has gone down to a closed value (below 0.015) and 8 seconds pass without it rising above 0.03, it returns to Viseme. If breath stops after you turn VRCFT off, set the breath gate to Viseme.
 
-Breath is hidden from the wearer's own first-person view by default. Enable **Show My Breath in First Person** in Tuning to keep it visible to yourself. It requires a valid Head bone and a Modular Avatar version that includes MA Visible Head Accessory, and it is off by default because it can overlap the camera.
+Breath is hidden from the wearer's own first-person view by default. Enable **Show My Breath in First Person** in Tuning (**Effect Details > Breath**) and press **Apply to FX** to keep it visible to yourself. It requires a valid Head bone and a Modular Avatar version that includes MA Visible Head Accessory, and it is off by default because it can overlap the camera.
 
 **Default:** On
 
@@ -91,7 +91,7 @@ Body steam begins fading in at about **30% Sweat** by default and grows with the
 - Armpits
 - Thighs
 
-The crotch and feet positions are off by default.
+The crotch and feet positions are off by default. The locations are chosen before installation in the Setup window under **Advanced Settings > Effects to Install > Body Steam > Locations** (**Chest Hollow**, **Shoulders**, **Armpits**, **Thighs**, **Crotch**, **Feet**), and after installation in Tuning under **Effect Details > Body Steam > Steam Locations** with **Apply to FX**. A location that was excluded at installation needs **[Install / Update]**.
 
 - The particle system count is unchanged and the maximum particle count is lower (at the default sliders: 12 steam spots 288 → 131; the 7 spots of a default install 168 → 95). The shader is lighter, but the wider steam draws more pixels up close.
 - The 2D body steam is the same at Standard, Low Load, and Lightweight. The 3D particle body steam is 0.65× Standard's at Low Load and Lightweight.
@@ -101,14 +101,14 @@ The crotch and feet positions are off by default.
 
 ### Custom Steam Points
 
-Custom Steam Points can be added to avatar Transforms in Tuning. Each point supports size, rate, spread, direction, and an optional mirrored pair. They require a valid Animator and MA Bone Proxy. Up to four custom emitter slots can be active; a mirrored pair uses two slots. More than ten combined built-in/custom emitters produces a mirror-load warning, and twelve total emitters is the hard limit. A combined rate weight above `4.0` is normalized proportionally. Validation and generated-asset refresh run during **[Install / Update]** or **Apply to FX**.
+Custom Steam Points can be added to avatar Transforms in Tuning, under **Effect Details > Body Steam > Additional Features — Custom Steam Points**. Each point supports size, rate, spread, direction, and an optional mirrored pair. They require a valid Animator and MA Bone Proxy. Up to four custom emitter slots can be active; a mirrored pair uses two slots. More than ten combined built-in/custom emitters produces a mirror-load warning, and twelve total emitters is the hard limit. A combined rate weight above `4.0` is normalized proportionally. Validation and generated-asset refresh run during **[Install / Update]** or **Apply to FX**.
 
 ### Mirror mode and shared intensity
 
-**Body Steam in Mirrors** offers:
+**Body Steam in Mirrors** (Tuning: **Effect Details > Body Steam**; press **Apply to FX** after a change) offers:
 
 - **Full:** the complete presentation.
-- **Low:** 2D Body Steam draws the steam in mirrors at 0.8× the density of Full without reducing particle count. In 3D mode, Low currently has the same appearance and cost as Full.
+- **Low (2D Reduced Opacity):** 2D Body Steam draws the steam in mirrors at 0.8× the density of Full without reducing particle count. In 3D mode, Low currently has the same appearance and cost as Full.
 - **Hidden:** lowest mirror cost.
 
 New installations default to Low. Updating an older installation preserves its existing appearance as Full.
