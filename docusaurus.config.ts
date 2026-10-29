@@ -33,7 +33,6 @@ const config: Config = {
           sidebarPath: './sidebars.ts',
           routeBasePath: 'docs',
           showLastUpdateTime: true,
-          editUrl: 'https://github.com/cookipiece/RealSweatSystem-Docs/edit/main/',
         },
         blog: false,
         theme: {customCss: './src/css/custom.css'},
