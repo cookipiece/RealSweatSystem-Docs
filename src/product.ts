@@ -15,7 +15,7 @@ const product: ProductData = {
     troubleshooting: '/docs/troubleshooting',
     booth: 'https://booth.pm/ja/items/8645678',
     gumroad: 'https://cookipiece.gumroad.com/l/real-sweat-system-vrchat',
-    purchaseVerification: '',
+    purchaseVerification: '/docs/license-activation',
   },
   fallbackLocale: 'en',
   copy: {
