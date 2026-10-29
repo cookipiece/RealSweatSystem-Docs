@@ -1,11 +1,12 @@
 import {themes as prismThemes} from 'prism-react-renderer';
 import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
+import product from './src/product';
 
 const config: Config = {
   title: 'Real Sweat System Docs',
-  tagline: 'Move more. Sweat more.',
-  favicon: 'img/cookie-icon.png',
+  tagline: 'Real-time sweat for VRChat PC avatars.',
+  favicon: 'img/cooki-icon-32.png',
   future: {v4: true},
   url: 'https://cookipiece.github.io',
   baseUrl: '/RealSweatSystem-Docs/',
@@ -35,7 +36,7 @@ const config: Config = {
           showLastUpdateTime: true,
         },
         blog: false,
-        theme: {customCss: './src/css/custom.css'},
+        theme: {customCss: ['./src/css/custom.css', './src/css/product.css']},
       } satisfies Preset.Options,
     ],
   ],
@@ -58,31 +59,24 @@ const config: Config = {
     ],
     colorMode: {respectPrefersColorScheme: true},
     announcementBar: {
-      id: 'current_version_2_0_0',
-      content: '<strong>Real Sweat System v2.0.0</strong>',
-      backgroundColor: '#d9f5f7',
-      textColor: '#20323a',
+      // The id follows the version, so a visitor who closed an older version's bar sees this one.
+      id: `current_version_${product.version.replace(/\./g, '_')}`,
+      content: `<strong>${product.name} v${product.version}</strong>`,
       isCloseable: true,
     },
     navbar: {
       hideOnScroll: false,
-      logo: {
-        alt: 'Real Sweat System',
-        src: 'img/realsweat-logo-black.png',
-        srcDark: 'img/realsweat-logo-white.png',
-      },
+      title: 'Real Sweat System',
+      logo: {alt: 'CookiTools', src: 'img/cooki-icon-64.png', width: 24, height: 24},
       items: [
         {type: 'docSidebar', sidebarId: 'docsSidebar', position: 'left', label: 'Docs'},
-        {to: '/docs/quick-start', label: 'Quick Start', position: 'left'},
         {to: '/docs/troubleshooting', label: 'Troubleshooting', position: 'left'},
+        {type: 'custom-cookiFamily', position: 'right'},
         {type: 'localeDropdown', position: 'right'},
-        {href: 'https://booth.pm/ja/items/8645678', label: 'BOOTH', position: 'right'},
-        {href: 'https://cookipiece.gumroad.com/l/real-sweat-system-vrchat', label: 'Gumroad', position: 'right'},
-        {href: 'https://github.com/cookipiece/RealSweatSystem-Docs', label: 'GitHub', position: 'right'},
       ],
     },
     footer: {
-      style: 'dark',
+      style: 'light',
       links: [
         {
           title: 'Documentation',
@@ -96,6 +90,7 @@ const config: Config = {
           title: 'Product',
           items: [
             {label: 'BOOTH', href: 'https://booth.pm/ja/items/8645678'},
+            {label: 'Gumroad', href: 'https://cookipiece.gumroad.com/l/real-sweat-system-vrchat'},
             {label: 'Changelog', to: '/docs/update-changelog'},
             {label: 'Terms & License', to: '/docs/license'},
           ],
@@ -107,9 +102,9 @@ const config: Config = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} Cooki. Documentation for Real Sweat System.`,
+      copyright: `© ${new Date().getFullYear()} Cooki · CookiTools`,
     },
-    prism: {theme: prismThemes.github, darkTheme: prismThemes.dracula},
+    prism: {theme: prismThemes.github, darkTheme: prismThemes.vsDark},
   } satisfies Preset.ThemeConfig,
 };
 

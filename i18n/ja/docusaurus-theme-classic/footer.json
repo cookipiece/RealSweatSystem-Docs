@@ -38,9 +38,5 @@
   "link.item.label.GitHub": {
     "message": "GitHub",
     "description": "The label of footer link with label=GitHub linking to https://github.com/cookipiece/RealSweatSystem-Docs"
-  },
-  "copyright": {
-    "message": "Copyright © 2026 Cooki. Documentation for Real Sweat System.",
-    "description": "The footer copyright"
   }
 }

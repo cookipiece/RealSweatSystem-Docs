@@ -1,76 +1,813 @@
-:root {
-  --ifm-color-primary: #168fa5;
-  --ifm-color-primary-dark: #147f93;
-  --ifm-color-primary-darker: #13788b;
-  --ifm-color-primary-darkest: #0f6372;
-  --ifm-color-primary-light: #19a1b7;
-  --ifm-color-primary-lighter: #1aa9c0;
-  --ifm-color-primary-lightest: #2ebbd0;
-  --ifm-background-color: #fbfaf7;
-  --ifm-background-surface-color: #ffffff;
-  --ifm-card-background-color: #ffffff;
-  --ifm-font-family-base: Inter, Pretendard, 'Noto Sans JP', 'Noto Sans KR', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --ifm-heading-font-family: Inter, Pretendard, 'Noto Sans JP', 'Noto Sans KR', system-ui, sans-serif;
-  --ifm-heading-font-weight: 720;
-  --ifm-code-font-size: 92%;
-  --ifm-navbar-height: 4.3rem;
-  --docusaurus-highlighted-code-line-bg: rgba(22, 143, 165, 0.11);
-}
+/*
+ * CookiTools docs theme (shared by RealSweat, RealWet and RealRain docs).
+ *
+ * This file is the same in every CookiTools docs site. Do not edit it per site.
+ * The only per-site value is the accent, in src/css/product.css:
+ *   :root { --ct-accent: var(--ct-rss); }   (or --ct-rws / --ct-rrs)
+ */
 
-html {scroll-behavior: smooth;}
-body {letter-spacing: -0.012em;}
-.navbar {border-bottom: 1px solid rgba(63,91,99,0.11); box-shadow: 0 8px 28px rgba(25,53,61,0.04);}
-.navbar__logo {height: 2rem; margin-right: 1.4rem;}
-.navbar__logo img {width: auto; max-width: 235px; object-fit: contain;}
-.navbar__link {font-size: 0.9rem; font-weight: 650;}
-.footer {background: #15252a;}
-.footer__title {color: #d6f4f7;}
-.footer__link-item {color: #b9c9cd;}
-.theme-doc-markdown h1 {font-size: clamp(2rem, 4vw, 3.1rem); letter-spacing: -0.04em;}
-.theme-doc-markdown h2 {margin-top: 2.8rem; padding-top: 0.35rem; border-top: 1px solid var(--ifm-color-emphasis-200); letter-spacing: -0.025em;}
-.theme-doc-markdown p, .theme-doc-markdown li {line-height: 1.82;}
-.theme-doc-markdown table {display: table; width: 100%;}
-.theme-doc-markdown a > img {
-  display: block;
-  max-height: 760px;
-  margin: 1.25rem auto 0.6rem;
-  border: 1px solid var(--ifm-color-emphasis-200);
-  border-radius: 14px;
-  box-shadow: 0 16px 38px rgba(25, 53, 61, 0.12);
-  cursor: zoom-in;
+@import 'pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css';
+@import '@fontsource-variable/inter/index.css';
+@import '@fontsource-variable/noto-sans-jp/index.css';
+
+/* ------------------------------------------------------------------ */
+/* 1. Tokens                                                           */
+/* ------------------------------------------------------------------ */
+
+:root {
+  /* Family accents. One per product; each site picks one in product.css. */
+  --ct-rss: #0a7481; /* RealSweat: teal */
+  --ct-rws: #1f5fae; /* RealWet: deep water blue */
+  --ct-rrs: #5b4fb3; /* RealRain: reserved, rain violet */
+
+  /* Neutrals: warm off-white, near-black ink, three grays, hairlines. */
+  --ct-bg: #fbfaf8;
+  --ct-surface: #f3f2ee;
+  --ct-line: #e5e2dc;
+  --ct-line-strong: #d2cec6;
+  --ct-ink: #1c1c1e;
+  --ct-ink-2: #4c4e53;
+  --ct-ink-3: #65676d;
+  --ct-on-accent: #ffffff;
+
+  /* Admonition colours (muted, never the product accent except info).
+     Light shades keep 4.5:1 for small text on their own 7% tint. */
+  --ct-note: #8a8c92;
+  --ct-tip: #38704f;
+  --ct-warn: #8c5b10;
+  --ct-danger: #ad3f36;
+
+  --ct-radius: 6px;
+  --ct-content: 46rem;
+
+  --ct-font-latin: 'Inter Variable', Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --ct-font-ko: 'Pretendard Variable', Pretendard, 'Noto Sans JP Variable', -apple-system, BlinkMacSystemFont, system-ui, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+  --ct-font-ja: 'Inter Variable', Inter, 'Noto Sans JP Variable', 'Noto Sans JP', 'Hiragino Sans', 'Yu Gothic UI', system-ui, sans-serif;
 }
-html[lang='ko'] .theme-doc-markdown table,
-html[lang='ko'] .theme-doc-markdown th,
-html[lang='ko'] .theme-doc-markdown td {
-  word-break: keep-all;
-  overflow-wrap: break-word;
-}
-.theme-doc-markdown em > small {
-  display: block;
-  margin-bottom: 1.5rem;
-  color: var(--ifm-color-emphasis-700);
-  text-align: center;
-}
-.alert {border: 0; border-left: 4px solid var(--ifm-alert-border-color); box-shadow: 0 8px 24px rgba(28,56,64,0.05);}
-.table-of-contents__link {font-size: 0.83rem;}
-.pagination-nav__link {border-radius: 14px;}
-.DocSearch-Button, .navbar__search-input {border-radius: 999px !important;}
 
 [data-theme='dark'] {
-  --ifm-color-primary: #55ccdc;
-  --ifm-color-primary-dark: #3fc5d7;
-  --ifm-color-primary-darker: #34c1d4;
-  --ifm-color-primary-darkest: #26a4b6;
-  --ifm-color-primary-light: #6bd3e1;
-  --ifm-color-primary-lighter: #76d7e4;
-  --ifm-color-primary-lightest: #98e2eb;
-  --ifm-background-color: #11191c;
-  --ifm-background-surface-color: #172226;
-  --ifm-card-background-color: #172226;
-  --docusaurus-highlighted-code-line-bg: rgba(85, 204, 220, 0.12);
+  --ct-rss: #5cc3cf;
+  --ct-rws: #86b0ee;
+  --ct-rrs: #ada3f2;
+
+  --ct-bg: #131415;
+  --ct-surface: #1b1c1e;
+  --ct-line: #2a2b2e;
+  --ct-line-strong: #3b3c40;
+  --ct-ink: #ebebea;
+  --ct-ink-2: #b4b5b9;
+  --ct-ink-3: #8b8d92;
+  --ct-on-accent: #0e1013;
+
+  --ct-note: #8b8d92;
+  --ct-tip: #7fbf98;
+  --ct-warn: #d9a54a;
+  --ct-danger: #e48a80;
 }
 
+/* Map tokens onto Infima. The dark selector matches Infima's own
+   html[data-theme='dark'] so these always win. */
+:root,
+html[data-theme='dark'] {
+  --ifm-color-primary: var(--ct-accent);
+  --ifm-color-primary-dark: color-mix(in oklab, var(--ct-accent) 90%, var(--ct-ink));
+  --ifm-color-primary-darker: color-mix(in oklab, var(--ct-accent) 84%, var(--ct-ink));
+  --ifm-color-primary-darkest: color-mix(in oklab, var(--ct-accent) 72%, var(--ct-ink));
+  --ifm-color-primary-light: color-mix(in oklab, var(--ct-accent) 90%, var(--ct-bg));
+  --ifm-color-primary-lighter: color-mix(in oklab, var(--ct-accent) 84%, var(--ct-bg));
+  --ifm-color-primary-lightest: color-mix(in oklab, var(--ct-accent) 72%, var(--ct-bg));
+
+  --ifm-background-color: var(--ct-bg);
+  --ifm-background-surface-color: var(--ct-bg);
+  --ifm-font-color-base: var(--ct-ink);
+  --ifm-heading-color: var(--ct-ink);
+  --ifm-color-content: var(--ct-ink);
+  --ifm-color-content-secondary: var(--ct-ink-2);
+  --ifm-link-color: var(--ct-accent);
+  --ifm-link-hover-color: var(--ct-accent);
+  --ifm-hr-border-color: var(--ct-line);
+  --ifm-toc-border-color: var(--ct-line);
+  --ifm-table-border-color: var(--ct-line);
+  --ifm-table-stripe-background: transparent;
+  --ifm-table-head-background: transparent;
+  --ifm-code-background: var(--ct-surface);
+  --ifm-hover-overlay: var(--ct-surface);
+
+  --ifm-font-family-base: var(--ct-font-latin);
+  --ifm-heading-font-family: var(--ifm-font-family-base);
+  --ifm-font-family-monospace: ui-monospace, 'SFMono-Regular', 'Cascadia Mono', Menlo, Consolas, 'Pretendard Variable', 'Noto Sans JP Variable', monospace;
+  --ifm-font-weight-bold: 650;
+  --ifm-heading-font-weight: 680;
+  --ifm-line-height-base: 1.7;
+  --ifm-heading-line-height: 1.3;
+  --ifm-h1-font-size: 2.125rem;
+  --ifm-h2-font-size: 1.45rem;
+  --ifm-h3-font-size: 1.15rem;
+  --ifm-h4-font-size: 1rem;
+  --ifm-code-font-size: 86%;
+  --ifm-code-border-radius: 4px;
+  --ifm-global-radius: var(--ct-radius);
+  --ifm-button-border-radius: var(--ct-radius);
+  --ifm-pagination-nav-border-radius: 8px;
+
+  --ifm-navbar-height: 3.625rem;
+  --ifm-navbar-background-color: var(--ct-bg);
+  --ifm-navbar-shadow: none;
+  --ifm-navbar-link-color: var(--ct-ink-2);
+  --ifm-navbar-link-hover-color: var(--ct-ink);
+  --ifm-navbar-link-active-color: var(--ct-ink);
+  --ifm-navbar-search-input-background-color: var(--ct-surface);
+  --ifm-navbar-search-input-color: var(--ct-ink);
+  --ifm-navbar-search-input-placeholder-color: var(--ct-ink-3);
+  --ifm-dropdown-background-color: var(--ct-bg);
+  --ifm-dropdown-link-color: var(--ct-ink-2);
+  --ifm-dropdown-hover-background-color: var(--ct-surface);
+
+  --ifm-menu-color: var(--ct-ink-2);
+  --ifm-menu-color-active: var(--ct-accent);
+  --ifm-menu-color-background-active: transparent;
+  --ifm-menu-color-background-hover: var(--ct-surface);
+
+  --ifm-footer-background-color: var(--ct-bg);
+  --ifm-footer-color: var(--ct-ink-3);
+  --ifm-footer-link-color: var(--ct-ink-2);
+  --ifm-footer-link-hover-color: var(--ct-ink);
+  --ifm-footer-title-color: var(--ct-ink);
+
+  --doc-sidebar-width: 17.5rem;
+  --docusaurus-highlighted-code-line-bg: color-mix(in srgb, var(--ct-accent) 12%, transparent);
+}
+
+/* ------------------------------------------------------------------ */
+/* 2. Base typography per language                                     */
+/* ------------------------------------------------------------------ */
+
+html[lang^='ko'] {
+  --ifm-font-family-base: var(--ct-font-ko);
+}
+html[lang^='ja'] {
+  --ifm-font-family-base: var(--ct-font-ja);
+}
+
+body {
+  background: var(--ct-bg);
+  color: var(--ct-ink);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: 'cv11', 'ss01';
+}
+
+html[lang^='ko'] body {
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+html[lang^='ja'] body {
+  line-break: strict;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--ct-accent) 22%, transparent);
+}
+
+/* ------------------------------------------------------------------ */
+/* 3. Navbar                                                           */
+/* ------------------------------------------------------------------ */
+
+.navbar {
+  border-bottom: 1px solid var(--ct-line);
+  box-shadow: none;
+  padding: 0 1.25rem;
+}
+.navbar__inner {
+  gap: 0.5rem;
+}
+.navbar__brand {
+  flex-shrink: 0;
+  margin-right: 1.25rem;
+  color: var(--ct-ink);
+}
+.navbar__brand:hover {
+  color: var(--ct-ink);
+}
+.navbar__logo {
+  height: 1.5rem;
+  margin-right: 0.55rem;
+}
+.navbar__title {
+  font-size: 0.98rem;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+.navbar__items {
+  min-width: 0;
+}
+.navbar__item {
+  padding: 0.25rem 0.7rem;
+}
+.navbar__link {
+  font-size: 0.9rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.navbar__link--active {
+  font-weight: 600;
+}
+.navbar__search-input {
+  width: 11rem;
+  height: 2rem;
+  border: 1px solid var(--ct-line);
+  border-radius: var(--ct-radius) !important;
+  font-size: 0.875rem;
+}
+.navbar__search-input:focus {
+  outline: 2px solid color-mix(in srgb, var(--ct-accent) 45%, transparent);
+  outline-offset: 1px;
+}
+.navbar-sidebar,
+.navbar-sidebar__brand {
+  background: var(--ct-bg);
+  box-shadow: none;
+}
+
+.dropdown__menu {
+  min-width: 11rem;
+  padding: 0.35rem;
+  border: 1px solid var(--ct-line);
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgb(0 0 0 / 0.07);
+}
+.dropdown__link {
+  padding: 0.4rem 0.65rem;
+  border-radius: 4px;
+  font-size: 0.875rem;
+}
+.dropdown__link--active {
+  color: var(--ct-ink);
+  background: transparent;
+  font-weight: 600;
+}
+
+/* CookiTools family switcher (src/components/FamilyNavbarItem.tsx). */
+.ct-fam {
+  display: flex !important;
+  align-items: center;
+  gap: 0.55rem;
+}
+.ct-fam::before {
+  content: '';
+  flex: none;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--ct-dot);
+}
+.ct-fam svg {
+  display: none;
+}
+.ct-fam--rss { --ct-dot: var(--ct-rss); }
+.ct-fam--rws { --ct-dot: var(--ct-rws); }
+.ct-fam--rrs { --ct-dot: var(--ct-rrs); }
+.ct-fam--current {
+  color: var(--ct-ink) !important;
+  font-weight: 600;
+}
+.ct-fam--soon {
+  color: var(--ct-ink-3) !important;
+  cursor: default;
+}
+.ct-fam--soon:hover {
+  background: transparent !important;
+}
+.ct-fam--soon::after {
+  margin-left: auto;
+  padding-left: 0.75rem;
+  font-size: 0.75rem;
+  color: var(--ct-ink-3);
+  content: 'Soon';
+}
+html[lang^='ko'] .ct-fam--soon::after { content: '준비 중'; }
+html[lang^='ja'] .ct-fam--soon::after { content: '準備中'; }
+
+.ct-fam-toggle {
+  color: var(--ct-ink-2);
+}
+
+/* Announcement bar: quiet line, overrides colours set in the config. */
+.theme-announcement-bar {
+  background: var(--ct-surface) !important;
+  color: var(--ct-ink-2) !important;
+  border-bottom: 1px solid var(--ct-line);
+  font-size: 0.85rem;
+}
+.theme-announcement-bar strong {
+  font-weight: 600;
+  color: var(--ct-ink);
+}
+
+/* ------------------------------------------------------------------ */
+/* 4. Buttons                                                          */
+/* ------------------------------------------------------------------ */
+
+.button {
+  border-radius: var(--ct-radius);
+  font-weight: 600;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+.button--primary {
+  --ifm-button-background-color: var(--ct-accent);
+  --ifm-button-border-color: var(--ct-accent);
+  color: var(--ct-on-accent);
+}
+.button--primary:hover {
+  --ifm-button-background-color: color-mix(in oklab, var(--ct-accent) 86%, var(--ct-ink));
+  --ifm-button-border-color: color-mix(in oklab, var(--ct-accent) 86%, var(--ct-ink));
+  color: var(--ct-on-accent);
+}
+.button--secondary {
+  --ifm-button-background-color: transparent;
+  --ifm-button-border-color: var(--ct-line-strong);
+  color: var(--ct-ink);
+}
+.button--secondary:hover {
+  --ifm-button-background-color: var(--ct-surface);
+  --ifm-button-border-color: var(--ct-line-strong);
+  color: var(--ct-ink);
+}
+.button:focus-visible,
+a:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--ct-accent) 55%, transparent);
+  outline-offset: 2px;
+}
+
+/* ------------------------------------------------------------------ */
+/* 5. Docs sidebar                                                     */
+/* ------------------------------------------------------------------ */
+
+.theme-doc-sidebar-container {
+  border-right: 1px solid var(--ct-line) !important;
+}
+.theme-doc-sidebar-menu {
+  padding: 1.25rem 0.75rem 2.5rem !important;
+  font-size: 0.9rem;
+}
+.menu__link {
+  padding: 0.36rem 0.7rem;
+  border-radius: var(--ct-radius);
+  line-height: 1.45;
+}
+.menu__link:hover {
+  color: var(--ct-ink);
+}
+.menu__link--active:not(.menu__link--sublist) {
+  color: var(--ct-accent);
+  font-weight: 600;
+  background: color-mix(in srgb, var(--ct-accent) 8%, transparent);
+}
+.menu__list .menu__list {
+  margin-top: 0.1rem;
+  padding-left: 0;
+}
+/* Category labels read as small section headings. */
+.theme-doc-sidebar-item-category-level-1 {
+  margin-top: 1.1rem;
+}
+.theme-doc-sidebar-item-category-level-1 > .menu__list-item-collapsible > .menu__link {
+  color: var(--ct-ink-3);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+.theme-doc-sidebar-item-category-level-1 > .menu__list-item-collapsible:hover {
+  background: transparent;
+}
+.menu__caret::before,
+.menu__link--sublist-caret::after {
+  opacity: 0.35;
+  transform: scale(0.7);
+}
+.theme-doc-sidebar-item-link-level-1:not(:first-child) {
+  margin-top: 0.1rem;
+}
+/* Pages that are not written yet: front matter sidebar_class_name: ct-stub */
+.ct-stub > .menu__link {
+  color: var(--ct-ink-3);
+}
+.ct-stub > .menu__link::after {
+  flex: none;
+  margin-left: auto;
+  padding: 0 0.35rem;
+  border: 1px solid var(--ct-line);
+  border-radius: 4px;
+  font-size: 0.68rem;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--ct-ink-3);
+  content: 'Soon';
+}
+html[lang^='ko'] .ct-stub > .menu__link::after { content: '준비 중'; }
+html[lang^='ja'] .ct-stub > .menu__link::after { content: '準備中'; }
+
+/* ------------------------------------------------------------------ */
+/* 6. Doc page                                                         */
+/* ------------------------------------------------------------------ */
+
+.theme-doc-markdown {
+  max-width: var(--ct-content);
+}
+.markdown {
+  font-size: 1.0625rem;
+  --ifm-h1-vertical-rhythm-bottom: 1;
+}
+html[lang^='ko'] .markdown { line-height: 1.75; }
+html[lang^='ja'] .markdown { line-height: 1.8; }
+html[lang^='en'] .markdown { line-height: 1.68; }
+
+.markdown h1,
+.markdown h2,
+.markdown h3,
+.markdown h4 {
+  letter-spacing: -0.015em;
+}
+/* Fixed sizes: Infima resets the heading variables on these elements. */
+.markdown h1:first-child,
+.markdown header h1 {
+  font-size: 2.125rem;
+  font-weight: 700;
+  letter-spacing: -0.022em;
+  margin-bottom: 0.9rem;
+}
+.markdown header + p,
+.markdown > h1:first-child + p {
+  font-size: 1.125rem;
+  color: var(--ct-ink-2);
+}
+.markdown h2 {
+  margin-top: 2.75rem;
+  margin-bottom: 0.85rem;
+  font-size: 1.45rem;
+}
+.markdown h3 {
+  margin-top: 2rem;
+  margin-bottom: 0.6rem;
+  font-size: 1.15rem;
+}
+.markdown h4 {
+  font-size: 1rem;
+}
+.markdown a {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  text-decoration-color: color-mix(in srgb, var(--ct-accent) 40%, transparent);
+}
+.markdown a:hover {
+  text-decoration-color: var(--ct-accent);
+}
+.markdown strong {
+  font-weight: 650;
+  color: var(--ct-ink);
+}
+.markdown ul,
+.markdown ol {
+  padding-left: 1.35rem;
+}
+.markdown li + li {
+  margin-top: 0.3rem;
+}
+.markdown li::marker {
+  color: var(--ct-ink-3);
+}
+.markdown hr {
+  margin: 2.5rem 0;
+  border-top: 1px solid var(--ct-line);
+}
+
+/* Inline code and code blocks: neutral, hairline, no shadow. */
+.markdown :not(pre) > code {
+  padding: 0.1em 0.35em;
+  border: 1px solid var(--ct-line);
+  background: var(--ct-surface);
+  color: var(--ct-ink);
+  vertical-align: baseline;
+  word-break: normal;
+}
+.theme-code-block {
+  --prism-background-color: var(--ct-surface) !important;
+  border: 1px solid var(--ct-line);
+  border-radius: var(--ct-radius);
+  box-shadow: none !important;
+}
+.theme-code-block pre {
+  background-color: var(--ct-surface) !important;
+  font-size: 0.86rem;
+  line-height: 1.6;
+}
+
+/* Tables: hairline rows, no zebra. src/theme/MDXComponents.tsx wraps each
+   table in .ct-table, which scrolls sideways on its own; the page never does.
+   Cells keep whole words (Korean keep-all); only code inside a cell may break. */
+.ct-table {
+  overflow-x: auto;
+  margin: 0 0 var(--ifm-leading);
+}
+.markdown table {
+  display: table;
+  width: 100%;
+  margin: 0;
+  border-collapse: collapse;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+/* A table written as raw HTML is not wrapped: let it scroll by itself. */
+.markdown table:not(.ct-table > table) {
+  display: block;
+  overflow-x: auto;
+  margin-bottom: var(--ifm-leading);
+}
+.markdown table thead tr {
+  border-bottom: 1px solid var(--ct-line-strong);
+}
+.markdown table tr {
+  border-top: 0;
+  border-bottom: 1px solid var(--ct-line);
+  background: transparent;
+}
+.markdown table th,
+.markdown table td {
+  border: 0;
+  padding: 0.6rem 0.8rem 0.6rem 0;
+  text-align: left;
+  vertical-align: top;
+  overflow-wrap: break-word;
+}
+.markdown table code {
+  overflow-wrap: anywhere;
+}
+.markdown table th {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--ct-ink-2);
+}
+
+/* Images: hairline frame and a small caption.
+   Caption pattern used in the docs: [![alt](src)](src) then *<small>caption</small>* */
+.markdown img {
+  border: 1px solid var(--ct-line);
+  border-radius: 8px;
+  background: var(--ct-surface);
+}
+.markdown a > img {
+  display: block;
+  max-height: 720px;
+  margin: 1.5rem auto 0.55rem;
+  cursor: zoom-in;
+}
+.markdown em > small,
+.markdown figcaption {
+  display: block;
+  margin: 0 0 1.75rem;
+  font-size: 0.8125rem;
+  font-style: normal;
+  line-height: 1.6;
+  color: var(--ct-ink-3);
+  text-align: center;
+}
+.markdown figure {
+  margin: 1.5rem 0 0;
+}
+/* Placeholder for an image that is not made yet. */
+.ct-placeholder {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 21 / 9;
+  margin: 1.5rem 0 0.55rem;
+  padding: 1rem;
+  border: 1px dashed var(--ct-line-strong);
+  border-radius: 8px;
+  background: var(--ct-surface);
+  color: var(--ct-ink-3);
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+/* Admonitions: thin left rule, muted tint, no icon or emoji. */
+.theme-admonition {
+  --ct-adm: var(--ct-note);
+  --ifm-alert-foreground-color: var(--ct-ink);
+  --ifm-alert-background-color: color-mix(in srgb, var(--ct-adm) 7%, var(--ct-bg));
+  --ifm-alert-border-color: var(--ct-adm);
+  --ifm-alert-border-left-width: 2px;
+  --ifm-alert-border-radius: 0 var(--ct-radius) var(--ct-radius) 0;
+  --ifm-alert-padding-vertical: 0.85rem;
+  --ifm-alert-padding-horizontal: 1.1rem;
+  margin: 1.5rem 0;
+  border: 0;
+  border-left: 2px solid var(--ct-adm);
+  box-shadow: none;
+  font-size: 0.97em;
+}
+.theme-admonition-tip { --ct-adm: var(--ct-tip); }
+.theme-admonition-info { --ct-adm: var(--ct-accent); }
+.theme-admonition-warning,
+.theme-admonition-caution { --ct-adm: var(--ct-warn); }
+.theme-admonition-danger { --ct-adm: var(--ct-danger); }
+
+.theme-admonition [class*='admonitionIcon'] {
+  display: none;
+}
+.theme-admonition [class*='admonitionHeading'] {
+  margin-bottom: 0.3rem;
+  font-size: 0.8125rem;
+  font-weight: 650;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--ct-adm-text, var(--ct-adm));
+}
+/* The grey note rule is decoration only; its heading uses readable ink. */
+.theme-admonition-note,
+.theme-admonition-secondary {
+  --ct-adm-text: var(--ct-ink-2);
+}
+.theme-admonition a {
+  color: var(--ct-accent);
+  text-decoration-color: color-mix(in srgb, var(--ct-accent) 40%, transparent);
+}
+.theme-admonition code {
+  background: color-mix(in srgb, var(--ct-surface) 70%, transparent);
+}
+
+/* Breadcrumbs, pagination, doc footer. */
+.breadcrumbs {
+  margin-bottom: 1.25rem;
+}
+.breadcrumbs__link {
+  padding: 0;
+  background: transparent !important;
+  font-size: 0.8125rem;
+  color: var(--ct-ink-3);
+}
+.breadcrumbs__item--active .breadcrumbs__link {
+  color: var(--ct-ink-2);
+}
+.breadcrumbs__item:not(:last-child)::after {
+  margin: 0 0.5rem;
+  opacity: 0.4;
+}
+.pagination-nav {
+  margin-top: 3rem;
+}
+.pagination-nav__link {
+  padding: 0.9rem 1.1rem;
+  border: 1px solid var(--ct-line);
+  transition: border-color 0.15s ease;
+}
+.pagination-nav__link:hover {
+  border-color: var(--ct-line-strong);
+}
+.pagination-nav__sublabel {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--ct-ink-3);
+}
+.pagination-nav__label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--ct-ink);
+}
+.pagination-nav__link--prev .pagination-nav__label::before,
+.pagination-nav__link--next .pagination-nav__label::after {
+  content: none;
+}
+.theme-doc-footer {
+  margin-top: 2.5rem;
+  font-size: 0.8125rem;
+  color: var(--ct-ink-3);
+}
+.theme-last-updated {
+  font-style: normal;
+}
+
+/* Table of contents. */
+.theme-doc-toc-desktop {
+  top: calc(var(--ifm-navbar-height) + 2rem);
+}
+.theme-doc-toc-desktop::before {
+  display: block;
+  margin: 0 0 0.6rem 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--ct-ink-3);
+  content: 'On this page';
+}
+html[lang^='ko'] .theme-doc-toc-desktop::before { content: '이 페이지'; }
+html[lang^='ja'] .theme-doc-toc-desktop::before { content: 'このページ'; }
+.table-of-contents {
+  font-size: 0.8125rem;
+  line-height: 1.5;
+}
+.table-of-contents__link {
+  color: var(--ct-ink-3);
+}
+.table-of-contents__link:hover,
+.table-of-contents__link--active {
+  color: var(--ct-ink);
+}
+.table-of-contents__link--active {
+  font-weight: 600;
+  box-shadow: -1px 0 0 0 var(--ct-accent);
+  margin-left: -1rem;
+  padding-left: 1rem;
+}
+.table-of-contents li {
+  margin: 0.4rem 0.5rem;
+}
+
+/* ------------------------------------------------------------------ */
+/* 7. Footer                                                           */
+/* ------------------------------------------------------------------ */
+
+.footer,
+.footer--dark {
+  --ifm-footer-background-color: var(--ct-bg);
+  --ifm-footer-color: var(--ct-ink-3);
+  --ifm-footer-link-color: var(--ct-ink-2);
+  --ifm-footer-link-hover-color: var(--ct-ink);
+  --ifm-footer-title-color: var(--ct-ink);
+  padding: 2.75rem 1.25rem 2.25rem;
+  border-top: 1px solid var(--ct-line);
+  font-size: 0.875rem;
+}
+.footer__title {
+  margin-bottom: 0.6rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+.footer__item {
+  margin: 0.15rem 0;
+}
+.footer__link-item svg {
+  opacity: 0.5;
+}
+.footer__copyright {
+  margin-top: 1.75rem;
+  font-size: 0.8rem;
+  color: var(--ct-ink-3);
+}
+
+/* ------------------------------------------------------------------ */
+/* 8. Small screens                                                    */
+/* ------------------------------------------------------------------ */
+
 @media (max-width: 996px) {
-  .navbar__logo {max-width: 205px;}
-  .navbar__logo img {max-width: 205px;}
+  .navbar {
+    padding: 0 0.75rem;
+  }
+  .navbar__search-input {
+    width: 8.5rem;
+  }
+  .markdown {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .markdown h1:first-child,
+  .markdown header h1 {
+    font-size: 1.75rem;
+  }
+  .markdown h2 {
+    font-size: 1.3rem;
+  }
+  .markdown h3 {
+    font-size: 1.1rem;
+  }
+  .markdown table {
+    font-size: 0.875rem;
+  }
+  .markdown table th,
+  .markdown table td {
+    min-width: 6.5rem;
+  }
+}
+
+/* Japanese text is not tracked tighter. */
+html[lang^='ja'] .markdown h1,
+html[lang^='ja'] .markdown h2,
+html[lang^='ja'] .markdown h3,
+html[lang^='ja'] .markdown h4 {
+  letter-spacing: 0;
+}
+
+/* Respect "reduce motion". */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+  }
 }
