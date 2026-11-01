@@ -25,6 +25,7 @@ UnityのConsoleをClearし、問題を一度だけ再現して、**最初のエ�
 - [複製したアバターと生成ファイルを共有しているという警告が出る](#duplicate-avatar-shares-generated-files)
 - [追加対象に修復が必要と表示され、ビルドが停止する](#an-additional-target-shows-repair-required-or-blocks-the-build)
 - [落下する滴や床の濡れ跡が見えない、床より上に浮いて見える](#falling-drops-or-floor-stains-are-not-visible)
+- [アップロードすると汗やエフェクトが外れる](#missing-after-upload)
 - [Unityでは正常、VRChat内だけ壊れる](#it-works-in-unity-but-breaks-only-in-vrchat)
 - [既存のPhysBoneが導入後に動かない](#an-existing-physbone-stops-moving-after-installation)
 - [Invalid localAABB がExhaleを示す](#invalid-localaabb-mentions-exhale)
@@ -57,7 +58,7 @@ Base または Full Pack の場合:
 
 ## Setup ウィンドウが同じバージョンでの再インポートを求める {/* #mixed-module-versions */}
 
-BaseとEffectsのバージョンが異なります。所有している Base／Effects モジュールをすべて同じバージョンで既存ファイルへ上書きインポートしてから、Setup ウィンドウを開き直してください。バージョンが混ざっている間は、安全のためSetupとアバタービルドが停止します。削除は不要です。
+BaseとEffectsのバージョンが異なります。所有している Base／Effects モジュールをすべて同じバージョンで既存ファイルへ上書きインポートしてから、Setup ウィンドウを開き直してください。バージョンが混ざっている間、Setupはインストールしません。アバタービルドは止まりませんが、アップロードするアバターから Real Sweat System を外し、Console に `[RealSweatSystem]` で始まる警告（パッケージのバージョンが一致しないという内容）を出します。削除は不要です。
 
 ## Setup がボディマテリアルを2349に下げるか確認する {/* #render-queue-question */}
 
@@ -172,7 +173,21 @@ Real Sweat SystemのConsoleの案内は、選択したツールUI言語に従い
 
 ボディメッシュに汗の表示に必要なデータ（タンジェント）がない場合、Setup は先に確認します。**安全なコピーを作成（推奨）** を選んでください。元のモデルはそのままで、削除すると元に戻ります。**元の設定を変更** は同じモデルを使う他のアバターにも反映され、元に戻しにくくなります。**キャンセル** を押すと何も変えずに止まります。
 
+## アップロードすると汗やエフェクトが外れる {/* #missing-after-upload */}
+
+シーンと Play Mode では正常なのに、アップロードしたアバターに肌の汗やエフェクトが無い、またはどちらか一方しか無い場合です。主な原因は購入認証です。VRChat SDK でビルドするとき（Build & Test、アップロード）、このPCで認証されていないモジュールはアップロードから外れます。ビルド自体は失敗しません。
+
+1. ビルドの後、Console で `Real Sweat System：` で始まる黄色い警告を探します。外れたモジュールごとに1行あり、モジュール名（Base モジュールまたは Effects モジュール）と理由（このPCが認証されていない、ご購入の商品にその機能が含まれていない、保存された認証がこのPCと一致しない）が書かれています。
+2. `CookiTools → RealSweatSystem → Purchase Activation` を開きます。状態の枠の「含まれる機能」に、このPCで認証済みのモジュールが表示されます。足りないモジュールの注文番号またはGumroadのライセンスキーを入力し、**［認証する］** を押してください。このPCにすでに別の注文がある場合は「別の注文を追加」を使います。
+3. アップロードで外れる状態のときは、Setup ウィンドウのインストールボタンの上にも同じ案内と［認証ウィンドウを開く］ボタンが表示されます。モジュールを認証すると、この案内は消えます。
+4. Mac や Linux では認証できないため、アップロード時に Real Sweat System が常に外れます。Windows PC からアップロードしてください。
+5. アバターをもう一度アップロードします。シーンのアバターは変わっていないため、**［インストール / 更新］** を押し直す必要はありません。
+
+`[RealSweatSystem]` で始まり、パッケージのバージョンが一致しないという警告がある場合は、BaseとEffectsのバージョンが混ざっています。[Setup ウィンドウが同じバージョンでの再インポートを求める](#mixed-module-versions)をご覧ください。ルールは[購入認証](./license-activation.mdx)にあります。
+
 ## Unityでは正常、VRChat内だけ壊れる {/* #it-works-in-unity-but-breaks-only-in-vrchat */}
+
+アップロードしたアバターから汗やエフェクトがまるごと外れている場合は、先に[アップロードすると汗やエフェクトが外れる](#missing-after-upload)を確認してください。
 
 Real Sweat Systemが準備した後に、最適化ツール、リターゲットツール、その他のアップロード時のツールがBody RendererやMeshを置き換えている可能性があります。
 
@@ -294,7 +309,7 @@ BaseまたはFull PackのSetupは、汗用SubMeshを追加した生成Body Mesh�
 4. **アバター**、**汗を付ける場所** の行、**詳細設定 > 汗を付ける場所**、実験的な追加対象を確認します。
 5. **［インストール / 更新］** を押してから、手動モード、自動モード、顔、導入したエフェクトを確認します。
 
-BaseまたはEffectsをFull Packへ拡張する場合は、足りないModuleを同じバージョンでインポートし、**［インストール / 更新］** をもう一度押してください。Full Packから1つのModuleに戻す場合は、先にアバターの導入内容を削除し、不要になったModuleのパッケージファイルをUnityプロジェクトから削除してから、残したModuleで導入し直してください。
+BaseまたはEffectsをFull Packへ拡張する場合は、足りないModuleを同じバージョンでインポートし、**［インストール / 更新］** をもう一度押してください。モジュールを追加するため、そのモジュールの購入認証を求められます（[購入認証](./license-activation.mdx#what-is-gated)）。Full Packから1つのModuleに戻す場合は、先にアバターの導入内容を削除し、不要になったModuleのパッケージファイルをUnityプロジェクトから削除してから、残したModuleで導入し直してください。
 
 :::warning[手動で追加したものは削除されません]
 削除の処理は、対応するSetupの外で手動作成したマテリアル、Rendererスロット、Rest Asset、Animationの変更を削除しません。対応していない手動の変更は、バックアップから戻してください。

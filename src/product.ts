@@ -45,6 +45,11 @@ const product: ProductData = {
           to: '/docs/package-guide',
         },
         {
+          title: '구매 인증',
+          text: 'CookiTools → RealSweatSystem → Purchase Activation을 열고 BOOTH 주문번호(Gumroad에서 구매했다면 Gumroad 라이선스 키)를 입력합니다. PC마다 한 번이면 됩니다. 인증하지 않은 PC에서 업로드하면 이 툴의 효과가 빠집니다.',
+          to: '/docs/license-activation',
+        },
+        {
           title: '설치 창에서 설치',
           text: 'CookiTools → RealSweatSystem → Setup／Uninstall을 열고 아바타를 고른 뒤 [설치 / 업데이트]를 누릅니다.',
           to: '/docs/quick-start',
@@ -57,8 +62,9 @@ const product: ProductData = {
       ],
       requirementsTitle: '필요한 것',
       requirements: [
+        ['에디터', 'Windows 전용입니다. 구매 인증이 Windows에서만 동작합니다.'],
         ['Unity', '2022.3 (VRChat 아바타 프로젝트)'],
-        ['VRChat SDK', 'Avatars SDK3'],
+        ['VRChat SDK', 'Avatars SDK 3.10.3 이상(3.10.6까지 확인)'],
         ['Modular Avatar', '필수입니다. VCC에서 설치합니다.'],
         ['플랫폼', 'Direct3D 11을 사용하는 PC 아바타. Quest 단독 실행 환경은 지원하지 않습니다.'],
         ['자동 모드', 'Humanoid 아바타에서 사용할 수 있습니다. 다른 아바타에서도 수동 모드는 사용할 수 있습니다.'],
@@ -90,6 +96,11 @@ const product: ProductData = {
           to: '/docs/package-guide',
         },
         {
+          title: '購入認証',
+          text: 'CookiTools → RealSweatSystem → Purchase Activation を開き、BOOTHの注文番号（Gumroadでご購入の場合はGumroadのライセンスキー）を入力します。PCごとに一度で済みます。認証していないPCからアップロードすると、このツールの効果が外れます。',
+          to: '/docs/license-activation',
+        },
+        {
           title: 'Setup でインストール',
           text: 'CookiTools → RealSweatSystem → Setup／Uninstall を開き、アバターを選んで［インストール / 更新］を押します。',
           to: '/docs/quick-start',
@@ -102,8 +113,9 @@ const product: ProductData = {
       ],
       requirementsTitle: '必要なもの',
       requirements: [
+        ['エディター', 'Windows専用です。購入認証がWindowsでのみ動作します。'],
         ['Unity', '2022.3（VRChat アバタープロジェクト）'],
-        ['VRChat SDK', 'Avatars SDK3'],
+        ['VRChat SDK', 'Avatars SDK 3.10.3以降（3.10.6まで確認）'],
         ['Modular Avatar', '必須です。VCCからインストールします。'],
         ['プラットフォーム', 'Direct3D 11 を使用するPC版アバター。Quest単体版には対応していません。'],
         ['自動モード', 'Humanoidアバターで使用できます。それ以外のアバターでも手動モードは使用できます。'],
@@ -117,7 +129,7 @@ const product: ProductData = {
       troubleshooting: 'Troubleshooting',
       docsVersion: 'Docs for v{version}',
       purchase: 'Buy',
-      purchaseVerification: 'Purchase verification',
+      purchaseVerification: 'Purchase activation',
       pending: 'coming soon',
       imageAlt: 'Real Sweat System store thumbnail: a VRChat avatar with sweat on her back',
       imageCaption: '',
@@ -135,6 +147,11 @@ const product: ProductData = {
           to: '/docs/package-guide',
         },
         {
+          title: 'Activate your purchase',
+          text: 'Open CookiTools → RealSweatSystem → Purchase Activation and enter your BOOTH order number, or your Gumroad license key if you bought on Gumroad. Once per PC is enough. An upload from a PC that is not activated leaves this tool\'s effects out.',
+          to: '/docs/license-activation',
+        },
+        {
           title: 'Install in Setup',
           text: 'Open CookiTools → RealSweatSystem → Setup／Uninstall, select the avatar and press [Install / Update].',
           to: '/docs/quick-start',
@@ -147,8 +164,9 @@ const product: ProductData = {
       ],
       requirementsTitle: 'Requirements',
       requirements: [
+        ['Editor', 'Windows only. Purchase activation works only on Windows.'],
         ['Unity', '2022.3 (VRChat avatar project)'],
-        ['VRChat SDK', 'Avatars SDK3'],
+        ['VRChat SDK', 'Avatars SDK 3.10.3 or later (checked up to 3.10.6)'],
         ['Modular Avatar', 'Required. Install it from VCC.'],
         ['Platform', 'PC avatar using Direct3D 11. Quest standalone is not supported.'],
         ['Auto Mode', 'Available on Humanoid avatars. Other avatars can still use Manual Mode.'],

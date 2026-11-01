@@ -10,11 +10,14 @@ description: Supported Unity, VRChat, avatar, material, and build-tool condition
 
 | Item | Requirement |
 |---|---|
+| Editor OS | **Windows only** (purchase activation works only on Windows; see [Purchase Activation](./license-activation.mdx#windows-only)) |
 | Unity | **2022.3** |
-| VRChat | **Avatars SDK3** |
+| VRChat | **Avatars SDK 3.10.3 or later** (checked up to 3.10.6) |
 | Avatar build framework | **Modular Avatar required** (install via VCC) |
 | Platform | **PC / Direct3D 11** |
 | Quest standalone | Not supported; the sweat is not visible (safe Hidden fallback) |
+
+Tested with NDMF 1.14.0 and Modular Avatar 1.17.1, and with NDMF 1.14.8 and Modular Avatar 1.18.7. These are tested versions, not minimum versions.
 
 VRCFury is not required for Real Sweat System.
 
@@ -147,7 +150,7 @@ When the Light Limit Changer (LLC) menu changes the avatar's brightness, the ski
 
 ## Module version and parameter safety
 
-- Keep Base and Effects at the same release version. If the versions are mixed, the Setup window asks you to re-import them at the same version and does not install, and avatar build stops.
+- Keep Base and Effects at the same release version. If the versions are mixed, the Setup window asks you to re-import them at the same version and does not install. An avatar build does not stop: it leaves Real Sweat System out of the uploaded avatar and writes a Console warning that starts with `[RealSweatSystem]` and says the packages are different versions.
 - Setup checks all planned parameters against Avatar Expression Parameters and other Modular Avatar Parameters declarations, including prefixes and remaps.
 - A name collision stops Setup. If the projected total exceeds VRChat's 256-bit parameter budget, Setup warns before proceeding.
 - Additional-target validation and build guidance follow the selected tool UI language. Unity/NDMF exception headings and stack traces may still appear in English.

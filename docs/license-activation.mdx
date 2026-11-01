@@ -1,18 +1,75 @@
 ---
 id: license-activation
-title: Purchase Verification
-description: A short summary of purchase verification for Real Sweat System.
+title: Purchase Activation
+description: How purchase activation works in Real Sweat System 2.0.0, what it covers, what it never blocks, PCs, and gifts.
 ---
 
-# Purchase Verification
+# Purchase Activation
 
-Each PC is activated once with your BOOTH order number, or your Gumroad license key if you bought on Gumroad. The activation window is at `CookiTools → RealSweatSystem → Purchase Activation`.
+Real Sweat System 2.0.0 asks for a one-time purchase activation on each PC. Open the activation window from `CookiTools → RealSweatSystem → Purchase Activation` and enter your BOOTH order number, or your Gumroad license key if you bought on Gumroad. The window language (English / 한국어 / 日本語) is switched at the top right of the window, and the choice also applies to the Real Sweat System windows.
 
-One order (or Gumroad purchase) covers up to 3 PCs at the same time. The Game & App Integration & Distribution License, sold only on BOOTH, allows 10. Each order can register up to 5 new PCs in 30 days (Game & App Integration & Distribution License: 12).
+Internet is needed to activate, and at least once every 3 weeks for the automatic renewal. Building and uploading avatars never needs it, but an upload from a PC that is not activated leaves this tool's effects out.
 
-Internet is needed to activate, and at least once every 3 weeks for the automatic renewal. Building and uploading avatars never needs it.
+## What each purchase covers {/* #modules */}
 
-How to activate, how to release a PC, gifts, and error codes are explained on the page linked below.
+Activation is per module.
 
-- **Details:** [Purchase activation guide](https://cookistudio.com/license/)
+| Purchase | Shown under **Included** in the window | Entitlement ID |
+|---|---|---|
+| Base Module | Base Module | `rss.base` |
+| Effects Module | Effects Module | `rss.effects` |
+| Full Pack (Base + Effects) | Base Module, Effects Module | `rss.base`, `rss.effects` |
+| Full Pack + Game & App Integration & Distribution License (BOOTH only) | Base Module, Effects Module, Game & App License | `rss.base`, `rss.effects`, `rss.license.game-app` |
+
+- If you bought the modules in separate orders (for example Base first and Effects later), enter the second order under **Add another order** in the activation window. The modules of every order activated on this PC add up.
+- The entitlement IDs appear in **Copy report**.
+
+## What asks for activation {/* #what-is-gated */}
+
+- **A new install:** pressing **[Install / Update]** for an avatar that has no Real Sweat System yet.
+- **Adding a module:** **[Install / Update]** always installs every module that is in the project. When the project has a module that the avatar does not have yet (for example, you imported the Effects package into a project with a Base-only avatar), the press adds that module, so it asks for that module's activation. Without it, the press is cancelled and nothing is changed.
+- **Rest Vertex Data Baker (Advanced) > 2. Bake And Assign** needs the Base Module activation. A normal install bakes and assigns the Rest data on its own, so you do not need this window.
+
+When activation is missing, a notice explains the reason with an error code (CT-LIC-…) and offers **Open activation window**.
+
+## What is never blocked {/* #not-blocked */}
+
+- **Updating:** when every module in the project is already installed on the avatar, **[Install / Update]** does not ask for activation. This includes avatars installed with 1.x.
+- **Apply to FX**, **[Uninstall]**, and avatars you already set up.
+- **Building and uploading:** builds never stop because of purchase activation. The next section says what an upload leaves out.
+- An activation that could not be renewed for 30 days asks for renewal only before a new install or a module addition. Uploads keep the effects.
+
+## Uploads from a PC without activation {/* #uploads */}
+
+When you build with the VRChat SDK (Build & Test or upload), each module installed on the avatar needs its activation on this PC. A module without it is left out of the uploaded avatar, and the activated module stays. For example, with only the Base Module activated, the uploaded avatar keeps the skin sweat and leaves out the Effects Module effects.
+
+- The build does not fail and no dialog opens. The Console shows one warning for each module that was left out, starting with `Real Sweat System:`.
+- The avatar in your scene, Play Mode, and the generated files do not change. Activate and upload again, and the effects are back.
+- While an upload would leave something out, the Setup window shows the same notice above the install button, with **Open activation window**.
+- If you updated from 1.x, activate before you upload. An upload before activation leaves the effects out.
+
+See [Sweat or effects are missing after upload](./troubleshooting.mdx#missing-after-upload) for how to check it.
+
+## Windows only {/* #windows-only */}
+
+The activation is bound to the PC by a device key that Windows' data protection (DPAPI) encrypts for your Windows user account. The Unity editor on Mac or Linux cannot create or read that key, so it cannot activate, and an upload from Mac or Linux always leaves the Real Sweat System effects out.
+
+## PCs {/* #pcs */}
+
+- One order (or one Gumroad purchase) can be activated on up to **3 PCs at the same time**. The Game & App Integration & Distribution License allows 10.
+- Each order can register up to **5 new PCs in 30 days**: the number of PCs plus 2 (Game & App Integration & Distribution License: 12).
+- A "PC" here is a computer together with a Windows user account. Reinstalling Windows, using another Windows account, or deleting the activation folder (`%LOCALAPPDATA%\CookiTools\license\`) counts as a new PC.
+- **Release this PC** in the activation window frees this PC's seat. Press it before you replace a PC, give it away, or reinstall Windows. Releasing an old PC from the list of PCs is possible once every 7 days.
+
+## Received it as a gift? {/* #gifts */}
+
+A gifted order is activated with its order number, like any other order. Ask the person who gave it to you for the order number and enter it. If you cannot, send the shop a BOOTH message from the BOOTH account that received the gift. The author checks the gift and tells you the order number.
+
+## Older version without activation {/* #legacy */}
+
+v1.1.3, which has no purchase activation, stays on BOOTH as a legacy file. Support is only for 2.0.0 and later. To go back after updating to 2.0.0, restore the backup you made before updating, or follow **Going back to v1.1.3** in the README included in the package.
+
+## More details
+
+- **Activation guide and error codes:** [Purchase activation guide](https://cookistudio.com/license/)
 - **Privacy:** [Privacy notice for purchase activation](https://cookistudio.com/license/privacy)

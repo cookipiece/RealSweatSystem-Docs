@@ -10,11 +10,14 @@ description: 지원하는 Unity, VRChat, 아바타, 마테리얼, 빌드 도구 
 
 | 항목 | 지원 조건 |
 |---|---|
+| 에디터 OS | **Windows 전용** (구매 인증이 Windows에서만 동작합니다. [구매 인증](./license-activation.mdx#windows-only) 참고) |
 | Unity | **2022.3** |
-| VRChat | **Avatars SDK3** |
+| VRChat | **Avatars SDK 3.10.3 이상** (3.10.6까지 확인) |
 | 아바타 빌드 기반 | **Modular Avatar 필수** (VCC에서 설치) |
 | 플랫폼 | **PC / Direct3D 11** |
 | Quest 단독 실행 | 지원하지 않습니다. 땀이 표시되지 않습니다(안전한 Hidden 폴백). |
+
+NDMF 1.14.0과 Modular Avatar 1.17.1, NDMF 1.14.8과 Modular Avatar 1.18.7에서 시험했습니다. 시험한 버전이며, 최소 버전이라는 뜻은 아닙니다.
 
 VRCFury는 Real Sweat System에 필요하지 않습니다.
 
@@ -147,7 +150,7 @@ Light Limit Changer(LLC)의 메뉴로 아바타의 밝기를 바꾸면 피부 �
 
 ## 모듈 버전과 파라미터 안전
 
-- Base와 Effects는 같은 릴리스 버전으로 맞춰 주십시오. 버전이 섞여 있으면 설치 창이 같은 버전으로 다시 임포트하라고 알리고 설치를 막으며, 아바타 빌드도 중단됩니다.
+- Base와 Effects는 같은 릴리스 버전으로 맞춰 주십시오. 버전이 섞여 있으면 설치 창이 같은 버전으로 다시 임포트하라고 알리고 설치를 막습니다. 아바타 빌드는 멈추지 않습니다. 대신 업로드하는 아바타에서 Real Sweat System을 빼고, Console에 `[RealSweatSystem]`으로 시작하는 경고(패키지 버전이 서로 다르다는 내용)를 남깁니다.
 - 설치 창은 예정된 모든 파라미터를 Avatar Expression Parameters와 다른 Modular Avatar Parameters 선언(접두사·리맵 포함)과 비교합니다.
 - 이름이 겹치면 설치를 멈춥니다. 예상 합계가 VRChat의 256bit 파라미터 한도를 넘으면 계속하기 전에 경고합니다.
 - 추가 대상 검증과 빌드 안내는 선택한 도구 UI 언어를 따릅니다. Unity／NDMF 예외 제목과 스택 트레이스는 영어로 남을 수 있습니다.

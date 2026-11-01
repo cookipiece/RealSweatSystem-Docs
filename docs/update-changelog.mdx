@@ -14,6 +14,7 @@ This list summarizes the latest user-visible patches. Select a version to jump t
   - **New sweat look:** the skin sweat was rebuilt from scratch, with two styles picked by picture: **Anime (default)** and **Realistic**. **Droplet Depth** was rebuilt, and droplets close to the camera really rise from the skin in both styles.
   - **New Setup window, body steam, falling drops, and splash:** the first screen shows only what you need, with the look and load picked there. Body steam rises softly from a wide area, falling drops and the splash were redrawn, and floor stains only darken the floor.
   - **Lighter:** the first-load freeze other players get is about two-thirds shorter than in v1.1.3, and the default install at 100% sweat costs about half of v1.1.3's.
+  - **Purchase activation:** a new install or a module addition needs a one-time activation on each PC, and an upload from a PC without a module's activation leaves that module out. See [Purchase Activation](./license-activation.mdx).
 - **[v1.1.3](#v113):** Fixed setup failing when Steam is disabled, and deselected effects no longer leave particles or dedicated FX behind.
 - **[v1.1.2](#v112):** Hide Surface Sweat uses a dedicated invisible material instead of an empty material slot.
 - **[v1.1.1](#v111):** Fewer repeated reference checks, improved No Tess uninstall handling, and per-stage diagnostic logs.
@@ -29,6 +30,7 @@ This list summarizes the latest user-visible patches. Select a version to jump t
 4. Do **not** uninstall the old version or delete the `RealSweat` object or `Assets/CookiTools/Generated` first.
 5. Open `CookiTools → RealSweatSystem → Setup／Uninstall` and press **[Install / Update]** once for each avatar. **Apply to FX alone does not do this update.**
 6. Save the scene, check the Console, and test the avatar in Play Mode and with an avatar build before upload.
+7. Before you upload, make sure this PC has the purchase activation for every installed module ([Purchase Activation](./license-activation.mdx)). Updating does not ask for it, but an upload without it leaves those effects out.
 
 If the versions are mixed, the Setup window asks you to re-import them at the same version and does not install.
 
@@ -39,6 +41,13 @@ For removal, clean reinstallation, or changing between Base, Effects, and Full P
 ## v2.0.0 {/* #v200 */}
 
 This update applies to Core, which is shared by the Base Module, Effects Module, and Full Pack. The skin sweat look, the Setup window, and the body steam are new. To update, follow [Updating from 1.x](./quick-start.mdx#updating-from-1x).
+
+### Purchase activation (new)
+
+- A new install, or adding a module, needs purchase activation once on each PC. Open `CookiTools → RealSweatSystem → Purchase Activation` and enter your BOOTH order number or Gumroad license key. Base and Effects are activated separately, and Full Pack covers both. Updating an installed avatar, **Apply to FX**, **[Uninstall]**, and builds are never blocked. See [Purchase Activation](./license-activation.mdx).
+- **Uploads:** a VRChat SDK build on a PC without a module's activation leaves out only that module and writes one Console warning for it. The build does not stop. Avatars updated from 1.x also leave the effects out of uploads until this PC is activated; the scene and Play Mode still show them.
+- **Activation window language:** the English / 한국어 / 日本語 buttons at the top right of the window switch it. The choice also switches the Real Sweat System windows.
+- **Windows only:** purchase activation uses Windows' data protection, so the Mac and Linux editors cannot activate, and uploads from them leave the effects out.
 
 ### Highlights
 
@@ -73,6 +82,13 @@ This update applies to Core, which is shared by the Base Module, Effects Module,
 - **3D particle body steam and breath without a depth texture:** they no longer disappear in worlds whose camera has no depth texture (for example, a world without a realtime directional light that casts shadows).
 - **Realistic at the body's outline:** the thin film's reflection of the sky no longer brightens toward the silhouette, so the light line along the body's outline is less than half as bright. Anime is unchanged.
 - **Falling drops, floor stains, and splash:** existing installs get the new look when you press **[Install / Update]** once. The default **Drop Particle Limit (Per System)** goes from 64 to 12, and the strong-movement drops use two thirds of it (8). Only installs still at 64 change. Updating a v1.1.x 2D particle install keeps it without a splash; to use the splash, turn on **Drop Splash** or choose **Depth (High Load)** before you press **[Install / Update]**.
+- **Editor code in DLLs:** the editor code now ships compiled, in `Core/Editor/CookiTools.RealSweatSystem.Editor.dll` and, for the Effects Module, `Modules/SweatEffectModule/Editor/CookiTools.RealSweatSystem.Effects.Editor.dll`. Some `.cs` files now hold only a two-line comment. They replace the old scripts of the same name when you update over an older version, so do not delete them.
+- **Mixed module versions:** with Base and Effects at different versions, Setup still does not install, but an avatar build no longer stops. It leaves Real Sweat System out of the upload and writes a warning to the Console.
+- **Wet Skin Film toggle:** the in-game Sweat menu has a new **Wet Skin Film** toggle, on by default. It turns the thin wet film between the droplets and its gloss on and off, the glisten from afar included, and costs 1 synchronized bit. Setup installs it only when **Wet Skin Gloss** is on.
+- **Clear droplets from the front:** droplets seen from the front now glint clearly as well.
+- **Component icon:** RealSweat components (Tuning, Installer, Custom Steam Point) show the RealSweat icon in the Hierarchy and the Inspector instead of the default script icon. Their icon in the Scene view is turned off once per project; the Scene view's Gizmos menu turns it back on.
+- **Ctrl+Z:** **[Install / Update]**, the Tuning's **Apply to FX**, **[Uninstall]**, and the Rest Vertex Data Baker's **2. Bake And Assign** cannot be undone with Ctrl+Z. They delete or make again generated files, so an undo would point at files that no longer exist. Changes you made before pressing them can still be undone with Ctrl+Z. To remove an installation, use **[Uninstall]**.
+- **Uninstall:** after **[Uninstall]**, NDMF no longer shows errors in the Console.
 
 ### Known limitations
 

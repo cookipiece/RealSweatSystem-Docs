@@ -18,6 +18,7 @@ The five-minute estimate starts **after** Unity has finished importing the packa
 - Back up the avatar Prefab or project.
 - Confirm that the Console has no existing compile errors.
 - Confirm that **Modular Avatar** is installed (via VCC).
+- Use the Unity editor on Windows. Purchase activation works only on Windows.
 - If you are updating from 1.x, follow [Updating from 1.x](#updating-from-1x). Do not uninstall the old version first, and do not delete the existing `RealSweat` object or `Assets/CookiTools/Generated`.
 
 ## 2. Import the package
@@ -30,7 +31,21 @@ Import the UnityPackage for the product you purchased:
 
 When using both modules, keep Base and Effects on the same version. If the versions are mixed, the Setup window asks you to re-import them at the same version and does not install.
 
-## 3. Open Setup
+## 3. Activate your purchase
+
+A new install needs a one-time purchase activation on each PC.
+
+1. Open `CookiTools → RealSweatSystem → Purchase Activation`.
+2. Enter your BOOTH order number, or your Gumroad license key if you bought on Gumroad, and press **Activate**.
+3. When "Activation complete." appears, the status box lists the included modules (Base Module, Effects Module).
+
+- Activation is per module. If you bought the modules in separate orders, enter the second one under **Add another order**.
+- Pressing **[Install / Update]** without activation opens a notice with **Open activation window**, and nothing is changed.
+- An upload from a PC without a module's activation leaves that module's effects out. Purchase activation works only on Windows.
+
+See [Purchase Activation](./license-activation.mdx) for what it covers, PCs, and gifts.
+
+## 4. Open Setup
 
 From the Unity top menu, open:
 
@@ -40,7 +55,7 @@ The Unity menu items are in English whatever the tool language is. **Clothing Fi
 
 The tabs are **Install** / **Troubleshooting** / **Uninstall**. The tool UI language (English / 한국어 / 日本語) can be switched with the bar at the top of the window. In-game menu names are made in the window language when you press **[Install / Update]**.
 
-## 4. Select the avatar
+## 5. Select the avatar
 
 1. Keep the **Install** tab selected.
 2. Select your avatar in the Hierarchy or drag it into the **Avatar** field. The body mesh is found automatically and shown on the **Sweat on** line.
@@ -51,7 +66,7 @@ The tabs are **Install** / **Troubleshooting** / **Uninstall**. The tool UI lang
 - With only the Effects Module, the line is **Drops from** instead of **Sweat on**, and **Advanced Settings > Falling Drops Material** picks the material the drops come from.
 - An Effects-only installation still uses the Body Mesh as the particle emission surface, but it does not modify the Body mesh or material.
 
-## 5. Choose the style, look, and load
+## 6. Choose the style, look, and load
 
 [![The first screen of the Real Sweat System Setup window](/img/guide/setup-english.png)](/img/guide/setup-english.png)
 
@@ -74,7 +89,7 @@ The first screen shows Status, Sweat on, Will install, the two **Sweat Style** p
 Keep **Flat** and **Low Load (Recommended)** for the first test. Droplet Depth costs more GPU up close, and 3D Particles are a high-load option.
 :::
 
-## 6. Review the other defaults
+## 7. Review the other defaults
 
 Effects, quality, compatibility, and other meshes are in **Advanced Settings**; you usually don't need to change them. For a new installation, the defaults are:
 
@@ -98,7 +113,7 @@ Effects, quality, compatibility, and other meshes are in **Advanced Settings**; 
 
 Follow Body Shadow Strength, droplet-depth precision, Body Steam in mirrors, Show My Breath in First Person, and Custom Steam Points are set after install in Tuning on the `RealSweat` object. Droplet Depth's **On from the Start** can be set both in the Setup window and in Tuning.
 
-## 7. Install
+## 8. Install
 
 Press **[Install / Update]**. The result appears in the box right under the button, and the longer steps show a progress bar. Wait for Unity to finish before interacting with the project.
 
@@ -108,7 +123,7 @@ Press **[Install / Update]**. The result appears in the box right under the butt
 
 Setup is complete when the result box reports a successful installation and Unity has finished importing the generated assets. Normal-operation lines go to the Console only when **Write detailed logs to the Console** is on in the Troubleshooting tab, so check the Console for new errors before entering Play Mode. Gesture Manager and ordinary Scene/Play Mode are preliminary checks; complete a **VRChat Build & Test** before the final upload.
 
-## 8. Test in Play Mode
+## 9. Test in Play Mode
 
 Use Gesture Manager or another preview method:
 
@@ -137,10 +152,11 @@ To remove Real Sweat System, do not delete the `RealSweat` object or `Assets/Coo
 v2.0.0 applies to Core, which is shared by the Base Module, Effects Module, and Full Pack. Installations from v1.0.0–v1.0.2 can also update directly to v2.0.0; no intermediate version is required.
 
 1. Back up the avatar and the project **outside the project**. Copies inside the project change in step 3 as well.
-2. Import every Base／Effects module you own, all at the same v2.0.0 version, over the old files. Do not uninstall the old version first, and do not delete the `RealSweat` object. If the versions are mixed, the Setup window asks you to re-import them at the same version and does not install. The import order does not matter.
+2. Import every Base／Effects module you own, all at the same v2.0.0 version, over the old files. Do not uninstall the old version first, and do not delete the `RealSweat` object. If the versions are mixed, the Setup window asks you to re-import them at the same version and does not install. The import order does not matter. Some `.cs` files in v2.0.0 hold only a two-line comment: the editor code is now in DLLs, and these files replace the old scripts of the same name. Do not delete them.
 3. When Unity first loads the scripts, the look values of the project's sweat materials from earlier versions are set to the new defaults (table below). This happens once per material: moving or copying the project, opening it on another PC, or importing the packages again does not do it again. A sweat material from an earlier version that you bring into the project later is updated once when it is imported.
 4. Open `CookiTools → RealSweatSystem → Setup／Uninstall`. A yellow box says "Installed with an older version." Press **[Install / Update]** once for each avatar. This stores the avatar's pattern number, the Rest up direction, and the droplet size for the avatar's body size, and applies the new body steam and menu names. It also updates the sweat materials of avatars imported after step 3. **Apply to FX alone does not do this update.** In a big project the first press can take a while; a progress bar shows it, and its Cancel button stops before anything is changed.
-5. Save the scene and check in Play Mode or in an avatar build. Then upload the avatar again.
+5. Save the scene and check in Play Mode or in an avatar build.
+6. Activate your purchase on this PC ([Purchase Activation](./license-activation.mdx)) before you upload. Updating does not ask for activation, but an upload from a PC that is not activated leaves the effects out. Then upload the avatar again.
 
 | Look values set to the new defaults | Kept |
 |---|---|

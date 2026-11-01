@@ -25,6 +25,7 @@ Normal-operation lines go to the Console only when **Write detailed logs to the 
 - [A warning says a duplicate avatar shares the generated files](#duplicate-avatar-shares-generated-files)
 - [An additional target shows Repair Required or blocks the build](#an-additional-target-shows-repair-required-or-blocks-the-build)
 - [Falling Drops or Floor Stains are missing or appear above the floor](#falling-drops-or-floor-stains-are-not-visible)
+- [Sweat or effects are missing after upload](#missing-after-upload)
 - [It works in Unity but breaks only in VRChat](#it-works-in-unity-but-breaks-only-in-vrchat)
 - [An existing PhysBone stops moving after installation](#an-existing-physbone-stops-moving-after-installation)
 - [Invalid localAABB mentions Exhale](#invalid-localaabb-mentions-exhale)
@@ -57,7 +58,7 @@ The avatar was installed with 1.x. Press **[Install / Update]** once for each av
 
 ## The Setup window asks to re-import at the same version {/* #mixed-module-versions */}
 
-Base and Effects are at different versions. Import every Base／Effects module you own at the same version over the existing files, then open the Setup window again. Setup and avatar build intentionally stop while the versions are mixed. Uninstall is not required.
+Base and Effects are at different versions. Import every Base／Effects module you own at the same version over the existing files, then open the Setup window again. Setup does not install while the versions are mixed. An avatar build does not stop: it leaves Real Sweat System out of the uploaded avatar and writes a Console warning that starts with `[RealSweatSystem]` and says the packages are different versions. Uninstall is not required.
 
 ## Setup asks to lower body materials to 2349 {/* #render-queue-question */}
 
@@ -172,7 +173,21 @@ Console guidance from Real Sweat System follows the selected tool UI language. U
 
 When the body mesh lacks tangents (data needed for sweat), Setup asks first. Choose **Make Safe Copy (Recommended)**: it keeps the original model, and Uninstall restores it. **Edit Original** affects other avatars using the same model and is hard to undo. **Cancel** stops without changes.
 
+## Sweat or effects are missing after upload {/* #missing-after-upload */}
+
+The avatar looks right in the scene and in Play Mode, but the uploaded avatar has no skin sweat, no effects, or only one of the two. The usual cause is purchase activation: a VRChat SDK build (Build & Test or upload) leaves out every installed module that is not activated on this PC. The build itself does not fail.
+
+1. After the build, open the Console and look for a yellow warning that starts with `Real Sweat System:`. There is one for each module that was left out. It names the module (Base Module or Effects Module) and the reason: this PC is not activated, your purchase does not include that module, or the saved activation does not match this PC.
+2. Open `CookiTools → RealSweatSystem → Purchase Activation`. The status box lists the modules activated on this PC under **Included**. Enter the order number or Gumroad license key of the missing module and press **Activate**. If this PC already has another order, use **Add another order**.
+3. While an upload would leave something out, the Setup window shows the same notice above the install button, with **Open activation window**. It goes away once the module is activated.
+4. On Mac or Linux the activation is not possible, so uploads always leave Real Sweat System out. Upload from a Windows PC.
+5. Upload the avatar again. The avatar in the scene was not changed, so you do not need to press **[Install / Update]** again.
+
+A Console warning that starts with `[RealSweatSystem]` and says the packages are different versions means that Base and Effects are mixed. See [The Setup window asks to re-import at the same version](#mixed-module-versions). The rules are in [Purchase Activation](./license-activation.mdx).
+
 ## It works in Unity but breaks only in VRChat {/* #it-works-in-unity-but-breaks-only-in-vrchat */}
+
+If the sweat or the effects are missing entirely from the uploaded avatar, check [Sweat or effects are missing after upload](#missing-after-upload) first.
 
 An optimizer, retargeter, or other upload-time tool may be replacing the Body Renderer or mesh after Real Sweat System prepares it.
 
@@ -294,7 +309,7 @@ If you cannot identify the exact original Mesh, do not assign a guess or press *
 4. Confirm **Avatar**, the **Sweat on** line, **Advanced Settings > Sweat Target**, and experimental additional targets.
 5. Press **[Install / Update]**, then test Manual Mode, Auto Mode, the face, and installed Effects.
 
-To expand Base or Effects into Full Pack, import the missing same-version module and press **[Install / Update]** again. To return from Full Pack to one module, uninstall the avatar setup first, remove the module package files you no longer want from the Unity project, and then reinstall with the remaining module.
+To expand Base or Effects into Full Pack, import the missing same-version module and press **[Install / Update]** again. This adds a module, so it asks for that module's purchase activation ([Purchase Activation](./license-activation.mdx#what-is-gated)). To return from Full Pack to one module, uninstall the avatar setup first, remove the module package files you no longer want from the Unity project, and then reinstall with the remaining module.
 
 :::warning[Manual additions are not removed]
 Uninstall does not remove materials, Renderer slots, Rest assets, or Animation changes that you created manually outside the supported Setup. Restore unsupported manual changes from your backup.

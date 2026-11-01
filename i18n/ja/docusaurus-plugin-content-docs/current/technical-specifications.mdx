@@ -28,9 +28,10 @@ Effectsだけの導入でも、パーティクルの放出元としてBody Mesh�
 
 ## 対応環境
 
+- Unityエディター用のWindows（購入認証がWindowsでのみ動作します）
 - Unity 2022.3
-- VRChat Avatars SDK3
-- Modular Avatar
+- VRChat Avatars SDK 3.10.3以降（3.10.6まで確認）
+- Modular Avatar（NDMF 1.14.0 / Modular Avatar 1.17.1、NDMF 1.14.8 / Modular Avatar 1.18.7で確認）
 - PC版VRChat（Direct3D 11）
 
 本製品は **PC版VRChat** 向けです。Quest では汗は表示されません（安全な Hidden フォールバック）。
@@ -53,13 +54,13 @@ Effectsだけの導入でも、パーティクルの放出元としてBody Mesh�
 
 | 構成 | 標準の同期コスト（最大） | 体の湯気・吐息の濃さを導入した場合 |
 |---|---:|---:|
-| Base / No Tess | 20bit | 該当なし |
-| Base / 水滴の立体感（Tess）あり | 21bit | 該当なし |
+| Base / No Tess | 21bit | 該当なし |
+| Base / 水滴の立体感（Tess）あり | 22bit | 該当なし |
 | Effects | 23bit | 31bit |
-| Full Pack / No Tess | 25bit | 33bit |
-| Full Pack / 水滴の立体感（Tess）あり | 26bit | 34bit |
+| Full Pack / No Tess | 26bit | 34bit |
+| Full Pack / 水滴の立体感（Tess）あり | 27bit | 35bit |
 
-v2.0.0 で「VRCライトボリューム」のメニュートグルと同期パラメーター（1bit）を削除しました。任意の保存・同期の体の湯気・吐息の濃さFloatは、EffectsのみとFullの導入に8bitを追加します。Baseのみの構成は変わりません。
+v2.0.0 で「VRCライトボリューム」のメニュートグルと同期パラメーター（1bit）を削除しました。任意の保存・同期の体の湯気・吐息の濃さFloatは、EffectsのみとFullの導入に8bitを追加します。Baseのみの構成は変わりません。BaseとFull Packの値には、**濡れた肌の膜** トグルの1bitが含まれます。このトグルは、Setupの **濡れるほど肌のツヤ** がオンのときだけ導入されます。
 
 吐息は既存の `Cooki/SweatAmount` Float を再利用するため、同期Floatパラメーターは追加されません。運動強度・体熱・落下活動・皮膚の濡れの内部信号はNotSyncedで、パラメーターのコストはありません。メニューの汗量は1%刻みで更新され、リモートの Float 同期精度は約1/127 (0.8%)です。
 

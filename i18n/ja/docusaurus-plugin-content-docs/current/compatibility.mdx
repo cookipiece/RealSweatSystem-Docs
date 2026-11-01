@@ -10,11 +10,14 @@ description: 対応する Unity、VRChat、アバター、マテリアル、ビ�
 
 | 項目 | 条件 |
 |---|---|
+| エディターのOS | **Windows専用**（購入認証がWindowsでのみ動作します。[購入認証](./license-activation.mdx#windows-only)を参照） |
 | Unity | **2022.3** |
-| VRChat | **Avatars SDK3** |
+| VRChat | **Avatars SDK 3.10.3以降**（3.10.6まで確認） |
 | アバタービルド | **Modular Avatarが必要**（VCC からインストール） |
 | プラットフォーム | **PC / Direct3D 11** |
 | Quest単体版 | 非対応。汗は表示されません（安全な Hidden フォールバック） |
+
+NDMF 1.14.0とModular Avatar 1.17.1、NDMF 1.14.8とModular Avatar 1.18.7で確認しています。確認したバージョンであり、最小バージョンという意味ではありません。
 
 Real Sweat System に VRCFury は必要ありません。
 
@@ -147,7 +150,7 @@ Light Limit Changer（LLC）のメニューでアバターの明るさを変え�
 
 ## Moduleのバージョンとパラメーターの安全性
 
-- BaseとEffectsは同じリリースバージョンにそろえてください。バージョンが混ざっていると、Setup ウィンドウが同じバージョンで再インポートするよう知らせてインストールを止め、アバタービルドも停止します。
+- BaseとEffectsは同じリリースバージョンにそろえてください。バージョンが混ざっていると、Setup ウィンドウが同じバージョンで再インポートするよう知らせてインストールを止めます。アバタービルドは止まりません。その代わり、アップロードするアバターから Real Sweat System を外し、Console に `[RealSweatSystem]` で始まる警告（パッケージのバージョンが一致しないという内容）を出します。
 - Setupは、導入予定のすべてのパラメーターをAvatar Expression Parametersと他のModular Avatar Parameters宣言（接頭辞・リマップを含む）に照合します。
 - 名前が衝突する場合はSetupを停止します。予測合計がVRChatの256bitのパラメーター上限を超える場合は、続行前に警告します。
 - 追加対象の検証とビルドの案内は、選択したツールUI言語に従います。UnityやNDMFの例外タイトルとスタックトレースは、英語のまま表示される場合があります。

@@ -28,9 +28,10 @@ An Effects-only setup still needs a Body Mesh as the particle emission source. I
 
 ## Supported environment
 
+- Windows for the Unity editor (purchase activation works only on Windows)
 - Unity 2022.3
-- VRChat Avatars SDK3
-- Modular Avatar
+- VRChat Avatars SDK 3.10.3 or later (checked up to 3.10.6)
+- Modular Avatar (tested with NDMF 1.14.0 / Modular Avatar 1.17.1 and NDMF 1.14.8 / Modular Avatar 1.18.7)
 - PC VRChat (Direct3D 11)
 
 This product is for **PC VRChat**. On Quest the sweat is not visible (safe Hidden fallback).
@@ -53,13 +54,13 @@ The following values are **maximums** with Humanoid Auto Mode and the standard o
 
 | Configuration | Standard sync cost (max) | With Body Steam & Breath Intensity |
 |---|---:|---:|
-| Base / No Tess | 20 bits | Not applicable |
-| Base / with Droplet Depth (Tess) | 21 bits | Not applicable |
+| Base / No Tess | 21 bits | Not applicable |
+| Base / with Droplet Depth (Tess) | 22 bits | Not applicable |
 | Effects | 23 bits | 31 bits |
-| Full Pack / No Tess | 25 bits | 33 bits |
-| Full Pack / with Droplet Depth (Tess) | 26 bits | 34 bits |
+| Full Pack / No Tess | 26 bits | 34 bits |
+| Full Pack / with Droplet Depth (Tess) | 27 bits | 35 bits |
 
-v2.0.0 removed the VRC Light Volumes menu toggle and its synchronized parameter (1 bit). The optional saved synchronized Body Steam & Breath Intensity Float adds 8 bits to Effects-only and Full installations; Base-only is unchanged.
+v2.0.0 removed the VRC Light Volumes menu toggle and its synchronized parameter (1 bit). The optional saved synchronized Body Steam & Breath Intensity Float adds 8 bits to Effects-only and Full installations; Base-only is unchanged. The Base and Full Pack values include the 1-bit **Wet Skin Film** toggle, which Setup installs only when **Wet Skin Gloss** is on.
 
 Breath reuses the existing `Cooki/SweatAmount` Float, so it adds no synchronized Float parameter. Internal exercise, body heat, drop activity, and skin wetness signals are NotSynced and add no parameter cost. The menu gauge updates in 1% steps; remote Float synchronization has approximately 1/127 (0.8%) precision.
 

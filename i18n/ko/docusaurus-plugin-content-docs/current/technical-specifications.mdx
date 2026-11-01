@@ -28,9 +28,10 @@ Effects만 설치해도 파티클 방출원으로 Body Mesh가 필요합니다. 
 
 ## 지원 환경
 
+- Unity 에디터용 Windows (구매 인증이 Windows에서만 동작합니다)
 - Unity 2022.3
-- VRChat Avatars SDK3
-- Modular Avatar
+- VRChat Avatars SDK 3.10.3 이상 (3.10.6까지 확인)
+- Modular Avatar (NDMF 1.14.0 / Modular Avatar 1.17.1, NDMF 1.14.8 / Modular Avatar 1.18.7에서 시험)
 - PC VRChat (Direct3D 11)
 
 이 제품은 **PC VRChat**용입니다. Quest에서는 땀이 표시되지 않습니다(안전한 Hidden 폴백).
@@ -53,13 +54,13 @@ Humanoid 아바타가 주 지원 대상입니다. 움직임추를 만들 수 있
 
 | 구성 | 표준 동기화 비용(최대) | 몸 김·입김 진하기 포함 |
 |---|---:|---:|
-| Base / No Tess | 20bit | 해당 없음 |
-| Base / 물방울 입체감(Tess) 포함 | 21bit | 해당 없음 |
+| Base / No Tess | 21bit | 해당 없음 |
+| Base / 물방울 입체감(Tess) 포함 | 22bit | 해당 없음 |
 | Effects | 23bit | 31bit |
-| Full Pack / No Tess | 25bit | 33bit |
-| Full Pack / 물방울 입체감(Tess) 포함 | 26bit | 34bit |
+| Full Pack / No Tess | 26bit | 34bit |
+| Full Pack / 물방울 입체감(Tess) 포함 | 27bit | 35bit |
 
-v2.0.0은 'VRC 라이트 볼륨' 메뉴 토글과 그 동기화 파라미터(1bit)를 없앴습니다. 선택형 저장·동기화 몸 김·입김 진하기 Float는 Effects와 Full 설치에 8bit를 더하며, Base만 설치한 구성은 바뀌지 않습니다.
+v2.0.0은 'VRC 라이트 볼륨' 메뉴 토글과 그 동기화 파라미터(1bit)를 없앴습니다. 선택형 저장·동기화 몸 김·입김 진하기 Float는 Effects와 Full 설치에 8bit를 더하며, Base만 설치한 구성은 바뀌지 않습니다. Base와 Full Pack 값에는 **젖은 피부 막** 토글 1bit가 들어 있습니다. 이 토글은 Setup의 **젖을수록 피부 광택**이 켜져 있을 때만 설치됩니다.
 
 입김은 기존 `Cooki/SweatAmount` Float를 함께 사용하므로 동기화 Float 파라미터를 추가하지 않습니다. 운동 강도·체열·낙하 활동·피부 젖음 같은 내부 신호는 NotSynced라 파라미터 비용이 없습니다. 메뉴 땀양은 1% 단위로 갱신되며, 원격 Float 동기화 정밀도는 약 1/127(0.8%)입니다.
 
