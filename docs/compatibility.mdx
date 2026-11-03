@@ -39,10 +39,10 @@ Mesh, material, Animator, and build-time modification tool configurations differ
 
 ## Body Mesh
 
-The selected Body must be a child `SkinnedMeshRenderer` with a valid mesh and submesh. The body mesh is found automatically and shown on the Setup window's **Sweat on** line.
+The selected Body must be a child `SkinnedMeshRenderer` with a valid mesh and submesh. The body mesh is found automatically and shown in the Setup window's **Sweat on** field; if it is wrong, drag the right mesh onto the field.
 
 - The primary Body Renderer is the scale reference and the default Effects emission source.
-- Multiple material Elements in the primary Body Renderer can be selected under **Advanced Settings > Sweat Target**. Check only the skin materials.
+- Multiple material Elements in the primary Body Renderer can be selected under **Advanced Settings > Sweat Target** (**[Change]** next to **Sweat on** opens it). Check only the skin materials.
 - Additional `SkinnedMeshRenderer` targets such as a separate face mesh are available as an **experimental** feature. Each target receives separate Rest data, masks, material, and draw cost. Other meshes such as a face get the body's droplet size.
 - Automatic simultaneous installation across switchable Body Renderers is not guaranteed. Every Renderer/Element that should display sweat must be explicitly configured.
 - GameObject active/inactive Body swaps can be configured as separate targets. Swaps that change only `Renderer.enabled` are not guaranteed; configure every Renderer/Element explicitly and verify the final avatar build.
@@ -131,7 +131,7 @@ A manual Sweat Render Queue above **2500** enters Unity's transparent sorting ra
 ## Lighting {/* #lighting */}
 
 - **VRC Light Volumes:** support was removed in v2.0.0. The skin sweat uses Unity light probes (SH) only for ambient light. **[Install / Update]** or **Apply to FX** removes the old "VRC Light Volumes" menu toggle and its synchronized parameter (1 bit) from an existing installation.
-- Strong colored world lights, ambient lighting, and reflection probes can tint the skin-surface sweat. Realistic shows less than Anime in dark worlds and in worlds without a reflection probe. Test the intended worlds and mirrors before upload.
+- Strong colored world lights, ambient lighting, and reflection probes can tint the skin-surface sweat. Test the intended worlds and mirrors before upload.
 - Dark skin: droplets show a bright glint instead of looking like grey discs, and the film and trails look much less oily. Pale, normal, and tanned skin look the same as before, apart from a few pixels in deep shadow.
 
 ### Light Limit Changer {/* #light-limit-changer */}

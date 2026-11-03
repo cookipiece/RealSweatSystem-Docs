@@ -46,7 +46,7 @@ For Base or Full Pack:
 1. In Play Mode, turn **Sweat Display** on.
 2. Turn the default **Auto Mode** off temporarily and set **Sweat %** to 50% or higher.
 3. Check that **Hide Skin Sweat** under **Reduce Load** is off.
-4. In the Setup window, confirm that the **Sweat on** line shows the intended body mesh, and that only the skin materials are checked under **Advanced Settings > Sweat Target**.
+4. In the Setup window, confirm that the **Sweat on** field shows the intended body mesh, and that only the skin materials are checked under **Advanced Settings > Sweat Target** (**[Change]** opens it).
 5. Check the Rest data. The new look draws sweat only where the Rest data is valid; it no longer falls back to a UV pattern. A material that is not installed yet, or a mesh that changed after the bake, may show no sweat in the Scene view. The **Rest Data** cell at the top of the material inspector and the Tuning's **Mesh and Rest Data Diagnostics** tell you when this happens. If the mesh changed, the next build (upload) bakes again from the final mesh.
 6. Check the render order. With automatic render order, the skin sweat renders at queue **2350**. If you chose **Keep As Is** for a body material at 2459 or later, the sweat is hidden where that material covers it. See [Setup asks to lower body materials to 2349](#render-queue-question).
 7. Exit Play Mode, open `CookiTools → RealSweatSystem → Setup／Uninstall`, and press **[Install / Update]** again.
@@ -150,13 +150,13 @@ If you saved a duplicate of the avatar in another scene or as a prefab, a closed
 
 ## The body mesh is not detected
 
-The body mesh is found automatically and shown on the **Sweat on** line (with only the Effects Module, **Drops from**). If it is not found or the wrong Renderer is shown, press **Change** on that line, or open **Advanced Settings > Sweat Target**, and set **Body Mesh** to the Hierarchy object with the correct skin-side `SkinnedMeshRenderer`; an `.fbx` or Mesh asset from the Project window cannot be used. **Find Again** runs the automatic search again. The Renderer must have a valid mesh and at least one valid submesh.
+The body mesh is found automatically and put in the **Sweat on** field on the Setup window's first screen (with only the Effects Module, **Drops from**). If it is not found or the wrong Renderer is shown, drag the Hierarchy object with the correct skin-side `SkinnedMeshRenderer` onto that field; an `.fbx` or Mesh asset from the Project window cannot be used. **[Change]** opens **Advanced Settings > Sweat Target**, where **Body Mesh** is the same field and **Find Again** runs the automatic search again. The Renderer must have a valid mesh and at least one valid submesh.
 
 Experimental additional targets are added separately in **Advanced Settings > Sweat on Other Meshes (Experimental)** and must be `SkinnedMeshRenderer` components.
 
 ## Sweat appears on the wrong material slot
 
-For a Body with multiple materials, check only the skin materials under **Advanced Settings > Sweat Target**, then press **[Install / Update]** again. Do not assume Element 0 is the skin.
+For a Body with multiple materials, press **[Change]** next to **Sweat on** and check only the skin materials under **Advanced Settings > Sweat Target**, then press **[Install / Update]** again. Do not assume Element 0 is the skin.
 
 ## An additional target shows Repair Required or blocks the build {/* #an-additional-target-shows-repair-required-or-blocks-the-build */}
 
@@ -214,7 +214,7 @@ If the existing PhysBone still does not move after uninstalling Real Sweat Syste
 
 ## Rest data cannot be regenerated
 
-Confirm that the final source mesh is readable and that the selected sweat submesh still exists. Check the **Sweat on** line and **Advanced Settings > Sweat Target** before pressing **[Install / Update]** again.
+Confirm that the final source mesh is readable and that the selected sweat submesh still exists. Check the **Sweat on** field and **Advanced Settings > Sweat Target** before pressing **[Install / Update]** again.
 
 The **Rest Vertex Data Baker** is a support or advanced-maintenance tool. It is not normally needed during everyday use. See [Auxiliary Tools](./tools.mdx) before running it manually.
 
@@ -224,13 +224,13 @@ Open `CookiTools → RealSweatSystem → Clothing Fix` and apply it to the affec
 
 ## Effects-only setup shows no particles
 
-The Effects Module does not modify the Body, but it still needs the Body Mesh as its emission surface. Confirm that the correct Body is shown on the **Sweat on** line and that the particle controls are enabled under:
+The Effects Module does not modify the Body, but it still needs the Body Mesh as its emission surface. Confirm that the correct Body is shown in the **Drops from** field on the Setup window's first screen and that the particle controls are enabled under:
 
 **Sweat → Effects**
 
 ## Falling Drops or Floor Stains are not visible {/* #falling-drops-or-floor-stains-are-not-visible */}
 
-1. Confirm that falling drops were selected in **Advanced Settings > Effects to Install**. Floor Stains also require Falling Drops because they are collision sub-effects.
+1. Confirm that **Falling Drops** was checked under **Effects to Install** on the Setup window's first screen. Floor Stains also require Falling Drops because they are collision sub-effects.
 2. In **Sweat → Effects**, turn on **All Effects**, **Falling Drops**, and **Floor Stains**. For a manual test, turn Auto Mode off and set **Sweat %** to 100%.
 3. If Falling Drops are visible but Floor Stains are not, test a world floor with a Collider on the **Default** or **Environment** layer.
 4. If Falling Drops or Floor Stains appear suspended above the floor, a Unity physics Collider inside or beneath the avatar—such as a Box, Capsule, or Mesh Collider on the body, feet, clothing, an accessory, or a test object—may be intercepting the collision before the world floor when it uses the **Default** or **Environment** layer. This does not refer to a VRC PhysBone Collider. Temporarily disable the suspected Unity Colliders one at a time for an isolation test. If the stain then appears on the world floor, an intervening Collider was the cause.
@@ -306,7 +306,7 @@ If you cannot identify the exact original Mesh, do not assign a guess or press *
 1. Import the intended current package or packages over the existing files. For an update from 1.x, do not uninstall first or delete the existing `RealSweat` object or `Assets/CookiTools/Generated`; follow [Updating from 1.x](./quick-start.mdx#updating-from-1x).
 2. Keep Base and Effects on the same exact version when both are installed.
 3. Open the **Install** tab in `CookiTools → RealSweatSystem → Setup／Uninstall`.
-4. Confirm **Avatar**, the **Sweat on** line, **Advanced Settings > Sweat Target**, and experimental additional targets.
+4. Confirm **Avatar**, the **Sweat on** field, **Advanced Settings > Sweat Target**, and experimental additional targets.
 5. Press **[Install / Update]**, then test Manual Mode, Auto Mode, the face, and installed Effects.
 
 To expand Base or Effects into Full Pack, import the missing same-version module and press **[Install / Update]** again. This adds a module, so it asks for that module's purchase activation ([Purchase Activation](./license-activation.mdx#what-is-gated)). To return from Full Pack to one module, uninstall the avatar setup first, remove the module package files you no longer want from the Unity project, and then reinstall with the remaining module.

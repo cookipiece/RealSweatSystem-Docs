@@ -6,7 +6,7 @@ description: Configure Falling Drops, Floor Stains, the splash, Breath, and Body
 
 # Effects Guide
 
-The Effects Module adds particle effects driven by the same Sweat % used by the rest of the system. Effects-only installation still needs a Body Mesh as its emission surface, but it does not modify the Body material or mesh.
+The Effects Module adds particle effects driven by the same Sweat % used by the rest of the system. Effects-only installation still needs a Body Mesh as its emission surface, but it does not modify the Body material or mesh. The effects to install are the **Effects to Install** check boxes on the Setup window's first screen (**Falling Drops**, **Floor Stains**, **Breath**, **Body Steam**).
 
 For a non-humanoid avatar, or when the Modular Avatar motion pendulum cannot be created, Manual Mode, Falling Drops, and Floor Stains remain available. Auto Mode, Breath, and Body Steam are not created.
 
@@ -41,7 +41,7 @@ The 3D body steam and breath look the same as before, and their Mesh Particle Ac
 
 Sweat droplets fall from locations across the body, and they get denser toward 100% Sweat. Falling drops are small, round while slow, and stretch longer the faster they fall. 3D draws them as a teardrop-shaped water lens, 2D as a water drop lit by the scene.
 
-Falling drops follow the sweat style: **Anime** with crisp white highlights and outlines, **Realistic** with a dark rim and a small glint. The style is picked only when the Base Module is installed; with only the Effects Module, the drops, floor stains, and splash use the Anime look.
+Falling drops follow the sweat style: **Anime** with crisp white highlights and outlines, **Realistic** with a dark rim and a small glint. The style is picked only when the Base Module is installed; with only the Effects Module, the drops, floor stains, and splash use the Realistic look. An avatar already installed with 2.0.0 keeps the look it has.
 
 Because the drops fall fast, at most 8 drops of a system are in the air at once. The default of **Drop Particle Limit (Per System)** is 12, and the strong-movement drops use two thirds of it (8).
 
@@ -91,7 +91,7 @@ Body steam begins fading in at about **30% Sweat** by default and grows with the
 - Armpits
 - Thighs
 
-The crotch and feet positions are off by default. The locations are chosen before installation in the Setup window under **Advanced Settings > Effects to Install > Body Steam > Locations** (**Chest Hollow**, **Shoulders**, **Armpits**, **Thighs**, **Crotch**, **Feet**), and after installation in Tuning under **Effect Details > Body Steam > Steam Locations** with **Apply to FX**. A location that was excluded at installation needs **[Install / Update]**.
+The crotch and feet positions are off by default. The locations are chosen before installation in the Setup window under **Advanced Settings > Effects > Body Steam > Locations** (**Chest Hollow**, **Shoulders**, **Armpits**, **Thighs**, **Crotch**, **Feet**), and after installation in Tuning under **Effect Details > Body Steam > Steam Locations** with **Apply to FX**. A location that was excluded at installation needs **[Install / Update]**.
 
 - The particle system count is unchanged and the maximum particle count is lower (at the default sliders: 12 steam spots 288 → 131; the 7 spots of a default install 168 → 95). The shader is lighter, but the wider steam draws more pixels up close.
 - The 2D body steam is the same at Standard, Low Load, and Lightweight. The 3D particle body steam is 0.65× Standard's at Low Load and Lightweight.

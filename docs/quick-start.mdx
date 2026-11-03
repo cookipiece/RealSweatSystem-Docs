@@ -58,31 +58,34 @@ The tabs are **Install** / **Troubleshooting** / **Uninstall**. The tool UI lang
 ## 5. Select the avatar
 
 1. Keep the **Install** tab selected.
-2. Select your avatar in the Hierarchy or drag it into the **Avatar** field. The body mesh is found automatically and shown on the **Sweat on** line.
-3. If the body has several materials, check only the skin materials under **Advanced Settings > Sweat Target**. If the wrong body mesh was found, set **Body Mesh** there or press **Find Again**.
+2. Select your avatar in the Hierarchy or drag it into the **Avatar** field. The body mesh is found automatically and put in the **Sweat on** field, with its material shown under it. If the mesh found is wrong, drag the right mesh from the Hierarchy onto the field.
+3. If the body has several materials, press **[Change]** next to **Sweat on** and check only the skin materials under **Advanced Settings > Sweat Target**.
 
 - The avatar is the root object with the VRC Avatar Descriptor.
 - Additional `SkinnedMeshRenderer` targets such as a separate face are an **experimental** option in **Advanced Settings > Sweat on Other Meshes (Experimental)**. Leave them empty for the first test.
-- With only the Effects Module, the line is **Drops from** instead of **Sweat on**, and **Advanced Settings > Falling Drops Material** picks the material the drops come from.
+- With only the Effects Module, the field is **Drops from** instead of **Sweat on**, and **Advanced Settings > Falling Drops Material** (opened with **[Change]**) picks the material the drops come from.
 - An Effects-only installation still uses the Body Mesh as the particle emission surface, but it does not modify the Body mesh or material.
 
-## 6. Choose the style, look, and load
+## 6. Choose the effects, style, look, and load
 
 [![The first screen of the Real Sweat System Setup window](/img/guide/setup-english.png)](/img/guide/setup-english.png)
 
 *<small>The Setup window's first screen. The detailed options are folded under Advanced Settings. Click an image in this guide to enlarge it.</small>*
 
-The first screen shows Status, Sweat on, Will install, the two **Sweat Style** pictures, the two **Look** pictures, the **Load** buttons, **Auto Mode Sensitivity**, and the **[Install / Update]** button.
+The first screen shows Status, **Sweat on** (the body mesh and its material), the **Effects to Install** and **Skin Sweat** check boxes, the two **Sweat Style** pictures, the two **Look** pictures, the **Load** buttons, **Auto Mode Sensitivity**, and the **[Install / Update]** button. The pictures keep one size in any window, and a short window scrolls.
 
 | Item | How to choose | Default for a new install |
 |---|---|---|
-| **Sweat Style** | Click one of two pictures: **Anime (default)** or **Realistic** | **Anime (default)** |
+| **Effects to Install** | Check boxes: **Falling Drops**, **Floor Stains**, **Breath**, **Body Steam** | **On** when Effects is installed |
+| **Skin Sweat** | Check box: **Wet Skin Gloss** | **On** |
+| **Sweat Style** | Click one of two pictures: **Anime** or **Realistic (default)** | **Realistic (default)** |
 | **Look** | Click one of two pictures: **Flat** or **Depth (High Load)** | **Flat** |
 | **Load** | Buttons: **Low Load (Recommended)** or **Standard** | **Low Load (Recommended)** |
 | **Auto Mode Sensitivity** | Dropdown: **Balanced: recommended motion-proportional response** or **Sensitive: faster build-up from small movements** | **Balanced** |
 
-- **Anime (default)** draws droplets with crisp highlights that read well from afar. **Realistic** has many small droplets, drawn with small reflections of the light and the surroundings instead of white highlights; from afar it reads as a wet gloss rather than dots. The style is one per avatar, and you can change it after installing in Tuning (**Basic Settings > Sweat Style**). The **Sweat Style** pictures appear only when the Base Module is installed.
-- **Depth (High Load)** turns on Droplet Depth, 3D Particles, and Drop Splash together and shows **On from the Start** under it. **Flat** turns Droplet Depth and 3D Particles off. If you set the two differently in Advanced Settings, neither picture is selected and a note says so.
+- **Effects to Install** appears when the Effects Module is installed; Floor Stains need Falling Drops. **Wet Skin Gloss** under **Skin Sweat** appears when the Base Module is installed and makes the skin glossier as sweat increases.
+- **Realistic (default)** draws clear droplets without outlines: the skin seen through them bends a little, like a lens, and from afar it reads as a wet gloss rather than dots. **Anime** draws bigger droplets with crisp outlines and highlights that read well from afar. The style is one per avatar, and you can change it after installing in Tuning (**Basic Settings > Sweat Style**). The **Sweat Style** pictures appear only when the Base Module is installed.
+- **Depth (High Load)** turns on Droplet Depth, 3D Particles, and Drop Splash together and shows **On from the Start** under it. The caption under its picture says the droplets rise when seen up close and from the side, and that Droplet Depth starts off and is turned on in the in-game menu unless **On from the Start** is ticked. While it is off, an info box shows that menu (**Sweat > Reduce Load**). **Flat** turns Droplet Depth and 3D Particles off. If you set the two differently in Advanced Settings, neither picture is selected and a note says so.
 - **Low Load (Recommended)** leaves out only the small pore droplets; at conversation distance and at 1.5-3 m it is hard to tell from **Standard**. **Lightweight** is picked in **Advanced Settings > Quality & Load**, where the **Sweat Quality** dropdown has all three tiers.
 
 :::tip[Recommended first installation]
@@ -91,18 +94,16 @@ Keep **Flat** and **Low Load (Recommended)** for the first test. Droplet Depth c
 
 ## 7. Review the other defaults
 
-Effects, quality, compatibility, and other meshes are in **Advanced Settings**; you usually don't need to change them. For a new installation, the defaults are:
+Where the body steam rises, the intensity menu, quality, compatibility, and other meshes are in **Advanced Settings**; you usually don't need to change them. For a new installation, the defaults are:
 
 | Setting | Where | Default |
 |---|---|---|
-| **Falling Drops**, **Floor Stains**, **Breath**, **Body Steam** | Advanced Settings > Effects to Install | **On** when Effects is installed |
-| Body steam **Locations** | Advanced Settings > Effects to Install > Body Steam | **Chest Hollow, Shoulders, Armpits, Thighs** on; **Crotch, Feet** off |
-| **Add Body Steam & Breath Intensity Menu (+8 bits)** | Advanced Settings > Effects to Install | **Off** |
+| Body steam **Locations** | Advanced Settings > Effects > Body Steam | **Chest Hollow, Shoulders, Armpits, Thighs** on; **Crotch, Feet** off |
+| **Add Body Steam & Breath Intensity Menu (+8 bits)** | Advanced Settings > Effects | **Off** |
 | **Droplet Depth (Tessellation, High Load)** and **On from the Start** | Advanced Settings > Quality & Load | **Off** |
 | **3D Particles (High Load)** | Advanced Settings > Quality & Load | **Off**; lightweight 2D particles are used |
 | **Drop Splash** | Advanced Settings > Quality & Load | **Off** with the **Flat** look; on when you choose **Depth (High Load)** |
 | **High-Quality Sweat in Mirrors (High Load)** | Advanced Settings > Quality & Load | **Off** |
-| **Wet Skin Gloss** | Advanced Settings > Quality & Load | **On** |
 | **Automatic Render Order (Recommended)** | Advanced Settings > Compatibility (only if needed) | **On**; the skin sweat renders at queue **2350** |
 | **Write Defaults** | Advanced Settings > Compatibility (only if needed) | **Auto (Recommended)** |
 | **Follow Body Shadow Strength** | Tuning > Surface Sweat Settings | **On** |
@@ -168,7 +169,7 @@ Look values you change in 2.0.0 before pressing **[Install / Update]** go back t
 
 What else changes with the update:
 
-- **Style:** updated avatars start with the **Anime** style. To use **Realistic**, pick its picture and press **[Install / Update]**.
+- **Style:** updated avatars start with the **Realistic** style: a 1.x avatar has no stored style, so it takes the new default. To use **Anime**, pick its picture and press **[Install / Update]**.
 - **Droplets:** the droplets move once because of the new pattern number. Their amount and look stay the same. Other meshes keep their droplet size multiplier; it now multiplies the Body's new droplet size (1.6).
 - **Hidden values:** the other 1.1.x look settings (most of what the material inspector used to tune) are not read by the new look. They are hidden in the inspector but kept in the material.
 - **Render queue:** the automatic sweat render queue moves from 2455 to 2350. With a body material at 2350 or later, **[Install / Update]** asks whether to lower it to 2349. A manual render queue you set is kept.

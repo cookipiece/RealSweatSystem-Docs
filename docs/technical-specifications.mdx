@@ -157,7 +157,7 @@ Remote Low Load is available when Base is installed.
 
 The Effects Module uses particles for Falling Drops, the splash, Floor Stains, Breath, and Body Steam. The lightweight 2D mode is the default; optional high-load 3D Particles change Breath, Falling Drops, and Body Steam to mesh-particle rendering. Only effects selected during Setup add their controls and parameters, and each can be disabled in game.
 
-- Falling drops and the splash follow the sweat style; with only the Effects Module they use the Anime look. **Drop Particle Limit (Per System)** defaults to 12, and the strong-movement drops use two thirds of it (8).
+- Falling drops and the splash follow the sweat style; with only the Effects Module they use the Realistic look (an avatar already installed with 2.0.0 keeps the look it has). **Drop Particle Limit (Per System)** defaults to 12, and the strong-movement drops use two thirds of it (8).
 - Floor Stains are collision sub-effects of Falling Drops and are available only while Falling Drops is enabled. Collision uses world Default and Environment layers; avatar/player layers are excluded, so an incompatible world floor collider or layer can produce no stain.
 - Breath and Body Steam are generated only when the required Head and Chest anchors can be resolved.
 - Body steam: the maximum particle count at the default sliders is 131 for 12 steam spots and 95 for the 7 spots of a default install.
@@ -191,6 +191,6 @@ In workflows where mesh changes can be finalized first, run Real Sweat System Se
 - Droplet Depth costs more GPU up close and remains a high-load option.
 - Sweat 0% and Sweat Display off are not completely free: the screen copy for refraction (GrabPass, about +0.05 ms) remains. Only Hide Skin Sweat costs nothing.
 - Remote Low Load: where two surface directions meet (the sides of the torso and the arms, for example), a droplet can look cut straight at its lower edge on other players' screens. It is rare and small.
-- Realistic shows less than Anime at talking distance, in dark worlds, and in worlds without a reflection probe. In folds (above the navel, for example) a small droplet can look split in two, and droplets do not really merge. Its Lightweight places droplets a little differently from its Low Load and Standard.
+- Realistic: in folds (above the navel, for example) a small droplet can look split in two, and droplets do not really merge. Its Lightweight places droplets a little differently from its Low Load and Standard.
 - RealRain's own realistic raindrops on clothes come with a RealRain update. The rain RealRain puts on the skin already follows the sweat style.
 - 2.0.0 does not include the old look. To keep it, stay on v1.1.3.
