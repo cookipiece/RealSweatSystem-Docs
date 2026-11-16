@@ -19,19 +19,23 @@ Open it from the Unity top menu at `CookiTools → RealSweatSystem → Clothing 
 ### Recommended flow
 
 1. Finish the main Real Sweat System Setup first.
-2. Select the avatar in Clothing Fix.
-3. Drop the affected outfit objects into the drop area. You can drop several at once; it collects every child SkinnedMeshRenderer and MeshRenderer, including inactive objects, and de-duplicates overlapping targets.
+2. Select the avatar in Clothing Fix. Use the avatar in the scene (Hierarchy); a prefab from the Project window stops without changing anything.
+3. Drop the affected outfit objects into the drop area. You can drop several at once; it collects every child SkinnedMeshRenderer and MeshRenderer, including inactive objects, and de-duplicates overlapping targets. The body renderer, Real Sweat System's effect renderers, and a renderer with its own sweat (Sweat on Other Meshes) can't be added as clothing: drawing it after the sweat would hide that sweat.
 4. Review the Render Queue preview before applying changes.
 5. Choose **Apply with Material Copies (Recommended)**.
 6. Check the avatar in Play Mode and in the intended world or lighting setup.
 
 - **Apply with Material Copies (Recommended)** clones only the required materials into the generated folder and replaces only the selected Renderer slots. Original assets and other outfits using them remain unchanged.
+- Applying the copy mode again (for example after adding another outfit) copies each original over its copy again, so unchanged copies follow their originals' changes. From v2.1.0, a copy you changed yourself is not overwritten: only its render queue follows the sweat, and the result names it. To make it again from the original, press **Restore Tracked Clothing Changes**, then apply again. Poiyomi's Lock and unlock, values a shader's inspector saves by itself, and properties added by a shader update do not count as changes.
 - **Apply Directly to Original Materials** changes the render queue on the source .mat assets. Every outfit, avatar, prefab, and scene sharing those materials is affected, so the tool asks for confirmation.
 - Both modes change only materials whose queues are at or below Sweat, moving them to Sweat + 1. Materials already above Sweat are neither cloned nor edited.
 - **Apply Directly to Original Materials** leaves the render queue of a material the body also uses (including one lowered to 2349 at install) unchanged, because raising it would hide the sweat on the body.
-- When a target uses Poiyomi Lock, the tool asks first. After approval it temporarily unlocks the material, performs the operation, and automatically locks the originals and required copies again.
+- Poiyomi Lock on an original material is never released. **Apply with Material Copies (Recommended)** gives the copies of locked originals a Lock of their own, and **Apply Directly to Original Materials** keeps the Lock and changes only the render queue (Poiyomi's Lock and unlock keep the render queue).
 
 **Restore Tracked Clothing Changes** and RealSweatSystem **[Uninstall]** restore tracked slots and original render queues. Apply and Restore use one Undo group for Ctrl+Z; unused generated copies remain cached for Undo and Scene/Prefab safety.
+
+- Restoring leaves the Poiyomi Lock state as it is; Restore and Uninstall do not lock a Poiyomi original that you unlocked. For materials applied from 2.1.0 on, an original render queue of From Shader comes back as From Shader instead of a fixed number.
+- A queue raised by **Apply Directly to Original Materials** stays raised on restore or uninstall when another installed avatar in the open scenes (a duplicate, for example) has applied this mode to the same material too, and the result says so. The last of those avatars to restore or uninstall puts the original queue back. When that avatar is only in an unsaved scene or in Prefab Mode, the queue also stays raised and the result says what to do next, such as saving that scene. An avatar that applied this mode before 2.1.0 gets this when it applies again.
 
 :::warning[Render-order side effects]
 Render-order changes can affect transparent, cutout, decal, outline, layered-material appearance, and batching. Review the preview and inspect the avatar after applying the correction.
@@ -59,7 +63,7 @@ Use this advanced tool only when you need to:
 
 Bake again whenever the target mesh is replaced or updated.
 
-The target must be a SkinnedMeshRenderer with a valid shared mesh. If Unity cannot read the mesh, temporarily enable **Read/Write Enabled** in the FBX Import Settings; it can be disabled again after baking.
+The target must be a SkinnedMeshRenderer with a valid shared mesh. If Unity cannot read the mesh, enable **Read/Write Enabled** in the FBX Import Settings and keep it enabled afterward: the mesh may be read again when the avatar is built.
 
 **Overwrite previous bake** replaces generated Rest assets with the same names. Back up the previous data first if you need to keep it.
 

@@ -10,16 +10,16 @@ description: Supported Unity, VRChat, avatar, material, and build-tool condition
 
 | Item | Requirement |
 |---|---|
-| Editor OS | **Windows only** (purchase activation works only on Windows; see [Purchase Activation](./license-activation.mdx#windows-only)) |
+| Editor OS | **Windows only** (Linux and macOS: purchase activation works from v2.1.0 but is not tested yet; see [Purchase Activation](./license-activation.mdx#windows-only)) |
 | Unity | **2022.3** |
 | VRChat | **Avatars SDK 3.10.3 or later** (checked up to 3.10.6) |
-| Avatar build framework | **Modular Avatar required** (install via VCC) |
+| Avatar build framework | **Modular Avatar 1.12 or later required** (install via VCC) |
 | Platform | **PC / Direct3D 11** |
 | Quest standalone | Not supported; the sweat is not visible (safe Hidden fallback) |
 
-Tested with NDMF 1.14.0 and Modular Avatar 1.17.1, and with NDMF 1.14.8 and Modular Avatar 1.18.7. These are tested versions, not minimum versions.
+Tested with NDMF 1.14.0 and Modular Avatar 1.17.1, and with NDMF 1.14.8 and Modular Avatar 1.18.7. With a Modular Avatar older than 1.12, **[Install / Update]** says that 1.12 or later is needed and stops before changing anything; see [Setup says Modular Avatar 1.12 or later is needed](./troubleshooting.mdx#modular-avatar-too-old). **NDMF 1.13.1 or newer** is required (installed with Modular Avatar). With an older NDMF the scripts fail to compile and the CookiTools menu does not appear at the top; see [No CookiTools menu at the top](./troubleshooting.mdx#no-cookitools-menu).
 
-VRCFury is not required for Real Sweat System.
+**VRCFury** is optional (not required). When the avatar's Expression Parameter capacity is limited, VRCFury's Parameter Compressor is recommended.
 
 ## Avatar type {/* #avatar-type */}
 
@@ -65,7 +65,7 @@ Real Sweat System retains the automatic FX Write Defaults detection introduced i
 - **Auto (Recommended)** uses WD ON for every generated RealSweat layer only when all non-RealSweat FX states use WD ON.
 - WD OFF, mixed, or unknown setups retain the v1.0.1 Driver ON / Output OFF compatible split.
 - The final NDMF-merged FX controller is checked again during build, and the RealSweat WD structure is adjusted to the detected result.
-- After updating from 1.x, import every owned module at the same v2.0.0 version and press **[Install / Update]** once.
+- After updating from 1.x, import every owned module at the same v2.1.0 version and press **[Install / Update]** once.
 - Do not manually change the generated Merge Animator Priority.
 - Do not replace or clear the generated Animator field as a permanent workaround.
 
@@ -89,9 +89,9 @@ If a tool modifies the Body only at build time and provides an exclusion list, a
 
 If you manually modify or replace the source Body Mesh in Unity, finish all mesh changes first and then press **[Install / Update]** again. Rerunning Setup alone cannot fix a tool that replaces the Mesh during every build.
 
-Real Sweat System includes a late-build recheck that bakes the Rest data again from the final mesh when the mesh changed after the bake, plus protection for common d4rkAvatarOptimizer processing. It cannot recover a removed target slot/submesh or guarantee compatibility with Modular Avatar Shape Changer, Mesh Cutter, or every mesh modifier and processing order. A missing or incompatible final slot/submesh blocks the build.
+Real Sweat System includes a late-build recheck that bakes the Rest data again from the final mesh when the mesh changed after the bake, plus protection for common d4rkAvatarOptimizer processing. With a d4rkAvatarOptimizer version that it does not know, the upload no longer stops (from v2.1.0): a Console warning says that the sweat may be missing or look wrong in that upload and how to exclude the sweat renderers yourself, and the upload goes on. Real Sweat System cannot recover a removed target slot/submesh or guarantee compatibility with Modular Avatar Shape Changer, Mesh Cutter, or every mesh modifier and processing order. If another build tool deletes a sweat material slot or puts a different material in it, only that part's sweat is left out and the upload continues, with one warning in the Console and the NDMF window (up to 2.0.0 the build stopped).
 
-Do not delete, clear, move, replace, or merge a generated RealSweat material or Renderer slot to disable an experimental target. Tuning marks this as **Repair Required**, and avatar build stops instead of silently omitting the target. Use **Manage Targets...** to repair or remove the target with **[Install / Update]**.
+Do not delete, clear, move, replace, or merge a generated RealSweat material or Renderer slot to disable an experimental target. Tuning marks this as **Repair Required**. The upload leaves that target's sweat out and goes on, with a warning in the Console and the NDMF window (up to 2.0.0 the build stopped). Use **Manage Targets...** to repair or remove the target with **[Install / Update]**.
 
 ## PhysBone coexistence
 
@@ -152,5 +152,6 @@ When the Light Limit Changer (LLC) menu changes the avatar's brightness, the ski
 
 - Keep Base and Effects at the same release version. If the versions are mixed, the Setup window asks you to re-import them at the same version and does not install. An avatar build does not stop: it leaves Real Sweat System out of the uploaded avatar and writes a Console warning that starts with `[RealSweatSystem]` and says the packages are different versions.
 - Setup checks all planned parameters against Avatar Expression Parameters and other Modular Avatar Parameters declarations, including prefixes and remaps.
-- A name collision stops Setup. If the projected total exceeds VRChat's 256-bit parameter budget, Setup warns before proceeding.
+- A name collision stops Setup. If the projected total exceeds VRChat's 256-bit parameter budget, Setup warns before proceeding. From v2.1.0 this count also includes the parameters that Modular Avatar Parameters on other objects add at upload.
+- Before it changes anything, Setup checks for a `RealSweat` object that was moved or renamed, and for generated file paths longer than 240 characters (Unity on Windows can fail on paths longer than 260 characters). See [Setup says the RealSweat object was moved or renamed](./troubleshooting.mdx#realsweat-object-moved) and [Setup asks about a long file path](./troubleshooting.mdx#long-file-path).
 - Additional-target validation and build guidance follow the selected tool UI language. Unity/NDMF exception headings and stack traces may still appear in English.

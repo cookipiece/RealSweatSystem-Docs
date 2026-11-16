@@ -15,6 +15,7 @@ const sidebars: SidebarsConfig = {
       collapsed: false,
       items: [
         'usage/modes',
+        'usage/heart-rate-link',
         'usage/tuning',
         'usage/effects',
         'performance',
@@ -32,6 +33,7 @@ const sidebars: SidebarsConfig = {
       collapsed: true,
       items: ['technical-specifications', 'tools'],
     },
+    'update-guide',
     'update-changelog',
     'license-activation',
     'license',

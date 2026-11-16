@@ -7,7 +7,7 @@ import type {ProductData} from '@site/src/cookitools';
 const product: ProductData = {
   key: 'rss',
   name: 'Real Sweat System',
-  version: '2.0.0',
+  version: '2.1.0',
   // Store thumbnail (the published BOOTH main image), square. The only place its path is written.
   image: '/img/home/thumbnail.webp',
   links: {
@@ -62,10 +62,10 @@ const product: ProductData = {
       ],
       requirementsTitle: '필요한 것',
       requirements: [
-        ['에디터', 'Windows 전용입니다. 구매 인증이 Windows에서만 동작합니다.'],
+        ['에디터', 'Windows 전용입니다(Linux·macOS: v2.1.0부터 구매 인증을 할 수 있지만 아직 시험하지 못했습니다).'],
         ['Unity', '2022.3 (VRChat 아바타 프로젝트)'],
         ['VRChat SDK', 'Avatars SDK 3.10.3 이상(3.10.6까지 확인)'],
-        ['Modular Avatar', '필수입니다. VCC에서 설치합니다.'],
+        ['Modular Avatar', '1.12 이상이 필요합니다. VCC에서 설치합니다.'],
         ['플랫폼', 'Direct3D 11을 사용하는 PC 아바타. Quest 단독 실행 환경은 지원하지 않습니다.'],
         ['자동 모드', 'Humanoid 아바타에서 사용할 수 있습니다. 다른 아바타에서도 수동 모드는 사용할 수 있습니다.'],
       ],
@@ -113,10 +113,10 @@ const product: ProductData = {
       ],
       requirementsTitle: '必要なもの',
       requirements: [
-        ['エディター', 'Windows専用です。購入認証がWindowsでのみ動作します。'],
+        ['エディター', 'Windows専用です（Linux・macOS：v2.1.0から認証できますが、まだ検証していません）。'],
         ['Unity', '2022.3（VRChat アバタープロジェクト）'],
         ['VRChat SDK', 'Avatars SDK 3.10.3以降（3.10.6まで確認）'],
-        ['Modular Avatar', '必須です。VCCからインストールします。'],
+        ['Modular Avatar', '1.12以降が必要です。VCCからインストールします。'],
         ['プラットフォーム', 'Direct3D 11 を使用するPC版アバター。Quest単体版には対応していません。'],
         ['自動モード', 'Humanoidアバターで使用できます。それ以外のアバターでも手動モードは使用できます。'],
       ],
@@ -164,10 +164,10 @@ const product: ProductData = {
       ],
       requirementsTitle: 'Requirements',
       requirements: [
-        ['Editor', 'Windows only. Purchase activation works only on Windows.'],
+        ['Editor', 'Windows only (Linux and macOS: activation works from v2.1.0 but is not tested yet).'],
         ['Unity', '2022.3 (VRChat avatar project)'],
         ['VRChat SDK', 'Avatars SDK 3.10.3 or later (checked up to 3.10.6)'],
-        ['Modular Avatar', 'Required. Install it from VCC.'],
+        ['Modular Avatar', 'Required, 1.12 or later. Install it from VCC.'],
         ['Platform', 'PC avatar using Direct3D 11. Quest standalone is not supported.'],
         ['Auto Mode', 'Available on Humanoid avatars. Other avatars can still use Manual Mode.'],
       ],

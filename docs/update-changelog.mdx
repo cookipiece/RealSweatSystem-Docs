@@ -10,7 +10,20 @@ description: Safe update steps and release notes for Real Sweat System.
 
 This list summarizes the latest user-visible patches. Select a version to jump to its full details.
 
-- **[v2.0.0 — Current](#v200)**
+- **[v2.1.0 — Current](#v210)**
+  - **Heart Rate Link (experimental, optional, off by default):** Auto Mode's sweat follows the heart rate (BPM) that a heart-rate app sends to VRChat over OSC, with no extra synchronized bits. It was tested in Unity only, not yet in game. See [Heart Rate Link](./usage/heart-rate-link.mdx).
+  - **New control:** **1.x Pattern Density** for the Legacy style.
+  - **Purchase activation in the Linux and macOS editors:** it works from v2.1.0 but is not tested there yet.
+  - **Fixes:** Clothing Fix no longer overwrites copies you changed and keeps a shared render queue raised while a duplicate avatar still uses it; Uninstall no longer deletes sweat files that another open scene uses; Setup checks Modular Avatar 1.12+, long file paths, and a moved `RealSweat` object before it changes anything; an unknown d4rkAvatarOptimizer version no longer stops the upload.
+  - **Updating from 2.0.x:** import over the old files. You do not need to press **[Install / Update]** again; press it to add Heart Rate Link.
+- **[v2.0.2](#v202)**
+  - **1.x (Legacy) style:** the Setup window's first page has a third **Sweat Style** picture, **1.x (Legacy)**, which draws the droplets as RSS 1.x did. It is lighter than 1.1.x, and with **Droplet Depth** on its droplets rise one by one as round domes, as in the 2.0 styles.
+  - **New controls:** **Pattern Density** is back in Tuning, the Body masks can be separate for each material slot, and the sweat material inspector has **Refraction Strength**.
+  - **Look fixes:** toon outlines no longer run across raised droplets, small Anime droplets at conversation distance no longer read as bumps on the skin so much, and in Realistic, droplets on dark skin in shade no longer show as white streaks or dots so much.
+  - **Motion pendulum and reset buttons:** nobody can grab, pose or push the auto mode's motion pendulum any more, and the Tuning's reset buttons no longer turn effects you left out at install back on.
+  - **Updating from 2.0.0／2.0.1:** import over the old files. You do not need to press **[Install / Update]** again.
+- **[v2.0.1](#v201):** Fixed uploads that stopped when a VRCFury toggle or slider changes a brightness property on a Body with two or more selected material Elements, and a build tool that changes a sweat slot no longer stops the upload.
+- **[v2.0.0](#v200)**
   - **New sweat look:** the skin sweat was rebuilt from scratch, with two styles picked by picture: **Realistic (default)** with clear droplets without outlines, and **Anime** with crisp outlines and highlights. **Droplet Depth** was rebuilt, and droplets close to the camera really rise from the skin in both styles.
   - **New Setup window, body steam, falling drops, and splash:** the first screen shows only what you need: the body mesh, check boxes for the effects, pictures for the style and look, and buttons for the load. Body steam rises softly from a wide area, falling drops and the splash were redrawn, and floor stains only darken the floor.
   - **Lighter:** the first-load freeze other players get is about two-thirds shorter than in v1.1.3, and the default install at 100% sweat costs about half of v1.1.3's.
@@ -34,9 +47,85 @@ This list summarizes the latest user-visible patches. Select a version to jump t
 
 If the versions are mixed, the Setup window asks you to re-import them at the same version and does not install.
 
-For the 1.x → v2.0.0 update, read [Updating from 1.x](./quick-start.mdx#updating-from-1x) first: the look values of earlier sweat materials are set to the new defaults, and the first press of **[Install / Update]** stores new per-avatar data.
+Updating from 2.0.x to 2.1.0 does not need **[Install / Update]** again: importing over the old files is enough. Heart Rate Link, and hiding the floor stains with **Sweat Display**, come with **[Install / Update]**. See the [Update Quick Guide](./update-guide.mdx).
+
+For an update from 1.x to v2.1.0, read [Updating from 1.x](./quick-start.mdx#updating-from-1x) first: the look values of earlier sweat materials are set to the new defaults, and the first press of **[Install / Update]** stores new per-avatar data.
 
 For removal, clean reinstallation, or changing between Base, Effects, and Full Pack, follow [Uninstall, reinstall, or change modules](./troubleshooting.mdx#uninstall-reinstall-or-change-modules).
+
+## v2.1.0 {/* #v210 */}
+
+v2.1.0 (2026-11-16) adds Heart Rate Link (experimental, optional), 1.x Pattern Density and purchase activation in the Linux and macOS editors, and fixes a number of problems.
+
+To update, import every Base／Effects module you own at v2.1.0 over the old files. Updating from 2.0.x does not need **[Install / Update]** again. Heart Rate Link, and hiding the floor stains with **Sweat Display**, come with **[Install / Update]**. To update from 1.x, follow [Updating from 1.x](./quick-start.mdx#updating-from-1x).
+
+- **Heart Rate Link (Experimental; optional, off by default):** Auto Mode's sweat follows the heart rate (BPM) that a heart-rate app sends to VRChat over OSC. Turn on **Heart Rate Link** under **Auto Mode Sensitivity** on the Setup window's first screen and press **[Install / Update]**. When it is off, nothing is added to the avatar; when it is on, no synchronized bits are added. It was tested in Unity; it has not been tested in game with a heart-rate app yet. See [Heart Rate Link](./usage/heart-rate-link.mdx).
+- **1.x Pattern Density:** while the sweat uses the 1.x (Legacy) style, the Tuning's **Surface Droplet Appearance** shows **1.x Pattern Density** (4–64) under **Pattern Density**. Only the 1.x (Legacy) style reads it; raising it gives more, smaller droplets. A new install starts at 22, and an avatar updated from 1.1.x keeps the value it had in 1.x. So two avatars with the same other settings can show very different numbers of Legacy droplets; use this value to match them.
+- **Purchase activation (Linux and macOS):** purchase activation now also works in the Unity Editor on Linux and macOS. Until now the activation data was kept only in a Windows-only way, so those editors could not activate. Nothing changes on Windows, and a PC that is already activated does not activate again. Real Sweat System is tested on Windows; it has not been tested in the Linux and macOS editors yet.
+- **Clothing Fix:**
+  - Pressing **Apply with Material Copies (Recommended)** again (for example after adding another outfit) no longer overwrites copies you changed. A changed copy is kept as it is, only its render queue follows the sweat, and the result names it. To make it again from the original, press **Restore Tracked Clothing Changes**, then apply again. Copies you did not change still follow their originals' changes. Poiyomi's Lock and unlock, values a shader's inspector saves by itself, and properties added by a shader update do not count as changes.
+  - **Apply Directly to Original Materials:** when another installed avatar in the open scenes (a duplicate, for example) has applied this mode to the same material, **Restore Tracked Clothing Changes** or **[Uninstall]** on one of them keeps the render queue raised and says so. The last one to restore or uninstall puts the original queue back. An avatar that applies the mode later to a material another install already raised tracks it too. When that other avatar is only in an unsaved scene or in Prefab Mode, the queue also stays raised and the result asks you to save that scene. An avatar that applied it before 2.1.0 gets this when it applies again.
+  - For materials applied from 2.1.0 on, a restore puts an original render queue of From Shader back as From Shader instead of a fixed number. Restore and Uninstall no longer lock a Poiyomi original that you unlocked.
+  - A renderer that has its own sweat (Sweat on Other Meshes) can no longer be added as clothing: drawing it after the sweat would hide that sweat. A prefab from the Project window in the avatar field now stops without changing anything; use the avatar in the scene (Hierarchy).
+- **Uninstall:** before it deletes the generated folder, Uninstall looks for objects that use it in every open scene and in Prefab Mode. A duplicate avatar in another open, unsaved scene no longer loses its sweat files. When leftover generated files without install data are removed and another object uses that folder, the message now names that object.
+- **Setup window and [Install / Update]:**
+  - When no module could load because the project has script compile errors, the Setup window no longer asks you to re-import; it says to fix the red errors in the Console first (see [The Setup window says the project has script compile errors](./troubleshooting.mdx#script-compile-errors)).
+  - The "Parameters may run out" warning also counts the parameters that Modular Avatar Parameters on other objects add at upload, so avatars that used to fail only at upload get the warning first.
+  - When the `RealSweat` object was moved or renamed, Setup now says where it is and where to put it back (directly under the avatar root, named `RealSweat`) instead of unrelated errors (a parameter-name collision, install data that doesn't match). A backup kept under EditorOnly does not get this message.
+  - Modular Avatar 1.12–1.16 no longer show "Modular Avatar is outdated" on every install. With a version older than 1.12, Setup says that 1.12 or later is needed and stops before changing anything (before, it stopped with an error).
+  - Generated folders are made correctly even when the avatar's name ends with a space or a dot, starts with a dot or ends with `~`. When a generated file path would be longer than 240 characters, Setup asks whether to go on before it changes anything (Unity on Windows can fail on paths longer than 260 characters).
+  - An avatar installed with **Make Safe Copy (Recommended)** for a body without tangents is no longer asked the same question on every update.
+  - When an update fails or is cancelled and is rolled back, the earlier install's generated files are no longer lost when another program (antivirus, for example) holds a file.
+  - **[Install / Update]** is faster in big projects (a Rest bake no longer refreshes the whole project).
+  - The Write Defaults detection while editing no longer counts Merge Animators under EditorOnly. The upload removes them, so the detection could differ from the build's.
+  - With the window in Korean or Japanese, the body's build errors, the parameter-name collision list and the Tuning's **Mouth Parameter** tooltip are no longer in English only.
+- **Upload:**
+  - After **Force Re-bake on Next Build**, testing in Play Mode no longer uses up the request; the next upload bakes again.
+  - An unknown d4rkAvatarOptimizer version no longer stops the upload. A Console warning says that the sweat may be missing or look wrong in that upload and how to exclude the sweat renderers yourself, and the upload goes on.
+  - The falling drops' size follows the body's sweat material. Before, it could follow another mesh's sweat material that came first in the hierarchy. Installs get this with the next **Apply to FX** or **[Install / Update]**.
+  - On avatars whose armature carries a scale (common in FBX files exported from Blender), the falling drops were drawn tens to a hundred times too big and too fast. Installs get the fix with the next **Apply to FX** or **[Install / Update]**.
+  - Turning off **Sweat Display** in the in-game menu also hides the floor stains already on the floor. Installs get this with the next **[Install / Update]**.
+- **Sweat on Other Meshes (Experimental):**
+  - With the main **Falling Drops** off and a target's **Falling Drops from This Target** on, the Setup window and the Tuning no longer say forever that the install needs refreshing, and **Apply to FX** no longer refuses.
+  - An installed target's material list no longer offers its sweat submeshes (picking one stopped the next install).
+  - When a target is taken out or uninstalled and its material list matches the prefab again, its prefab override is reverted too, so an update of the avatar package reaches that renderer's materials again.
+- **Tuning and the sweat material inspector:**
+  - Dragging a slider in the Tuning inspector stutters less.
+  - On an installed avatar's sweat material, the inspector's Render Queue field is read-only and says where to change it (in the Setup window's **Advanced Settings > Compatibility (only if needed)**, turn off **Automatic Render Order (Recommended)**, set **Sweat Render Queue**, then press **[Install / Update]**). Before, a change there went back without a word.
+
+## v2.0.2 {/* #v202 */}
+
+v2.0.2 adds the 1.x (Legacy) style, Pattern Density, a separate mask for each material slot and Refraction Strength, and refines a few points of the sweat look.
+
+To update, import every Base／Effects module you own at v2.0.2 over the old files. Updating from 2.0.0／2.0.1 does not need **[Install / Update]** again. To update from 1.x, follow [Updating from 1.x](./quick-start.mdx#updating-from-1x).
+
+- **1.x (Legacy) style:** the Setup window's first page has a third **Sweat Style** picture, **1.x (Legacy)**. Choose it and press **[Install / Update]** to draw the droplets as RSS 1.x did. After install you can also change it in Tuning (**Basic Settings > Sweat Style**).
+  - It is the 1.x shader with the effects that were hardly visible taken out, so it looks like 1.1.x. It is lighter than 1.1.x: when others first load your avatar it costs about as much as Anime (a little more than Realistic), and at 0 % sweat it costs the same as the two 2.0 styles.
+  - The droplet size follows the avatar's body size, as in 2.0. On some avatars the droplets are therefore a different size than in 1.1.x. Adjust them with **Pattern Density** and **Droplet Size**.
+  - With **Droplet Depth** on, droplets near the body's outline rise one by one as round domes, as in the 2.0 styles. This part differs from the 1.1.x Depth look. The rise distances and **3D Detail Precision** work as in the 2.0 styles (the 1.x droplets are larger, so they rise from a little farther away).
+  - The quality tiers, the mirror quality, following the Body's Shadow Strength, following Light Limit Changer (LLC) brightness and Refraction Strength work in Legacy too. The falling drops, floor stains and splashes use the anime look.
+  - Changing the style puts the look values such as Droplet Size back to that style's defaults.
+  - New installs and avatars updated from 1.1.x still start with Realistic.
+- **Pattern Density (2.0 styles):** **Pattern Density** (0.5–2, default 1) is back in the Tuning's surface droplet look. Raising it gives more, smaller droplets. At 1 it is exactly the same as 2.0.1.
+- **A mask for each Body material slot:** with two or more Body material slots selected, the Tuning's Body Surface Spawn Mask and Body Surface Display Mask have **Separate mask for each material slot** (off by default). Turn it on when a body and a face material on one mesh share overlapping UVs.
+- **Raised droplets and toon outlines:** with Droplet Depth on, the lilToon / Poiyomi outline no longer runs across the droplets that rise at the body's edge. The raised droplets now cover the outline.
+- **Anime droplet shading:** at conversation distance (about 0.8–1.2 m) the small Anime droplets no longer darken at the bottom so much that they read as bumps on the skin. Large droplets seen up close are unchanged.
+- **Dark skin in shade:** in Realistic, droplets and trails on dark skin in shade no longer show as white streaks or dots so much. Light and tanned skin are unchanged.
+- **Refraction Strength:** the sweat material inspector's **Lighting** has **Refraction Strength** (−1 to 2, default 1): how strongly a droplet bends the skin behind it. It works in all three styles. 1 is the look so far, 0 bends nothing, and below 0 the skin behind the droplet looks smaller. **Reset Look** sets it back to 1.
+- **Darkening rows:** the **Wet Skin Darkening** row, which has no effect in Realistic, is hidden on Realistic materials (Anime is unchanged). 1.x (Legacy) materials show 1.1.x's **Wet Skin Darkening** and **Wet Film Darkening**.
+- **README:** the README in the package has a new section, **Hiding sweat behind clothes and the wet skin film**.
+- **Motion pendulum:** nobody can grab, pose or push the auto mode's motion pendulum (an invisible PhysBone) any more, so another player touching it no longer raises the sweat. Avatars that are already installed get this from the next upload, without **[Install / Update]**.
+- **Reset buttons:** the Tuning's **Restore Category Defaults** and **Reset Advanced FX Values** no longer turn Floor Stains and the Body Steam locations you left out at install back on, which made **Apply to FX** refuse. They now put the values back only.
+- **Requirements:** the requirements now name the minimum NDMF version. **NDMF 1.13.1 or newer** is required (installed with Modular Avatar). With an older NDMF the scripts fail to compile and the CookiTools menu does not appear at the top. See [No CookiTools menu at the top](./troubleshooting.mdx#no-cookitools-menu).
+
+## v2.0.1 {/* #v201 */}
+
+- **Fixed uploads that stopped.** With two or more Body material Elements selected, a VRCFury toggle or slider that changes a brightness property on the same renderer (for example `_LightingCap`) stopped the upload with "A build modifier replaced, moved, or merged the exact generated sweat material slot". RealSweatSystem now accepts the sweat material copy that VRCFury makes, and the upload continues. The value VRCFury sets is kept.
+- **A build tool that changes a sweat slot no longer stops the upload.** If another build tool deletes a sweat material slot or puts a different material in it, only that part's sweat is left out and the upload continues. One warning appears in the Console and the NDMF window. It says what the slot holds now and how to fix it.
+- **Setup window text:** fixed the cut-off Japanese 'Effects to Install' label (now 「導入するエフェクト」), the Japanese Depth caption whose last period wrapped onto its own line, and the cut-off English Auto Mode Sensitivity choices (now "Balanced: recommended, follows motion" and "Sensitive: faster from small movements").
+- **First build:** the first upload on a PC can take a few minutes while the sweat shaders compile. Wait even if no progress window appears, and do not close Unity.
+
+To update: import every Base／Effects module you own at v2.0.1 over the old files. Updating from 2.0.0 does not need **[Install / Update]** again.
 
 ## v2.0.0 {/* #v200 */}
 
@@ -47,7 +136,7 @@ This update applies to Core, which is shared by the Base Module, Effects Module,
 - A new install, or adding a module, needs purchase activation once on each PC. Open `CookiTools → RealSweatSystem → Purchase Activation` and enter your BOOTH order number or Gumroad license key. Base and Effects are activated separately, and Full Pack covers both. Updating an installed avatar, **Apply to FX**, **[Uninstall]**, and builds are never blocked. See [Purchase Activation](./license-activation.mdx).
 - **Uploads:** a VRChat SDK build on a PC without a module's activation leaves out only that module and writes one Console warning for it. The build does not stop. Avatars updated from 1.x also leave the effects out of uploads until this PC is activated; the scene and Play Mode still show them.
 - **Activation window language:** the English / 한국어 / 日本語 buttons at the top right of the window switch it. The choice also switches the Real Sweat System windows.
-- **Windows only:** purchase activation uses Windows' data protection, so the Mac and Linux editors cannot activate, and uploads from them leave the effects out.
+- **Windows only:** purchase activation uses Windows' data protection, so the Mac and Linux editors cannot activate, and uploads from them leave the effects out. (From v2.1.0, activation also works in the Linux and macOS editors, but it is not tested there yet; see [v2.1.0](#v210).)
 
 ### Highlights
 
@@ -124,7 +213,7 @@ v2.0.0 does not include the old look. If you need it, stay on v1.1.3. To go back
 
 ### Updating from v1.0.0–v1.0.2
 
-No intermediate release is required. Today, v1.0.0–v1.0.2 installations update directly to v2.0.0 with [the same procedure](./quick-start.mdx#updating-from-1x). The following v1.1.0 migration details still apply to them:
+No intermediate release is required. Today, v1.0.0–v1.0.2 installations update directly to v2.1.0 with [the same procedure](./quick-start.mdx#updating-from-1x). The following v1.1.0 migration details still apply to them:
 
 - Older generated data produces a dismissible Scene-view reminder. Press **[Install / Update]** in the Setup window when you are ready.
 - Existing sensitivity, Sweat Quality, automatic response, major toggles, and steam locations are mostly preserved. If you edited generated controllers, menus, clips, or particles directly, back them up because Setup can regenerate them.
@@ -178,7 +267,7 @@ For the current synchronized parameter cost, see [Technical Specifications](./te
 - Rechecks the final NDMF-merged FX controller during build and adjusts the RealSweat WD structure to the detected result
 
 :::note[Historical update note]
-Updating from v1.0.1 to v1.0.2 originally required a full Setup. Today, v1.0.0 and v1.0.1 can update directly to v2.0.0 by following [Updating from 1.x](./quick-start.mdx#updating-from-1x).
+Updating from v1.0.1 to v1.0.2 originally required a full Setup. Today, v1.0.0 and v1.0.1 can update directly to v2.1.0 by following [Updating from 1.x](./quick-start.mdx#updating-from-1x).
 :::
 
 :::caution[MMD worlds]
@@ -199,7 +288,7 @@ With a WD OFF or mixed FX setup, expressions or Real Sweat System may not work c
 - Clarified that Rest Vertex Data Baker is not normally used in everyday setup
 
 :::note[Historical update note]
-This release did not intentionally change the appearance or normal controls of working v1.0.0 installations. A current v1.0.0 installation can also update directly to v2.0.0 without an intermediate release.
+This release did not intentionally change the appearance or normal controls of working v1.0.0 installations. A current v1.0.0 installation can also update directly to v2.1.0 without an intermediate release.
 :::
 
 ## Documentation policy

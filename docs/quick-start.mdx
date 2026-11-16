@@ -17,8 +17,8 @@ The five-minute estimate starts **after** Unity has finished importing the packa
 - Open the Unity project that contains your VRChat avatar.
 - Back up the avatar Prefab or project.
 - Confirm that the Console has no existing compile errors.
-- Confirm that **Modular Avatar** is installed (via VCC).
-- Use the Unity editor on Windows. Purchase activation works only on Windows.
+- Confirm that **Modular Avatar** 1.12 or later is installed (via VCC).
+- Use the Unity editor on Windows (Linux and macOS: purchase activation works from v2.1.0 but is not tested yet).
 - If you are updating from 1.x, follow [Updating from 1.x](#updating-from-1x). Do not uninstall the old version first, and do not delete the existing `RealSweat` object or `Assets/CookiTools/Generated`.
 
 ## 2. Import the package
@@ -41,7 +41,7 @@ A new install needs a one-time purchase activation on each PC.
 
 - Activation is per module. If you bought the modules in separate orders, enter the second one under **Add another order**.
 - Pressing **[Install / Update]** without activation opens a notice with **Open activation window**, and nothing is changed.
-- An upload from a PC without a module's activation leaves that module's effects out. Purchase activation works only on Windows.
+- An upload from a PC without a module's activation leaves that module's effects out. In the Linux and macOS editors, activation works from v2.1.0 but is not tested yet.
 
 See [Purchase Activation](./license-activation.mdx) for what it covers, PCs, and gifts.
 
@@ -72,21 +72,23 @@ The tabs are **Install** / **Troubleshooting** / **Uninstall**. The tool UI lang
 
 *<small>The Setup window's first screen. The detailed options are folded under Advanced Settings. Click an image in this guide to enlarge it.</small>*
 
-The first screen shows Status, **Sweat on** (the body mesh and its material), the **Effects to Install** and **Skin Sweat** check boxes, the two **Sweat Style** pictures, the two **Look** pictures, the **Load** buttons, **Auto Mode Sensitivity**, and the **[Install / Update]** button. The pictures keep one size in any window, and a short window scrolls.
+The first screen shows Status, **Sweat on** (the body mesh and its material), the **Effects to Install** and **Skin Sweat** check boxes, the three **Sweat Style** pictures, the two **Look** pictures, the **Load** buttons, **Auto Mode Sensitivity**, **Heart Rate Link**, and the **[Install / Update]** button. The pictures keep one size in any window, and a short window scrolls.
 
 | Item | How to choose | Default for a new install |
 |---|---|---|
 | **Effects to Install** | Check boxes: **Falling Drops**, **Floor Stains**, **Breath**, **Body Steam** | **On** when Effects is installed |
 | **Skin Sweat** | Check box: **Wet Skin Gloss** | **On** |
-| **Sweat Style** | Click one of two pictures: **Anime** or **Realistic (default)** | **Realistic (default)** |
+| **Sweat Style** | Click one of three pictures: **Realistic (default)**, **Anime** or **1.x (Legacy)** | **Realistic (default)** |
 | **Look** | Click one of two pictures: **Flat** or **Depth (High Load)** | **Flat** |
 | **Load** | Buttons: **Low Load (Recommended)** or **Standard** | **Low Load (Recommended)** |
-| **Auto Mode Sensitivity** | Dropdown: **Balanced: recommended motion-proportional response** or **Sensitive: faster build-up from small movements** | **Balanced** |
+| **Auto Mode Sensitivity** | Dropdown: **Balanced: recommended, follows motion** or **Sensitive: faster from small movements** | **Balanced** |
+| **Heart Rate Link** | Check box: **Sweat with your heart rate (Experimental)** | **Off** |
 
 - **Effects to Install** appears when the Effects Module is installed; Floor Stains need Falling Drops. **Wet Skin Gloss** under **Skin Sweat** appears when the Base Module is installed and makes the skin glossier as sweat increases.
-- **Realistic (default)** draws clear droplets without outlines: the skin seen through them bends a little, like a lens, and from afar it reads as a wet gloss rather than dots. **Anime** draws bigger droplets with crisp outlines and highlights that read well from afar. The style is one per avatar, and you can change it after installing in Tuning (**Basic Settings > Sweat Style**). The **Sweat Style** pictures appear only when the Base Module is installed.
+- **Realistic (default)** draws clear droplets without outlines: the skin seen through them bends a little, like a lens, and from afar it reads as a wet gloss rather than dots. **Anime** draws bigger droplets with crisp outlines and highlights that read well from afar. **1.x (Legacy)** draws the droplets as RSS 1.x did. The style is one per avatar, and you can change it after installing in Tuning (**Basic Settings > Sweat Style**). The **Sweat Style** pictures appear only when the Base Module is installed.
 - **Depth (High Load)** turns on Droplet Depth, 3D Particles, and Drop Splash together and shows **On from the Start** under it. The caption under its picture says the droplets rise when seen up close and from the side, and that Droplet Depth starts off and is turned on in the in-game menu unless **On from the Start** is ticked. While it is off, an info box shows that menu (**Sweat > Reduce Load**). **Flat** turns Droplet Depth and 3D Particles off. If you set the two differently in Advanced Settings, neither picture is selected and a note says so.
 - **Low Load (Recommended)** leaves out only the small pore droplets; at conversation distance and at 1.5-3 m it is hard to tell from **Standard**. **Lightweight** is picked in **Advanced Settings > Quality & Load**, where the **Sweat Quality** dropdown has all three tiers.
+- **Heart Rate Link** (experimental, from v2.1.0) makes Auto Mode's sweat follow the heart rate (BPM) that a heart-rate app sends to VRChat over OSC. Ticking it shows **Max Heart Rate**, **Heart Rate Parameter**, and **Response** under it. Off adds nothing to the avatar, and on adds no synchronized bits. It was tested in Unity only, not yet in game. See [Heart Rate Link](./usage/heart-rate-link.mdx).
 
 :::tip[Recommended first installation]
 Keep **Flat** and **Low Load (Recommended)** for the first test. Droplet Depth costs more GPU up close, and 3D Particles are a high-load option.
@@ -98,6 +100,7 @@ Where the body steam rises, the intensity menu, quality, compatibility, and othe
 
 | Setting | Where | Default |
 |---|---|---|
+| **Sweat by Heart Rate Zone** | Advanced Settings (first, while **Heart Rate Link** is ticked) | Zones 1–5: **10 / 30 / 60 / 85 / 100 %** |
 | Body steam **Locations** | Advanced Settings > Effects > Body Steam | **Chest Hollow, Shoulders, Armpits, Thighs** on; **Crotch, Feet** off |
 | **Add Body Steam & Breath Intensity Menu (+8 bits)** | Advanced Settings > Effects | **Off** |
 | **Droplet Depth (Tessellation, High Load)** and **On from the Start** | Advanced Settings > Quality & Load | **Off** |
@@ -111,6 +114,7 @@ Where the body steam rises, the intensity menu, quality, compatibility, and othe
 | **Body Steam in Mirrors** | Tuning > Effect Details > Body Steam | **Low (2D Reduced Opacity)** for a new installation |
 | **Show My Breath in First Person** | Tuning > Effect Details > Breath | **Off** |
 | **Auto Mode** | In-game menu | **On** |
+| **Heart Rate Link** | In-game menu, only when Heart Rate Link was installed | **On** |
 
 Follow Body Shadow Strength, droplet-depth precision, Body Steam in mirrors, Show My Breath in First Person, and Custom Steam Points are set after install in Tuning on the `RealSweat` object. Droplet Depth's **On from the Start** can be set both in the Setup window and in Tuning.
 
@@ -150,10 +154,10 @@ To remove Real Sweat System, do not delete the `RealSweat` object or `Assets/Coo
 
 ## Updating from 1.x {/* #updating-from-1x */}
 
-v2.0.0 applies to Core, which is shared by the Base Module, Effects Module, and Full Pack. Installations from v1.0.0–v1.0.2 can also update directly to v2.0.0; no intermediate version is required.
+v2.x applies to Core, which is shared by the Base Module, Effects Module, and Full Pack. Installations from v1.0.0–v1.0.2 can also update directly to v2.1.0; no intermediate version is required.
 
 1. Back up the avatar and the project **outside the project**. Copies inside the project change in step 3 as well.
-2. Import every Base／Effects module you own, all at the same v2.0.0 version, over the old files. Do not uninstall the old version first, and do not delete the `RealSweat` object. If the versions are mixed, the Setup window asks you to re-import them at the same version and does not install. The import order does not matter. Some `.cs` files in v2.0.0 hold only a two-line comment: the editor code is now in DLLs, and these files replace the old scripts of the same name. Do not delete them.
+2. Import every Base／Effects module you own, all at the same v2.1.0 version, over the old files. Do not uninstall the old version first, and do not delete the `RealSweat` object. If the versions are mixed, the Setup window asks you to re-import them at the same version and does not install. The import order does not matter. Some `.cs` files in v2.x hold only a two-line comment: the editor code is now in DLLs, and these files replace the old scripts of the same name. Do not delete them.
 3. When Unity first loads the scripts, the look values of the project's sweat materials from earlier versions are set to the new defaults (table below). This happens once per material: moving or copying the project, opening it on another PC, or importing the packages again does not do it again. A sweat material from an earlier version that you bring into the project later is updated once when it is imported.
 4. Open `CookiTools → RealSweatSystem → Setup／Uninstall`. A yellow box says "Installed with an older version." Press **[Install / Update]** once for each avatar. This stores the avatar's pattern number, the Rest up direction, and the droplet size for the avatar's body size, and applies the new body steam and menu names. It also updates the sweat materials of avatars imported after step 3. **Apply to FX alone does not do this update.** In a big project the first press can take a while; a progress bar shows it, and its Cancel button stops before anything is changed.
 5. Save the scene and check in Play Mode or in an avatar build.
@@ -161,15 +165,15 @@ v2.0.0 applies to Core, which is shared by the Base Module, Effects Module, and 
 
 | Look values set to the new defaults | Kept |
 |---|---|
-| Droplet Size 1.6, Glint Size 1.5, Glint Strength 1.5, Sweat Flow 1, Wet Skin Film 1 (stays 0 if Setup's Wet Skin Gloss turned it off), Wet Skin Darkening 0.08, Refraction Max Screen Reach 0.02, Skin Adhesion 0.747, Shell Offset 0.00045, Light Intensity Limit 1, Light Intensity Minimum 0, Flow Follows Real Gravity 1, Droplet Height 0.00135, Rise Distance Limit 3.5 m | Sweat Quality, Auto Mode sensitivity, effects and menus, Rest data, spawn and display masks (textures and settings), clothing stencil, cast shadow strength (Follow Body Shadow Strength), High-Quality Sweat in Mirrors, Droplet Depth on/off and precision, the RealWet wetness link, a pattern number already set, other meshes' droplet size multipliers, and the other 1.1.x values that 2.0.0 does not read |
+| Droplet Size 1.6, Glint Size 1.5, Glint Strength 1.5, Sweat Flow 1, Wet Skin Film 1 (stays 0 if Setup's Wet Skin Gloss turned it off), Wet Skin Darkening 0.08 (the row Anime shows), Refraction Max Screen Reach 0.02, Refraction Strength 1, Skin Adhesion 0.747, Shell Offset 0.00045, Light Intensity Limit 1, Light Intensity Minimum 0, Flow Follows Real Gravity 1, Droplet Height 0.00135, Rise Distance Limit 3.5 m | Sweat Quality, Auto Mode sensitivity, effects and menus, Rest data, spawn and display masks (textures and settings), clothing stencil, cast shadow strength (Follow Body Shadow Strength), High-Quality Sweat in Mirrors, Droplet Depth on/off and precision, the RealWet wetness link, a pattern number already set, other meshes' droplet size multipliers, and the other 1.1.x values that 2.0.0 does not read |
 
 :::caution[Tune the look after the update]
-Look values you change in 2.0.0 before pressing **[Install / Update]** go back to the new defaults when you press it. Values you tune after the update stay: pressing **[Install / Update]** again, turning Droplet Depth off and on, moving or copying the project, and opening it on another PC do not change them.
+Look values you change in 2.x before pressing **[Install / Update]** go back to the new defaults when you press it. Values you tune after the update stay: pressing **[Install / Update]** again, turning Droplet Depth off and on, moving or copying the project, and opening it on another PC do not change them.
 :::
 
 What else changes with the update:
 
-- **Style:** updated avatars start with the **Realistic** style: a 1.x avatar has no stored style, so it takes the new default. To use **Anime**, pick its picture and press **[Install / Update]**.
+- **Style:** updated avatars start with the **Realistic** style: a 1.x avatar has no stored style, so it takes the new default. To use **Anime** or **1.x (Legacy)**, pick its picture and press **[Install / Update]**.
 - **Droplets:** the droplets move once because of the new pattern number. Their amount and look stay the same. Other meshes keep their droplet size multiplier; it now multiplies the Body's new droplet size (1.6).
 - **Hidden values:** the other 1.1.x look settings (most of what the material inspector used to tune) are not read by the new look. They are hidden in the inspector but kept in the material.
 - **Render queue:** the automatic sweat render queue moves from 2455 to 2350. With a body material at 2350 or later, **[Install / Update]** asks whether to lower it to 2349. A manual render queue you set is kept.
@@ -181,7 +185,7 @@ What else changes with the update:
 - **Shader names:** unchanged (`RealSweatSystem No Tessellation`, `RealSweatSystem`). Sweat at a render queue other than 2350 uses the shaders with ` (Late Queue)` added to the name.
 
 :::warning[Going back]
-2.0.0 does not include the old look. If you need the old look, do not update and keep using v1.1.3. To go back after updating, restore the backup you made before updating.
+The Realistic and Anime styles do not include the old look. From v2.0.2, the **1.x (Legacy)** style draws the droplets as RSS 1.x did; see [v2.0.2](./update-changelog.mdx#v202). To go back to v1.1.3 after updating, restore the backup you made before updating.
 :::
 
 For an update from v1.0.0–v1.0.2, the v1.1.0 migration notes in [Update & Changelog](./update-changelog.mdx#v110) also apply.

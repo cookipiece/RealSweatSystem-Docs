@@ -1,0 +1,87 @@
+---
+id: heart-rate-link
+title: Heart Rate Link (Experimental)
+description: Make Auto Mode's sweat follow the heart rate that a heart-rate app sends to VRChat over OSC. Optional, off by default, and tested in Unity only.
+---
+
+# Heart Rate Link (Experimental)
+
+**Heart Rate Link** (from v2.1.0) reads the heart rate (BPM) that a heart-rate app (one connected to a smartwatch or a chest strap) sends to VRChat over OSC, and sets Auto Mode's sweat by heart-rate zone. It works while Auto Mode is on, and it is not installed on an avatar that can't use Auto Mode (an avatar that is not humanoid, for example).
+
+It is optional and off by default. When it is off, nothing is added to the avatar. When it is on, no synchronized bits are added: the heart rate is read on your PC only, and others see the result as **Sweat %**, as before.
+
+:::caution[Experimental: tested in Unity only]
+Heart Rate Link is experimental. It was tested in Unity; it has not been tested in game with a heart-rate app yet.
+:::
+
+## Turn it on {/* #turn-it-on */}
+
+1. Open `CookiTools → RealSweatSystem → Setup／Uninstall` and select the avatar.
+2. On the first screen, under **Auto Mode Sensitivity**, tick **Sweat with your heart rate (Experimental)** in the **Heart Rate Link** row. The items below it appear.
+3. Set **Max Heart Rate**, **Heart Rate Parameter**, and **Response** (table below). The zone table is first in **Advanced Settings** (see [Sweat by heart-rate zone](#zones)).
+4. Press **[Install / Update]**.
+5. In VRChat, turn on **OSC > Enabled** in the Action Menu. Set up the heart-rate app as its own guide says.
+
+[![The Heart Rate Link row on the Setup window's first screen, ticked, with Max Heart Rate, Heart Rate Parameter, and Response under it](/img/guide/heart-rate-english.png)](/img/guide/heart-rate-english.png)
+
+*<small>Heart Rate Link on the Setup window's first screen, under Auto Mode Sensitivity.</small>*
+
+| Item | Description |
+|---|---|
+| **Heart Rate Link** | Tick **Sweat with your heart rate (Experimental)** to show the items below. |
+| **Max Heart Rate** | The max heart rate your watch shows (BPM, 100–250, default 190). If you don't know it, enter 220 minus your age. |
+| **Heart Rate Parameter** | The parameter name the heart-rate app sends, usually `HR`. The list has `HR` and `VRCOSC/Heartrate/Value`. For a name that is not in the list, choose **Custom Name** and enter it in **Parameter Name**. An address that starts with `/avatar/parameters/` is reduced to the name. |
+| **Response** | **Natural (Recommended)**: catches up with the heart rate in about 3 minutes. **Fast**: in about 45 seconds. Rising and drying take the same time. |
+
+The Setup window's checks show beforehand what **[Install / Update]** will do with the parameter (see [Parameters and sync](#parameters)).
+
+## Sweat by heart-rate zone {/* #zones */}
+
+**Sweat by Heart Rate Zone** is first in **Advanced Settings** while **Heart Rate Link** is ticked. Each zone sets the sweat at the end of that zone.
+
+| Zone | Heart rate (of the max) | Sweat at the end of the zone (default) |
+|---|---|---|
+| 1 | 50–60 % | 10 % |
+| 2 | 60–70 % | 30 % |
+| 3 | 70–80 % | 60 % |
+| 4 | 80–90 % | 85 % |
+| 5 | 90–100 % | 100 % |
+
+- Below 50 % of the max heart rate there is no sweat. Between the zone ends the sweat changes evenly; above the max heart rate, zone 5's value is used.
+- A zone can't sweat less than the zone below it or more than the zone above it (so the sweat never falls while the heart rate rises).
+- While there is a heart-rate signal, the sweat follows this table whatever your movement.
+- The table shows each zone's range in BPM for the **Max Heart Rate** you set. With the default 190 BPM, there is no sweat below 95 BPM.
+
+## When there is no heart-rate signal {/* #no-signal */}
+
+- A heart rate below 30 BPM, a heart rate that stays exactly the same for 60 seconds (for example, the app was closed and its last value stays), or the in-game toggle **Sweat > Heart Rate Link** turned off counts as no signal. Meanwhile sweat comes from movement as usual.
+- When the signal stops or comes back, the sweat continues from its current amount, so it never jumps.
+- In Manual Mode (Auto Mode off) the **Sweat %** radial is followed whatever the heart rate.
+
+## In-game menu {/* #menu */}
+
+**Sweat > Heart Rate Link** appears only when Heart Rate Link was installed. It sets whether the heart-rate signal sets the sweat. It is on by default, and the value is saved (not synchronized, 0 bits). When it is off, sweat comes from movement as usual. The whole menu is in [Manual Mode & Auto Mode](./modes.mdx).
+
+## Parameters and sync {/* #parameters */}
+
+- When the avatar already has a parameter of that name (Expression Parameters, or another gimmick's MA Parameters), it is only read and its settings stay as they are. Otherwise it is added as an Int parameter that is not synchronized (0 bits). The Setup window's checks show beforehand what **[Install / Update]** will do.
+- A Bool parameter of that name can't carry the heart rate, so Setup stops and says so. A Float one is read as BPM, so don't choose a parameter that carries a value between 0 and 1. A name that Real Sweat System or VRChat already uses can't be chosen.
+- No synchronized bits are added. The heart rate is read on your PC only; others see the result as **Sweat %**, as before.
+
+## Changing it after install {/* #after-install */}
+
+- Max heart rate, the zone table, the response, and the parameter name take effect when you change them in the Setup window and press **[Install / Update]**. **Apply to FX** in Tuning does not apply them.
+- **[Install / Update]** with Heart Rate Link off removes its layers, clips, menu item, and parameters. Its values stay in Tuning for the next time you turn it on.
+- Updating from 2.0.x by importing over the old files does not add Heart Rate Link. Turn it on in the Setup window and press **[Install / Update]**.
+
+## If the sweat does not follow the heart rate {/* #troubleshooting */}
+
+Check these points, all from the sections above:
+
+- Auto Mode is on. In Manual Mode the **Sweat %** radial is followed whatever the heart rate.
+- **Sweat > Heart Rate Link** is on in the in-game menu.
+- **OSC > Enabled** is on in VRChat's Action Menu, and the heart-rate app is set up as its own guide says.
+- **Heart Rate Parameter** is the name the app sends (usually `HR`). For another name, choose **Custom Name**.
+- A heart rate below 30 BPM, or one that stays exactly the same for 60 seconds, counts as no signal; meanwhile sweat comes from movement.
+- Below 50 % of **Max Heart Rate** there is no sweat. If the sweat stays low, check **Max Heart Rate**.
+- After you change a setting, press **[Install / Update]**. **Apply to FX** does not apply it.

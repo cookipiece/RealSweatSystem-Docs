@@ -1,0 +1,71 @@
+---
+id: update-guide
+title: Update Quick Guide
+description: What is fine and what is not when you move Real Sweat System to a new version, and what happens in each case.
+---
+
+# Update Quick Guide
+
+A summary for moving an existing Real Sweat System installation to 2.0.0 or later. The full step-by-step procedure is in [Updating from 1.x](./quick-start.mdx#updating-from-1x).
+
+## The short answer {/* #short-answer */}
+
+1. Import every Base／Effects module you own, **all at the same version**, over the existing files. You do not need to delete or uninstall the old version.
+2. If the Setup window shows the yellow box "Installed with an older version.", press **[Install / Update]** once for each avatar.
+3. Purchase activation starts with 2.0.0. Activate once per PC before you upload.
+
+Back up the avatar and the project **outside the project** before you import. The Setup window is `CookiTools → RealSweatSystem → Setup／Uninstall`, and the activation window is `CookiTools → RealSweatSystem → Purchase Activation`.
+
+## Which version are you updating from {/* #by-version */}
+
+| Installed now | What to do |
+|---|---|
+| **1.0.x, 1.1.x** | Import over the old files, press **[Install / Update]** once for each avatar, and activate your purchase before you upload. No intermediate version is required. |
+| **2.0.x to 2.1.0** | Import over the old files. You do not need to press **[Install / Update]** again. Press it only to add [Heart Rate Link](./usage/heart-rate-link.mdx), or to make **Sweat Display** off also hide the floor stains already on the floor. |
+
+For an update from v1.0.0–v1.0.2, the v1.1.0 migration notes in [Update & Changelog](./update-changelog.mdx#v110) also apply.
+
+## This is fine {/* #fine */}
+
+| What you do | Result |
+|---|---|
+| Import over the old version without deleting it | This is the right way. You do not need to uninstall first. |
+| Skip intermediate versions and go straight to the new one | Works. Installations from v1.0.0–v1.0.2 can update directly too. |
+| Import Base and Effects in any order | The order does not matter. Only the versions must match. |
+| Import and press **[Install / Update]** before activating your purchase | Works. Updating an avatar that is already installed does not ask for activation. Only adding a module the avatar did not have asks for it. Activate before you upload. |
+
+## Not needed, or do not do this {/* #avoid */}
+
+| What you do | What happens | Do this instead |
+|---|---|---|
+| Import only, without pressing **[Install / Update]** (updating from 1.x) | The look values of the sweat materials change to the new defaults right after the import, but the per-avatar update is not done: the pattern number, the Rest up direction, the droplet size for the avatar's body size, the new body steam and the menu names are not applied. The yellow box stays in the Setup window, and the Scene view shows a "RealSweatSystem update recommended" notice. | Press **[Install / Update]** once for each avatar. |
+| Press only **Apply to FX** | It does not do this update. The yellow box stays. | Press **[Install / Update]**. |
+| Import only one of Base and Effects at the new version | The Setup window asks you to re-import them at the same version and does not install. If you upload anyway, the build does not stop, but Real Sweat System is left out of the avatar and the Console gets a warning that starts with `[RealSweatSystem]`. | Import every module you own at the same version, then open the Setup window again. |
+| Upload from a PC where the purchase is not activated | The build does not fail and no dialog appears, but the effects of every module without activation are left out of the uploaded avatar. The scene and Play Mode look the same as before. | Activate, then upload again. You do not need to press **[Install / Update]** again. |
+| Press **[Uninstall]** first, then install the new version | Not needed. Uninstall removes the installation object and its dedicated generated folder, so you have to set the avatar up again from the start. The next install is a new install, so it asks for purchase activation. | Do not uninstall. Import over the old files. |
+| Delete the `RealSweat` object by hand | The information for restoring the mesh is stored on this object. Deleting it can leave the generated mesh and the sweat material slot on the Body. | Do not delete it. If you already did, follow [If only the `RealSweat` object was deleted](./troubleshooting.mdx#manual-delete-recovery). |
+| Delete `Assets/CookiTools/Generated` or the whole `CookiTools` folder | The generated mesh the Body uses is gone, and the Body can disappear. | Do not delete it. If you already did, follow [If the `Generated` folder was deleted and the Body disappeared](./troubleshooting.mdx#if-the-generated-folder-was-deleted-and-the-body-disappeared). |
+| Delete the `Assets/CookiTools/RealSweatSystem` product folder and import again | Not needed. The generated files normally stay in their separate folder (`Assets/CookiTools/Generated`). | If you deleted it, import every module you own again at the same version. |
+| Tune the look before pressing **[Install / Update]** (updating from 1.x) | The look values go back to the new defaults when you press the button. | Tune the look after the update. Values you tune after it stay. |
+
+## What changes when you update from 1.x {/* #from-1x */}
+
+- **Look:** 2.0.0 rebuilt the skin sweat look. The look values of sweat materials from earlier versions are set to the new defaults once per material, and updated avatars start with the **Realistic** style.
+- **Droplet positions:** the droplets move once because of the new pattern number.
+- **Render queue:** the automatic sweat render queue moves from 2455 to 2350. With a body material at 2350 or later, **[Install / Update]** asks whether to lower it to 2349. A manual render queue you set is kept.
+- **Kept:** Sweat Quality, Auto Mode sensitivity, effects and menus, Rest data, spawn and display masks, the clothing stencil and more.
+
+The full list of changed and kept values is in [Updating from 1.x](./quick-start.mdx#updating-from-1x).
+
+:::note[The first upload can take a while]
+The first upload on a PC can take a few minutes while the sweat shaders compile. Wait even if no progress window appears, and do not close Unity.
+:::
+
+## If the update went wrong {/* #recovery */}
+
+- **You imported but did not press the button.** Press **[Install / Update]** once for each avatar now. Look values you tuned before pressing go back to the new defaults at that point.
+- **You updated only one module.** Import the other module at the same version, then open the Setup window again. Uninstall is not required.
+- **You uploaded before activating.** Activate, then upload again. The avatar in the scene was not changed. How to check is in [Sweat or effects are missing after upload](./troubleshooting.mdx#missing-after-upload).
+- **You uninstalled first.** Import the new version and press **[Install / Update]** to install again. It is a new install, so it needs purchase activation.
+- **You deleted the `RealSweat` object or the `Generated` folder.** Follow the recovery steps in [Uninstall, reinstall, or change modules](./troubleshooting.mdx#uninstall-reinstall-or-change-modules). Do not press **[Install / Update]** right away while a generated Body mesh is still assigned.
+- **You want to go back to the old version.** Restoring the backup you made before updating is the safest way. Without a backup, follow **Going back to v1.1.3** in the README included in the package. **[Install / Update]**, **Apply to FX** and **[Uninstall]** cannot be undone with Ctrl+Z.

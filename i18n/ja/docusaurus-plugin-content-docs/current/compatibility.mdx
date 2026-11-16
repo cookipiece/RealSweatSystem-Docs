@@ -10,16 +10,16 @@ description: 対応する Unity、VRChat、アバター、マテリアル、ビ�
 
 | 項目 | 条件 |
 |---|---|
-| エディターのOS | **Windows専用**（購入認証がWindowsでのみ動作します。[購入認証](./license-activation.mdx#windows-only)を参照） |
+| エディターのOS | **Windows専用**（Linux・macOS：v2.1.0から認証できますが、まだ検証していません。[購入認証](./license-activation.mdx#windows-only)を参照） |
 | Unity | **2022.3** |
 | VRChat | **Avatars SDK 3.10.3以降**（3.10.6まで確認） |
-| アバタービルド | **Modular Avatarが必要**（VCC からインストール） |
+| アバタービルド | **Modular Avatar 1.12以降が必要**（VCC からインストール） |
 | プラットフォーム | **PC / Direct3D 11** |
 | Quest単体版 | 非対応。汗は表示されません（安全な Hidden フォールバック） |
 
-NDMF 1.14.0とModular Avatar 1.17.1、NDMF 1.14.8とModular Avatar 1.18.7で確認しています。確認したバージョンであり、最小バージョンという意味ではありません。
+NDMF 1.14.0とModular Avatar 1.17.1、NDMF 1.14.8とModular Avatar 1.18.7で確認しています。Modular Avatar が 1.12 より古い場合、**［インストール / 更新］** は何も変更する前に 1.12 以降が必要だと案内して止まります。[Modular Avatar 1.12 以降が必要と表示される](./troubleshooting.mdx#modular-avatar-too-old)を確認してください。**NDMF 1.13.1 以降** が必要です（Modular Avatar と一緒に導入されます）。それより古い NDMF ではスクリプトのコンパイルエラーになり、上部に CookiTools メニューが出ません。[上部に CookiTools メニューがない](./troubleshooting.mdx#no-cookitools-menu)を確認してください。
 
-Real Sweat System に VRCFury は必要ありません。
+**VRCFury** は任意です（必須ではありません）。アバターの Expression Parameter の容量が足りない場合は、VRCFury の Parameter Compressor の利用をおすすめします。
 
 ## アバターの種類 {/* #avatar-type */}
 
@@ -65,7 +65,7 @@ Real Sweat System は、v1.0.2 で追加したFX Write Defaultsの自動判定�
 - **自動（推奨）** は、RealSweat以外のすべてのFX StateがWD ONの場合だけ、生成するすべてのRealSweatレイヤーをWD ONにします。
 - WD OFF、混在、または判定不能の環境では、v1.0.1のDriver ON / Output OFF互換構成を維持します。
 - ビルド時にNDMFで最終統合されたFXコントローラーを再確認し、判定結果に合わせてRealSweatのWD構成を調整します。
-- 1.x から更新した後は、所有しているModuleをすべて同じ v2.0.0 でインポートし、**［インストール / 更新］** を一度押してください。
+- 1.x から更新した後は、所有しているModuleをすべて同じ v2.1.0 でインポートし、**［インストール / 更新］** を一度押してください。
 - 生成されたMerge Animator Priorityを手動で変更しないでください。
 - 生成されたAnimator欄の置き換えや空欄化を、恒久的な回避策として使わないでください。
 
@@ -89,9 +89,9 @@ Modular AvatarのMMD World Supportは、FX Animatorのレイヤー2と3を無効
 
 UnityでBody Meshを手動で変更または置換した場合は、すべてのMesh変更を終えてから **［インストール / 更新］** をもう一度押してください。ビルドのたびにMeshを置き換えるツールは、Setupを再実行するだけでは解決できません。
 
-Real Sweat System には、ベイク後にメッシュが変わった場合に最終メッシュからRestデータを再ベイクするビルド後半の再確認と、一般的なd4rkAvatarOptimizer処理への保護があります。削除された対象スロットやSubMeshは復元できず、Modular Avatar Shape Changer、Mesh Cutter、すべてのメッシュ変更ツールと処理順との互換性も保証できません。最終的なスロットやSubMeshが無い、または互換性が無い場合はビルドが停止します。
+Real Sweat System には、ベイク後にメッシュが変わった場合に最終メッシュからRestデータを再ベイクするビルド後半の再確認と、一般的なd4rkAvatarOptimizer処理への保護があります。未知のバージョンの d4rkAvatarOptimizer があってもアップロードは止まりません（v2.1.0 から）。Console に警告を残して続行し、このとき汗が欠けたり正しく表示されなかったりすることがあります。警告には、汗のレンダラーを自分で除外する方法が書かれています。削除された対象スロットやSubMeshは復元できず、Modular Avatar Shape Changer、Mesh Cutter、すべてのメッシュ変更ツールと処理順との互換性も保証できません。ほかのビルドツールが汗マテリアルのスロットを削除したり、別のマテリアルに置き換えたりした場合は、その部分の汗だけを外してアップロードを続け、Console と NDMF ウィンドウに警告が1つ出ます（2.0.0 まではビルドが停止しました）。
 
-実験的な対象を無効にするために、RealSweatが生成したマテリアルやRendererスロットを削除、空欄化、移動、置換、統合しないでください。Tuningに **修復が必要** と表示され、対象を黙って省略せずにアバタービルドが停止します。**追加対象を管理...** を使い、**［インストール / 更新］** で対象を修復または削除してください。
+実験的な対象を無効にするために、RealSweatが生成したマテリアルやRendererスロットを削除、空欄化、移動、置換、統合しないでください。Tuningに **修復が必要** と表示されます。アップロードはその対象の汗だけを外して続行し、ConsoleとNDMFウィンドウに警告が残ります（2.0.0まではビルドが停止しました）。**追加対象を管理...** を使い、**［インストール / 更新］** で対象を修復または削除してください。
 
 ## PhysBoneとの共存
 
@@ -152,5 +152,6 @@ Light Limit Changer（LLC）のメニューでアバターの明るさを変え�
 
 - BaseとEffectsは同じリリースバージョンにそろえてください。バージョンが混ざっていると、Setup ウィンドウが同じバージョンで再インポートするよう知らせてインストールを止めます。アバタービルドは止まりません。その代わり、アップロードするアバターから Real Sweat System を外し、Console に `[RealSweatSystem]` で始まる警告（パッケージのバージョンが一致しないという内容）を出します。
 - Setupは、導入予定のすべてのパラメーターをAvatar Expression Parametersと他のModular Avatar Parameters宣言（接頭辞・リマップを含む）に照合します。
-- 名前が衝突する場合はSetupを停止します。予測合計がVRChatの256bitのパラメーター上限を超える場合は、続行前に警告します。
+- 名前が衝突する場合はSetupを停止します。予測合計がVRChatの256bitのパラメーター上限を超える場合は、続行前に警告します。v2.1.0 からは、他のオブジェクトの Modular Avatar Parameters がアップロード時に追加するパラメーターも数えます。
+- Setup は何も変更する前に、移動または名前変更された `RealSweat` オブジェクトと、240 文字を超える生成ファイルのパスも確認します（Windows の Unity は 260 文字を超えるパスで失敗することがあります）。[RealSweat オブジェクトが移動または名前変更されたと表示される](./troubleshooting.mdx#realsweat-object-moved)と[長いファイルパスのため続行するか確認される](./troubleshooting.mdx#long-file-path)を確認してください。
 - 追加対象の検証とビルドの案内は、選択したツールUI言語に従います。UnityやNDMFの例外タイトルとスタックトレースは、英語のまま表示される場合があります。

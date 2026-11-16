@@ -41,9 +41,13 @@ The 3D body steam and breath look the same as before, and their Mesh Particle Ac
 
 Sweat droplets fall from locations across the body, and they get denser toward 100% Sweat. Falling drops are small, round while slow, and stretch longer the faster they fall. 3D draws them as a teardrop-shaped water lens, 2D as a water drop lit by the scene.
 
-Falling drops follow the sweat style: **Anime** with crisp white highlights and outlines, **Realistic** with a dark rim and a small glint. The style is picked only when the Base Module is installed; with only the Effects Module, the drops, floor stains, and splash use the Realistic look. An avatar already installed with 2.0.0 keeps the look it has.
+Falling drops follow the sweat style: **Anime** with crisp white highlights and outlines, **Realistic** with a dark rim and a small glint. With **1.x (Legacy)** they use the Anime look. The style is picked only when the Base Module is installed; with only the Effects Module, the drops, floor stains, and splash use the Realistic look. An avatar already installed with 2.0.0 keeps the look it has.
 
 Because the drops fall fast, at most 8 drops of a system are in the air at once. The default of **Drop Particle Limit (Per System)** is 12, and the strong-movement drops use two thirds of it (8).
+
+The falling drops' size follows the body's sweat material. Before v2.1.0, it could follow another mesh's sweat material that came first in the hierarchy. An install updated from v2.0.x gets the new size with the next **Apply to FX** or **[Install / Update]**.
+
+By default the falling drops have the same size on every avatar, so on a small avatar they look bigger next to the body. To make them smaller, lower **Drop Size Multiplier** (0.75 to 1.5) under **Effect Details > Falling Drops** in the Tuning, then press **Apply to FX**.
 
 With Base and experimental additional targets installed, an additional target can optionally emit its own Falling Drops. Separate surface-area and rate controls are available for those targets.
 
@@ -62,6 +66,8 @@ The splash is a short spray of small round droplets when a drop lands. It works 
 Floor Stains are collision sub-effects emitted by Falling Drops. They are available only while Falling Drops is installed and enabled. Collision is limited to the world's **Default** and **Environment** layers; avatar/player layers are excluded. Some worlds may produce no stain when their floor collider or layer is incompatible.
 
 Floor stains only darken the floor, with the same soft shapes as in 1.1.3. They have no gloss or glint, and they dry from the edge in.
+
+Turning off **Sweat Display** in the in-game menu also hides the floor stains already on the floor (from v2.1.0). An existing install gets this with the next **[Install / Update]**.
 
 **Default:** On
 

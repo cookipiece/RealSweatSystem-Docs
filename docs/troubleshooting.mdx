@@ -12,6 +12,11 @@ Normal-operation lines go to the Console only when **Write detailed logs to the 
 
 ## Quick symptom index
 
+- [No CookiTools menu at the top](#no-cookitools-menu)
+- [The Setup window says the project has script compile errors](#script-compile-errors)
+- [Setup says Modular Avatar 1.12 or later is needed](#modular-avatar-too-old)
+- [Setup says the RealSweat object was moved or renamed](#realsweat-object-moved)
+- [Setup asks about a long file path](#long-file-path)
 - [No sweat is visible](#no-sweat-is-visible)
 - [The Setup window says "Installed with an older version."](#installed-with-an-older-version)
 - [The Setup window asks to re-import at the same version](#mixed-module-versions)
@@ -22,8 +27,9 @@ Normal-operation lines go to the Console only when **Write detailed logs to the 
 - [The face breaks in Play Mode or VRChat](#the-face-breaks-in-play-mode-or-vrchat)
 - [Expressions or lip sync stop during an MMD dance](#expressions-or-lip-sync-stop-during-an-mmd-dance)
 - [Sweat Display or Auto Mode does not work](#sweat-display-or-auto-mode-does-not-work)
+- [The sweat does not follow the heart rate (Heart Rate Link)](./usage/heart-rate-link.mdx#troubleshooting)
 - [A warning says a duplicate avatar shares the generated files](#duplicate-avatar-shares-generated-files)
-- [An additional target shows Repair Required or blocks the build](#an-additional-target-shows-repair-required-or-blocks-the-build)
+- [An additional target shows Repair Required](#an-additional-target-shows-repair-required-or-blocks-the-build)
 - [Falling Drops or Floor Stains are missing or appear above the floor](#falling-drops-or-floor-stains-are-not-visible)
 - [Sweat or effects are missing after upload](#missing-after-upload)
 - [It works in Unity but breaks only in VRChat](#it-works-in-unity-but-breaks-only-in-vrchat)
@@ -33,6 +39,26 @@ Normal-operation lines go to the Console only when **Write detailed logs to the 
 - [The Body disappeared after the Generated folder was deleted](#if-the-generated-folder-was-deleted-and-the-body-disappeared)
 - [Microsoft Defender warns about or blocks the download](#microsoft-defender-warns-about-or-blocks-the-download)
 - [Common usage tips](#common-usage-tips)
+
+## No CookiTools menu at the top {/* #no-cookitools-menu */}
+
+A script failed to compile. Open the Console (Window → General → Console) and look at the red error. If it names another package's class (for example `ObjectPathRemapper` or `nadena…`), update NDMF and Modular Avatar in VCC or ALCOM. Real Sweat System needs **NDMF 1.13.1 or newer**; with an older NDMF the scripts fail to compile and the CookiTools menu does not appear at the top.
+
+## The Setup window says the project has script compile errors {/* #script-compile-errors */}
+
+The Setup window says "Your project has script compile errors, so part of RealSweatSystem could not load." Re-importing will not fix this. Open the Console (Window → General → Console) and fix the red errors (lines starting with `error CS`) first. If an error names `nadena`, update NDMF and Modular Avatar in VCC or ALCOM.
+
+## Setup says Modular Avatar 1.12 or later is needed {/* #modular-avatar-too-old */}
+
+Real Sweat System needs **Modular Avatar 1.12 or later**. With an older version, **[Install / Update]** says so and stops before changing anything. Update Modular Avatar in VCC or ALCOM, then press **[Install / Update]** again. From v2.1.0, Modular Avatar 1.12–1.16 no longer show "Modular Avatar is outdated" on every install.
+
+## Setup says the RealSweat object was moved or renamed {/* #realsweat-object-moved */}
+
+The message "RealSweatSystem can't find this install because its RealSweat object was moved or renamed" names where the object is now. Move the `RealSweat` object from there back directly under the avatar root, and give it the name the message gives (`RealSweat`). Until then, **[Install / Update]**, **Apply to FX**, and **[Uninstall]** stop. A backup kept under EditorOnly does not get this message.
+
+## Setup asks about a long file path {/* #long-file-path */}
+
+When a generated file path would be longer than 240 characters, **[Install / Update]** asks whether to go on before it changes anything. Unity on Windows can fail on paths longer than 260 characters. To be safe, shorten the avatar's name or move the project to a folder with a shorter path.
 
 ## No sweat is visible {/* #no-sweat-is-visible */}
 
@@ -78,6 +104,7 @@ Menu entries depend on the imported modules and Setup options:
 - **Effects** and its individual controls require Effects.
 - **Body Steam & Breath Intensity** appears only when the optional synchronized radial was selected in Setup.
 - **Droplet Depth (Tessellation / High Load)** appears only when Droplet Depth was installed (the **Depth (High Load)** look, or the Droplet Depth toggle in **Advanced Settings > Quality & Load**).
+- **Heart Rate Link** appears only when Heart Rate Link was installed. It is not installed on an avatar that can't use Auto Mode. See [Heart Rate Link](./usage/heart-rate-link.mdx).
 - The **VRC Light Volumes** toggle was removed in v2.0.0, and some names changed: Breath Puffs → Breath, Steam → Body Steam, Hide Surface Sweat → Hide Skin Sweat, Steam & Breath Intensity → Body Steam & Breath Intensity.
 
 If an expected entry is absent:
@@ -110,7 +137,7 @@ The first package import can take longer while Unity imports assets, compiles sh
 
 ## Updating from 1.x
 
-Follow [Updating from 1.x](./quick-start.mdx#updating-from-1x). In short: back up outside the project, import every module you own at the same v2.0.0 version over the existing files without uninstalling first, then press **[Install / Update]** once for each avatar. **Apply to FX alone is not an update.**
+Follow [Updating from 1.x](./quick-start.mdx#updating-from-1x). In short: back up outside the project, import every module you own at the same v2.1.0 version over the existing files without uninstalling first, then press **[Install / Update]** once for each avatar. **Apply to FX alone is not an update.**
 
 ## The face breaks in Play Mode or VRChat {/* #the-face-breaks-in-play-mode-or-vrchat */}
 
@@ -139,6 +166,7 @@ Forcing only RealSweat to WD ON can recreate a mixed ON/OFF controller when exte
 - Confirm that **Sweat Display** is enabled.
 - For manual control, disable Auto Mode and adjust Sweat %.
 - For Auto Mode, confirm that the avatar is Humanoid and has the required bone reference. Auto Mode requires a Humanoid Animator and MA Bone Proxy; if they are unavailable, Setup installs Manual Mode only.
+- With **Heart Rate Link** installed, Auto Mode's sweat follows the heart rate instead of your movement while there is a heart-rate signal. See [Heart Rate Link](./usage/heart-rate-link.mdx).
 - Do not manually edit the generated animator or its ordering.
 - Press **[Install / Update]** again after importing a newer version.
 
@@ -158,9 +186,9 @@ Experimental additional targets are added separately in **Advanced Settings > Sw
 
 For a Body with multiple materials, press **[Change]** next to **Sweat on** and check only the skin materials under **Advanced Settings > Sweat Target**, then press **[Install / Update]** again. Do not assume Element 0 is the skin.
 
-## An additional target shows Repair Required or blocks the build {/* #an-additional-target-shows-repair-required-or-blocks-the-build */}
+## An additional target shows Repair Required {/* #an-additional-target-shows-repair-required-or-blocks-the-build */}
 
-Do not delete, clear, move, replace, or merge a generated RealSweat material or Renderer slot to disable an experimental target. A missing or changed generated material/slot is treated as installation damage, shown as **Repair Required** in Tuning, and blocks the avatar build instead of silently omitting the target.
+Do not delete, clear, move, replace, or merge a generated RealSweat material or Renderer slot to disable an experimental target. A missing or changed generated material/slot is treated as installation damage and shown as **Repair Required** in Tuning. The upload leaves that target's sweat out and goes on, with a warning in the Console and the NDMF window (up to 2.0.0 the build stopped).
 
 1. Select the generated **RealSweat** object.
 2. In **RealSweatSystem Tuning**, use **Manage Targets...** or **Open Setup to Repair...**.
@@ -180,7 +208,7 @@ The avatar looks right in the scene and in Play Mode, but the uploaded avatar ha
 1. After the build, open the Console and look for a yellow warning that starts with `Real Sweat System:`. There is one for each module that was left out. It names the module (Base Module or Effects Module) and the reason: this PC is not activated, your purchase does not include that module, or the saved activation does not match this PC.
 2. Open `CookiTools → RealSweatSystem → Purchase Activation`. The status box lists the modules activated on this PC under **Included**. Enter the order number or Gumroad license key of the missing module and press **Activate**. If this PC already has another order, use **Add another order**.
 3. While an upload would leave something out, the Setup window shows the same notice above the install button, with **Open activation window**. It goes away once the module is activated.
-4. On Mac or Linux the activation is not possible, so uploads always leave Real Sweat System out. Upload from a Windows PC.
+4. In the Linux and macOS editors, purchase activation works from v2.1.0, but it has not been tested there yet. With v2.0.2 or earlier it is not possible there, so uploads from those editors leave Real Sweat System out.
 5. Upload the avatar again. The avatar in the scene was not changed, so you do not need to press **[Install / Update]** again.
 
 A Console warning that starts with `[RealSweatSystem]` and says the packages are different versions means that Base and Effects are mixed. See [The Setup window asks to re-import at the same version](#mixed-module-versions). The rules are in [Purchase Activation](./license-activation.mdx).
@@ -190,6 +218,8 @@ A Console warning that starts with `[RealSweatSystem]` and says the packages are
 If the sweat or the effects are missing entirely from the uploaded avatar, check [Sweat or effects are missing after upload](#missing-after-upload) first.
 
 An optimizer, retargeter, or other upload-time tool may be replacing the Body Renderer or mesh after Real Sweat System prepares it.
+
+With a d4rkAvatarOptimizer version that Real Sweat System does not know, the upload does not stop (from v2.1.0). Look for its warning in the Console: it says that the sweat may be missing or look wrong in that upload and how to exclude the sweat renderers yourself.
 
 - Check whether the tool modifies the selected Body.
 - Preserve the sweat target submesh and material relationship.
@@ -270,7 +300,7 @@ Back up the avatar or project first.
 
 Do not delete only the `RealSweat` object or component: Uninstall must restore the Body mesh/materials and external effect objects. Thanks to Modular Avatar's non-destructive build, menu/parameters/FX revert automatically on the next build. Sweat materials/slots you created yourself are never touched.
 
-Uninstall removes the installation object, its descendants, and its dedicated generated folder. Generated files shared by another avatar or object in the current scene are retained, and the generated folder is kept when another saved scene or prefab uses the same generated files or that check cannot finish. Original bodies, outfits, and external assets are not deleted. Removal stops if the original mesh cannot be restored; check its reference before trying again. Body materials lowered to 2349 at install get their original render queue back.
+Uninstall removes the installation object, its descendants, and its dedicated generated folder. Generated files shared by another avatar or object in any open scene or in Prefab Mode are retained, and the generated folder is kept when another saved scene or prefab uses the same generated files or that check cannot finish. When leftover generated files without install data are removed and another object uses that folder, the message names that object. Original bodies, outfits, and external assets are not deleted. Removal stops if the original mesh cannot be restored; check its reference before trying again. Body materials lowered to 2349 at install get their original render queue back.
 
 ### If only the `RealSweat` object was deleted {/* #manual-delete-recovery */}
 
@@ -367,7 +397,7 @@ In the Setup window's **Troubleshooting** tab, **Copy Support Info** (under **Wh
 - Unity and VRCSDK versions
 - Avatar name and Face Tracking package, if used
 - Screenshot of the Setup window and Avatar Descriptor
-- Sweat Style (Anime / Realistic) and Look (Flat / Depth (High Load))
+- Sweat Style (Realistic / Anime / 1.x (Legacy)) and Look (Flat / Depth (High Load))
 - Full text of the first Console error after clearing the Console
 - Whether it happens in Unity, desktop VRChat, VR, or VR Face Tracking
 - Modular Avatar version

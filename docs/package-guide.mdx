@@ -8,7 +8,7 @@ description: Differences between the Base Module, Effects Module, and Full Pack.
 
 | Package | Main features | Best for |
 |---|---|---|
-| **Sweat Base Module** | Skin sweat in two styles (Anime / Realistic), optional Droplet Depth, masks, Rest data, mirror and render-order controls, Remote Low Load, Hide Skin Sweat | Users who need skin sweat |
+| **Sweat Base Module** | Skin sweat in three styles (Realistic / Anime / 1.x (Legacy)), optional Droplet Depth, masks, Rest data, mirror and render-order controls, Remote Low Load, Hide Skin Sweat | Users who need skin sweat |
 | **Sweat Effects Module** | Falling Drops and splash, Floor Stains, Breath, Body Steam and Custom Steam Points, in 2D or optional 3D particles | Users who need surrounding particle effects |
 | **Full Pack (Base + Effects)** | Base Module + Effects Module | The complete linked sweat presentation |
 
@@ -19,7 +19,8 @@ Each module includes the common **Core** files it needs. Core is not a separate 
 | Feature or behavior | Base Module | Effects Module | Full Pack |
 |---|:---:|:---:|:---:|
 | Shared **Sweat Display**, **Sweat %**, and **Auto Mode** controls | Yes | Yes | Yes |
-| Skin sweat in the **Anime** or **Realistic** style, with gravity-driven running droplets | Yes | — | Yes |
+| Optional **Heart Rate Link** (experimental): Auto Mode follows a heart-rate app over OSC | Yes | Yes | Yes |
+| Skin sweat in the **Realistic**, **Anime** or **1.x (Legacy)** style, with gravity-driven running droplets | Yes | — | Yes |
 | **Sweat Quality** (Standard / Low Load / Lightweight) | Yes | Yes | Yes |
 | Material inspector look controls (**Glint Size**, **Glint Strength**, **Sweat Flow**, **Reset Look**) | Yes | — | Yes |
 | Optional **Droplet Depth (Tessellation, High Load)** | Yes | — | Yes |
@@ -46,13 +47,13 @@ Auto Mode requires a compatible Humanoid motion setup. Breath and Body Steam add
 
 The Base Module adds sweat to selected material Elements of the primary Body Renderer. It can also install sweat on additional `SkinnedMeshRenderer` targets such as a separate face mesh as an **experimental** feature. Rest data is generated per mesh, not per Element; Elements on the same Renderer share that mesh mapping, while a separate Renderer gets its own Rest data. Each configured sweat Element still adds its own material and draw.
 
-The sweat style (**Anime** or **Realistic**) is one per avatar: the body and the other meshes all use the same style. Manual Mode and Auto Mode share the same Sweat % value. If Droplet Depth is installed, the in-game menu switches all Droplet Depth sweat slots together.
+The sweat style (**Realistic**, **Anime** or **1.x (Legacy)**) is one per avatar: the body and the other meshes all use the same style. Manual Mode and Auto Mode share the same Sweat % value. If Droplet Depth is installed, the in-game menu switches all Droplet Depth sweat slots together.
 
 ## Sweat Effects Module
 
 The Effects Module uses the selected Body Mesh as its emission surface. It does **not** modify the Body material, Body mesh, Rest data, or Droplet Depth setup. The existing lightweight 2D particles remain the default; the high-load **3D Particles** are turned on by choosing **Depth (High Load)** under **Look** on the Setup window's first screen, or in **Advanced Settings > Quality & Load**.
 
-Falling drops and the splash follow the sweat style (Anime / Realistic). The style is picked only when the Base Module is installed; with only the Effects Module there is no Sweat Style choice, and the drops use the Realistic look. An avatar already installed with 2.0.0 keeps the look it has.
+Falling drops and the splash follow the sweat style (Anime / Realistic). With 1.x (Legacy) they use the Anime look. The style is picked only when the Base Module is installed; with only the Effects Module there is no Sweat Style choice, and the drops use the Realistic look. An avatar already installed with 2.0.0 keeps the look it has.
 
 The Effects menu appears only when this module is installed.
 
@@ -66,13 +67,14 @@ The avatar menu is built from the installed modules:
 - **Remote Low Load** appears when Base is installed.
 - **Effects** appears when Effects is installed.
 - **Droplet Depth (Tessellation / High Load)** appears only when Droplet Depth was installed.
+- **Heart Rate Link** appears only when Heart Rate Link was installed ([Heart Rate Link](./usage/heart-rate-link.mdx)).
 
 ## Installing, updating, or changing packages
 
 - For a new installation, follow [5-Minute Quick Start](./quick-start.mdx).
 - Keep Base and Effects on the same version when both are present. If the versions are mixed, the Setup window asks you to re-import them at the same version and does not install.
 - To expand Base or Effects into Full Pack, import the missing module at the same version, then press **[Install / Update]** once. This adds a module, so it asks for that module's purchase activation ([Purchase Activation](./license-activation.mdx#what-is-gated)).
-- To update from 1.x, import every module you own at the same v2.0.0 version **over the existing files**, then press **[Install / Update]** once for each avatar. Do not uninstall the old version first. **Apply to FX alone does not do this update.** See [Updating from 1.x](./quick-start.mdx#updating-from-1x) for the full procedure.
+- To update from 1.x, import every module you own at the same v2.1.0 version **over the existing files**, then press **[Install / Update]** once for each avatar. Do not uninstall the old version first. **Apply to FX alone does not do this update.** See [Updating from 1.x](./quick-start.mdx#updating-from-1x) for the full procedure.
 - To remove the system or change back to a single-module installation, follow [Uninstall, reinstall, or change modules](./troubleshooting.mdx#uninstall-reinstall-or-change-modules).
 
 ## Game and app distribution

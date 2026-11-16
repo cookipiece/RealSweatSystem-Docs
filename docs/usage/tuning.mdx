@@ -1,12 +1,12 @@
 ---
 id: tuning
 title: Setup & Tuning Option Reference
-description: Reference for the Setup window, Tuning, and material inspector controls in RealSweatSystem 2.0.0.
+description: Reference for the Setup window, Tuning, and material inspector controls in RealSweatSystem 2.1.0.
 ---
 
 # Setup & Tuning Option Reference
 
-This page documents the normal user-facing controls in RealSweatSystem 2.0.0. Controls marked **Base** appear when the Sweat Base Module is installed; controls marked **Effects** require the Sweat Effects Module.
+This page documents the normal user-facing controls in RealSweatSystem 2.1.0. Controls marked **Base** appear when the Sweat Base Module is installed; controls marked **Effects** require the Sweat Effects Module.
 
 ## Open the Tuning component
 
@@ -27,6 +27,7 @@ If the object is missing because the first Setup did not finish, resolve the fir
 | **Follow Body Shadow Strength** | Copied when you press **Apply to FX** or **[Install / Update]**. |
 | A steam location that was excluded at installation, or adding or removing an installed effect | Press **[Install / Update]**. |
 | Setup window options: Sweat Target, other meshes, Effects to Install, the Body Steam & Breath Intensity menu, 3D Particles, Drop Splash, installing Droplet Depth, High-Quality Sweat in Mirrors, Wet Skin Gloss, render order, and Write Defaults | Press **[Install / Update]**. |
+| **Heart Rate Link** and its settings (Max Heart Rate, the zone table, Response, the parameter name) | Change them in the Setup window and press **[Install / Update]**. **Apply to FX** does not apply them. |
 
 The accumulation graphs preview pending values immediately, but they do not modify generated FX until **Apply to FX** is pressed. If **Apply to FX** reports an installation configuration change, press **[Install / Update]** first; adding or removing installed effects cannot be completed with Apply to FX alone.
 
@@ -43,10 +44,11 @@ Open `CookiTools → RealSweatSystem → Setup／Uninstall`. The tabs are **Inst
 | **Sweat on** | All | Auto-detect | The body mesh, as a field. It is found automatically; if it is wrong, drag the right mesh from the Hierarchy onto it. The material it uses is shown under it. **[Change]** opens **Advanced Settings > Sweat Target** for the rest, such as the material slots. With only the Effects Module this field is **Drops from**. |
 | **Effects to Install** | Effects | All on | Check boxes: **Falling Drops**, **Floor Stains** (needs Falling Drops), **Breath**, **Body Steam**. Where the body steam rises and the intensity menu are in **Advanced Settings > Effects**. |
 | **Skin Sweat** | Base | **Wet Skin Gloss** on | Check box **Wet Skin Gloss**: the skin gets glossier as sweat increases. Off sets the sweat material's **Wet Skin Film** to 0, and the in-game **Wet Skin Film** toggle is not installed. |
-| **Sweat Style** | Base | **Realistic (default)** | Click one of two pictures: **Anime** or **Realistic (default)**. When you open the window again, the avatar's current style is selected. This row appears only when the Base Module is installed. |
+| **Sweat Style** | Base | **Realistic (default)** | Click one of three pictures: **Realistic (default)**, **Anime** or **1.x (Legacy)**. When you open the window again, the avatar's current style is selected. This row appears only when the Base Module is installed. |
 | **Look** | Base / Effects | **Flat** | **Flat** or **Depth (High Load)**. **Depth (High Load)** turns on Droplet Depth, 3D Particles, and Drop Splash together and shows **On from the Start** under it. **Flat** turns them off. With the Base Module the two choices are pictures; with only the Effects Module they are buttons. The caption under the **Depth (High Load)** picture says the droplets rise when seen up close and from the side, and that Droplet Depth starts off and is turned on in the in-game menu unless **On from the Start** is ticked; while it is off, an info box shows that menu (**Sweat > Reduce Load**). |
 | **Load** | All | **Low Load (Recommended)** | Buttons: **Low Load (Recommended)** or **Standard**. **Lightweight** is in **Advanced Settings > Quality & Load**. |
-| **Auto Mode Sensitivity** | All | **Balanced: recommended motion-proportional response** | **Balanced: recommended motion-proportional response** or **Sensitive: faster build-up from small movements**. |
+| **Auto Mode Sensitivity** | All | **Balanced: recommended, follows motion** | **Balanced: recommended, follows motion** or **Sensitive: faster from small movements**. |
+| **Heart Rate Link** | All | Off | Check box **Sweat with your heart rate (Experimental)**: Auto Mode's sweat follows the heart rate (BPM) that a heart-rate app sends to VRChat over OSC. Ticking it shows **Max Heart Rate** (BPM, 100–250, default 190), **Heart Rate Parameter** (usually `HR`; **Custom Name** shows **Parameter Name**), and **Response** (**Natural (Recommended)** about 3 minutes, **Fast** about 45 seconds). It is not installed on an avatar that can't use Auto Mode. Experimental: tested in Unity only. See [Heart Rate Link](./heart-rate-link.mdx). |
 | **[Install / Update]** | All | — | Installs or updates the avatar. The result appears in the box right under the button, and the longer steps show a progress bar. |
 
 ### Advanced Settings
@@ -55,6 +57,7 @@ Open `CookiTools → RealSweatSystem → Setup／Uninstall`. The tabs are **Inst
 
 | Group | Module | Controls and defaults |
 |---|---|---|
+| **Sweat by Heart Rate Zone** | All | Shown first, only while **Heart Rate Link** is ticked on the first screen. The sweat at the end of zones 1–5 (50–100 % of the max heart rate): **10 / 30 / 60 / 85 / 100 %**. A zone can't be set lower than the zone below it or higher than the zone above it. See [Heart Rate Link](./heart-rate-link.mdx#zones). |
 | **Sweat Target** (with only the Effects Module: **Falling Drops Material**) | All | **Body Mesh** (the same mesh as **Sweat on** on the first screen; found automatically, set it only if it is wrong) and **Find Again**. If the body has several materials, check only the skin materials. With only the Effects Module, **Falling Drops Material** picks the material Element the drops come from (usually Element 0). |
 | **Effects** | Effects | Under **Body Steam**, **Locations**: **Chest Hollow**, **Shoulders**, **Armpits**, **Thighs** (on) and **Crotch**, **Feet** (off), shown while **Body Steam** is checked on the first screen. **Add Body Steam & Breath Intensity Menu (+8 bits)** (off). The effects themselves are the **Effects to Install** check boxes on the first screen. |
 | **Quality & Load** | All | **Sweat Quality** (**Lightweight** / **Low Load (Recommended)** / **Standard**). **Droplet Depth (Tessellation, High Load)** (off) with **On from the Start** under it (Base). **3D Particles (High Load)** (off) and **Drop Splash** (off with the Flat look) (Effects). **High-Quality Sweat in Mirrors (High Load)** (off) (Base). |
@@ -67,7 +70,9 @@ Open `CookiTools → RealSweatSystem → Setup／Uninstall`. The tabs are **Inst
 
 Follow Body Shadow Strength, droplet-depth precision, Body Steam in mirrors, Show My Breath in First Person, and Custom Steam Points are set after install in Tuning on the `RealSweat` object.
 
-Before writing assets, Setup checks all planned parameters against Avatar Expression Parameters and other Modular Avatar declarations, including prefixes and remaps. A name collision stops Setup. A projected total above 256 bits produces a warning before continuing.
+Before writing assets, Setup checks all planned parameters against Avatar Expression Parameters and other Modular Avatar declarations, including prefixes and remaps. A name collision stops Setup. A projected total above 256 bits produces a warning before continuing; from v2.1.0 it also counts the parameters that Modular Avatar Parameters on other objects add at upload.
+
+Before it changes anything, Setup also checks that Modular Avatar is 1.12 or later, that no generated file path is longer than 240 characters (it asks whether to go on), and that the `RealSweat` object was not moved or renamed. See [Troubleshooting](../troubleshooting.mdx#modular-avatar-too-old).
 
 ### Write Defaults
 
@@ -96,16 +101,17 @@ The **Write Defaults** dropdown is in **Advanced Settings > Compatibility (only 
 
 - **Anime** has droplets with crisp outlines and highlights that read well from afar. **Realistic (default)** draws clear droplets without outlines. The skin seen through a droplet bends a little, like a lens. There are many small droplets, drawn with small reflections of the light and the surroundings instead of white highlights; the bigger droplets get a small white highlight. Clusters of tiny droplets sit between them, and from afar it reads as a wet gloss rather than dots. Only the big droplets run, and their trails are clear, glossy streaks without a grey line.
 - A Realistic droplet has no dark rim, ring, or contact shadow around it, so the droplets do not read as bumps on the skin. There are slightly fewer of the tiniest droplets, and droplets seen from the front stay clear.
+- **1.x (Legacy)** (from v2.0.2) draws the droplets as RSS 1.x did. It is the 1.x shader with the effects that were hardly visible taken out, so it looks like 1.1.x, and it is lighter than 1.1.x. The droplet size follows the avatar's body size, as in 2.0, so on some avatars the droplets are a different size than in 1.1.x; adjust them with **Pattern Density** and **Droplet Size**. Changing the style puts the look values such as Droplet Size back to that style's defaults.
 - The style is one per avatar: the body and the other meshes (their Droplet Depth pairs included) all use the same style. After installing, you can change it in Tuning (**Basic Settings > Sweat Style**); the material inspector only shows the current style.
 - The style is picked only when the Base Module is installed. With only the Effects Module, the Setup window and Tuning have no Sweat Style, and the falling drops, floor stains, and splash use the Realistic look. An avatar already installed with 2.0.0 keeps the look it has.
-- New installs and avatars updated from 1.1.x start with Realistic: a 1.x avatar has no stored style, so it takes the new default. Avatars already installed with 2.0.0 keep the style they chose. To use Anime, pick its picture and press **[Install / Update]**.
-- The quality tiers apply to both styles. Realistic's Lightweight also leaves out the tiny droplets.
+- New installs and avatars updated from 1.1.x start with Realistic: a 1.x avatar has no stored style, so it takes the new default. Avatars already installed with 2.0.0 keep the style they chose. To use Anime or 1.x (Legacy), pick its picture and press **[Install / Update]**.
+- The quality tiers apply to all three styles. Realistic's Lightweight also leaves out the tiny droplets.
 - Cost: Realistic has slightly fewer shader instructions than Anime (3457 against 3523 at Standard). Its GPU time is about the same, up to about 14% more when the whole torso fills the screen up close. With Droplet Depth it costs about 1.07× Anime's Droplet Depth at Standard and about 0.95× at Low Load. An avatar uses only the shader of its own style, so other players' first load is about the same whichever style you pick.
 - Good to know: with Realistic, in folds such as above the navel a small droplet can look split in two, and droplets do not really merge.
 
 ### Droplet Depth choices {/* #droplet-depth-choices */}
 
-When Droplet Depth is on, droplets and running droplets really rise from the skin up close and look round from the side, in both styles. Trails, small pore droplets, and the residual beads on trails stay flat.
+When Droplet Depth is on, droplets and running droplets really rise from the skin up close and look round from the side, in both 2.0 styles. Trails, small pore droplets, and the residual beads on trails stay flat. With 1.x (Legacy), droplets near the body's outline rise one by one as round domes, as in the 2.0 styles.
 
 | 3D Detail Precision | Tess factor | Droplets rise within about | Draws the same as without Droplet Depth from about |
 |---|---:|---:|---:|
@@ -124,7 +130,7 @@ For multiple configured targets, every target renders only its selected Tess or 
 - Use **Manage Targets...** to open Setup with the current target list loaded.
 - Use **Open Setup to Repair...** when a target is marked **Repair Required**.
 - To remove a target, remove it with `-` in the list and press **[Install / Update]**.
-- Do not disable a target by deleting, clearing, moving, replacing, or merging its generated material or Renderer slot. Damage is not silently skipped; it blocks the avatar build until the target is repaired or removed.
+- Do not disable a target by deleting, clearing, moving, replacing, or merging its generated material or Renderer slot. Damage is shown as **Repair Required**. The upload leaves that target's sweat out and goes on, with a warning in the Console and the NDMF window (up to 2.0.0 the build stopped).
 
 ## Tuning option reference
 
@@ -140,8 +146,10 @@ The Tuning component is grouped into **Basic Settings**, **Effect Toggles**, **A
 | **Build Speed Multiplier** | All | `1.0` | `0.25–4` | Multiplies the preset's overall automatic build speed. |
 | **Retention Time Multiplier** | All | `1.0` | `0.5–2` | Multiplies dry-off duration. Higher values keep sweat visible longer. |
 | **Surface Droplet Appearance > Droplet Size** | Base | `1.6` | `0.5–2.0` | Size of droplets attached to the body. The base size follows the avatar's body size automatically; use this to change it further. |
+| **Surface Droplet Appearance > Pattern Density** | Base | `1` | `0.5–2` | Raising it gives more, smaller droplets. At 1 it is exactly the same as 2.0.1. |
+| **Surface Droplet Appearance > 1.x Pattern Density** | Base | `22` (new install) | `4–64` | Shown under **Pattern Density** while the sweat uses the 1.x (Legacy) style, and read only by that style (from v2.1.0). Raising it gives more, smaller droplets. An avatar updated from 1.1.x keeps the value it had in 1.x, so two avatars with the same other settings can show very different numbers of Legacy droplets; use this value to match them. |
 
-The Pattern Density control is hidden in 2.0.0.
+**Pattern Density** is back in 2.0.2 (it was hidden in 2.0.0 and 2.0.1).
 
 ### Effect Toggles
 
@@ -258,6 +266,7 @@ These are material controls, not fields on the Tuning component. Open the genera
 | **Pattern Seed** / **New Pattern** | **Distribution** | The avatar's pattern number. **New Pattern** changes it. |
 | **Surface Sweat Mask** | **Advanced** | The same mask as Tuning's Body Surface Display Mask. |
 | **High-Quality Sweat in Mirrors (High Load)** | **Advanced > Mirrors** | The same switch as the Setup window option. |
+| **Render Queue** | The inspector's Render Queue field | Read-only on an installed avatar's sweat material (from v2.1.0), with a note on where to change it: in the Setup window's **Advanced Settings > Compatibility (only if needed)**, turn off **Automatic Render Order (Recommended)**, set **Sweat Render Queue**, then press **[Install / Update]**. |
 
 ### Surface masks {/* #surface-masks */}
 
@@ -268,7 +277,7 @@ Both masks are in Tuning under **Surface Sweat Settings > Surface Masks and Per-
 
 ### Removed in v2.0.0
 
-Milk mode, the body normal map's wet effect, the optical LUT, the flow guide map, and the Rest pattern rotation are not part of the 2.0.0 look. The manual Rest axis modes of Pattern Space (Rest Front XY／Side ZY／Top XZ) are gone too; materials that used them change to Rest Normal Triplanar. The `Body Normal Map` value stays in the material but has no effect, and flow direction follows live world gravity. The per-mesh pattern density and the Tuning's Pattern Density are hidden too.
+Milk mode, the body normal map's wet effect, the optical LUT, the flow guide map, and the Rest pattern rotation are not part of the 2.0.0 look. The manual Rest axis modes of Pattern Space (Rest Front XY／Side ZY／Top XZ) are gone too; materials that used them change to Rest Normal Triplanar. The `Body Normal Map` value stays in the material but has no effect, and flow direction follows live world gravity. The per-mesh pattern density and the Tuning's Pattern Density are hidden too (the Tuning's Pattern Density is back in 2.0.2).
 
 When Light Limit Changer (LLC) changes the avatar's brightness, the skin sweat follows with the same ratio. See [Compatibility](../compatibility.mdx#light-limit-changer).
 

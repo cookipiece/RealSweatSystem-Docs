@@ -15,6 +15,7 @@ Sweat
 ├─ Sweat Display
 ├─ Sweat %
 ├─ Auto Mode
+├─ Heart Rate Link
 ├─ Wet Skin Film
 ├─ Effects
 │  ├─ All Effects
@@ -31,6 +32,7 @@ Sweat
 ```
 
 - **Remote Low Load** appears when Sweat Base Module is installed.
+- **Heart Rate Link** appears only when Heart Rate Link (optional, experimental) was installed. It sets whether the heart-rate signal sets Auto Mode's sweat. It is on by default, and the value is saved (not synchronized, 0 bits). See [Heart Rate Link](./heart-rate-link.mdx).
 - **Wet Skin Film** appears when Sweat Base Module is installed with **Wet Skin Gloss** on in Setup. It turns the thin wet film between the droplets and its gloss on and off, on by default, and costs 1 synchronized bit.
 - **Effects** appears when Sweat Effects Module is installed.
 - **Body Steam & Breath Intensity** appears only when its saved synchronized radial was selected during Setup.
@@ -62,6 +64,8 @@ Tracked motion such as dancing, squats, exercise-ball movement, and torso sway c
 
 The default sensitivity preset is **Balanced**.
 
+With the optional **Heart Rate Link** (experimental, from v2.1.0), Auto Mode's sweat follows the heart rate (BPM) that a heart-rate app sends to VRChat over OSC while there is a heart-rate signal. Without a signal, sweat comes from movement as usual. It was tested in Unity only, not yet in game. See [Heart Rate Link](./heart-rate-link.mdx).
+
 Auto Mode requires a Humanoid avatar with the expected Modular Avatar bone setup. Non-humanoid avatars and avatars without the required bone reference can use Manual Mode.
 
 ## Sweat Display versus Sweat 0%
@@ -84,5 +88,6 @@ Sweat 0% and Sweat Display off are not completely free: the screen copy for refr
 ## Related guides
 
 - Change movement response in [Setup & Tuning Option Reference](./tuning.mdx).
+- Make Auto Mode follow your heart rate with [Heart Rate Link](./heart-rate-link.mdx).
 - Check Breath and Body Steam thresholds in [Effects Guide](./effects.mdx).
 - If the gauge or toggle does not respond, see [Troubleshooting](../troubleshooting.mdx#sweat-display-or-auto-mode-does-not-work).

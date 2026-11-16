@@ -52,7 +52,9 @@ VRChat SDK でビルドするとき（Build & Test、アップロード）、ア
 
 ## Windows専用 {/* #windows-only */}
 
-購入認証は、デバイスキーによってPCに結び付けられます。このデバイスキーは、Windows のデータ保護機能（DPAPI）が Windows のユーザーアカウントごとに暗号化します。Mac や Linux の Unity エディターはこのキーを作ることも読むこともできないため認証できず、Mac や Linux からアップロードすると Real Sweat System の効果は常に外れます。
+Windows では、購入認証はデバイスキーによってPCに結び付けられます。このデバイスキーは、Windows のデータ保護機能（DPAPI）が Windows のユーザーアカウントごとに暗号化します。Real Sweat System は Windows でテストしています。
+
+Linux・macOS：v2.1.0 から購入認証ができますが、Linux・macOS のエディターでの動作は、まだテストしていません。v2.0.2 までは認証情報を Windows 専用の方法でしか保存していなかったため、これらのエディターでは認証できず、そこからアップロードすると Real Sweat System の効果が外れていました。
 
 ## PCの台数と解除 {/* #pcs */}
 

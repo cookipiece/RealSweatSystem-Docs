@@ -10,12 +10,12 @@ description: Official setup, usage, compatibility, and troubleshooting guide for
 **Real Sweat System** adds real-time sweat effects to PC VRChat avatars. Set **Sweat %** directly from the radial menu, or use **Auto Mode** to build sweat from body movement and let it dry gradually after movement stops.
 
 :::info[Current documentation]
-This documentation covers **Real Sweat System v2.0.0**. It is a major update with a new skin sweat look, a new Setup window, and new body steam. To update a 1.x installation, follow [Updating from 1.x](./quick-start.mdx#updating-from-1x).
+This documentation covers **Real Sweat System v2.1.0**. v2.1.0 adds Heart Rate Link (experimental, optional), 1.x Pattern Density and purchase activation in the Linux and macOS editors, and fixes a number of problems. v2.0.2 added the 1.x (Legacy) style, Pattern Density, a separate mask for each material slot and Refraction Strength. v2.0.0 was a major update with a new skin sweat look, a new Setup window, and new body steam. To update a 1.x installation, follow [Updating from 1.x](./quick-start.mdx#updating-from-1x).
 :::
 
 ## What it can display
 
-- Sweat and droplets on the skin, in two styles: **Anime** and **Realistic (default)**
+- Sweat and droplets on the skin, in three styles: **Realistic (default)**, **Anime** and **1.x (Legacy)**
 - Running droplets and trails that follow real-world gravity and run almost straight down
 - Optional **Droplet Depth**: droplets close to the camera really rise from the skin
 - Falling sweat drops and a short splash
@@ -24,6 +24,7 @@ This documentation covers **Real Sweat System v2.0.0**. It is a major update wit
 - Breath driven by Visemes or VRCFT
 - Optional 3D particles for falling drops, body steam, and breath
 - Sweat on multiple Body material Elements or additional skinned meshes (experimental)
+- Optional **Heart Rate Link** (experimental): Auto Mode's sweat follows the heart rate (BPM) that a heart-rate app sends to VRChat over OSC
 
 Skin sweat is included in **Sweat Base Module**. Falling Drops, Floor Stains, Breath, and Body Steam are included in **Sweat Effects Module**. **Full Pack (Base + Effects)** includes both modules as the complete configuration.
 
@@ -31,10 +32,10 @@ Skin sweat is included in **Sweat Base Module**. Falling Drops, Floor Stains, Br
 
 Real Sweat System requires:
 
-- Windows for the Unity editor (purchase activation works only on Windows)
+- Windows for the Unity editor (Linux and macOS: purchase activation works from v2.1.0 but is not tested yet)
 - Unity 2022.3
 - VRChat Avatars SDK 3.10.3 or later (checked up to 3.10.6)
-- Modular Avatar
+- Modular Avatar 1.12 or later
 - A PC avatar using Direct3D 11
 - A one-time [purchase activation](./license-activation.mdx) on each PC
 
@@ -44,9 +45,10 @@ Quest standalone is not supported. Auto Mode is available on Humanoid avatars; o
 
 - **Install for the first time:** [Package Guide](./package-guide.mdx) → [5-Minute Quick Start](./quick-start.mdx)
 - **Update from 1.x:** [Updating from 1.x](./quick-start.mdx#updating-from-1x)
-- **See what changed in v2.0.0:** [Update & Changelog](./update-changelog.mdx#v200)
+- **See what changed in v2.1.0:** [Update & Changelog](./update-changelog.mdx#v210)
 - **Activate your purchase:** [Purchase Activation](./license-activation.mdx)
 - **Control Sweat % or Auto Mode in game:** [Manual Mode & Auto Mode](./usage/modes.mdx)
+- **Make Auto Mode follow your heart rate (experimental):** [Heart Rate Link](./usage/heart-rate-link.mdx)
 - **Adjust the look, sensitivity, or load:** [Setup & Tuning Option Reference](./usage/tuning.mdx) → [Performance Guide](./performance.mdx)
 - **Check Falling Drops, Floor Stains, Breath, or Body Steam:** [Effects Guide](./usage/effects.mdx)
 - **Fix missing visuals, menus, or unexpected behavior:** [Troubleshooting](./troubleshooting.mdx)

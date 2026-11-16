@@ -12,6 +12,11 @@ description: 설치, 애니메이션, 메쉬, 이펙트, 다운로드에서 자�
 
 ## 증상 빠른 찾기
 
+- [상단에 CookiTools 메뉴가 없음](#no-cookitools-menu)
+- [설치 창이 프로젝트에 스크립트 컴파일 오류가 있다고 함](#script-compile-errors)
+- [Modular Avatar 1.12 이상이 필요하다고 나옴](#modular-avatar-too-old)
+- [RealSweat 오브젝트를 옮겼거나 이름을 바꿨다고 나옴](#realsweat-object-moved)
+- [긴 파일 경로 때문에 계속할지 묻는 창이 나옴](#long-file-path)
 - [땀이 전혀 보이지 않음](#no-sweat-is-visible)
 - [설치 창에 '이전 버전으로 설치되었습니다'가 나옴](#installed-with-an-older-version)
 - [설치 창이 같은 버전으로 다시 임포트하라고 함](#mixed-module-versions)
@@ -22,8 +27,9 @@ description: 설치, 애니메이션, 메쉬, 이펙트, 다운로드에서 자�
 - [Play Mode나 VRChat에서 얼굴이 깨짐](#the-face-breaks-in-play-mode-or-vrchat)
 - [MMD 댄스 중 표정·립싱크가 멈춤](#expressions-or-lip-sync-stop-during-an-mmd-dance)
 - [땀 표시 또는 자동 모드가 작동하지 않음](#sweat-display-or-auto-mode-does-not-work)
+- [땀이 심박을 따라가지 않음(심박 연동)](./usage/heart-rate-link.mdx#troubleshooting)
 - [복제한 아바타와 생성 파일을 공유한다는 경고가 나옴](#duplicate-avatar-shares-generated-files)
-- [추가 대상이 복구 필요로 표시되거나 빌드가 중단됨](#an-additional-target-shows-repair-required-or-blocks-the-build)
+- [추가 대상이 복구 필요로 표시됨](#an-additional-target-shows-repair-required-or-blocks-the-build)
 - [낙하 물방울·바닥 물자국이 보이지 않거나 바닥 위에 떠 보임](#falling-drops-or-floor-stains-are-not-visible)
 - [업로드하면 땀이나 이펙트가 빠짐](#missing-after-upload)
 - [Unity에서는 정상인데 VRChat에서만 깨짐](#it-works-in-unity-but-breaks-only-in-vrchat)
@@ -35,6 +41,26 @@ description: 설치, 애니메이션, 메쉬, 이펙트, 다운로드에서 자�
 - [자주 묻는 사용 팁](#common-usage-tips)
 
 <a id="sweat-not-visible" />
+
+## 상단에 CookiTools 메뉴가 없음 {/* #no-cookitools-menu */}
+
+스크립트 컴파일 오류 때문입니다. Console 창(Window → General → Console)을 열어 빨간 오류를 확인해 주십시오. 오류에 다른 패키지의 클래스 이름(예: `ObjectPathRemapper`, `nadena…`)이 나오면 VCC나 ALCOM에서 NDMF와 Modular Avatar를 업데이트해 주십시오. Real Sweat System에는 **NDMF 1.13.1 이상**이 필요합니다. 더 오래된 NDMF에서는 스크립트 컴파일 오류가 나서 상단에 CookiTools 메뉴가 나오지 않습니다.
+
+## 설치 창이 프로젝트에 스크립트 컴파일 오류가 있다고 함 {/* #script-compile-errors */}
+
+설치 창에 '프로젝트에 스크립트 컴파일 오류가 있어서 RealSweatSystem의 일부를 불러오지 못했습니다'가 나옵니다. 다시 임포트해도 고쳐지지 않습니다. Console(Window → General → Console)의 빨간 오류(`error CS`로 시작하는 줄)를 먼저 고쳐 주십시오. 오류에 `nadena`가 나오면 VCC나 ALCOM에서 NDMF와 Modular Avatar를 업데이트해 주십시오.
+
+## Modular Avatar 1.12 이상이 필요하다고 나옴 {/* #modular-avatar-too-old */}
+
+Real Sweat System에는 **Modular Avatar 1.12 이상**이 필요합니다. 더 오래된 판에서는 <strong>[설치 / 업데이트]</strong>가 아무것도 바꾸기 전에 그렇게 알리고 멈춥니다. VCC나 ALCOM에서 Modular Avatar를 업데이트한 뒤 <strong>[설치 / 업데이트]</strong>를 다시 눌러 주십시오. v2.1.0부터는 Modular Avatar 1.12~1.16에서 늘 나오던 'Modular Avatar가 오래되었습니다' 창이 나오지 않습니다.
+
+## RealSweat 오브젝트를 옮겼거나 이름을 바꿨다고 나옴 {/* #realsweat-object-moved */}
+
+'RealSweat 오브젝트를 옮기거나 이름을 바꿔서 RealSweatSystem이 이 설치를 찾지 못합니다'라는 안내에는 지금 위치가 나옵니다. `RealSweat` 오브젝트를 그곳에서 아바타 루트 바로 아래로 다시 옮기고, 안내에 나온 이름(`RealSweat`)으로 바꿔 주십시오. 그때까지 <strong>[설치 / 업데이트]</strong>, **FX에 적용**, <strong>[제거]</strong>는 멈춥니다. EditorOnly 아래에 둔 백업은 이 안내에 나오지 않습니다.
+
+## 긴 파일 경로 때문에 계속할지 묻는 창이 나옴 {/* #long-file-path */}
+
+생성 파일 경로가 240자를 넘으면 <strong>[설치 / 업데이트]</strong>가 아무것도 바꾸기 전에 계속할지 묻습니다. Windows의 Unity는 260자를 넘는 경로에서 실패할 수 있습니다. 안전하게 하려면 아바타 이름을 줄이거나 프로젝트를 경로가 더 짧은 폴더로 옮겨 주십시오.
 
 ## 땀이 전혀 보이지 않음 {/* #no-sweat-is-visible */}
 
@@ -82,6 +108,7 @@ Base와 Effects의 버전이 다릅니다. 보유한 Base／Effects 모듈을 �
 - **이펙트**와 그 개별 토글에는 Effects가 필요합니다.
 - **몸 김·입김 진하기**는 설치 창에서 선택형 동기화 래디얼을 고른 경우에만 나타납니다.
 - <strong>물방울 입체감(테셀레이션 / 고부하)</strong>은 물방울 입체감을 설치한 경우(**입체 (고부하)** 표현, 또는 **고급 설정 > 품질·부하**의 물방울 입체감 토글)에만 나타납니다.
+- **심박 연동**은 심박 연동을 설치한 경우에만 나타납니다. 자동 모드를 쓸 수 없는 아바타에는 설치되지 않습니다. [심박 연동](./usage/heart-rate-link.mdx)을 확인해 주십시오.
 - v2.0.0에서 'VRC 라이트 볼륨' 토글이 없어졌고, '표면 땀 숨기기'의 이름이 '피부 땀 숨기기'로 바뀌었습니다.
 
 기대한 항목이 없다면 다음을 확인합니다.
@@ -116,7 +143,7 @@ Base와 Effects의 버전이 다릅니다. 보유한 Base／Effects 모듈을 �
 
 ## 1.x에서 업데이트하기
 
-[1.x에서 업데이트하는 방법](./quick-start.mdx#updating-from-1x)을 따라 주십시오. 요약하면, 프로젝트 밖에 백업하고, 먼저 제거하지 말고 보유한 모듈을 모두 같은 v2.0.0으로 기존 파일 위에 임포트한 뒤, 아바타마다 <strong>[설치 / 업데이트]</strong>를 한 번 누릅니다. **FX에 적용만으로는 업데이트가 되지 않습니다.**
+[1.x에서 업데이트하는 방법](./quick-start.mdx#updating-from-1x)을 따라 주십시오. 요약하면, 프로젝트 밖에 백업하고, 먼저 제거하지 말고 보유한 모듈을 모두 같은 v2.1.0으로 기존 파일 위에 임포트한 뒤, 아바타마다 <strong>[설치 / 업데이트]</strong>를 한 번 누릅니다. **FX에 적용만으로는 업데이트가 되지 않습니다.**
 
 <a id="face-broken" />
 
@@ -147,6 +174,7 @@ RealSweat만 WD ON으로 강제하면 외부 State가 WD OFF일 때 ON/OFF 혼�
 - **땀 표시**가 켜져 있는지 확인합니다.
 - 수동으로 조작하려면 자동 모드를 끄고 땀 %를 조절합니다.
 - 자동 모드는 아바타가 Humanoid이고 필요한 뼈 참조가 있는지 확인합니다. 자동 모드에는 Humanoid Animator와 MA Bone Proxy가 필요하며, 조건을 충족하지 않으면 수동 모드만 설치됩니다.
+- **심박 연동**을 설치했다면, 심박 신호가 있는 동안 자동 모드의 땀은 움직임 대신 심박을 따릅니다. [심박 연동](./usage/heart-rate-link.mdx)을 확인해 주십시오.
 - 생성된 Animator나 그 순서를 직접 편집하지 마십시오.
 - 새 버전을 임포트한 뒤에는 <strong>[설치 / 업데이트]</strong>를 다시 눌러 주십시오.
 
@@ -166,9 +194,9 @@ RealSweat만 WD ON으로 강제하면 외부 State가 WD OFF일 때 ON/OFF 혼�
 
 마테리얼이 여러 개인 Body라면 **땀을 넣을 곳** 옆의 <strong>[바꾸기]</strong>를 눌러 **고급 설정 > 땀을 넣을 곳**에서 피부 마테리얼만 체크한 뒤 <strong>[설치 / 업데이트]</strong>를 다시 눌러 주십시오. Element 0이 피부라고 가정하지 마십시오.
 
-## 추가 대상이 복구 필요로 표시되거나 빌드가 중단됨 {/* #an-additional-target-shows-repair-required-or-blocks-the-build */}
+## 추가 대상이 복구 필요로 표시됨 {/* #an-additional-target-shows-repair-required-or-blocks-the-build */}
 
-실험적 대상을 끄기 위해 RealSweat이 생성한 마테리얼이나 Renderer 슬롯을 삭제·비우기·이동·교체·병합하지 마십시오. 생성 마테리얼／슬롯의 누락 또는 변경은 설치 손상으로 처리되어 Tuning에 **복구 필요**로 표시되며, 아바타 빌드는 대상을 조용히 생략하지 않고 중단됩니다.
+실험적 대상을 끄기 위해 RealSweat이 생성한 마테리얼이나 Renderer 슬롯을 삭제·비우기·이동·교체·병합하지 마십시오. 생성 마테리얼／슬롯의 누락 또는 변경은 설치 손상으로 처리되어 Tuning에 **복구 필요**로 표시됩니다. 업로드는 그 대상의 땀만 빼고 계속되며, Console과 NDMF 창에 경고가 남습니다(2.0.0까지는 빌드가 멈췄습니다).
 
 1. 생성된 **RealSweat** 오브젝트를 선택합니다.
 2. **RealSweatSystem Tuning**에서 **추가 대상 관리...** 또는 <strong>설치 창에서 복구...</strong>를 누릅니다.
@@ -190,7 +218,7 @@ Real Sweat System의 Console 안내는 선택한 도구 UI 언어를 따릅니�
 1. 빌드한 뒤 Console에서 `Real Sweat System:`으로 시작하는 노란 경고를 찾습니다. 빠진 모듈마다 한 줄이 있고, 모듈 이름(Base 모듈 또는 Effects 모듈)과 이유(이 PC가 인증되지 않음, 구매하신 상품에 그 기능이 없음, 저장된 인증이 이 PC와 맞지 않음)가 적혀 있습니다.
 2. `CookiTools → RealSweatSystem → Purchase Activation`을 엽니다. 상태 상자의 「포함된 기능」에 이 PC에서 인증된 모듈이 나옵니다. 빠진 모듈의 주문번호나 Gumroad 라이선스 키를 넣고 <strong>[인증하기]</strong>를 눌러 주십시오. 이 PC에 이미 다른 주문이 있으면 「다른 주문 추가」를 씁니다.
 3. 업로드에서 빠질 상황이면 설치 창의 설치 버튼 위에도 같은 안내와 [인증 창 열기] 버튼이 나옵니다. 모듈을 인증하면 이 안내는 사라집니다.
-4. Mac이나 Linux에서는 인증할 수 없으므로, 업로드할 때 Real Sweat System이 늘 빠집니다. Windows PC에서 업로드해 주십시오.
+4. Linux·macOS 에디터에서는 v2.1.0부터 구매 인증을 할 수 있지만, 아직 시험하지 못했습니다. v2.0.2 이전 판에서는 그곳에서 인증할 수 없으므로, 그 에디터에서 업로드하면 Real Sweat System이 빠집니다.
 5. 아바타를 다시 업로드합니다. 씬의 아바타는 바뀌지 않았으므로 <strong>[설치 / 업데이트]</strong>를 다시 누를 필요는 없습니다.
 
 `[RealSweatSystem]`으로 시작하고 패키지 버전이 서로 다르다는 경고가 있으면 Base와 Effects의 버전이 섞여 있는 것입니다. [설치 창이 같은 버전으로 다시 임포트하라고 함](#mixed-module-versions)을 봐 주십시오. 규칙은 [구매 인증](./license-activation.mdx)에 있습니다.
@@ -200,6 +228,8 @@ Real Sweat System의 Console 안내는 선택한 도구 UI 언어를 따릅니�
 업로드한 아바타에서 땀이나 이펙트가 통째로 빠졌다면 먼저 [업로드하면 땀이나 이펙트가 빠짐](#missing-after-upload)을 확인해 주십시오.
 
 Real Sweat System이 준비한 뒤 최적화 도구, 리타겟 도구 또는 다른 업로드 단계 도구가 Body Renderer나 메쉬를 교체하고 있을 수 있습니다.
+
+Real Sweat System이 모르는 판의 d4rkAvatarOptimizer가 있어도 업로드는 멈추지 않습니다(v2.1.0부터). Console의 경고를 확인해 주십시오. 그 업로드에서 땀이 빠지거나 이상하게 보일 수 있다는 것과, 땀 렌더러를 직접 제외하는 방법이 나옵니다.
 
 - 그 도구가 선택한 Body를 바꾸는지 확인합니다.
 - 땀 대상 Submesh와 마테리얼 대응을 유지합니다.
@@ -284,7 +314,7 @@ Console에 invalid local AABB 오류가 반복되고 메시지가 입김 오브�
 
 `RealSweat` 오브젝트나 컴포넌트만 직접 삭제하지 마십시오. 제거는 바디 메쉬／마테리얼과 외부 이펙트 오브젝트를 복원해야 합니다. Modular Avatar 비파괴 방식이라 메뉴／파라미터／FX는 다음 빌드에서 자동으로 원래대로 돌아갑니다. 직접 만든 땀 마테리얼／슬롯은 건드리지 않습니다.
 
-제거는 설치 오브젝트와 하위 내용, 해당 설치 전용 생성 폴더를 함께 정리합니다. 현재 작업 씬의 다른 아바타나 오브젝트가 공유하는 생성 파일은 보존하며, 저장된 다른 씬이나 프리팹이 같은 생성 파일을 쓰거나 그 확인을 끝내지 못하면 생성 폴더를 남깁니다. 원본 바디·의상·외부 에셋은 삭제하지 않습니다. 원본 메쉬 복원이 불가능하면 제거를 중단하므로, 먼저 원본 메쉬 연결을 확인해 주십시오. 설치할 때 2349로 낮춘 바디 마테리얼은 원래 렌더 큐로 돌아갑니다.
+제거는 설치 오브젝트와 하위 내용, 해당 설치 전용 생성 폴더를 함께 정리합니다. 열려 있는 모든 씬과 프리팹 모드의 다른 아바타나 오브젝트가 공유하는 생성 파일은 보존하며, 저장된 다른 씬이나 프리팹이 같은 생성 파일을 쓰거나 그 확인을 끝내지 못하면 생성 폴더를 남깁니다. 설치 정보 없이 남은 생성 파일을 제거할 때 다른 오브젝트가 그 폴더를 쓰고 있으면, 쓰는 곳의 이름을 알려 줍니다. 원본 바디·의상·외부 에셋은 삭제하지 않습니다. 원본 메쉬 복원이 불가능하면 제거를 중단하므로, 먼저 원본 메쉬 연결을 확인해 주십시오. 설치할 때 2349로 낮춘 바디 마테리얼은 원래 렌더 큐로 돌아갑니다.
 
 ### `RealSweat` 오브젝트만 직접 삭제한 경우 {/* #manual-delete-recovery */}
 
@@ -381,7 +411,7 @@ Gesture Manager만 보지 말고 VR에서 빌드해 확인해 주십시오. 아�
 - Unity와 VRCSDK 버전
 - 아바타 이름과 사용하는 Face Tracking 패키지
 - 설치 창과 Avatar Descriptor 스크린샷
-- 땀 스타일(애니 / 실사)과 표현(기본 / 입체 (고부하))
+- 땀 스타일(실사 / 애니 / 1.x (레거시))과 표현(기본 / 입체 (고부하))
 - Console을 Clear한 뒤 처음 발생한 오류의 전문
 - Unity, 데스크톱 VRChat, VR, VR Face Tracking 중 어디에서 발생하는지
 - Modular Avatar 버전

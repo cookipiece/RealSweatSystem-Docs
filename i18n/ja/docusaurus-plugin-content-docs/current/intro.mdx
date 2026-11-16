@@ -10,12 +10,12 @@ description: Real Sweat System の公式導入・設定・トラブルシュー�
 **Real Sweat System** は、PC版VRChatアバターにリアルタイムの汗表現を追加するシステムです。ラジアルメニューで **汗 %** を直接操作するほか、体の動きに応じて汗が増え、動きを止めるとゆっくり乾く **自動モード** を利用できます。
 
 :::info[対象バージョン]
-このドキュメントは **Real Sweat System v2.0.0** を基準にしています。v2.0.0 は、肌の汗の見た目、Setup ウィンドウ、体の湯気を新しく作った大きなアップデートです。1.x の導入を更新する場合は、[1.x からの更新方法](./quick-start.mdx#updating-from-1x)に従ってください。
+このドキュメントは **Real Sweat System v2.1.0** を基準にしています。v2.1.0 は心拍連動（実験的・任意）、1.x パターン密度、Linux・macOS のエディターでの購入認証を追加し、いくつもの問題を直したアップデートです。v2.0.2 は 1.x（レガシー）スタイル、パターン密度、マテリアルスロットごとのマスク、屈折の強さを追加しました。v2.0.0 は、肌の汗の見た目、Setup ウィンドウ、体の湯気を新しく作った大きなアップデートです。1.x の導入を更新する場合は、[1.x からの更新方法](./quick-start.mdx#updating-from-1x)に従ってください。
 :::
 
 ## 表現できるもの
 
-- 肌に浮かぶ汗と水滴。スタイルは **アニメ** と **リアル（標準）** の2つです
+- 肌に浮かぶ汗と水滴。スタイルは **リアル（標準）**、**アニメ**、**1.x（レガシー）** の3つです
 - 実際の重力に従い、ほぼまっすぐ下へ流れる水滴と流れ跡
 - 任意の **水滴の立体感**: カメラの近くの水滴が実際に肌から盛り上がります
 - 落下する汗の滴と、短く飛ぶはね
@@ -24,6 +24,7 @@ description: Real Sweat System の公式導入・設定・トラブルシュー�
 - Viseme・VRCFTに反応する吐息
 - 落下する滴・体の湯気・吐息の任意の3Dパーティクル
 - 複数のBody Material Elementや追加のSkinned Meshへの汗（実験的）
+- 任意の **心拍連動**（実験的）: 心拍アプリが OSC で VRChat に送る心拍数（BPM）に合わせて、自動モードの汗の量が決まります
 
 肌の汗は **Sweat Base Module**、落下する滴・床の濡れ跡・吐息・体の湯気は **Sweat Effects Module** に含まれます。**Full Pack (Base + Effects)** は両方のModuleを収録した完全構成です。
 
@@ -31,10 +32,10 @@ description: Real Sweat System の公式導入・設定・トラブルシュー�
 
 Real Sweat System には次の環境が必要です。
 
-- Unityエディター用のWindows（購入認証がWindowsでのみ動作します）
+- Unityエディター用のWindows（Linux・macOS：v2.1.0から認証できますが、まだ検証していません）
 - Unity 2022.3
 - VRChat Avatars SDK 3.10.3以降（3.10.6まで確認）
-- Modular Avatar
+- Modular Avatar 1.12以降
 - Direct3D 11 を使用するPC版アバター
 - PCごとに一度の[購入認証](./license-activation.mdx)
 
@@ -44,9 +45,10 @@ Quest単体版には対応していません。自動モードはHumanoidアバ�
 
 - **初めて導入する:** [パッケージガイド](./package-guide.mdx) → [5分クイックスタート](./quick-start.mdx)
 - **1.x から更新する:** [1.x からの更新方法](./quick-start.mdx#updating-from-1x)
-- **v2.0.0 の変更点を確認する:** [更新・変更履歴](./update-changelog.mdx#v200)
+- **v2.1.0 の変更点を確認する:** [更新・変更履歴](./update-changelog.mdx#v210)
 - **購入を認証する:** [購入認証](./license-activation.mdx)
 - **ゲーム内で汗 % や自動モードを操作する:** [手動モードと自動モード](./usage/modes.mdx)
+- **自動モードを心拍に合わせる（実験的）:** [心拍連動](./usage/heart-rate-link.mdx)
 - **見た目・感度・負荷を調整する:** [Setup・Tuning オプション一覧](./usage/tuning.mdx) → [パフォーマンスガイド](./performance.mdx)
 - **落下する滴・床の濡れ跡・吐息・体の湯気を確認する:** [エフェクトガイド](./usage/effects.mdx)
 - **表示されない、メニューが無い、動作が違う:** [トラブル解決](./troubleshooting.mdx)
