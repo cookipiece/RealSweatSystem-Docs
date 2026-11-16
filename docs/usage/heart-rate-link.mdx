@@ -14,13 +14,39 @@ It is optional and off by default. When it is off, nothing is added to the avata
 Heart Rate Link is experimental. It was tested in Unity; it has not been tested in game with a heart-rate app yet.
 :::
 
+## Before you start {/* #before-you-start */}
+
+Besides Real Sweat System, you need two things:
+
+- **A device that measures your heart rate**: a smartwatch or a chest strap.
+- **A heart-rate app**: an app (usually on your PC) that sends that heart rate to VRChat over OSC. Real Sweat System only reads the heart-rate (BPM) parameter the app sends.
+
+Commonly used apps and the parameter name they send:
+
+| App | Parameter name |
+|---|---|
+| Pulsoid, PulsoidToOSC, MagicChatBox | `HR` |
+| VRCOSC | `VRCOSC/Heartrate/Value` |
+
+Both names are in the Setup window's **Heart Rate Parameter** list. For how to install and set up an app, see that app's own guide.
+
+The steps in order:
+
+1. Set up the heart-rate app and check that it shows your heart rate.
+2. In Unity, turn Heart Rate Link on and press **[Install / Update]** (see [Turn it on](#turn-it-on)).
+3. Upload the avatar.
+4. In VRChat, turn on **Options > OSC > Enabled** in the Action Menu.
+5. In the in-game menu **Sweat**, check that **Auto Mode** and **Heart Rate Link** are on.
+6. When your heart rate rises, the sweat follows it: in about 3 minutes with **Natural**, in about 45 seconds with **Fast**. Below 50 % of **Max Heart Rate** there is no sweat.
+
 ## Turn it on {/* #turn-it-on */}
 
 1. Open `CookiTools → RealSweatSystem → Setup／Uninstall` and select the avatar.
 2. On the first screen, under **Auto Mode Sensitivity**, tick **Sweat with your heart rate (Experimental)** in the **Heart Rate Link** row. The items below it appear.
 3. Set **Max Heart Rate**, **Heart Rate Parameter**, and **Response** (table below). The zone table is first in **Advanced Settings** (see [Sweat by heart-rate zone](#zones)).
 4. Press **[Install / Update]**.
-5. In VRChat, turn on **OSC > Enabled** in the Action Menu. Set up the heart-rate app as its own guide says.
+5. Upload the avatar.
+6. In VRChat, turn on **Options > OSC > Enabled** in the Action Menu. Set up the heart-rate app as its own guide says.
 
 [![The Heart Rate Link row on the Setup window's first screen, ticked, with Max Heart Rate, Heart Rate Parameter, and Response under it](/img/guide/heart-rate-english.png)](/img/guide/heart-rate-english.png)
 
@@ -80,7 +106,8 @@ Check these points, all from the sections above:
 
 - Auto Mode is on. In Manual Mode the **Sweat %** radial is followed whatever the heart rate.
 - **Sweat > Heart Rate Link** is on in the in-game menu.
-- **OSC > Enabled** is on in VRChat's Action Menu, and the heart-rate app is set up as its own guide says.
+- **Options > OSC > Enabled** is on in VRChat's Action Menu, and the heart-rate app is set up as its own guide says and shows your heart rate.
+- The avatar was uploaded after you pressed **[Install / Update]**. If the sweat still does not follow, press **Options > OSC > Reset Config** in the Action Menu, then change to another avatar and back.
 - **Heart Rate Parameter** is the name the app sends (usually `HR`). For another name, choose **Custom Name**.
 - A heart rate below 30 BPM, or one that stays exactly the same for 60 seconds, counts as no signal; meanwhile sweat comes from movement.
 - Below 50 % of **Max Heart Rate** there is no sweat. If the sweat stays low, check **Max Heart Rate**.
