@@ -6,7 +6,7 @@ description: Real Sweat System 2.0.0 の購入認証が何を含み、何を妨�
 
 # 購入認証
 
-Real Sweat System 2.0.0 では、PCごとに一度購入認証を行います。`CookiTools → RealSweatSystem → Purchase Activation` から認証ウィンドウを開き、BOOTHの注文番号（Gumroadでご購入の場合はGumroadのライセンスキー）を入力してください。認証ウィンドウの言語（English / 한국어 / 日本語）はウィンドウの右上で切り替えられ、選んだ言語は Real Sweat System のウィンドウにも反映されます。
+Real Sweat System は v2.0.0 から、PCごとに一度購入認証を行います。`CookiTools → RealSweatSystem → Purchase Activation` から認証ウィンドウを開き、BOOTHの注文番号（Gumroadでご購入の場合はGumroadのライセンスキー）を入力してください。認証ウィンドウの言語（English / 한국어 / 日本語）はウィンドウの右上で切り替えられ、選んだ言語は Real Sweat System のウィンドウにも反映されます。
 
 インターネットは認証時と、自動更新のため3週間に一度以上必要です。アバターのビルドやアップロードには不要ですが、認証していないPCからアップロードすると、このツールの効果が外れます。
 
@@ -50,18 +50,21 @@ VRChat SDK でビルドするとき（Build & Test、アップロード）、ア
 
 確認方法は[アップロードすると汗やエフェクトが外れる](./troubleshooting.mdx#missing-after-upload)にあります。
 
-## Windows専用 {/* #windows-only */}
+## エディターのOS {/* #windows-only */}
 
-Windows では、購入認証はデバイスキーによってPCに結び付けられます。このデバイスキーは、Windows のデータ保護機能（DPAPI）が Windows のユーザーアカウントごとに暗号化します。Real Sweat System は Windows でテストしています。
+WindowsのUnityエディターで認証します。Linux・macOSのUnityエディターは、v2.1.0から認証できます。Linuxは実際の環境で確認済みで、macOSはまだ確認できていません。認証できないエディターでアップロードすると、このツールの効果が外れます。Real Sweat System は Windows でテストしています。
 
-Linux・macOS：v2.1.0 から購入認証ができますが、Linux・macOS のエディターでの動作は、まだテストしていません。v2.0.2 までは認証情報を Windows 専用の方法でしか保存していなかったため、これらのエディターでは認証できず、そこからアップロードすると Real Sweat System の効果が外れていました。
+購入認証は、デバイスキーによってPCに結び付けられます。デバイスキーは、WindowsではWindowsの保護機能（DPAPI）で暗号化します。Linux・macOSにはDPAPIのような保護機能がないため、暗号化はしません。その代わり、このコンピューターの識別子とユーザー名に結び付けているので、別のPCにコピーしても一致しません。
+
+v2.0.2 までは認証情報を Windows 専用の方法でしか保存していなかったため、Linux・macOS のエディターでは認証できません。
 
 ## PCの台数と解除 {/* #pcs */}
 
 - 1件の注文（またはGumroadでの購入1件）につき、PCを **同時に3台まで** 認証できます。Game & App Integration & Distribution License は10台です。
 - 1件の注文で新しく登録できるPCは **30日に5台まで** です。同時に使えるPCの台数に2台を加えた数です（Game & App Integration & Distribution License は12台）。
-- ここでの「PC」は、コンピューターと Windows ユーザーアカウントの組み合わせです。Windows を再インストールしたり、別の Windows アカウントで使ったり、認証フォルダー（`%LOCALAPPDATA%\CookiTools\license\`）を削除したりすると、新しいPCとして数えます。
-- 認証ウィンドウの［このPCを解除］を押すと、このPCの枠が空きます。PCを入れ替えたり譲ったりする前、または Windows を再インストールする前に押しておくと、PCの台数を節約できます。PC一覧から古いPCを解除できるのは7日に1回です。
+- ここでの「PC」は、コンピューターとユーザーアカウント（Windows・macOS・Linuxのアカウント）の組み合わせです。OSを再インストールしたり、別のユーザーアカウントで使ったり、認証フォルダーを削除したりすると、新しいPCとして数えます。
+- 認証情報は、ユーザーアカウントごとに別々に、Windowsでは `%LOCALAPPDATA%\CookiTools\license\`、Linux・macOSでは `~/.local/share/CookiTools/license/` に保存されます（環境変数 `XDG_DATA_HOME` を設定している場合は `$XDG_DATA_HOME/CookiTools/license/`）。
+- 認証ウィンドウの［このPCを解除］を押すと、このPCの枠が空きます。PCを入れ替えたり譲ったりする前、または OS を再インストールする前に押しておくと、PCの台数を節約できます。PC一覧から古いPCを解除できるのは7日に1回です。
 
 ## ギフトで受け取った場合 {/* #gifts */}
 

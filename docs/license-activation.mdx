@@ -6,7 +6,7 @@ description: How purchase activation works in Real Sweat System 2.0.0, what it c
 
 # Purchase Activation
 
-Real Sweat System 2.0.0 asks for a one-time purchase activation on each PC. Open the activation window from `CookiTools → RealSweatSystem → Purchase Activation` and enter your BOOTH order number, or your Gumroad license key if you bought on Gumroad. The window language (English / 한국어 / 日本語) is switched at the top right of the window, and the choice also applies to the Real Sweat System windows.
+From v2.0.0, Real Sweat System asks for a one-time purchase activation on each PC. Open the activation window from `CookiTools → RealSweatSystem → Purchase Activation` and enter your BOOTH order number, or your Gumroad license key if you bought on Gumroad. The window language (English / 한국어 / 日本語) is switched at the top right of the window, and the choice also applies to the Real Sweat System windows.
 
 Internet is needed to activate, and at least once every 3 weeks for the automatic renewal. Building and uploading avatars never needs it, but an upload from a PC that is not activated leaves this tool's effects out.
 
@@ -50,18 +50,21 @@ When you build with the VRChat SDK (Build & Test or upload), each module install
 
 See [Sweat or effects are missing after upload](./troubleshooting.mdx#missing-after-upload) for how to check it.
 
-## Windows only {/* #windows-only */}
+## Editor OS {/* #windows-only */}
 
-On Windows, the activation is bound to the PC by a device key that Windows' data protection (DPAPI) encrypts for your Windows user account. Real Sweat System is tested on Windows.
+You activate in the Unity editor on Windows. The Unity editor on Linux and macOS can activate from v2.1.0. Linux has been confirmed on a real setup; macOS has not been confirmed yet. Uploads from an editor that cannot activate leave this tool's effects out. Real Sweat System is tested on Windows.
 
-Linux and macOS: purchase activation works from v2.1.0, but it has not been tested in the Linux and macOS editors yet. Up to v2.0.2 the activation data was kept only in a Windows-only way, so those editors could not activate, and uploads from them left the Real Sweat System effects out.
+The activation is bound to the PC by a device key. On Windows it is encrypted with Windows protection (DPAPI). Linux and macOS have no protection like DPAPI, so it is not encrypted there; instead it is bound to this computer's identifier and your user name, so it does not match on another PC.
+
+Up to v2.0.2 the activation data was kept only in a Windows-only way, so the Linux and macOS editors cannot activate with those versions.
 
 ## PCs {/* #pcs */}
 
 - One order (or one Gumroad purchase) can be activated on up to **3 PCs at the same time**. The Game & App Integration & Distribution License allows 10.
 - Each order can register up to **5 new PCs in 30 days**: the number of PCs plus 2 (Game & App Integration & Distribution License: 12).
-- A "PC" here is a computer together with a Windows user account. Reinstalling Windows, using another Windows account, or deleting the activation folder (`%LOCALAPPDATA%\CookiTools\license\`) counts as a new PC.
-- **Release this PC** in the activation window frees this PC's seat. Press it before you replace a PC, give it away, or reinstall Windows. Releasing an old PC from the list of PCs is possible once every 7 days.
+- Here, a "PC" means one computer plus one user account (a Windows, macOS or Linux account). Reinstalling the OS, using another user account, or deleting the activation folder counts as a new PC.
+- Activation data is stored per user account: in `%LOCALAPPDATA%\CookiTools\license\` on Windows, and in `~/.local/share/CookiTools/license/` on Linux and macOS (`$XDG_DATA_HOME/CookiTools/license/` if you have set the `XDG_DATA_HOME` environment variable).
+- **Release this PC** in the activation window frees this PC's seat. Press it before you replace a PC, give it away, or reinstall the OS. Releasing an old PC from the list of PCs is possible once every 7 days.
 
 ## Received it as a gift? {/* #gifts */}
 
@@ -73,5 +76,5 @@ v1.1.3, which has no purchase activation, stays on BOOTH and Gumroad as a legacy
 
 ## More details
 
-- **Activation guide and error codes:** [Purchase activation guide](https://cookistudio.com/license/)
-- **Privacy:** [Privacy notice for purchase activation](https://cookistudio.com/license/privacy)
+- **Activation guide and error codes:** [Purchase activation guide](https://cookistudio.com/license/?lang=en)
+- **Privacy:** [Privacy notice for purchase activation](https://cookistudio.com/license/privacy?lang=en)

@@ -89,7 +89,7 @@ const config: Config = {
         {
           title: 'Product',
           items: [
-            {label: 'BOOTH', href: 'https://booth.pm/ja/items/8645678'},
+            {label: 'BOOTH', href: 'https://cooki.booth.pm/items/8645678'},
             {label: 'Gumroad', href: 'https://cookipiece.gumroad.com/l/real-sweat-system-vrchat'},
             {label: 'Changelog', to: '/docs/update-changelog'},
             {label: 'Terms & License', to: '/docs/license'},

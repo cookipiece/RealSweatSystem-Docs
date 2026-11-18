@@ -13,7 +13,7 @@ const product: ProductData = {
   links: {
     quickStart: '/docs/quick-start',
     troubleshooting: '/docs/troubleshooting',
-    booth: 'https://booth.pm/ja/items/8645678',
+    booth: 'https://cooki.booth.pm/items/8645678',
     gumroad: 'https://cookipiece.gumroad.com/l/real-sweat-system-vrchat',
     purchaseVerification: '/docs/license-activation',
   },
@@ -62,7 +62,7 @@ const product: ProductData = {
       ],
       requirementsTitle: '필요한 것',
       requirements: [
-        ['에디터', 'Windows 전용입니다(Linux·macOS: v2.1.0부터 구매 인증을 할 수 있지만 아직 시험하지 못했습니다).'],
+        ['에디터', 'Windows 전용입니다(Linux·macOS: v2.1.0부터 구매 인증을 할 수 있습니다. Linux는 실제 환경에서 확인했고, macOS는 아직 확인하지 못했습니다).'],
         ['Unity', '2022.3 (VRChat 아바타 프로젝트)'],
         ['VRChat SDK', 'Avatars SDK 3.10.3 이상(3.10.6까지 확인)'],
         ['Modular Avatar', '1.12 이상이 필요합니다. VCC에서 설치합니다.'],
@@ -113,7 +113,7 @@ const product: ProductData = {
       ],
       requirementsTitle: '必要なもの',
       requirements: [
-        ['エディター', 'Windows専用です（Linux・macOS：v2.1.0から認証できますが、まだ検証していません）。'],
+        ['エディター', 'Windows専用です（Linux・macOS：v2.1.0から認証できます。Linuxは実際の環境で確認済みで、macOSはまだ確認できていません）。'],
         ['Unity', '2022.3（VRChat アバタープロジェクト）'],
         ['VRChat SDK', 'Avatars SDK 3.10.3以降（3.10.6まで確認）'],
         ['Modular Avatar', '1.12以降が必要です。VCCからインストールします。'],
@@ -164,7 +164,7 @@ const product: ProductData = {
       ],
       requirementsTitle: 'Requirements',
       requirements: [
-        ['Editor', 'Windows only (Linux and macOS: activation works from v2.1.0 but is not tested yet).'],
+        ['Editor', 'Windows only (Linux and macOS: activation works from v2.1.0; confirmed on Linux, not yet on macOS).'],
         ['Unity', '2022.3 (VRChat avatar project)'],
         ['VRChat SDK', 'Avatars SDK 3.10.3 or later (checked up to 3.10.6)'],
         ['Modular Avatar', 'Required, 1.12 or later. Install it from VCC.'],
